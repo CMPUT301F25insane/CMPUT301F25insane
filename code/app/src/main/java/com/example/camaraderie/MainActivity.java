@@ -1,6 +1,8 @@
 package com.example.camaraderie;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +10,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 public class MainActivity extends AppCompatActivity {
+
+    private FirebaseFirestore db;
+
+    private CollectionReference eventsRef;
+    private CollectionReference usersRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +31,16 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        db = FirebaseFirestore.getInstance();
+        eventsRef = db.collection("Events");
+        usersRef = db.collection("Users");
+
+        Button log_in = findViewById(R.id.Log_In_Button);
+        Button sign_up = findViewById(R.id.sign_up_button);
+
+
+
+
     }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "464037042133",
+    "project_id": "camaraderie-5919f",
+    "storage_bucket": "camaraderie-5919f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464037042133:android:3ac9e6dce70441fc958f5c",
+        "android_client_info": {
+          "package_name": "com.example.camaraderie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdgUic9W-fB8n9gjbj0ite5l2l3WMmHLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
