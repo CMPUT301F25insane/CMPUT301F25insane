@@ -14,8 +14,8 @@ public class Event {
     private Date eventDate;
     private String eventTime;  // this will probably become a better data type soon
     private float price = 0.0f;
-    //private ArrayList<User> userWaitlist = new ArrayList<>();
-    //private ArrayList<User>
+    private Waitlist waitlist = new Waitlist();
+    private ArrayList<User> selectedUsers = new ArrayList<>();
     private int capacity;  // always > 0
     private final User host;
 
@@ -31,6 +31,8 @@ public class Event {
         this.capacity = capacity;
         this.host = host;
         this.EventId = eventId;
+
+        this.waitlist.setEvent(this);  // bind the waitlist to this event
     }
 
     public float getPrice() {
@@ -103,5 +105,13 @@ public class Event {
 
     public User getHost() {
         return host;
+    }
+
+    public Waitlist getWaitlist() {
+        return waitlist;
+    }
+
+    public ArrayList<User> getSelectedUsers() {
+        return selectedUsers;
     }
 }
