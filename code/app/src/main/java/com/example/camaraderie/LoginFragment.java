@@ -13,9 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.camaraderie.databinding.FragmentLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginFragment extends Fragment {
+
+    private FragmentLoginBinding binding;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -30,19 +33,21 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        EditText email = view.findViewById(R.id.email);
-        EditText password = view.findViewById(R.id.password);
-        Button loginButton = view.findViewById(R.id.Log_In_Button);
+        EditText email = binding.email;
+        EditText password = binding.password;
+        Button loginButton = binding.LogInButton;
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
