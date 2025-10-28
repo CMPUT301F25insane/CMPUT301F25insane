@@ -20,6 +20,7 @@ public class AuthActivity extends AppCompatActivity {
 
     static private CollectionReference eventsRef;
     static private CollectionReference usersRef;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
