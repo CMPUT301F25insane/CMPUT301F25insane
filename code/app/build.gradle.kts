@@ -7,6 +7,10 @@ android {
     namespace = "com.example.camaraderie"
     compileSdk = 36
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.example.camaraderie"
         minSdk = 24
