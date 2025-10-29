@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/searchBar"
+        android:layout_width="252dp"
+        android:layout_height="30dp"
+        android:hint="search"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="36dp" />
+
+    <ListView
+        android:id="@+id/eventsList"
+        android:layout_width="361dp"
+        android:layout_height="435dp"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="77dp" />
+
+    <LinearLayout
+        android:layout_width="411dp"
+        android:layout_height="120dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="610dp">
+
+        <ImageButton
+            android:id="@+id/HostEvent"
+            android:layout_width="125dp"
+            android:layout_height="99dp"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/btn_star" />
+
+        <ImageButton
+            android:id="@+id/dashboardButton"
+            android:layout_width="143dp"
+            android:layout_height="107dp"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/btn_star" />
+
+        <ImageButton
+            android:id="@+id/myEvents"
+            android:layout_width="136dp"
+            android:layout_height="101dp"
+            android:layout_weight="1"
+            app:srcCompat="@android:drawable/btn_star" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/accountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Account"
+        tools:layout_editor_absoluteX="291dp"
+        tools:layout_editor_absoluteY="4dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
