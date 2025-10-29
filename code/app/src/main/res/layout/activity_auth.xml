@@ -9,6 +9,12 @@
     android:background="@drawable/gradient_resource"
     >
 
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/Auth_Fragment_Container"/>
+
+
     <TextView
         android:id="@+id/heading_text"
         android:layout_width="290dp"

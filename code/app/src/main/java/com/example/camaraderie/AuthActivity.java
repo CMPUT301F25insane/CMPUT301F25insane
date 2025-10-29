@@ -2,6 +2,7 @@ package com.example.camaraderie;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 
@@ -49,17 +50,7 @@ public class AuthActivity extends AppCompatActivity {
         eventsRef = db.collection("Events");
         usersRef = db.collection("Users");
 
-        Button log_in = findViewById(R.id.Log_In_Button);
-        Button sign_up = findViewById(R.id.sign_up_button);
-
-        sign_up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavController navController = Navigation.findNavController(this, R.id.login);
-                appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-                NavigationUI.set(this, navController, appBarConfiguration);
-            }
-        });
+        String id = Settings.Secure.ANDROID_ID;
 
 
 
