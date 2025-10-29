@@ -85,7 +85,11 @@ public class MainActivity extends AppCompatActivity {
 
                     builder.setMessage("Please enter Your information to create a profile")
                             .setPositiveButton("Done", (dialog, id1)->{
-
+                                String name1 = name.getText().toString();
+                                String email2 = Email.getText().toString();
+                                String address2 = address.getText().toString();
+                                String phoneNum2 = phoneNum.getText().toString();
+                                User user = new User(name1, email2, address2, phoneNum2);
                             })
                     userExists = false;
                 }
