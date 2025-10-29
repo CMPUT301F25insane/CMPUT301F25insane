@@ -1,6 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFF">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Camaraderie"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[name]"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Event Details Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event 5 name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[Date and time]"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[registration deadline]"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[price]"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[host name]"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[Location]"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Event Description -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur malesuada, tortor non tempus porttitor, augue elit euismod leo, ut dapibus erat erat quis sapien. Praesent dignissim risus et urna facilisis, sed varius tortor commodo. Phasellus rutrum, justo eget condimentum cursus, libero elit placerat elit, ac efficitur lectus lectus eget mi. Vivamus eget ligula euismod, facilisis dolor ut, tempor arcu. Donec libero augue, tristique varius sapien id, ultrices interdum augue."
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="16dp" />
+
+        <!-- QR Code Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View QR code"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Action Buttons -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Attendees"
+            android:textColor="#FFFFFF"
+            android:background="#2196F3"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Photos"
+            android:textColor="#FFFFFF"
+            android:background="#2196F3"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.Material3.Button" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Google Maps Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="google maps view"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:padding="40dp"
+            android:background="#E8E8E8"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Edit/Delete Section -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textColor="#FFFFFF"
+            android:background="#F44336"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textColor="#FFFFFF"
+            android:background="#4CAF50"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.Material3.Button" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Navigation Section -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Host an Event"
+            android:textColor="#FFFFFF"
+            android:background="#FF9800"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dashboard"
+            android:textColor="#FFFFFF"
+            android:background="#FF9800"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="See my Events"
+            android:textColor="#FFFFFF"
+            android:background="#FF9800"
+            style="@style/Widget.Material3.Button" />
+
+    </LinearLayout>
+
+</ScrollView>
