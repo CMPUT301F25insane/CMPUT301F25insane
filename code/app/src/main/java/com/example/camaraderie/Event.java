@@ -17,11 +17,11 @@ public class Event {
     private Waitlist waitlist = new Waitlist();
     private ArrayList<User> selectedUsers = new ArrayList<>();
     private int capacity;  // always > 0
-    private final User host;
+    private final Organizer host;
 
     private final String EventId;
 
-    public Event(String eventName, String eventLocation, String registrationDeadline, String description, Date eventDate, String eventTime, int capacity, User host, String eventId) {
+    public Event(String eventName, String eventLocation, String registrationDeadline, String description, Date eventDate, String eventTime, int capacity, Organizer host, String eventId) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
@@ -103,7 +103,7 @@ public class Event {
         return EventId;
     }
 
-    public User getHost() {
+    public Organizer getHost() {
         return host;
     }
 
