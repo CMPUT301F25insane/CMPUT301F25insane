@@ -27,7 +27,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         if (convertView == null) {  // convert view is a reused view, to save resources
             // create new view using layout inflater if no recyclable view available
 
-            view = LayoutInflater.from(getContext()).inflate(R.layout.event_dashboard_item, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_main_event_dashboard_item, parent, false);
         }
         else {
             // just reuse the garbage view
