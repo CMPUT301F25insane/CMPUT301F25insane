@@ -44,12 +44,4 @@
         tools:layout_editor_absoluteX="22dp"
         tools:layout_editor_absoluteY="37dp" />
 
-    <TextView
-        android:id="@+id/eventPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="21dp"
-        tools:layout_editor_absoluteY="65dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
