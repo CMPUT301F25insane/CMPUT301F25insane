@@ -9,8 +9,9 @@ public class User {
     private String username;
     private String address;
     private final String userId;
+    private boolean admin = false;
 
-    private String bankNumber;  // REQUIRED to sign up for events, but not to create account (we probably don't need this)
+    //private String bankNumber;  // REQUIRED to sign up for events, but not to create account (we probably don't need this)
 
 
     public User(String firstName, String lastName, String phone, String email, String username, String address, String userId){
@@ -23,15 +24,10 @@ public class User {
         this.userId = userId;
     }
 
-    /***
-     * Adds the use to the waitlist to the database
-     * @param event
-     */
-    public void addToEvent(Event event){
-        Waitlist waitlist = event.getWaitlist();
-        waitlist.addUserToWaitlist(this);
+    public boolean isAdmin() {return admin;}
+    public void setAdmin(boolean this_admin) {  // we MANUALLY create admins for the app
+        admin = this_admin;
     }
-
     public void setFirstName(String name) {this.firstName = name;}
     public void setLastName(String name) {this.lastName = name;}
     public void setPhoneNumber(String number) {this.phoneNumber = number;}
@@ -47,11 +43,11 @@ public class User {
     public String getAddress() {return this.address;}
     public String getUserId() {return this.userId;}
 
-    public String getBankNumber() {
-        return bankNumber;
-    }
-
-    public void setBankNumber(String bankNumber) {
-        this.bankNumber = bankNumber;
-    }
+//    public String getBankNumber() {
+//        return bankNumber;
+//    }
+//
+//    public void setBankNumber(String bankNumber) {
+//        this.bankNumber = bankNumber;
+//    }
 }

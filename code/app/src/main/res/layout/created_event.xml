@@ -15,21 +15,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/appName"
             android:text="Camaraderie"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#000000"
             android:gravity="center"
             android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="[name]"
-            android:textSize="16sp"
-            android:textColor="#666666"
-            android:gravity="center"
-            android:layout_marginBottom="16dp" />
 
         <!-- Divider -->
         <View
@@ -42,7 +34,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Event 5 name"
+            android:id="@+id/eventName"
+            android:text="Event Name"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#000000"
@@ -51,7 +44,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="[Date and time]"
+            android:id="@+id/dateAndTime"
+            android:text="Date and Time"
             android:textSize="14sp"
             android:textColor="#666666"
             android:layout_marginBottom="4dp" />
@@ -59,7 +53,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="[registration deadline]"
+            android:id="@+id/registrationDeadline"
+            android:text="registration deadline"
             android:textSize="14sp"
             android:textColor="#666666"
             android:layout_marginBottom="8dp" />
@@ -67,15 +62,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="[price]"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:layout_marginBottom="4dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="[host name]"
+            android:id="@+id/organizerName"
+            android:text="organizer name"
             android:textSize="14sp"
             android:textColor="#666666"
             android:layout_marginBottom="8dp" />
@@ -83,7 +71,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="[Location]"
+            android:id="@+id/location"
+            android:text="Location"
             android:textSize="14sp"
             android:textColor="#666666"
             android:layout_marginBottom="16dp" />
@@ -92,7 +81,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur malesuada, tortor non tempus porttitor, augue elit euismod leo, ut dapibus erat erat quis sapien. Praesent dignissim risus et urna facilisis, sed varius tortor commodo. Phasellus rutrum, justo eget condimentum cursus, libero elit placerat elit, ac efficitur lectus lectus eget mi. Vivamus eget ligula euismod, facilisis dolor ut, tempor arcu. Donec libero augue, tristique varius sapien id, ultrices interdum augue."
+            android:text="description"
             android:textSize="14sp"
             android:textColor="#333333"
             android:lineSpacingExtra="4dp"
