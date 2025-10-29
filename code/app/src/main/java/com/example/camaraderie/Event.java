@@ -13,7 +13,7 @@ public class Event {
     private String description;
     private Date eventDate;
     private String eventTime;  // this will probably become a better data type soon
-    private float price = 0.0f;
+    //private float price = 0.0f;
     private Waitlist waitlist = new Waitlist();
     private ArrayList<User> selectedUsers = new ArrayList<>();
     private int capacity;  // always > 0
@@ -35,13 +35,13 @@ public class Event {
         this.waitlist.setEvent(this);  // bind the waitlist to this event
     }
 
-    public float getPrice() {
-        return price;
-    }
+//    //public float getPrice() {
+//        return price;
+//    }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
+//    //public void setPrice(float price) {
+//        this.price = price;
+//    }
 
     public int getCapacity() {
         return capacity;
