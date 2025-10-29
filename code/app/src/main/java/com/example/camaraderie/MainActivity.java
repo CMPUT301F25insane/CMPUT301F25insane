@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     builder.setMessage("Please enter Your information to create a profile")
                             .setPositiveButton("Done", (dialog, id1)->{
 
-                            })
+                            });
                     userExists = false;
                 }
             }

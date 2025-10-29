@@ -8,10 +8,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Header Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,14 +22,12 @@
             android:gravity="center"
             android:layout_marginBottom="8dp" />
 
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0"
             android:layout_marginBottom="16dp" />
 
-        <!-- Event Details Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,37 +74,36 @@
             android:textColor="#666666"
             android:layout_marginBottom="16dp" />
 
-        <!-- Event Description -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/description"
             android:text="description"
             android:textSize="14sp"
             android:textColor="#333333"
             android:lineSpacingExtra="4dp"
             android:layout_marginBottom="16dp" />
 
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0"
             android:layout_marginBottom="16dp" />
 
-        <!-- QR Code Section -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View QR code"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:layout_marginBottom="8dp" />
-
-        <!-- Action Buttons -->
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/qrCodeButton"
+            android:text="QR code"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#ffff"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewAttendeesButton"
             android:text="View Attendees"
             android:textColor="#FFFFFF"
             android:background="#2196F3"
@@ -117,20 +113,19 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Photos"
+            android:id="@+id/viewPosterButton"
+            android:text="eventPoster"
             android:textColor="#FFFFFF"
             android:background="#2196F3"
             android:layout_marginBottom="16dp"
             style="@style/Widget.Material3.Button" />
 
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0"
             android:layout_marginBottom="16dp" />
 
-        <!-- Google Maps Section -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -143,65 +138,27 @@
             android:background="#E8E8E8"
             android:layout_marginBottom="16dp" />
 
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0"
             android:layout_marginBottom="16dp" />
 
-        <!-- Edit/Delete Section -->
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete"
+            android:id="@+id/joinButton"
+            android:text="Join"
             android:textColor="#FFFFFF"
             android:background="#F44336"
             android:layout_marginBottom="8dp"
             style="@style/Widget.Material3.Button" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edit"
-            android:textColor="#FFFFFF"
-            android:background="#4CAF50"
-            android:layout_marginBottom="16dp"
-            style="@style/Widget.Material3.Button" />
-
-        <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0"
             android:layout_marginBottom="16dp" />
-
-        <!-- Navigation Section -->
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Host an Event"
-            android:textColor="#FFFFFF"
-            android:background="#FF9800"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.Material3.Button" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dashboard"
-            android:textColor="#FFFFFF"
-            android:background="#FF9800"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.Material3.Button" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="See my Events"
-            android:textColor="#FFFFFF"
-            android:background="#FF9800"
-            style="@style/Widget.Material3.Button" />
 
     </LinearLayout>
 
