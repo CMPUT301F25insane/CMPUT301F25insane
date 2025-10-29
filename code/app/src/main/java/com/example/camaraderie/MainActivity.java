@@ -89,8 +89,17 @@ public class MainActivity extends AppCompatActivity {
                                 String email2 = Email.getText().toString();
                                 String address2 = address.getText().toString();
                                 String phoneNum2 = phoneNum.getText().toString();
-                                User user = new User(name1, email2, address2, phoneNum2);
-                            })
+                                User user = new User(name1, email2, address2, phoneNum2, Settings.Secure.ANDROID_ID);
+
+                                db.collection("users")
+                                        .add(user)
+                                        .addOnSuccessListener(documentReference -> {
+                                            String firebaseID = documentReference.getId();
+                                            Log.d("Firestore", "ID created!");
+                                        }).addOnFailureListener(e ->{
+                                            Log.d("Firestore", "ID failed!");
+                                        });
+                            });
                     userExists = false;
                 }
             }
