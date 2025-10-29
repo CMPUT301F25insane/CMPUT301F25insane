@@ -23,6 +23,14 @@ public class User {
         this.userId = userId;
     }
 
+    /***
+     * Adds the use to the waitlist to the database
+     * @param event
+     */
+    public void addToEvent(Event event){
+        Waitlist waitlist = event.getWaitlist();
+        waitlist.addUserToWaitlist(this);
+    }
 
     public void setFirstName(String name) {this.firstName = name;}
     public void setLastName(String name) {this.lastName = name;}
