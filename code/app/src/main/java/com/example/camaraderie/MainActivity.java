@@ -49,19 +49,27 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // add dummy data
+        clearAndAddDummyEvents();
+
+        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(this, localEvents);
+        binding.eventsList.setAdapter(dashboardEventArrayAdapter);
+
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
         usersRef = db.collection("Users");
 
         // get database events (this is fine, we don't have that many entries)
         eventsRef.get().addOnSuccessListener(querySnapshot -> {
+            localEvents.clear();
             for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                 Event event = doc.toObject(Event.class);
                 localEvents.add(event);
             }
+
+            dashboardEventArrayAdapter.notifyDataSetChanged();
         });
 
-        clearAndAddDummyEvents();
 
     }
 
