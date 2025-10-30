@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
@@ -24,6 +25,20 @@ public class CreatedEventFragment extends Fragment {
         binding = CreatedEventBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        /**
+         * I need the current User's UID to let them join events.
+         */
+
+
+        /**
+         * I need the Event object to fill all the text views, show the attendees, and show the poster
+         */
     }
 
     @Override
