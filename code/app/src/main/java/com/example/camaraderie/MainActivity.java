@@ -1,7 +1,5 @@
 package com.example.camaraderie;
 
-import android.app.Dialog;
-import android.content.Intent;
 import static com.example.camaraderie.Util.*;
 
 import android.os.Bundle;
@@ -9,7 +7,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
@@ -18,22 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
-import com.example.camaraderie.databinding.ActivityAuthBinding;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 import com.example.camaraderie.databinding.ActivityMainTestBinding;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,22 +33,22 @@ public class MainActivity extends AppCompatActivity {
     boolean userExists = false;
     static private CollectionReference usersRef;
     private ArrayList<Event> localEvents = new ArrayList<>();
-    private ActivityMainTestBinding binding;
-    private DashboardEventArrayAdapter dashboardEventArrayAdapter;
+    private ActivityMainBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         //setContentView(R.layout.activity_main);
-        binding = ActivityMainTestBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        setContentView(R.layout.activity_main_test);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_test), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+//        setContentView(R.layout.fragment_main_test);
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_test), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
 
         String id = Settings.Secure.ANDROID_ID;
 
@@ -85,7 +75,20 @@ public class MainActivity extends AppCompatActivity {
 
                     builder.setMessage("Please enter Your information to create a profile")
                             .setPositiveButton("Done", (dialog, id1)->{
+                                String name1 = name.getText().toString();
+                                String email2 = Email.getText().toString();
+                                String address2 = address.getText().toString();
+                                String phoneNum2 = phoneNum.getText().toString();
+                                User user = new User(name1, email2, address2, phoneNum2, Settings.Secure.ANDROID_ID);
 
+                                db.collection("users")
+                                        .add(user)
+                                        .addOnSuccessListener(documentReference -> {
+                                            String firebaseID = documentReference.getId();
+                                            Log.d("Firestore", "ID created!");
+                                        }).addOnFailureListener(e ->{
+                                            Log.d("Firestore", "ID failed!");
+                                        });
                             });
                     userExists = false;
                 }
@@ -97,9 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
         // add dummy data
         clearAndAddDummyEvents();
-
-        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(this, localEvents);
-        binding.eventsList.setAdapter(dashboardEventArrayAdapter);
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
     public void displayEvents() {
         //
     }
+
+    public ArrayList<Event> getLocalEvents() {return localEvents;}
 
     @Override
     protected void onDestroy() {
