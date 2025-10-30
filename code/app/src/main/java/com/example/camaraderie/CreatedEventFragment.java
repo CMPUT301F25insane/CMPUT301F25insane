@@ -17,6 +17,20 @@ import com.example.camaraderie.databinding.CreatedEventBinding;
 public class CreatedEventFragment extends Fragment {
 
     private CreatedEventBinding binding;
+    private Event event;
+    private User user;
+    private static final String ARG_EVENT = "event";
+    private static final String ARG_USER = "user";
+
+    // Factory method to create a new instance with Event
+    public static CreatedEventFragment newInstance(Event event, User user) {
+        CreatedEventFragment fragment = new CreatedEventFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_EVENT, event);
+        args.putSerializable(ARG_USER, user);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView (LayoutInflater inflater,
@@ -24,6 +38,7 @@ public class CreatedEventFragment extends Fragment {
                               Bundle savedInstanceState) {
         binding = CreatedEventBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
         return view;
     }
 
@@ -31,14 +46,27 @@ public class CreatedEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /**
-         * I need the current User's UID to let them join events.
-         */
+        event = (Event) getArguments().getSerializable(ARG_EVENT);
+        user = (User) getArguments().getSerializable(ARG_USER);
 
+        fillTextViews(event);
 
-        /**
-         * I need the Event object to fill all the text views, show the attendees, and show the poster
-         */
+        binding.joinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                event.getWaitlist().addUserToWaitlist(user);
+            }
+        });
+    }
+
+    private void fillTextViews(Event event) {
+        binding.eventName.setText(event.getEventName());
+        binding.description.setText(event.getDescription());
+        binding.registrationDeadline.setText(event.getRegistrationDeadline());
+        binding.appName.setText("Comaraderie");
+        binding.dateAndTime.setText(event.getEventTime());
+        binding.location.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
+        binding.organizerName.setText(event.getHost().getFirstName());
     }
 
     @Override

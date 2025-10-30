@@ -1,11 +1,14 @@
 package com.example.camaraderie;
 
+import android.os.Parcel;
+
+import java.io.Serializable;
 import java.sql.Array;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Event {
+public class Event implements Serializable {
 
     private String eventName;
     private String eventLocation;
@@ -21,7 +24,7 @@ public class Event {
 
     private final String EventId;
 
-    public Event(String eventName, String eventLocation, String registrationDeadline, String description, Date eventDate, String eventTime, int capacity, Organizer host, String eventId) {
+    public Event (String eventName, String eventLocation, String registrationDeadline, String description, Date eventDate, String eventTime, int capacity, Organizer host, String eventId) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
