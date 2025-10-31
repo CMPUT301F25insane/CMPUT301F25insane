@@ -66,37 +66,40 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Firestore", "Found Document");
                         userExists = true;
                     }
-                    Log.d("Firestore", "No Documents");
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    LayoutInflater inflater = getLayoutInflater();
-                    View dialogView = inflater.inflate(R.layout.user_info_dialog, null);
-                    EditText name = dialogView.findViewById(R.id.edit_full_name_text);
-                    EditText Email = dialogView.findViewById(R.id.edit_email_text);
-                    EditText address = dialogView.findViewById(R.id.edit_text_address_text);
-                    EditText phoneNum = dialogView.findViewById(R.id.edit_phone_number_text);
-
-                    builder.setMessage("Please enter Your information to create a profile")
-                            .setView(dialogView)
-                            .setPositiveButton("Done", (dialog, id1) -> {
-                                String name1 = name.getText().toString();
-                                String email2 = Email.getText().toString();
-                                String address2 = address.getText().toString();
-                                String phoneNum2 = phoneNum.getText().toString();
-                                String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
-                                Map<String, Object> user = new HashMap<>();
-                                user.put("Full Name", name1);
-                                user.put("Email", email2);
-                                user.put("Address", address2);
-                                user.put("Phone Number", phoneNum2);
-                                user.put("UserID", id2);
-
-                                Log.d("Firestore", "Got Here");
-                                usersRef.document(id2).set(user);
-                            }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
-                    userExists = false;
                 }
-            } else {
+                else{
+                        Log.d("Firestore", "No Documents");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        LayoutInflater inflater = getLayoutInflater();
+                        View dialogView = inflater.inflate(R.layout.user_info_dialog, null);
+                        EditText name = dialogView.findViewById(R.id.edit_full_name_text);
+                        EditText Email = dialogView.findViewById(R.id.edit_email_text);
+                        EditText address = dialogView.findViewById(R.id.edit_text_address_text);
+                        EditText phoneNum = dialogView.findViewById(R.id.edit_phone_number_text);
+
+                        builder.setMessage("Please enter Your information to create a profile")
+                                .setView(dialogView)
+                                .setPositiveButton("Done", (dialog, id1) -> {
+                                    String name1 = name.getText().toString();
+                                    String email2 = Email.getText().toString();
+                                    String address2 = address.getText().toString();
+                                    String phoneNum2 = phoneNum.getText().toString();
+                                    String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+                                    Map<String, Object> user = new HashMap<>();
+                                    user.put("Full Name", name1);
+                                    user.put("Email", email2);
+                                    user.put("Address", address2);
+                                    user.put("Phone Number", phoneNum2);
+                                    user.put("UserID", id2);
+
+                                    Log.d("Firestore", "Got Here");
+                                    usersRef.document(id2).set(user);
+                                }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
+                        userExists = false;
+                }
+                }
+            else {
                 Log.d("Firestore", "Did not get documents");
             }
         });
