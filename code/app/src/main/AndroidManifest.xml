@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Camaraderie">
         <activity
+            android:name=".UpdateUser"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateUserActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Camaraderie" />
+        <activity
+            android:name=".NavigationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/Theme.Camaraderie.NoActionBar" />
+        <activity
             android:name=".EventActivity"
             android:exported="false" />
         <activity
