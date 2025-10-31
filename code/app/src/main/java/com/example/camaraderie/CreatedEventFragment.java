@@ -45,6 +45,7 @@ public class CreatedEventFragment extends Fragment {
     private DocumentReference hostDocRef;
     private DocumentReference waitlistDocRef;
     private String hostName;
+    private String userID;
 
     // Factory method to create a new instance with Event
     public static CreatedEventFragment newInstance(String eventID, String userID) {
@@ -83,12 +84,17 @@ public class CreatedEventFragment extends Fragment {
         event = eventsRef.document(eventString);
 
         fillTextViews(event);
+        getWaitlistDocRef(event);
+        getUserID(user);
 
         binding.joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /**
                  * adding the user to the waitlist document
+                 * see if userID is in waitlist
+                 * if its not, add it
+                 * if it is, delete it
                  */
             }
         });
@@ -128,6 +134,25 @@ public class CreatedEventFragment extends Fragment {
         binding.dateAndTime.setText(dateAndTime);
         binding.location.setText(location); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
         binding.organizerName.setText(hostName);
+    }
+
+    public void getWaitlistDocRef(DocumentReference event) {
+
+        event.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                waitlistDocRef = documentSnapshot.getDocumentReference("waitlist");
+            }
+        });
+    }
+
+    public void getUserID(DocumentReference user){
+        user.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                userID = documentSnapshot.getId();
+            }
+        });
     }
 
     @Override
