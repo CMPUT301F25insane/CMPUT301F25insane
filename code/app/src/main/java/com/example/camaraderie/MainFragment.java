@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.camaraderie.databinding.FragmentMainTestBinding;
 
@@ -17,6 +18,7 @@ public class MainFragment extends Fragment {
 
     private FragmentMainTestBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
+    private EventViewModel eventViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,9 +35,17 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //ArrayList<Event> localEvents = binding.getRoot().getLocalEvents();
 
-        //dashboardEventArrayAdapter = new DashboardEventArrayAdapter(this, localEvents);
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+
+        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
         binding.eventsList.setAdapter(dashboardEventArrayAdapter);
+
+        // Observe LiveData from Activity FUCK AHHHHHHHHHH
+        eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
+            dashboardEventArrayAdapter.clear();
+            dashboardEventArrayAdapter.addAll(events);
+            dashboardEventArrayAdapter.notifyDataSetChanged();
+        });
     }
 }
