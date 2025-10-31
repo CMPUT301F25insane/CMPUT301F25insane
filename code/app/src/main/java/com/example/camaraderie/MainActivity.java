@@ -23,6 +23,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
         usersRef.whereEqualTo("UserID", id).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -103,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Firestore", "Did not get documents");
             }
         });
+
+
 
         // add dummy data
         //clearAndAddDummyEvents();

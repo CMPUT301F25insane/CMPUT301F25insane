@@ -20,10 +20,8 @@ public class Util {
 
             Organizer org = new Organizer(
                     "firstname" + i,
-                    "lastname" + i,
                     "phoneNumber" + i,
                     "email" + i + "@gmail.com",
-                    "username" + i,
                     "address" + i,
                     "usrId" + i
             );
