@@ -27,6 +27,11 @@ public class Util {
                     "address" + i,
                     "usrId" + i
             );
+
+
+            usersRef.add(org);
+
+
             Event event = new Event(
                     "event" + i,
                     "location" + i,
@@ -35,11 +40,10 @@ public class Util {
                     new Date(),
                     "time" + i,
                     i,
-                    org,
+                    usersRef.document("usrId" + i),
                     "id" + i
             );
 
-            usersRef.add(org);
             eventsRef.add(event);
 
             System.out.println("added user and event " + i);
