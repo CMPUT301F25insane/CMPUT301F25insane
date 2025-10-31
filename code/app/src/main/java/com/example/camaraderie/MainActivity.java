@@ -16,6 +16,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
@@ -66,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         Log.d("Firestore", "Found Document");
                         userExists = true;
+
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                        NavController navController = navHostFragment.getNavController();
+                        navController.navigate(R.id.fragment_main);
                     }
                 }
                 else{
@@ -96,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     Log.d("Firestore", "Got Here");
                                     usersRef.document(id2).set(user);
+
                                 }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
                         userExists = false;
                 }
@@ -125,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
             eventViewModel.setLocalEvents(events);
 
         });
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+        navController.navigate(R.id.fragment_main);
 
 
     }

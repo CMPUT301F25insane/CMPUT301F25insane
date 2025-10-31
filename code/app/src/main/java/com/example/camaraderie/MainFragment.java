@@ -10,26 +10,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.camaraderie.databinding.FragmentMainBinding;
 import com.example.camaraderie.databinding.FragmentMainTestBinding;
 
 import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
 
-    private FragmentMainTestBinding binding;
+    private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
     private EventViewModel eventViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentMainTestBinding.inflate(getLayoutInflater());
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+
+        binding = FragmentMainBinding.inflate(getLayoutInflater());
+//        return super.onCreateView(inflater, container, savedInstanceState);
+
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override
