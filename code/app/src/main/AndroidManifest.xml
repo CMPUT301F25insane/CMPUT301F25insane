@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Camaraderie">
         <activity
+<<<<<<< HEAD
             android:name=".UpdateUser"
             android:exported="false" />
         <activity
@@ -27,6 +31,8 @@
             android:name=".EventActivity"
             android:exported="false" />
         <activity
+=======
+>>>>>>> 60ef7b7e3bb59124551d0dc805f7533265ba6b3b
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

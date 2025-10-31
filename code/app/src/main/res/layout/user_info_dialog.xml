@@ -1,46 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <EditText
-        android:id="@+id/name_edit_text"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_full_name_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="65dp" />
-
+        android:text="Full Name" />
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_email_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Email"
-        android:inputType="textEmailAddress"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="143dp" />
-
+        android:inputType="text"
+        android:text="Email" />
     <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_text_address_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="phone"
-        android:text="Phone Number"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="228dp" />
-
+        android:inputType="text"
+        android:text="Address" />
     <EditText
-        android:id="@+id/editTextTextPostalAddress"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_phone_number_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:text="Address"
-        android:inputType="textPostalAddress"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="321dp" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:inputType="text"
+        android:text="Phone Number" />
+</LinearLayout>

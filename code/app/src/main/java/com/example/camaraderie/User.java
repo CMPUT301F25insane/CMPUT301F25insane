@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,7 +37,7 @@ public class User {
     public void setAddress(String address1) {this.address = address1;}
 
     public String getFirstName() {return this.firstName;}
-    public String getLastName() {return this.lastName;}
+    //public String getLastName() {return this.lastName;}
     public String getPhoneNumber() {return this.phoneNumber;}
     public String getEmail() {return this.email;}
     public String getAddress() {return this.address;}
