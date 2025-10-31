@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
@@ -33,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
 
-    //static private CollectionReference eventsRef;
+    static private CollectionReference eventsRef;
     boolean userExists = false;
-    private CollectionReference usersRef;
-    private ArrayList<Event> localEvents = new ArrayList<>();
+    static private CollectionReference usersRef;
+    private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
 
 
@@ -44,16 +45,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.fragment_main_test);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        //setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
-        setContentView(R.layout.fragment_main_test);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_test), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        FirebaseApp.initializeApp(this);
+
+        eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
+
+
 
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
@@ -107,37 +106,29 @@ public class MainActivity extends AppCompatActivity {
         // add dummy data
         //clearAndAddDummyEvents();
 
-        /*
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
         usersRef = db.collection("Users");
 
         // get database events (this is fine, we don't have that many entries)
         eventsRef.get().addOnSuccessListener(querySnapshot -> {
-            localEvents.clear();
+            ArrayList<Event> events = new ArrayList<>();
             for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                 Event event = doc.toObject(Event.class);
-                localEvents.add(event);
+                events.add(event);
             }
 
-            //dashboardEventArrayAdapter.notifyDataSetChanged();
+            eventViewModel.setLocalEvents(events);
+
         });
 
 
     }
 
-    public void displayEvents() {
-        //
-    }
-
-    public ArrayList<Event> getLocalEvents() {return localEvents;}
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         binding = null;
-    }
-    */
     }
 
 }
