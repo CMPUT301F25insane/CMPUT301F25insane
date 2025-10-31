@@ -15,14 +15,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.camaraderie.databinding.ActivityMainBinding;
-import com.example.camaraderie.databinding.ActivityMainTestBinding;
+//import com.example.camaraderie.databinding.ActivityMainTestBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     static private CollectionReference eventsRef;
     boolean userExists = false;
     static private CollectionReference usersRef;
-    private ArrayList<Event> localEvents = new ArrayList<>();
+    private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
 
 
@@ -41,14 +43,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         //setContentView(R.layout.activity_main);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
-//        setContentView(R.layout.fragment_main_test);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_test), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
+
+        eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
 
         String id = Settings.Secure.ANDROID_ID;
 
@@ -107,23 +106,18 @@ public class MainActivity extends AppCompatActivity {
 
         // get database events (this is fine, we don't have that many entries)
         eventsRef.get().addOnSuccessListener(querySnapshot -> {
-            localEvents.clear();
+            ArrayList<Event> events = new ArrayList<>();
             for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                 Event event = doc.toObject(Event.class);
-                localEvents.add(event);
+                events.add(event);
             }
 
-            dashboardEventArrayAdapter.notifyDataSetChanged();
+            eventViewModel.setLocalEvents(events);
+
         });
 
 
     }
-
-    public void displayEvents() {
-        //
-    }
-
-    public ArrayList<Event> getLocalEvents() {return localEvents;}
 
     @Override
     protected void onDestroy() {

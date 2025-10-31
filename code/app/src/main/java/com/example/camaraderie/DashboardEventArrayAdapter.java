@@ -43,7 +43,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         eventName.setText(event.getEventName());
         //eventPrice.setText(String.valueOf(event.getPrice()));
         eventDeadline.setText(event.getRegistrationDeadline());
-        hostName.setText(event.getHost().getUsername());
+        //hostName.setText(event.getHost().getUsername());
 
         Button joinButton = view.findViewById(R.id.joinButton);
         Button descButton = view.findViewById(R.id.seeDescButton);

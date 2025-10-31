@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private String firstName;
+    private String fullName;
     private String phoneNumber;
     private String email;
     private String address;
@@ -14,9 +14,9 @@ public class User implements Serializable {
 
     //private String bankNumber;  // REQUIRED to sign up for events, but not to create account (we probably don't need this)
 
-
-    public User(String firstName, String phone, String email, String address, String userId){
-        this.firstName = firstName;
+    public User(){}
+    public User(String fullName, String phone, String email, String address, String userId){
+        this.fullName = fullName;
         this.phoneNumber = phone;
         this.email = email;
         this.address = address;
@@ -28,13 +28,13 @@ public class User implements Serializable {
     public void setAdmin(boolean this_admin) {  // we MANUALLY create admins for the app
         admin = this_admin;
     }
-    public void setFirstName(String name) {this.firstName = name;}
+    public void setfullName(String name) {this.fullName = name;}
     public void setPhoneNumber(String number) {this.phoneNumber = number;}
     public void setEmail(String email1) {this.email = email1;}
     public void setAddress(String address1) {this.address = address1;}
 
-    public String getFirstName() {return this.firstName;}
-    public String getLastName() {return this.lastName;}
+    public String getfullName() {return this.fullName;}
+    //public String getLastName() {return this.lastName;}
     public String getPhoneNumber() {return this.phoneNumber;}
     public String getEmail() {return this.email;}
     public String getAddress() {return this.address;}

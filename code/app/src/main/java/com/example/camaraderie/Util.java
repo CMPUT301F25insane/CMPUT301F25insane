@@ -20,13 +20,16 @@ public class Util {
 
             Organizer org = new Organizer(
                     "firstname" + i,
-                    "lastname" + i,
                     "phoneNumber" + i,
                     "email" + i + "@gmail.com",
-                    "username" + i,
                     "address" + i,
                     "usrId" + i
             );
+
+
+            usersRef.add(org);
+
+
             Event event = new Event(
                     "event" + i,
                     "location" + i,
@@ -35,11 +38,10 @@ public class Util {
                     new Date(),
                     "time" + i,
                     i,
-                    org,
+                    usersRef.document("usrId" + i),
                     "id" + i
             );
 
-            usersRef.add(org);
             eventsRef.add(event);
 
             System.out.println("added user and event " + i);

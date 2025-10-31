@@ -1,14 +1,14 @@
 package com.example.camaraderie;
 
-import android.os.Parcel;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
 import java.sql.Array;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Event implements Serializable {
+public class Event {
 
     private String eventName;
     private String eventLocation;
@@ -20,11 +20,13 @@ public class Event implements Serializable {
     private Waitlist waitlist = new Waitlist();
     private ArrayList<User> selectedUsers = new ArrayList<>();
     private int capacity;  // always > 0
-    private final Organizer host;
+    private DocumentReference hostDocRef;
 
-    private final String EventId;
+    private String EventId;
 
-    public Event (String eventName, String eventLocation, String registrationDeadline, String description, Date eventDate, String eventTime, int capacity, Organizer host, String eventId) {
+    public Event() {}  // required for FIREBASE
+
+    public Event(String eventName, String eventLocation, String registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, String eventId) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
@@ -32,10 +34,10 @@ public class Event implements Serializable {
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.capacity = capacity;
-        this.host = host;
+        this.hostDocRef = host;
         this.EventId = eventId;
 
-        this.waitlist.setEvent(this);  // bind the waitlist to this event
+        this.waitlist.setEventId(this.EventId);  // bind the waitlist to this event
     }
 
 //    //public float getPrice() {
@@ -106,8 +108,8 @@ public class Event implements Serializable {
         return EventId;
     }
 
-    public Organizer getHost() {
-        return host;
+    public DocumentReference getHost() {
+        return hostDocRef;
     }
 
     public Waitlist getWaitlist() {
