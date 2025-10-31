@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 public class User {
 

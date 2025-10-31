@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
