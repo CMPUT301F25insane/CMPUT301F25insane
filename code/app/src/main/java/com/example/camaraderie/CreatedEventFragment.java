@@ -25,8 +25,8 @@ public class CreatedEventFragment extends Fragment {
     private FirebaseFirestore db;
 
     private CreatedEventBinding binding;
-    private Event event;
-    private User user;
+    private DocumentReference event;
+    private DocumentReference user;
 
     private CollectionReference eventsRef;
     private CollectionReference usersRef;
@@ -65,6 +65,11 @@ public class CreatedEventFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
         usersRef = db.collection("Users");
+
+        user = usersRef.document(userString);
+        event = eventsRef.document(eventString);
+
+
 
         fillTextViews(event);
 
