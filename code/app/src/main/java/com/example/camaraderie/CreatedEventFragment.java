@@ -12,22 +12,33 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import com.example.camaraderie.databinding.CreatedEventBinding;
 
 public class CreatedEventFragment extends Fragment {
 
+    private FirebaseFirestore db;
+
     private CreatedEventBinding binding;
     private Event event;
     private User user;
+
+    private CollectionReference eventsRef;
+    private CollectionReference usersRef;
     private static final String ARG_EVENT = "event";
     private static final String ARG_USER = "user";
 
     // Factory method to create a new instance with Event
-    public static CreatedEventFragment newInstance(Event event, User user) {
+    public static CreatedEventFragment newInstance(String eventID, String userID) {
         CreatedEventFragment fragment = new CreatedEventFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_EVENT, event);
-        args.putSerializable(ARG_USER, user);
+        args.putString(ARG_EVENT, eventID);
+        args.putString(ARG_USER, userID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,8 +57,14 @@ public class CreatedEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        event = (Event) getArguments().getSerializable(ARG_EVENT);
-        user = (User) getArguments().getSerializable(ARG_USER);
+        String eventString;
+        String userString;
+        eventString = (String) getArguments().getSerializable(ARG_EVENT);
+        userString =(String)  getArguments().getSerializable(ARG_USER);
+
+        db = FirebaseFirestore.getInstance();
+        eventsRef = db.collection("Events");
+        usersRef = db.collection("Users");
 
         fillTextViews(event);
 
