@@ -41,7 +41,7 @@ public class MainFragment extends Fragment {
         dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
         binding.eventsList.setAdapter(dashboardEventArrayAdapter);
 
-        // Observe LiveData from Activity
+        // Observe LiveData from Activity FUCK AHHHHHHHHHH
         eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
             dashboardEventArrayAdapter.clear();
             dashboardEventArrayAdapter.addAll(events);
