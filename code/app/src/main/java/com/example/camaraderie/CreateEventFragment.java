@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
 
@@ -33,10 +34,20 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.createEventBackButton.setOnClickListener(new View.OnClickListener() {
+        binding.createEventPictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO
+            }
+        });
+
+        binding.createEventBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                NavHostFragment.findNavController(CreateEventFragment.this)
+                        .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
+
             }
         });
 

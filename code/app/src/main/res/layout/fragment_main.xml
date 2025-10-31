@@ -32,7 +32,7 @@
         tools:layout_editor_absoluteY="610dp">
 
         <ImageButton
-            android:id="@+id/HostEvent"
+            android:id="@+id/hostEvent"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

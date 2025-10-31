@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHostController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.databinding.FragmentMainBinding;
 import com.example.camaraderie.databinding.FragmentMainTestBinding;
@@ -52,6 +55,15 @@ public class MainFragment extends Fragment {
             dashboardEventArrayAdapter.clear();
             dashboardEventArrayAdapter.addAll(events);
             dashboardEventArrayAdapter.notifyDataSetChanged();
+        });
+
+
+        binding.hostEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(MainFragment.this)
+                        .navigate(R.id.action_fragment_main_to_fragment_create_event_testing);
+            }
         });
     }
 }
