@@ -29,4 +29,5 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build and run unit tests
+        working-directory: code
         run: ./gradlew clean testDebugUnitTest
