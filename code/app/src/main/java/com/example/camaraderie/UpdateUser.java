@@ -17,6 +17,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/*
+ *Updates the current information of the user
+ *  */
 public class UpdateUser extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference usersRef;
