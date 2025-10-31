@@ -3,5 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@layout/activity_main">
+    app:startDestination="@id/fragment_main">
+
+    <fragment
+        android:id="@+id/fragment_main"
+        android:name="com.example.camaraderie.MainFragment"
+        android:label="Main Fragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_fragment_main_to_fragment_create_event_testing"
+            app:destination="@id/fragment_create_event_testing" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_create_event_testing"
+        android:name="com.example.camaraderie.CreateEventFragment"
+        android:label="Create Event Fragment"
+        tools:layout="@layout/fragment_create_event_testing">
+        <action
+            android:id="@+id/action_fragment_create_event_testing_to_fragment_main"
+            app:destination="@id/fragment_main" />
+    </fragment>
+
 </navigation>

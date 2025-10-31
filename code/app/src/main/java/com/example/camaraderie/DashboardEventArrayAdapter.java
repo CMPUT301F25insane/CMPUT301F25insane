@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -42,7 +42,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
         eventName.setText(event.getEventName());
         //eventPrice.setText(String.valueOf(event.getPrice()));
-        eventDeadline.setText(event.getRegistrationDeadline());
+        eventDeadline.setText(event.getRegistrationDeadline().toString());
         //hostName.setText(event.getHost().getUsername());
 
         Button joinButton = view.findViewById(R.id.joinButton);
