@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,7 +56,14 @@ public class CreateEventFragment extends Fragment {
         binding.createEventConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
+                EditText eventName = binding.createEventName;
+                EditText eventDate = binding.createEventDate;
+                EditText eventDeadline = binding.createEventDeadline;
+                EditText eventLocation = binding.createEventLocation;
+                EditText eventDescription = binding.createEventDescription;
+                EditText eventCapacity = binding.createEventCapacity;
+
+                createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity);
             }
         });
     }
@@ -63,5 +72,21 @@ public class CreateEventFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         binding = null;
+    }
+
+    private void createEvent(EditText eventName,
+                             EditText eventDate,
+                             EditText eventDeadline,
+                             EditText eventLocation,
+                             EditText eventDescription,
+                             EditText eventCapacity) {
+        // validate user input and store in database.
+        // DO NOT LEAK THE DB BY DOCUMENT INJECTION BY ACCIDENT
+
+
+
+
+        // navigate back ON SUCCESS
+        NavHostFragment.findNavController(CreateEventFragment.this).navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
     }
 }
