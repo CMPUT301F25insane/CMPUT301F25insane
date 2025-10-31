@@ -21,9 +21,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Cache Gradle
-        uses: gradle/actions/setup-gradle@v3
-        continue-on-error: true
+      # - name: Cache Gradle
+      #   uses: gradle/actions/setup-gradle@v3
+      #   continue-on-error: true
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
