@@ -57,6 +57,8 @@ public class MainFragment extends Fragment {
             dashboardEventArrayAdapter.notifyDataSetChanged();
         });
 
+        // when USER views EVENT, compare user id to host id, and set the corresponding fragment accordingly
+
 
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
