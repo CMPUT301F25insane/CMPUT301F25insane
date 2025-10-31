@@ -26,6 +26,7 @@ jobs:
       #   continue-on-error: true
 
       - name: Grant execute permission for gradlew
+        working-directory: code
         run: chmod +x gradlew
 
       - name: Build and run unit tests
