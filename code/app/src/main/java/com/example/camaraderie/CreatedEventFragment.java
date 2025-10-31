@@ -1,6 +1,7 @@
 package com.example.camaraderie;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import com.example.camaraderie.databinding.CreatedEventBinding;
@@ -32,6 +36,15 @@ public class CreatedEventFragment extends Fragment {
     private CollectionReference usersRef;
     private static final String ARG_EVENT = "event";
     private static final String ARG_USER = "user";
+
+    private String eventName;
+    private String description;
+    private String deadline;
+    private String dateAndTime;
+    private String location;
+    private DocumentReference hostDocRef;
+    private DocumentReference waitlistDocRef;
+    private String hostName;
 
     // Factory method to create a new instance with Event
     public static CreatedEventFragment newInstance(String eventID, String userID) {
@@ -69,26 +82,52 @@ public class CreatedEventFragment extends Fragment {
         user = usersRef.document(userString);
         event = eventsRef.document(eventString);
 
-
-
         fillTextViews(event);
 
         binding.joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                event.getWaitlist().addUserToWaitlist(user);
+                /**
+                 * adding the user to the waitlist document
+                 */
             }
         });
     }
 
-    private void fillTextViews(Event event) {
-        binding.eventName.setText(event.getEventName());
-        binding.description.setText(event.getDescription());
-        binding.registrationDeadline.setText(event.getRegistrationDeadline());
+    // NEEDS TO BE CHANGED WHEN THE EVENT DATABASE OBJECTS ARE CREATED
+    private void fillTextViews(DocumentReference event) {
+
+        event.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    eventName = documentSnapshot.getString("eventName");
+                    description = documentSnapshot.getString("description");
+                    deadline = documentSnapshot.getString("registrationDeadline");
+                    dateAndTime = documentSnapshot.getString("dateAndTime");
+                    location = documentSnapshot.getString("eventLocation");
+                    hostDocRef = documentSnapshot.getDocumentReference("host");
+                    waitlistDocRef = documentSnapshot.getDocumentReference("waitlist");
+                }
+            }
+        });
+
+        hostDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    hostName = documentSnapshot.getString("name");
+                }
+            }
+        });
+
+        binding.eventName.setText(eventName);
+        binding.description.setText(description);
+        binding.registrationDeadline.setText(deadline);
         binding.appName.setText("Comaraderie");
-        binding.dateAndTime.setText(event.getEventTime());
-        binding.location.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
-        binding.organizerName.setText(event.getHost().getFirstName());
+        binding.dateAndTime.setText(dateAndTime);
+        binding.location.setText(location); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
+        binding.organizerName.setText(hostName);
     }
 
     @Override
