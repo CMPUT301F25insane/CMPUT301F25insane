@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -27,7 +27,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         if (convertView == null) {  // convert view is a reused view, to save resources
             // create new view using layout inflater if no recyclable view available
 
-            view = LayoutInflater.from(getContext()).inflate(R.layout.event_dashboard_item, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_main_event_dashboard_item, parent, false);
         }
         else {
             // just reuse the garbage view
@@ -43,7 +43,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         eventName.setText(event.getEventName());
         //eventPrice.setText(String.valueOf(event.getPrice()));
         eventDeadline.setText(event.getRegistrationDeadline());
-        hostName.setText(event.getHost().getUsername());
+        //hostName.setText(event.getHost().getUsername());
 
         Button joinButton = view.findViewById(R.id.joinButton);
         Button descButton = view.findViewById(R.id.seeDescButton);

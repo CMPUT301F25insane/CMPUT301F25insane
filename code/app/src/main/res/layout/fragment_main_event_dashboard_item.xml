@@ -4,21 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <Button
         android:id="@+id/joinButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="join"
         tools:layout_editor_absoluteX="7dp"
-        tools:layout_editor_absoluteY="102dp" />
+        tools:layout_editor_absoluteY="102dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/seeDescButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="desc"
         tools:layout_editor_absoluteX="291dp"
-        tools:layout_editor_absoluteY="102dp" />
+        tools:layout_editor_absoluteY="102dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/hostName"
@@ -26,7 +29,8 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         tools:layout_editor_absoluteX="310dp"
-        tools:layout_editor_absoluteY="21dp" />
+        tools:layout_editor_absoluteY="21dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/eventName"
@@ -34,7 +38,8 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         tools:layout_editor_absoluteX="21dp"
-        tools:layout_editor_absoluteY="13dp" />
+        tools:layout_editor_absoluteY="13dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/eventDeadline"
@@ -42,6 +47,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         tools:layout_editor_absoluteX="22dp"
-        tools:layout_editor_absoluteY="37dp" />
+        tools:layout_editor_absoluteY="37dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

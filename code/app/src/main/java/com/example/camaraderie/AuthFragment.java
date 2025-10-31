@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import android.os.Bundle;
 
@@ -7,12 +7,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,16 +27,7 @@ public class AuthFragment extends Fragment {
 
     private FirebaseFirestore db;
     static private CollectionReference usersRef;
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AuthFragment.
-     */
+    boolean userExists = false;
 
 
     public static AuthFragment newInstance(String param1, String param2) {
@@ -44,6 +39,29 @@ public class AuthFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String id = Settings.Secure.ANDROID_ID;
+
+        db = FirebaseFirestore.getInstance();
+        usersRef = db.collection("Users");
+
+        usersRef.whereEqualTo("UserID", id ).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                if(!task.getResult().isEmpty()){
+                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        Log.d("Firestore", "Found Document");
+                        userExists = true;
+                    }
+                }
+                else{
+                    Log.d("Firestore", "No Documents");
+
+                    userExists = false;
+                }
+            }
+            else{
+                Log.d("Firestore", "Did not get documents");
+            }
+        });
 
     }
 
@@ -56,12 +74,5 @@ public class AuthFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        String id = Settings.Secure.ANDROID_ID;
-
-        db = FirebaseFirestore.getInstance();
-        usersRef = db.collection("Users");
-
-        usersRef.whereEqualTo("UserID", id ).get()
     }
 }
