@@ -6,15 +6,11 @@ import java.util.ArrayList;
 public class Organizer extends User {
 
     private ArrayList<Event> events = new ArrayList<>();
-    public Organizer(String firstName, String lastName, String phone, String email, String username, String address, String userId) {
-        super(firstName,
-                lastName,
-                phone,
-                email,
-                username,
-                address,
-                userId);
+
+    public Organizer (String fullName, String phone, String email, String address, String userId) {
+            super(fullName, phone, email, address, userId);
     }
+
 
 
     public ArrayList<Event> getEvents() {
