@@ -33,9 +33,9 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayList<Event> localEvents = binding.getRoot().getLocalEvents();
+        //ArrayList<Event> localEvents = binding.getRoot().getLocalEvents();
 
-        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(this, localEvents);
+        //dashboardEventArrayAdapter = new DashboardEventArrayAdapter(this, localEvents);
         binding.eventsList.setAdapter(dashboardEventArrayAdapter);
     }
 }
