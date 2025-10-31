@@ -12,7 +12,7 @@ public class Event {
 
     private String eventName;
     private String eventLocation;
-    private String registrationDeadline;
+    private Date registrationDeadline;
     private String description;
     private Date eventDate;
     private String eventTime;  // this will probably become a better data type soon
@@ -26,7 +26,7 @@ public class Event {
 
     public Event() {}  // required for FIREBASE
 
-    public Event(String eventName, String eventLocation, String registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, String eventId) {
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, String eventId) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
@@ -80,11 +80,11 @@ public class Event {
         this.description = description;
     }
 
-    public String getRegistrationDeadline() {
+    public Date getRegistrationDeadline() {
         return registrationDeadline;
     }
 
-    public void setRegistrationDeadline(String registrationDeadline) {
+    public void setRegistrationDeadline(Date registrationDeadline) {
         this.registrationDeadline = registrationDeadline;
     }
 
