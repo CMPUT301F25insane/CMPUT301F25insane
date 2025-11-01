@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // add dummy data
-        //clearAndAddDummyEvents();
+        clearAndAddDummyEvents();
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
