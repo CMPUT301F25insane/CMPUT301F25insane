@@ -10,14 +10,16 @@
 
     <ListView
         android:id="@+id/eventsList"
-        android:layout_width="361dp"
-        android:layout_height="435dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -77,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/cambria_italic"
         android:text="Camaraderie"
         android:textColor="@color/white"
@@ -91,40 +93,39 @@
         android:id="@+id/header_for_search_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/cambria"
         android:text="Search for local events"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/searchBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.085"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camaraderie_header_for_main_dashboard"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/camaraderie_header_for_main_dashboard" />
 
     <TextView
         android:id="@+id/name_for_main_dashboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_width="57dp"
+        android:layout_height="31dp"
+        android:layout_marginEnd="8dp"
         android:text="[Name]"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/eventsList"
         app:layout_constraintEnd_toStartOf="@+id/accountButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.111" />
+        app:layout_constraintVertical_bias="0.27" />
 
     <EditText
         android:id="@+id/searchBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_width="207dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:fontFamily="@font/cambria_italic"
         android:inputType="text"
         android:text="Find Events"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/eventsList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.124"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.086"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_for_search_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

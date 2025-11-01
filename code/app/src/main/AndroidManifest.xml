@@ -15,9 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Camaraderie">
         <activity
-<<<<<<< HEAD
-            android:name=".UpdateUser"
-            android:exported="false" />
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
         <activity
             android:name=".UpdateUserActivity"
             android:exported="false"
@@ -30,17 +37,9 @@
         <activity
             android:name=".EventActivity"
             android:exported="false" />
-        <activity
-=======
->>>>>>> 60ef7b7e3bb59124551d0dc805f7533265ba6b3b
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity>
+        -->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
