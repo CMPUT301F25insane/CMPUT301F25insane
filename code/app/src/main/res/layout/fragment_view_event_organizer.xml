@@ -28,6 +28,8 @@
                 android:id="@+id/event_name_for_org_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/cambria"
+                android:textSize="25dp"
                 android:text="Event Name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -54,10 +56,12 @@
                 android:id="@+id/host_name_org_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
                 android:text="host Name"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/host_profile_image_org_view" />
+                app:layout_constraintTop_toBottomOf="@+id/host_profile_image_org_view"
+                app:layout_constraintVertical_bias="0.311" />
 
             <ImageView
                 android:id="@+id/host_profile_image_org_view"
@@ -83,9 +87,10 @@
             android:id="@+id/event_description_org_view"
             android:layout_width="274dp"
             android:layout_height="68dp"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="12dp"
             android:text="Description"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_location_org_view" />
 
@@ -105,92 +110,54 @@
             android:id="@+id/attendees_org_view"
             android:layout_width="121dp"
             android:layout_height="52dp"
+            android:layout_marginEnd="28dp"
             android:text="View Attendees"
-            app:layout_constraintBottom_toTopOf="@+id/orgEventViewGoogleMapsLayoutPlaceHolder"
             app:layout_constraintEnd_toStartOf="@+id/photos_org_view"
             app:layout_constraintTop_toBottomOf="@+id/event_description_org_view" />
 
         <Button
             android:id="@+id/photos_org_view"
-            android:layout_width="82dp"
-            android:layout_height="68dp"
+            android:layout_width="76dp"
+            android:layout_height="45dp"
             android:text="View Photos"
             app:layout_constraintBottom_toBottomOf="@+id/attendees_org_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
             app:layout_constraintVertical_bias="1.0" />
 
-        <FrameLayout
-            android:id="@+id/orgEventViewGoogleMapsLayoutPlaceHolder"
-            android:layout_width="365dp"
-            android:layout_height="134dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+        <Button
+            android:id="@+id/event_edit_button_ord_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            tools:layout_editor_absoluteX="263dp"
+            tools:layout_editor_absoluteY="445dp" />
 
-        </FrameLayout>
+        <Button
+            android:id="@+id/delete_button_org_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            tools:layout_editor_absoluteX="11dp"
+            tools:layout_editor_absoluteY="454dp" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="348dp"
+            android:layout_height="103dp"
+            tools:layout_editor_absoluteX="11dp"
+            tools:layout_editor_absoluteY="331dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="410dp"
-        android:layout_height="75dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/delete_button_org_view">
-
-        <Button
-            android:id="@+id/orgEventViewHostEventButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Host an Event" />
-
-        <Button
-            android:id="@+id/orgEventViewDashboardButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Dashboard" />
-
-        <Button
-            android:id="@+id/orgEventViewSeeEventsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="See my Events" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/delete_button_org_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="20dp"
-        android:text="Delete"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
-
-    <Button
-        android:id="@+id/event_edit_button_ord_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Edit"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.848"
-        app:layout_constraintStart_toEndOf="@+id/delete_button_org_view"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
     <TextView
         android:id="@+id/header_for_view_event_organizer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="39dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/cambria_italic"
         android:text="Camaraderie"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -199,7 +166,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="[Name]"
+        android:fontFamily="@font/cambria"
         app:layout_constraintEnd_toStartOf="@+id/org_view_profile_image"
         app:layout_constraintHorizontal_bias="0.887"
         app:layout_constraintStart_toEndOf="@+id/header_for_view_event_organizer"
@@ -212,4 +180,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="411dp"
+        android:layout_height="120dp"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="610dp">
+
+        <ImageButton
+            android:id="@+id/hostEvent"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:src="@drawable/hostevent" />
+
+        <ImageButton
+            android:id="@+id/dashboardButton"
+            android:layout_width="143dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:src="@drawable/dashboard_image" />
+
+        <ImageButton
+            android:id="@+id/myEvents"
+            android:layout_width="136dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:src="@drawable/seeevents" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

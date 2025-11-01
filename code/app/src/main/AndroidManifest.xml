@@ -23,6 +23,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--
+        <activity
+            android:name=".UpdateUserActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Camaraderie" />
+        <activity
+            android:name=".NavigationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/Theme.Camaraderie.NoActionBar" />
+        <activity
+            android:name=".EventActivity"
+            android:exported="false" />
+        <activity>
+        -->
+
     </application>
 
 </manifest>

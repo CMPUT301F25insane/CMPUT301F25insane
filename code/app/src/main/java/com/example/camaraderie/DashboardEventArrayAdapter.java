@@ -38,7 +38,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         TextView eventName = view.findViewById(R.id.eventName);
         //TextView eventPrice = view.findViewById(R.id.eventPrice);
         TextView eventDeadline = view.findViewById(R.id.eventDeadline);
-        TextView hostName = view.findViewById(R.id.hostName);
+        //TextView hostName = view.findViewById(R.id.hostName);
 
         eventName.setText(event.getEventName());
         //eventPrice.setText(String.valueOf(event.getPrice()));
