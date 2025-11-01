@@ -41,7 +41,7 @@
         tools:layout_editor_absoluteX="1dp">
 
         <ImageButton
-            android:id="@+id/HostEvent"
+            android:id="@+id/hostEvent"
             android:layout_width="125dp"
             android:layout_height="99dp"
             android:layout_weight="1"

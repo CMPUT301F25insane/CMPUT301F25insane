@@ -33,7 +33,7 @@ public class Util {
             Event event = new Event(
                     "event" + i,
                     "location" + i,
-                    "deadline" + i,
+                    new Date(),
                     "desc" + i,
                     new Date(),
                     "time" + i,

@@ -15,6 +15,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Camaraderie">
         <activity
+<<<<<<< HEAD
+            android:name=".UpdateUser"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateUserActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Camaraderie" />
+        <activity
+            android:name=".NavigationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/Theme.Camaraderie.NoActionBar" />
+        <activity
+            android:name=".EventActivity"
+            android:exported="false" />
+        <activity
+=======
+>>>>>>> 60ef7b7e3bb59124551d0dc805f7533265ba6b3b
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

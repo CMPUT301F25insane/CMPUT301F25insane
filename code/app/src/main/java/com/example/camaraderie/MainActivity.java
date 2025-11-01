@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
                         userExists = false;
-                }
+                    }
                 }
             else {
                 Log.d("Firestore", "Did not get documents");
