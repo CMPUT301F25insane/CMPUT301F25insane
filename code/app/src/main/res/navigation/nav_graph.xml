@@ -13,14 +13,6 @@
         <action
             android:id="@+id/action_fragment_main_to_fragment_create_event_testing"
             app:destination="@id/fragment_create_event_testing" />
-        <action
-            android:id="@+id/action_fragment_main_to_created_event"
-            app:destination="@id/created_event"/>
-
-        <argument
-            android:name="hostPath"
-            app:argType="string" />
-
     </fragment>
 
     <fragment
@@ -32,16 +24,5 @@
             android:id="@+id/action_fragment_create_event_testing_to_fragment_main"
             app:destination="@id/fragment_main" />
     </fragment>
-
-    <fragment
-        android:id="@+id/created_event"
-        android:name="com.example.camaraderie.CreatedEventFragment"
-        android:label="Created Event Fragment"
-        tools:layout="@layout/created_event">
-        <action
-            android:id="@+id/action_created_event_to_fragment_main"
-            app:destination="@id/fragment_main" />
-    </fragment>
-
 
 </navigation>

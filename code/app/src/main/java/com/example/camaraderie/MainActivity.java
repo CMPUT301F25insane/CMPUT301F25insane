@@ -12,28 +12,20 @@ import android.widget.EditText;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Firestore", "No Documents");
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         LayoutInflater inflater = getLayoutInflater();
-                        View dialogView = inflater.inflate(R.layout.user_info_dialog, null);
+                        View dialogView = inflater.inflate(R.layout.fragment_user_info_dialog, null);
                         EditText name = dialogView.findViewById(R.id.edit_full_name_text);
                         EditText Email = dialogView.findViewById(R.id.edit_email_text);
                         EditText address = dialogView.findViewById(R.id.edit_text_address_text);

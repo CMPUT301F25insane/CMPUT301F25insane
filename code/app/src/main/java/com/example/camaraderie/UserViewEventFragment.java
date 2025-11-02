@@ -1,27 +1,35 @@
 package com.example.camaraderie;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.camaraderie.databinding.CreatedEventBinding;
+
+import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-
-public class CreatedEventFragment extends Fragment {
+public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;
-    private CreatedEventBinding binding;
+
+    private FragmentViewEventUserBinding binding;
+    private DocumentReference event;
     private DocumentReference user;
     private static final String ARG_EVENT = "event";
     private static final String ARG_USER = "user";
@@ -34,8 +42,9 @@ public class CreatedEventFragment extends Fragment {
     private DocumentReference waitlistDocRef;
     private String hostName;
 
-    public static CreatedEventFragment newInstance(String event, String user) {
-        CreatedEventFragment fragment = new CreatedEventFragment();
+    // Factory method to create a new instance with Event
+    public static UserViewEventFragment newInstance(String event, String user) {
+        UserViewEventFragment fragment = new UserViewEventFragment();
         Bundle args = new Bundle();
 
         args.putString(ARG_EVENT, event);
@@ -48,7 +57,7 @@ public class CreatedEventFragment extends Fragment {
     public View onCreateView (LayoutInflater inflater,
                               ViewGroup container,
                               Bundle savedInstanceState) {
-        binding = CreatedEventBinding.inflate(inflater, container, false);
+        binding = FragmentViewEventUserBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
         return view;
@@ -95,7 +104,7 @@ public class CreatedEventFragment extends Fragment {
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavHostFragment.findNavController(CreatedEventFragment.this)
+                NavHostFragment.findNavController(UserViewEventFragment.this)
                         .navigate(R.id.action_created_event_to_fragment_main);
             }
         });
