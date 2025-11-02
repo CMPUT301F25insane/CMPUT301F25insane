@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -97,5 +98,26 @@ public class UpdateUser extends AppCompatActivity {
         cancel.setOnClickListener(v -> {
             finish();
         });
+
+        Button delete = findViewById(R.id.user_delete);
+
+        delete.setOnClickListener(v -> {
+            new AlertDialog.Builder(UpdateUser.this)
+                    .setTitle("Delete Profile")
+                    .setMessage("Are you sure you want to delete your profile? This action cannot be undone.")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        userDocRef.delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(UpdateUser.this, "Profile deleted!", Toast.LENGTH_SHORT).show();
+                                    finish(); // Go back to MainActivity
+                                })
+                                .addOnFailureListener(e ->
+                                        Toast.makeText(UpdateUser.this, "Delete failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                                );
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+
     }
 }

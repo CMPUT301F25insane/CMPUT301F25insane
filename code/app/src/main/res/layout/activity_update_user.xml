@@ -89,4 +89,12 @@
         app:layout_constraintTop_toBottomOf="@id/update_address"
         app:layout_constraintVertical_bias="0.504" />
 
+    <Button
+        android:id="@+id/user_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Profile"
+        tools:layout_editor_absoluteX="127dp"
+        tools:layout_editor_absoluteY="574dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
