@@ -1,34 +1,26 @@
 package com.example.camaraderie;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
+import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import com.example.camaraderie.databinding.CreatedEventBinding;
-
-public class CreatedEventFragment extends Fragment {
+public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;
 
-    private CreatedEventBinding binding;
+    private FragmentViewEventUserBinding binding;
     private DocumentReference event;
     private DocumentReference user;
 
@@ -47,8 +39,8 @@ public class CreatedEventFragment extends Fragment {
     private String hostName;
 
     // Factory method to create a new instance with Event
-    public static CreatedEventFragment newInstance(String eventID, String userID) {
-        CreatedEventFragment fragment = new CreatedEventFragment();
+    public static UserViewEventFragment newInstance(String eventID, String userID) {
+        UserViewEventFragment fragment = new UserViewEventFragment();
         Bundle args = new Bundle();
         args.putString(ARG_EVENT, eventID);
         args.putString(ARG_USER, userID);
@@ -60,7 +52,7 @@ public class CreatedEventFragment extends Fragment {
     public View onCreateView (LayoutInflater inflater,
                               ViewGroup container,
                               Bundle savedInstanceState) {
-        binding = CreatedEventBinding.inflate(inflater, container, false);
+        binding = FragmentViewEventUserBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
         return view;
