@@ -23,9 +23,12 @@ jobs:
 
       # - name: Cache Gradle
       #   uses: gradle/actions/setup-gradle@v3
+      #   continue-on-error: true
 
       - name: Grant execute permission for gradlew
+        working-directory: code
         run: chmod +x gradlew
 
       - name: Build and run unit tests
+        working-directory: code
         run: ./gradlew clean testDebugUnitTest

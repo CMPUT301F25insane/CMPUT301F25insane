@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Organizer extends User {
 
     private ArrayList<Event> events = new ArrayList<>();
-    public Organizer(String firstName, String lastName, String phone, String email, String username, String address, String userId) {
+    public Organizer(String firstName, String phone, String email, String address, String userId) {
         super(firstName,
                 phone,
                 email,

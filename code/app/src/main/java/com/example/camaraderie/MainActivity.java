@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import static com.example.camaraderie.Util.*;
 
@@ -12,13 +12,12 @@ import android.widget.EditText;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,16 +26,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
 
-    //static private CollectionReference eventsRef;
+    static private CollectionReference eventsRef;
     boolean userExists = false;
-    private CollectionReference usersRef;
-    private ArrayList<Event> localEvents = new ArrayList<>();
+    static private CollectionReference usersRef;
+    private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
 
 
@@ -44,20 +42,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.fragment_main_test);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        //setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
-        setContentView(R.layout.fragment_main_test);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_test), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        FirebaseApp.initializeApp(this);
+
+        eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
+
+
 
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
         usersRef.whereEqualTo("UserID", id).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -65,13 +62,17 @@ public class MainActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         Log.d("Firestore", "Found Document");
                         userExists = true;
+
+                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                        NavController navController = navHostFragment.getNavController();
+                        navController.navigate(R.id.fragment_main);
                     }
                 }
                 else{
                         Log.d("Firestore", "No Documents");
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         LayoutInflater inflater = getLayoutInflater();
-                        View dialogView = inflater.inflate(R.layout.user_info_dialog, null);
+                        View dialogView = inflater.inflate(R.layout.fragment_user_info_dialog, null);
                         EditText name = dialogView.findViewById(R.id.edit_full_name_text);
                         EditText Email = dialogView.findViewById(R.id.edit_email_text);
                         EditText address = dialogView.findViewById(R.id.edit_text_address_text);
@@ -95,49 +96,48 @@ public class MainActivity extends AppCompatActivity {
 
                                     Log.d("Firestore", "Got Here");
                                     usersRef.document(id2).set(user);
+
                                 }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
                         userExists = false;
-                }
+                    }
                 }
             else {
                 Log.d("Firestore", "Did not get documents");
             }
         });
 
-        // add dummy data
-        //clearAndAddDummyEvents();
 
-        /*
+
+        // add dummy data
+        clearAndAddDummyEvents();
+
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
         usersRef = db.collection("Users");
 
         // get database events (this is fine, we don't have that many entries)
         eventsRef.get().addOnSuccessListener(querySnapshot -> {
-            localEvents.clear();
+            ArrayList<Event> events = new ArrayList<>();
             for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                 Event event = doc.toObject(Event.class);
-                localEvents.add(event);
+                events.add(event);
             }
 
-            //dashboardEventArrayAdapter.notifyDataSetChanged();
+            eventViewModel.setLocalEvents(events);
+
         });
 
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+        navController.navigate(R.id.fragment_main);
+
 
     }
-
-    public void displayEvents() {
-        //
-    }
-
-    public ArrayList<Event> getLocalEvents() {return localEvents;}
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         binding = null;
-    }
-    */
     }
 
 }

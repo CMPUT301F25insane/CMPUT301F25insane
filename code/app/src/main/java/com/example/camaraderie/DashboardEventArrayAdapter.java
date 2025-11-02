@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,11 +10,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
+    private NavController navController;
 
     public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
@@ -38,11 +43,11 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         TextView eventName = view.findViewById(R.id.eventName);
         //TextView eventPrice = view.findViewById(R.id.eventPrice);
         TextView eventDeadline = view.findViewById(R.id.eventDeadline);
-        TextView hostName = view.findViewById(R.id.hostName);
+        //TextView hostName = view.findViewById(R.id.hostName);
 
         eventName.setText(event.getEventName());
         //eventPrice.setText(String.valueOf(event.getPrice()));
-        eventDeadline.setText(event.getRegistrationDeadline());
+        eventDeadline.setText(event.getRegistrationDeadline().toString());
         //hostName.setText(event.getHost().getUsername());
 
         Button joinButton = view.findViewById(R.id.joinButton);
@@ -59,6 +64,10 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 //TODO
+                /**
+                 * Need path to the event and path to the user
+                 */
+
             }
         });
 

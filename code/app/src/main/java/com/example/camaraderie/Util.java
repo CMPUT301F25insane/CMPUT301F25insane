@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie;//
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,7 +33,7 @@ public class Util {
             Event event = new Event(
                     "event" + i,
                     "location" + i,
-                    "deadline" + i,
+                    new Date(),
                     "desc" + i,
                     new Date(),
                     "time" + i,
