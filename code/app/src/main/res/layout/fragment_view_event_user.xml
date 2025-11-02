@@ -1,171 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#FFFFFF">
+    android:background="@drawable/gradient_resource"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_for_disc_location_etc"
+        android:layout_width="381dp"
+        android:layout_height="459dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/gradient_for_org_view"
+        app:layout_constraintBottom_toTopOf="@+id/delete_button_user_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_view_profile_image">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_of_event_name_and_host_image"
+            android:layout_width="333dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/corner_fix_event_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.484"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/event_name_for_user_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cambria"
+                android:text="Event Name"
+                android:textColor="@color/white"
+                android:textSize="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/userEventViewEventDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/cambria"
+                android:text="Date and Time"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/event_name_for_user_view" />
+
+            <TextView
+                android:id="@+id/registration_deadline_text_user_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:fontFamily="@font/cambria"
+                android:text="Registration Deadline"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userEventViewEventDate" />
+
+            <TextView
+                android:id="@+id/host_name_user_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:fontFamily="@font/cambria"
+                android:text="host Name"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/host_profile_image_user_view"
+                app:layout_constraintVertical_bias="0.311" />
+
+            <ImageView
+                android:id="@+id/host_profile_image_user_view"
+                android:layout_width="55dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/event_description_user_view"
+            android:layout_width="309dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="48dp"
+            android:fontFamily="@font/cambria"
+            android:gravity="center"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur malesuada, tortor non tempus porttitor, augue elit euismod leo, ut dapibus erat erat quis sapien. Praesent dignissim risus et urna facilisis, sed varius tortor commodo. Phasellus rutrum, justo eget condimentum cursus, libero elit placerat elit, ac efficitur lectus lectus eget mi. Vivamus eget ligula euismod, facilisis dolor ut, tempor arcu. Donec libero augue, tristique varius sapien id, ultrices interdum augue."
+            android:textColor="@color/white"
+            android:textSize="11.3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_of_event_name_and_host_image" />
+
+        <Button
+            android:id="@+id/qr_button_user_view"
+            android:layout_width="100dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#B0394241"
+            android:fontFamily="@font/cambria"
+            android:text="View QR Code"
+            android:textSize="8.8dp"
+            app:layout_constraintEnd_toStartOf="@+id/view_attendees_button"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_description_user_view"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:id="@+id/view_attendees_button"
+            android:layout_width="100dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#B0394241"
+            android:fontFamily="@font/cambria"
+            android:text="View Attendees"
+            android:textSize="8.3dp"
+            app:layout_constraintEnd_toStartOf="@+id/view_photos_user_view"
+            app:layout_constraintTop_toBottomOf="@+id/event_description_user_view"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:id="@+id/view_photos_user_view"
+            android:layout_width="100dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="28dp"
+            android:backgroundTint="#B0394241"
+            android:fontFamily="@font/cambria"
+            android:text="View Photos"
+            android:textSize="8.3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_description_user_view"
+            app:strokeWidth="1dp" />
+
+        <TextView
+            android:id="@+id/location_of_user_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cambria"
+            android:text="Location"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/event_description_user_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.103"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_of_event_name_and_host_image"
+            app:layout_constraintVertical_bias="0.517" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView_for_user_view"
+            android:layout_width="322dp"
+            android:layout_height="82dp"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/qr_button_user_view" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/header_for_view_event_user"
+        android:layout_width="130dp"
+        android:textColor="@color/white"
+        android:layout_height="39dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/cambria_italic"
+        android:text="Camaraderie"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name_of_useranizer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/cambria"
+        android:text="[Name]"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/user_view_profile_image"
+        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintStart_toEndOf="@+id/header_for_view_event_user"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/user_view_profile_image"
+        android:layout_width="50dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:id="@+id/linearLayout"
+        android:layout_width="411dp"
+        android:layout_height="120dp"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="610dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/appName"
-            android:text="Camaraderie"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:layout_marginBottom="8dp" />
+        <ImageButton
+            android:id="@+id/hostEvent"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:src="@drawable/hostevent" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginBottom="16dp" />
+        <ImageButton
+            android:id="@+id/dashboardButton"
+            android:layout_width="143dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:scaleX="1.3"
+            android:scaleY="1.3"
+            android:src="@drawable/dashboard_image" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/eventName"
-            android:text="Event Name"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/dateAndTime"
-            android:text="Date and Time"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:layout_marginBottom="4dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/registrationDeadline"
-            android:text="registration deadline"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/organizerName"
-            android:text="organizer name"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/location"
-            android:text="Location"
-            android:textSize="14sp"
-            android:textColor="#666666"
-            android:layout_marginBottom="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/description"
-            android:text="description"
-            android:textSize="14sp"
-            android:textColor="#333333"
-            android:lineSpacingExtra="4dp"
-            android:layout_marginBottom="16dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginBottom="16dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/qrCodeButton"
-            android:text="QR code"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#ffff"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/viewAttendeesButton"
-            android:text="View Attendees"
-            android:textColor="#FFFFFF"
-            android:background="#2196F3"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.Material3.Button" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/viewPosterButton"
-            android:text="eventPoster"
-            android:textColor="#FFFFFF"
-            android:background="#2196F3"
-            android:layout_marginBottom="16dp"
-            style="@style/Widget.Material3.Button" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginBottom="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="google maps view"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:gravity="center"
-            android:padding="40dp"
-            android:background="#E8E8E8"
-            android:layout_marginBottom="16dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginBottom="16dp" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/joinOrUnjoinButton"
-            android:text="Join/Unjoin"
-            android:textColor="#FFFFFF"
-            android:background="#F44336"
-            android:layout_marginBottom="8dp"
-            style="@style/Widget.Material3.Button" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#E0E0E0"
-            android:layout_marginBottom="16dp" />
-
-        <Button
-            android:id="@+id/backButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+        <ImageButton
+            android:id="@+id/myEvents"
+            android:layout_width="136dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:src="@drawable/seeevents" />
 
     </LinearLayout>
 
-</ScrollView>
+    <Button
+        android:id="@+id/unjoin_button_user_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#9E2C0A"
+        android:text="Unjoin"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc"
+        app:strokeWidth="3dp" />
+
+    <Button
+        android:id="@+id/join_button_user_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#AAD6F2"
+        android:text="Join"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/unjoin_button_user_view"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc"
+        app:strokeWidth="3dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
