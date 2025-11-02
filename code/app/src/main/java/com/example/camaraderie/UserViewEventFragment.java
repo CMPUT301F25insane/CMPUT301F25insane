@@ -1,20 +1,28 @@
 package com.example.camaraderie;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
 
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class UserViewEventFragment extends Fragment {
 
@@ -23,12 +31,8 @@ public class UserViewEventFragment extends Fragment {
     private FragmentViewEventUserBinding binding;
     private DocumentReference event;
     private DocumentReference user;
-
-    private CollectionReference eventsRef;
-    private CollectionReference usersRef;
     private static final String ARG_EVENT = "event";
     private static final String ARG_USER = "user";
-
     private String eventName;
     private String description;
     private String deadline;
@@ -39,11 +43,12 @@ public class UserViewEventFragment extends Fragment {
     private String hostName;
 
     // Factory method to create a new instance with Event
-    public static UserViewEventFragment newInstance(String eventID, String userID) {
+    public static UserViewEventFragment newInstance(String event, String user) {
         UserViewEventFragment fragment = new UserViewEventFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_EVENT, eventID);
-        args.putString(ARG_USER, userID);
+
+        args.putString(ARG_EVENT, event);
+        args.putString(ARG_USER, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,26 +67,45 @@ public class UserViewEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String eventString;
-        String userString;
-        eventString = (String) getArguments().getSerializable(ARG_EVENT);
-        userString =(String)  getArguments().getSerializable(ARG_USER);
+        String eventPath;
+        String userPath;
+        eventPath = (String) getArguments().getSerializable(ARG_EVENT);
+        userPath = (String)  getArguments().getSerializable(ARG_USER);
 
         db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("Events");
-        usersRef = db.collection("Users");
-
-        user = usersRef.document(userString);
-        event = eventsRef.document(eventString);
+        DocumentReference event = db.document(eventPath);
+        user = db.document(userPath);
 
         fillTextViews(event);
 
-        binding.joinButton.setOnClickListener(new View.OnClickListener() {
+        binding.joinOrUnjoinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
-                 * adding the user to the waitlist document
-                 */
+
+                waitlistDocRef.get().addOnCompleteListener( task -> {
+                    if (task.isSuccessful()){
+                        DocumentSnapshot userToAdd = task.getResult();
+                        if (userToAdd.exists()){
+                            DocumentReference existingUser = user;
+                            existingUser.delete();
+                            Toast.makeText(getContext(), "You have left the event", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            waitlistDocRef.set(userToAdd);
+                            Toast.makeText(getContext(), "You have joined the event", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+            }
+        });
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(UserViewEventFragment.this)
+                        .navigate(R.id.action_created_event_to_fragment_main);
             }
         });
     }

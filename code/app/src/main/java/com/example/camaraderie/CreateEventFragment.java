@@ -1,11 +1,16 @@
 package com.example.camaraderie;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,7 +68,11 @@ public class CreateEventFragment extends Fragment {
                 EditText eventDescription = binding.createEventDescription;
                 EditText eventCapacity = binding.createEventCapacity;
 
-                createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity);
+                try {
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -79,7 +88,18 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDeadline,
                              EditText eventLocation,
                              EditText eventDescription,
-                             EditText eventCapacity) {
+                             EditText eventCapacity) throws ParseException {
+
+        String name = eventName.getText().toString();
+        String description = eventDescription.getText().toString();
+        String location = eventLocation.getText().toString();
+        int capacity = Integer.parseInt(eventCapacity.getText().toString());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date deadline =  formatter.parse(eventDeadline.getText().toString());
+        Date date = formatter.parse(eventDate.getText().toString());
+
+        // NEED TO GET TIME, AND PASS HOST AND CREATE EVENT ID
         // validate user input and store in database.
         // DO NOT LEAK THE DB BY DOCUMENT INJECTION BY ACCIDENT
 

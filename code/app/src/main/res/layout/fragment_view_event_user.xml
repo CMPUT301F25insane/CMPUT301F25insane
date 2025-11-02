@@ -147,8 +147,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/joinButton"
-            android:text="Join"
+            android:id="@+id/joinOrUnjoinButton"
+            android:text="Join/Unjoin"
             android:textColor="#FFFFFF"
             android:background="#F44336"
             android:layout_marginBottom="8dp"
@@ -159,6 +159,12 @@
             android:layout_height="1dp"
             android:background="#E0E0E0"
             android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
 
     </LinearLayout>
 
