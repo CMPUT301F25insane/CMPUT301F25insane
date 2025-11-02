@@ -35,9 +35,9 @@
 
     <fragment
         android:id="@+id/created_event"
-        android:name="com.example.camaraderie.CreatedEventFragment"
+        android:name="com.example.camaraderie.UserViewEventFragment"
         android:label="Created Event Fragment"
-        tools:layout="@layout/created_event">
+        tools:layout="@layout/fragment_view_event_user">
         <action
             android:id="@+id/action_created_event_to_fragment_main"
             app:destination="@id/fragment_main" />
