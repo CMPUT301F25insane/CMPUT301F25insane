@@ -40,6 +40,19 @@ public class Event {
         this.waitlist.setEventId(this.EventId);  // bind the waitlist to this event
     }
 
+    public Event(String eventName, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, String eventId) {
+        this.eventName = eventName;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.EventId = eventId;
+
+        this.waitlist.setEventId(this.EventId);  // bind the waitlist to this event
+    }
+
 //    //public float getPrice() {
 //        return price;
 //    }
