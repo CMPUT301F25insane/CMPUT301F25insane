@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.databinding.CreatedEventBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,14 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class CreatedEventFragment extends Fragment {
 
     private FirebaseFirestore db;
-
     private CreatedEventBinding binding;
-    private DocumentReference event;
     private DocumentReference user;
-
     private static final String ARG_EVENT = "event";
     private static final String ARG_USER = "user";
-
     private String eventName;
     private String description;
     private String deadline;
@@ -36,12 +34,12 @@ public class CreatedEventFragment extends Fragment {
     private DocumentReference waitlistDocRef;
     private String hostName;
 
-    public static CreatedEventFragment newInstance(DocumentReference event, DocumentReference user) {
+    public static CreatedEventFragment newInstance(String event, String user) {
         CreatedEventFragment fragment = new CreatedEventFragment();
         Bundle args = new Bundle();
 
-        args.putString(ARG_EVENT, event.getPath());
-        args.putString(ARG_USER, user.getPath());
+        args.putString(ARG_EVENT, event);
+        args.putString(ARG_USER, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,12 +64,12 @@ public class CreatedEventFragment extends Fragment {
         userPath = (String)  getArguments().getSerializable(ARG_USER);
 
         db = FirebaseFirestore.getInstance();
-        event = db.document(eventPath);
+        DocumentReference event = db.document(eventPath);
         user = db.document(userPath);
 
         fillTextViews(event);
 
-        binding.joinButton.setOnClickListener(new View.OnClickListener() {
+        binding.joinOrUnjoinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -81,14 +79,24 @@ public class CreatedEventFragment extends Fragment {
                         if (userToAdd.exists()){
                             DocumentReference existingUser = user;
                             existingUser.delete();
+                            Toast.makeText(getContext(), "You have left the event", Toast.LENGTH_SHORT).show();
                         }
                         else{
                             waitlistDocRef.set(userToAdd);
+                            Toast.makeText(getContext(), "You have joined the event", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
 
+            }
+        });
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(CreatedEventFragment.this)
+                        .navigate(R.id.action_created_event_to_fragment_main);
             }
         });
     }
