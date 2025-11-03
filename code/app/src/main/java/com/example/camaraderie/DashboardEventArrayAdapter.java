@@ -1,5 +1,8 @@
 package com.example.camaraderie;
 
+
+import static com.example.camaraderie.MainActivity.user;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
-    DocumentReference user;
+
 
     private OnEventClickListener listener;
 
@@ -73,10 +76,11 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                event.getWaitlist().addUserToWaitlist(user.getDocRef());
             }
         });
 
+        // this might be a null ref, perhaps the code should just exist here?
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

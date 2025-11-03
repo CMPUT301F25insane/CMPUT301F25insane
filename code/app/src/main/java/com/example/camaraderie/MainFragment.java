@@ -72,6 +72,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     }
 
+    // i dont think this should live here, it could violate MVC principles
     public void onEventClick(Event event){
 
     }
