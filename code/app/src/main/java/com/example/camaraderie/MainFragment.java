@@ -74,6 +74,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
             dashboardEventArrayAdapter.clear();
             dashboardEventArrayAdapter.addAll(events);
+            dashboardEventArrayAdapter.listener = this;
             dashboardEventArrayAdapter.notifyDataSetChanged();
         });
 

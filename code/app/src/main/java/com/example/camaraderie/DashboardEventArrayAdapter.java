@@ -26,7 +26,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
     DocumentReference user;
 
-    private OnEventClickListener listener;
+    public OnEventClickListener listener;
 
     public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
@@ -74,7 +74,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onEventClick(View v) {
+            public void onClick(View v) {
                 listener.onEventClick(event);
             }
         });
