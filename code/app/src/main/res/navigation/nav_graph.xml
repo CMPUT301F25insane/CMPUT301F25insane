@@ -14,13 +14,8 @@
             android:id="@+id/action_fragment_main_to_fragment_create_event_testing"
             app:destination="@id/fragment_create_event_testing" />
         <action
-            android:id="@+id/action_fragment_main_to_created_event"
-            app:destination="@id/created_event"/>
-
-        <argument
-            android:name="hostPath"
-            app:argType="string" />
-
+            android:id="@+id/action_fragment_main_to_fragment_view_event_user"
+            app:destination="@id/fragment_view_event_user" />
     </fragment>
 
     <fragment
@@ -34,14 +29,18 @@
     </fragment>
 
     <fragment
-        android:id="@+id/created_event"
+        android:id="@+id/fragment_view_event_user"
         android:name="com.example.camaraderie.UserViewEventFragment"
-        android:label="Created Event Fragment"
+        android:label="View Event User Fragment"
         tools:layout="@layout/fragment_view_event_user">
-        <action
-            android:id="@+id/action_created_event_to_fragment_main"
-            app:destination="@id/fragment_main" />
-    </fragment>
 
+        <argument
+            android:name="eventDocPath"
+            app:argType="string" />
+        <argument
+            android:name="userDocPath"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>

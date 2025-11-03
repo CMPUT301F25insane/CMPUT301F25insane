@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+    alias(libs.plugins.hilt.android)
+
 }
 
 android {
@@ -37,6 +39,9 @@ android {
 }
 
 dependencies {
+
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    annotationProcessor("com.google.dagger:hilt-android-compiler:2.51.1")
 
     implementation(libs.appcompat)
     implementation(libs.material)
