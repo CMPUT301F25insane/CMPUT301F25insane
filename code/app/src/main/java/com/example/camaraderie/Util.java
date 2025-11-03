@@ -13,21 +13,24 @@ public class Util {
         CollectionReference eventsRef = db.collection("Events");
         CollectionReference usersRef = db.collection("Users");
 
+        // TODO: put the real delete functions here, these dont work lol
         eventsRef.document().delete();
         usersRef.document().delete();
 
         for (int i = 0; i < 10; i++) {
 
-            Organizer org = new Organizer(
+            User user = new User(
                     "firstname" + i,
                     "phoneNumber" + i,
                     "email" + i + "@gmail.com",
                     "address" + i,
-                    "usrId" + i
+                    "usrId" + i,
+                    null        // this just wont exist lol
             );
 
 
-            usersRef.add(org);
+            usersRef.add(user);
+
 
 
             Event event = new Event(
