@@ -1,6 +1,4 @@
-package com.example.camaraderie;
-
-import com.google.firebase.firestore.DocumentReference;
+package com.example.camaraderie.data;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

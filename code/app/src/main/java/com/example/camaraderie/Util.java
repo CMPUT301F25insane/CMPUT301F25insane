@@ -13,6 +13,7 @@ public class Util {
         CollectionReference eventsRef = db.collection("Events");
         CollectionReference usersRef = db.collection("Users");
 
+        // TODO: put the real delete functions here, these dont work lol
         eventsRef.document().delete();
         usersRef.document().delete();
 

@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie.dashboard;
 
 
 import static com.example.camaraderie.MainActivity.user;
@@ -13,17 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
 
 import java.util.ArrayList;
-
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
 
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
