@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Firestore", "Found Document");
                         userExists = true;
 
-                        appDataRepository.setSharedDocRef(db.collection("users").document(id));
+                        appDataRepository.setSharedData(db.collection("users").document(id).getPath());
 
 
                         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
