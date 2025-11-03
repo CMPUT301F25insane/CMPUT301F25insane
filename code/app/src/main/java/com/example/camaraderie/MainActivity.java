@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.data.AppDataRepository;
+import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
 import com.google.firebase.firestore.CollectionReference;
@@ -24,8 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     AppDataRepository appDataRepository;
     private FirebaseFirestore db;
+    public static User user;
 
     static private CollectionReference eventsRef;
     boolean userExists = false;
@@ -96,16 +97,20 @@ public class MainActivity extends AppCompatActivity {
                                     String address2 = address.getText().toString();
                                     String phoneNum2 = phoneNum.getText().toString();
                                     String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
+                                    /*
                                     Map<String, Object> user = new HashMap<>();
                                     user.put("Full Name", name1);
                                     user.put("Email", email2);
                                     user.put("Address", address2);
                                     user.put("Phone Number", phoneNum2);
-                                    user.put("UserID", id2);
+                                    user.put("UserID", id2);*/
 
-                                    Log.d("Firestore", "Got Here");
+                                    Log.d("Firestore", "wenis");
+                                    // TALK TO RAMIZ ABT THIS!!!!!!
+                                    // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
+                                    user = new User(name1, email2, address2, phoneNum2, id2, null);
                                     usersRef.document(id2).set(user);
+                                    user.setDocRef(usersRef.document(id2));
 
                                 }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
                         userExists = false;

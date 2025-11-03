@@ -1,8 +1,10 @@
-package com.example.camaraderie;//
+package com.example.camaraderie.dashboard;//
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.camaraderie.Event;
 
 import java.util.ArrayList;
 

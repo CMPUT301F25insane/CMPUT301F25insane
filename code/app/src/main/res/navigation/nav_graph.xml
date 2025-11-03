@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_main"
-        android:name="com.example.camaraderie.MainFragment"
+        android:name="com.example.camaraderie.dashboard.MainFragment"
         android:label="Main Fragment"
         tools:layout="@layout/fragment_main">
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/fragment_create_event_testing"
-        android:name="com.example.camaraderie.CreateEventFragment"
+        android:name="com.example.camaraderie.event_screen.CreateEventFragment"
         android:label="Create Event Fragment"
         tools:layout="@layout/fragment_create_event_testing">
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/fragment_view_event_user"
-        android:name="com.example.camaraderie.UserViewEventFragment"
+        android:name="com.example.camaraderie.event_screen.UserViewEventFragment"
         android:label="View Event User Fragment"
         tools:layout="@layout/fragment_view_event_user">
 
