@@ -1,5 +1,7 @@
 package com.example.camaraderie;
 
+import static com.example.camaraderie.MainActivity.user;
+
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -31,7 +33,7 @@ public class UpdateUserFragment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_update_user);
+        setContentView(R.layout.fragment_update_user);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -82,9 +84,9 @@ public class UpdateUserFragment extends AppCompatActivity {
                 String phoneNo2 = phoneNo1.getText().toString().trim();
                 String address2 = address1.getText().toString().trim();
 
-                User user = new User(name2, phoneNo2, email2, address2, userId);
+                User user_new = new User(name2, phoneNo2, email2, address2, userId, user.getDocRef());
                 userDocRef
-                        .set(user)
+                        .set(user_new)
                         //.update("Full Name", name2, "Phone Number", phoneNo2, "Email", email2, "Address", address2)
                         .addOnSuccessListener(aVoid ->
                                 Toast.makeText(UpdateUserFragment.this, "Profile updated!", Toast.LENGTH_SHORT).show()

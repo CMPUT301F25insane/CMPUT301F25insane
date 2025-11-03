@@ -12,32 +12,32 @@ import android.widget.EditText;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.data.AppDataRepository;
+import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
+    @Inject
+    AppDataRepository appDataRepository;
     private FirebaseFirestore db;
+    public static User user;
 
     static private CollectionReference eventsRef;
     boolean userExists = false;
@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Firestore", "Found Document");
                         userExists = true;
 
+                        appDataRepository.setSharedData(db.collection("users").document(id).getPath());
+
+
                         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
                         NavController navController = navHostFragment.getNavController();
                         navController.navigate(R.id.fragment_main);
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Firestore", "No Documents");
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         LayoutInflater inflater = getLayoutInflater();
-                        View dialogView = inflater.inflate(R.layout.user_info_dialog, null);
+                        View dialogView = inflater.inflate(R.layout.fragment_user_info_dialog, null);
                         EditText name = dialogView.findViewById(R.id.edit_full_name_text);
                         EditText Email = dialogView.findViewById(R.id.edit_email_text);
                         EditText address = dialogView.findViewById(R.id.edit_text_address_text);
@@ -94,16 +97,20 @@ public class MainActivity extends AppCompatActivity {
                                     String address2 = address.getText().toString();
                                     String phoneNum2 = phoneNum.getText().toString();
                                     String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
+                                    /*
                                     Map<String, Object> user = new HashMap<>();
                                     user.put("Full Name", name1);
                                     user.put("Email", email2);
                                     user.put("Address", address2);
                                     user.put("Phone Number", phoneNum2);
-                                    user.put("UserID", id2);
+                                    user.put("UserID", id2);*/
 
-                                    Log.d("Firestore", "Got Here");
+                                    Log.d("Firestore", "wenis");
+                                    // TALK TO RAMIZ ABT THIS!!!!!!
+                                    // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
+                                    user = new User(name1, email2, address2, phoneNum2, id2, null);
                                     usersRef.document(id2).set(user);
+                                    user.setDocRef(usersRef.document(id2));
 
                                 }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
                         userExists = false;

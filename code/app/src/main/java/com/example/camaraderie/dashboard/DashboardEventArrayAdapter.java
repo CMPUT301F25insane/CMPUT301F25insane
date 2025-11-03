@@ -1,4 +1,7 @@
-package com.example.camaraderie;//
+package com.example.camaraderie.dashboard;
+
+
+import static com.example.camaraderie.MainActivity.user;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,10 +13,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.NavController;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
 
 import java.util.ArrayList;
 
@@ -22,11 +24,23 @@ import java.util.ArrayList;
  * */
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
-    private NavController navController;
 
+
+    private OnEventClickListener listener;
+
+    /**
+     *
+     * @param context
+     * @param events
+     */
     public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
     }
+
+    public interface OnEventClickListener {
+        void onEventClick(Event event);
+    }
+
 
     @NonNull
     @Override
@@ -59,18 +73,15 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                event.getWaitlist().addUserToWaitlist(user.getDocRef());
             }
         });
 
+        // this might be a null ref, perhaps the code should just exist here?
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                /**
-                 * Need path to the event and path to the user
-                 */
-
+                listener.onEventClick(event);
             }
         });
 

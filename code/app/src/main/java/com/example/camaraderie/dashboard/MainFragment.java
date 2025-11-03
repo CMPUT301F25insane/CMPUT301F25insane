@@ -1,4 +1,4 @@
-package com.example.camaraderie;//
+package com.example.camaraderie.dashboard;//
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,20 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentMainBinding;
-import com.example.camaraderie.databinding.FragmentMainTestBinding;
 
 import java.util.ArrayList;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
     private EventViewModel eventViewModel;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,5 +67,11 @@ public class MainFragment extends Fragment {
                                           .navigate(R.id.action_fragment_main_to_fragment_create_event_testing);
             }
         });
+
+    }
+
+    // i dont think this should live here, it could violate MVC principles
+    public void onEventClick(Event event){
+
     }
 }

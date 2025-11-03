@@ -8,12 +8,18 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_for_desc_locaton_etc"
+        android:id="@+id/layout_for_disc_location_etc"
         android:layout_width="381dp"
         android:layout_height="459dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/gradient_for_org_view"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="84dp">
+        app:layout_constraintBottom_toTopOf="@+id/delete_button_user_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_view_profile_image">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_of_event_name_and_host_image"
@@ -27,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/event_name_for_org_view"
+                android:id="@+id/event_name_for_user_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/cambria"
@@ -38,7 +44,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/orgEventViewEventDate"
+                android:id="@+id/userEventViewEventDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -46,10 +52,10 @@
                 android:text="Date and Time"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_name_for_org_view" />
+                app:layout_constraintTop_toBottomOf="@+id/event_name_for_user_view" />
 
             <TextView
-                android:id="@+id/registration_deadline_text_org_view"
+                android:id="@+id/registration_deadline_text_user_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
@@ -57,10 +63,10 @@
                 android:text="Registration Deadline"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/orgEventViewEventDate" />
+                app:layout_constraintTop_toBottomOf="@+id/userEventViewEventDate" />
 
             <TextView
-                android:id="@+id/host_name_org_view"
+                android:id="@+id/host_name_user_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
@@ -69,11 +75,11 @@
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/host_profile_image_org_view"
+                app:layout_constraintTop_toBottomOf="@+id/host_profile_image_user_view"
                 app:layout_constraintVertical_bias="0.311" />
 
             <ImageView
-                android:id="@+id/host_profile_image_org_view"
+                android:id="@+id/host_profile_image_user_view"
                 android:layout_width="55dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="16dp"
@@ -83,7 +89,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/event_description_org_view"
+            android:id="@+id/event_description_user_view"
             android:layout_width="309dp"
             android:layout_height="110dp"
             android:layout_marginTop="48dp"
@@ -98,7 +104,7 @@
             app:layout_constraintTop_toBottomOf="@+id/layout_of_event_name_and_host_image" />
 
         <Button
-            android:id="@+id/qr_button_org_view"
+            android:id="@+id/qr_button_user_view"
             android:layout_width="100dp"
             android:layout_height="47dp"
             android:layout_marginStart="32dp"
@@ -110,7 +116,7 @@
             app:layout_constraintEnd_toStartOf="@+id/view_attendees_button"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
+            app:layout_constraintTop_toBottomOf="@+id/event_description_user_view"
             app:strokeWidth="1dp" />
 
         <Button
@@ -123,12 +129,12 @@
             android:fontFamily="@font/cambria"
             android:text="View Attendees"
             android:textSize="8.3dp"
-            app:layout_constraintEnd_toStartOf="@+id/view_photos_org_view"
-            app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
+            app:layout_constraintEnd_toStartOf="@+id/view_photos_user_view"
+            app:layout_constraintTop_toBottomOf="@+id/event_description_user_view"
             app:strokeWidth="1dp" />
 
         <Button
-            android:id="@+id/view_photos_org_view"
+            android:id="@+id/view_photos_user_view"
             android:layout_width="100dp"
             android:layout_height="47dp"
             android:layout_marginTop="12dp"
@@ -138,17 +144,17 @@
             android:text="View Photos"
             android:textSize="8.3dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
+            app:layout_constraintTop_toBottomOf="@+id/event_description_user_view"
             app:strokeWidth="1dp" />
 
         <TextView
-            android:id="@+id/location_of_org_view"
+            android:id="@+id/location_of_user_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/cambria"
             android:text="Location"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/event_description_org_view"
+            app:layout_constraintBottom_toTopOf="@+id/event_description_user_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.103"
             app:layout_constraintStart_toStartOf="parent"
@@ -156,15 +162,21 @@
             app:layout_constraintVertical_bias="0.517" />
 
         <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView_for_org_view"
+            android:id="@+id/mapView_for_user_view"
             android:layout_width="322dp"
             android:layout_height="82dp"
-            tools:layout_editor_absoluteX="31dp"
-            tools:layout_editor_absoluteY="361dp" />
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/qr_button_user_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/header_for_view_event_organizer"
+        android:id="@+id/header_for_view_event_user"
         android:layout_width="130dp"
         android:textColor="@color/white"
         android:layout_height="39dp"
@@ -177,20 +189,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/name_of_organizer"
+        android:id="@+id/name_of_useranizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:fontFamily="@font/cambria"
         android:text="[Name]"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/org_view_profile_image"
+        app:layout_constraintEnd_toStartOf="@+id/user_view_profile_image"
         app:layout_constraintHorizontal_bias="0.89"
-        app:layout_constraintStart_toEndOf="@+id/header_for_view_event_organizer"
+        app:layout_constraintStart_toEndOf="@+id/header_for_view_event_user"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/org_view_profile_image"
+        android:id="@+id/user_view_profile_image"
         android:layout_width="50dp"
         android:layout_height="61dp"
         android:layout_marginTop="16dp"
@@ -240,23 +252,33 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/delete_button_org_view"
+        android:id="@+id/unjoin_button_user_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="#9E2C0A"
-        app:strokeWidth = "3dp"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="551dp" />
+        android:text="Unjoin"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc"
+        app:strokeWidth="3dp" />
 
     <Button
-        android:id="@+id/event_edit_button_ord_view"
+        android:id="@+id/join_button_user_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
+        android:layout_marginStart="204dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="#AAD6F2"
+        android:text="Join"
         android:textColor="@color/black"
-        app:strokeWidth = "3dp"
-        tools:layout_editor_absoluteX="283dp"
-        tools:layout_editor_absoluteY="551dp" />
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/unjoin_button_user_view"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc"
+        app:strokeWidth="3dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
