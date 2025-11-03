@@ -40,8 +40,8 @@ android {
 
 dependencies {
 
-    implementation("com.google.dagger:hilt-android:2.57.2")
-    annotationProcessor("com.google.dagger:hilt-android-compiler:2.57.2")
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    annotationProcessor("com.google.dagger:hilt-android-compiler:2.51.1")
 
     implementation(libs.appcompat)
     implementation(libs.material)
