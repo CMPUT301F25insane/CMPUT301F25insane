@@ -13,9 +13,6 @@ public class Util {
         CollectionReference eventsRef = db.collection("Events");
         CollectionReference usersRef = db.collection("Users");
 
-        eventsRef.document().delete();
-        usersRef.document().delete();
-
         for (int i = 0; i < 10; i++) {
 
             Organizer org = new Organizer(
