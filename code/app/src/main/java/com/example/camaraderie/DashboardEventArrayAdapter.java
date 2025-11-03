@@ -17,10 +17,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
     private NavController navController;
 
+    /**
+     * 
+     * @param context
+     * @param events
+     */
     public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
     }
@@ -64,8 +72,8 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 //TODO
-                /**
-                 * Need path to the event and path to the user
+                /*
+                  Need path to the event and path to the user
                  */
 
             }
