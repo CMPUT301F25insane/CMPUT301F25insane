@@ -41,7 +41,7 @@ android {
 dependencies {
 
     implementation(libs.hilt.android)
-    annotationProcessor("com.google.dagger:hilt-android-compiler")
+    annotationProcessor("com.google.dagger:hilt-android-compiler:2.57.2")
 
     implementation(libs.appcompat)
     implementation(libs.material)
