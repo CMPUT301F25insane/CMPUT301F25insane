@@ -27,8 +27,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
+    @Inject
+    AppDataRepository appDataRepository;
     private FirebaseFirestore db;
 
     static private CollectionReference eventsRef;
@@ -62,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         Log.d("Firestore", "Found Document");
                         userExists = true;
+
+                        appDataRepository.setSharedDocRef(db.collection("users").document(id));
+
 
                         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
                         NavController navController = navHostFragment.getNavController();
