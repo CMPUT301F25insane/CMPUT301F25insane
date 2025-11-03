@@ -1,12 +1,10 @@
-package com.example.camaraderie;
+package com.example.camaraderie.event_screen;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -17,8 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
 
+/**
+ *
+ */
 public class CreateEventFragment extends Fragment {
 
     private FragmentCreateEventTestingBinding binding;
