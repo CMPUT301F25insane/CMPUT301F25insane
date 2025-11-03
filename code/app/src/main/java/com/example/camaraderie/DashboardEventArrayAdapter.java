@@ -22,11 +22,8 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-@AndroidEntryPoint
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
-    @Inject
-    AppDataRepository appDataRepository;
     DocumentReference user;
 
     private OnEventClickListener listener;
