@@ -1,6 +1,7 @@
 package com.example.camaraderie;//
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,31 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.databinding.FragmentMainBinding;
 import com.example.camaraderie.databinding.FragmentMainTestBinding;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
     private EventViewModel eventViewModel;
 
+    @Inject
+    AppDataRepository appDataRepository;
+
+    private FirebaseFirestore db;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +91,21 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     }
 
     public void onEventClick(Event event){
+        Bundle bundle = new Bundle();
+
+        db = FirebaseFirestore.getInstance();
+
+        DocumentReference eventRef = db.collection("events").document(event.getEventId());
+
+        Log.d("description button", "reached this point");
+        String eventDocPath = eventRef.getPath();
+        bundle.putString("event", eventDocPath);
+        bundle.putString("user", appDataRepository.getSharedData());
+
+        NavHostFragment.findNavController(MainFragment.this).navigate(
+                R.id.action_fragment_main_to_fragment_view_event_user,
+                bundle
+        );
 
     }
 }

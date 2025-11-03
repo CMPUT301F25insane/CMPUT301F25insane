@@ -15,7 +15,9 @@
             app:destination="@id/fragment_create_event_testing" />
         <action
             android:id="@+id/action_fragment_main_to_fragment_view_event_user"
-            app:destination="@id/fragment_view_event_user" />
+            app:destination="@id/fragment_view_event_user" >
+        </action>
+
     </fragment>
 
     <fragment
@@ -33,13 +35,6 @@
         android:name="com.example.camaraderie.UserViewEventFragment"
         android:label="View Event User Fragment"
         tools:layout="@layout/fragment_view_event_user">
-
-        <argument
-            android:name="eventDocPath"
-            app:argType="string" />
-        <argument
-            android:name="userDocPath"
-            app:argType="string" />
 
     </fragment>
 

@@ -74,7 +74,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onEventClick(View v) {
                 listener.onEventClick(event);
             }
         });

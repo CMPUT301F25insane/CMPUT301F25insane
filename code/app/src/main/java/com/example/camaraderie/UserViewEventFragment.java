@@ -36,8 +36,7 @@ public class UserViewEventFragment extends Fragment {
     private DocumentReference hostDocRef;
     private DocumentReference waitlistDocRef;
     private String hostName;
-
-    // Factory method to create a new instance with Event
+/**
     public static UserViewEventFragment newInstance(String event, String user) {
         UserViewEventFragment fragment = new UserViewEventFragment();
         Bundle args = new Bundle();
@@ -47,6 +46,7 @@ public class UserViewEventFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+ */
 
     @Override
     public View onCreateView (LayoutInflater inflater,
