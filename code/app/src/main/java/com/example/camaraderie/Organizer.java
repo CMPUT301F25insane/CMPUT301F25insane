@@ -3,6 +3,9 @@ package com.example.camaraderie;//
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * This class extends user and handles the organizers for an event
+ * */
 public class Organizer extends User {
 
     private ArrayList<Event> events = new ArrayList<>();

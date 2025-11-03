@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * adds and removes dummy events and users to the database for testing
+ * */
 public class Util {
     public static void clearAndAddDummyEvents() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

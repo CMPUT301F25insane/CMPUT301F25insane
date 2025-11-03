@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 /*
  *Updates the current information of the user
  *  */
-public class UpdateUser extends AppCompatActivity {
+public class UpdateUserFragment extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference usersRef;
 
@@ -68,10 +68,10 @@ public class UpdateUser extends AppCompatActivity {
                 phoneNo1.setText(phone3);
                 address1.setText(address3);
             } else {
-                Toast.makeText(UpdateUser.this, "No existing user data found.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UpdateUserFragment.this, "No existing user data found.", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(e ->
-                Toast.makeText(UpdateUser.this, "Failed to load data: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(UpdateUserFragment.this, "Failed to load data: " + e.getMessage(), Toast.LENGTH_SHORT).show()
         );
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -87,10 +87,10 @@ public class UpdateUser extends AppCompatActivity {
                         .set(user)
                         //.update("Full Name", name2, "Phone Number", phoneNo2, "Email", email2, "Address", address2)
                         .addOnSuccessListener(aVoid ->
-                                Toast.makeText(UpdateUser.this, "Profile updated!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(UpdateUserFragment.this, "Profile updated!", Toast.LENGTH_SHORT).show()
                         )
                         .addOnFailureListener(e ->
-                                Toast.makeText(UpdateUser.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(UpdateUserFragment.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                         );
             }
         });
@@ -102,17 +102,17 @@ public class UpdateUser extends AppCompatActivity {
         Button delete = findViewById(R.id.user_delete);
 
         delete.setOnClickListener(v -> {
-            new AlertDialog.Builder(UpdateUser.this)
+            new AlertDialog.Builder(UpdateUserFragment.this)
                     .setTitle("Delete Profile")
                     .setMessage("Are you sure you want to delete your profile? This action cannot be undone.")
                     .setPositiveButton("Yes", (dialog, which) -> {
                         userDocRef.delete()
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(UpdateUser.this, "Profile deleted!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UpdateUserFragment.this, "Profile deleted!", Toast.LENGTH_SHORT).show();
                                     finish(); // Go back to MainActivity
                                 })
                                 .addOnFailureListener(e ->
-                                        Toast.makeText(UpdateUser.this, "Delete failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(UpdateUserFragment.this, "Delete failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                                 );
                     })
                     .setNegativeButton("No", null)

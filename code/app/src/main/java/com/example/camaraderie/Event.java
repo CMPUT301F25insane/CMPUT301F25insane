@@ -8,6 +8,9 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * This is the class that handles the events
+ * */
 public class Event {
 
     private String eventName;
@@ -129,6 +132,10 @@ public class Event {
         return waitlist;
     }
 
+    /**
+     * This selects a number of random users from the waitlist
+     * @return selectedUsers
+     * */
     public ArrayList<User> getSelectedUsers() {
         return selectedUsers;
     }

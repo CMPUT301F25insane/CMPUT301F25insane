@@ -19,6 +19,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
 
+/**
+ * This class is used for event creation
+ * */
 public class CreateEventFragment extends Fragment {
 
     private FragmentCreateEventTestingBinding binding;

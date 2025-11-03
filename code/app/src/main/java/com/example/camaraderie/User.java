@@ -5,6 +5,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Collection;
 
+/**
+ * This class handles the Users
+ * */
 public class User {
 
     private String firstName;

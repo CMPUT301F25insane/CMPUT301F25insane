@@ -17,7 +17,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
+/**
+ * This class handles the events that are created will display one event that the organizer has already created.
+ * */
 public class CreatedEventFragment extends Fragment {
 
     private FirebaseFirestore db;

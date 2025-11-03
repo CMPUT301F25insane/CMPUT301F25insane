@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_fragment_main_to_created_event"
             app:destination="@id/created_event"/>
+        <action
+            android:id="@+id/action_fragment_main_to_update_user_event"
+            app:destination="@id/update_user"/>
 
         <argument
             android:name="hostPath"
@@ -42,6 +45,18 @@
             android:id="@+id/action_created_event_to_fragment_main"
             app:destination="@id/fragment_main" />
     </fragment>
+
+    <fragment
+        android:id="@+id/update_user"
+        android:name="com.example.camaraderie.UpdateUserFragment"
+        android:label="Update User Profile Fragment"
+        tools:layout="@layout/activity_update_user">
+        <action
+            android:id="@+id/action_created_event_to_fragment_main"
+            app:destination="@id/fragment_main" />
+    </fragment>
+
+
 
 
 </navigation>
