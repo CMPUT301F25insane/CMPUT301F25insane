@@ -36,10 +36,10 @@
 
         <argument
             android:name="eventDocPath"
-            app:argtype="string" />
+            app:argType="string" />
         <argument
             android:name="userDocPath"
-            app:argtype="string" />
+            app:argType="string" />
 
     </fragment>
 
