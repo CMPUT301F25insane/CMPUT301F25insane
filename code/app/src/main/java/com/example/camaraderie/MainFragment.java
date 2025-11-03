@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHostController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.databinding.FragmentMainBinding;
@@ -18,11 +19,12 @@ import com.example.camaraderie.databinding.FragmentMainTestBinding;
 
 import java.util.ArrayList;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
     private EventViewModel eventViewModel;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,5 +69,10 @@ public class MainFragment extends Fragment {
                                           .navigate(R.id.action_fragment_main_to_fragment_create_event_testing);
             }
         });
+
+    }
+
+    public void onEventClick(Event event){
+
     }
 }

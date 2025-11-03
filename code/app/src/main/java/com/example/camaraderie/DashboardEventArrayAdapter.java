@@ -1,4 +1,4 @@
-package com.example.camaraderie;//
+package com.example.camaraderie;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,27 +11,36 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-/**
- *
- */
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
-    private NavController navController;
+    DocumentReference user;
+
+    private OnEventClickListener listener;
 
     /**
-     * 
+     *
      * @param context
      * @param events
      */
     public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
     }
+
+    public interface OnEventClickListener {
+        void onEventClick(Event event);
+    }
+
 
     @NonNull
     @Override
@@ -71,11 +80,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                /*
-                  Need path to the event and path to the user
-                 */
-
+                listener.onEventClick(event);
             }
         });
 
