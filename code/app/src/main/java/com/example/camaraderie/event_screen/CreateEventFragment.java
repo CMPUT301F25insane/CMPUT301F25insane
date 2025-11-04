@@ -1,6 +1,8 @@
 package com.example.camaraderie.event_screen;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +12,18 @@ import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
+import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
 
 /**
@@ -24,6 +32,7 @@ import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
 public class CreateEventFragment extends Fragment {
 
     private FragmentCreateEventTestingBinding binding;
+    private CreateEventModel eventModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +55,9 @@ public class CreateEventFragment extends Fragment {
         binding.createEventPictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
+
+                Uri imageUri = null;
+                eventModel.uploadEventImage(imageUri);
             }
         });
 
@@ -111,4 +122,21 @@ public class CreateEventFragment extends Fragment {
         // navigate back ON SUCCESS
         NavHostFragment.findNavController(CreateEventFragment.this).navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
     }
+
+    public void imagePicker(){
+        ActivityResultLauncher<PickVisualMediaRequest> pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri ->{
+            if(uri != null){
+                Log.d("Photos", "Selected URI: " + uri);
+            }
+            else {
+                Log.d("Photos", "No media Selected");
+            }
+        });
+
+        String type = "image/jpg";
+
+        pickMedia.launch(new PickVisualMediaRequest.Builder().setMediaType(new ActivityResultContracts.PickVisualMedia.SingleMimeType(type)).build());
+
+    }
+
 }
