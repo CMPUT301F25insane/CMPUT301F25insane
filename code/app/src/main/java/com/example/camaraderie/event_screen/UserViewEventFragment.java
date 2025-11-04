@@ -39,7 +39,6 @@ public class UserViewEventFragment extends Fragment {
     public static UserViewEventFragment newInstance(String event, String user) {
         UserViewEventFragment fragment = new UserViewEventFragment();
         Bundle args = new Bundle();
-
         args.putString(ARG_EVENT, event);
         args.putString(ARG_USER, user);
         fragment.setArguments(args);
