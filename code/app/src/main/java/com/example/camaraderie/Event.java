@@ -8,6 +8,10 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * This is a class that defines an event
+ * @author tahmid-parvez, swausbeard, fecici
+ */
 public class Event {
 
     private String eventName;
@@ -24,8 +28,32 @@ public class Event {
 
     private String EventId;
 
+    /**
+     * Empty constructor for event, necessary for Firebase integration
+     */
     public Event() {}  // required for FIREBASE
 
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param host
+     *  User who is organizing the event
+     * @param eventId
+     *  Id that uniquely identifies the event
+     */
     public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, String eventId) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
@@ -40,18 +68,6 @@ public class Event {
         this.waitlist.setEventId(this.EventId);  // bind the waitlist to this event
     }
 
-    public Event(String eventName, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, String eventId) {
-        this.eventName = eventName;
-        this.registrationDeadline = registrationDeadline;
-        this.description = description;
-        this.eventDate = eventDate;
-        this.eventTime = eventTime;
-        this.capacity = capacity;
-        this.hostDocRef = host;
-        this.EventId = eventId;
-
-        this.waitlist.setEventId(this.EventId);  // bind the waitlist to this event
-    }
 
 //    //public float getPrice() {
 //        return price;
