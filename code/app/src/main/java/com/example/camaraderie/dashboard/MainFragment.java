@@ -1,6 +1,7 @@
 package com.example.camaraderie.dashboard;//
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
             dashboardEventArrayAdapter.clear();
             dashboardEventArrayAdapter.addAll(events);
+            dashboardEventArrayAdapter.listener = this;
             dashboardEventArrayAdapter.notifyDataSetChanged();
         });
 
@@ -72,6 +74,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     // i dont think this should live here, it could violate MVC principles
     public void onEventClick(Event event){
+        Log.d("bruh","descrpition button");
 
     }
 }

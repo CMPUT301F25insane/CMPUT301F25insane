@@ -23,7 +23,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
 
 
-    private OnEventClickListener listener;
+    public OnEventClickListener listener;
 
     /**
      *
