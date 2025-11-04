@@ -63,6 +63,7 @@ public class UserViewEventFragment extends Fragment {
 
         String eventPath;
         String userPath;
+
         eventPath = (String) getArguments().getSerializable(ARG_EVENT);
         userPath = (String)  getArguments().getSerializable(ARG_USER);
 

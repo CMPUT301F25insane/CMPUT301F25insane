@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Camaraderie"
-        android:name=".data.MyApplication">
+        android:name=".MyApplication">
         <activity
             android:name=".MainActivity"
             android:exported="true">

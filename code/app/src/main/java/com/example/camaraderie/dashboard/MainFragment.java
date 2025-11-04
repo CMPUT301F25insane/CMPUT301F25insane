@@ -12,17 +12,33 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.AppDataRepository;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentMainBinding;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
     private EventViewModel eventViewModel;
+
+    @Inject
+    AppDataRepository appDataRepository;
+
+    private FirebaseFirestore db;
 
 
     @Override
@@ -74,7 +90,18 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     // i dont think this should live here, it could violate MVC principles
     public void onEventClick(Event event){
-        Log.d("bruh","descrpition button");
+        db = FirebaseFirestore.getInstance();
 
+        /**
+         * Need to get the event from the database. Not working rn
+         */
+        String eventDocPath = db.collection("Events").document(event.getEventName()).getPath();
+
+        Bundle args  = new Bundle();
+
+        args.putString("event", eventDocPath);
+        args.putString("user", appDataRepository.getSharedData());
+
+        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);
     }
 }
