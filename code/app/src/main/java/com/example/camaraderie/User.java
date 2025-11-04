@@ -1,11 +1,8 @@
 package com.example.camaraderie;//
 
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * This is a class that defines a user. Admin privileges granted by setting admin to true.
@@ -23,7 +20,7 @@ public class User {
     private boolean admin = false;
 
     //private String bankNumber;  // REQUIRED to sign up for events, but not to create account (we probably don't need this)
-    private ArrayList<DocumentReference> events = new ArrayList<>();
+    private ArrayList<DocumentReference> userCreatedEvents = new ArrayList<>();
 
     /**
      * Constructor for User
@@ -50,33 +47,33 @@ public class User {
     }
 
     /**
-     * Get the events the user has signed up for
+     * Get the events the user has created
      * @return
-     *  Return the list of events the user has joined
+     *  Return the list of events the user has created
      */
-    public ArrayList<DocumentReference> getEvents() {
-        return events;
+    public ArrayList<DocumentReference> getUserCreatedEvents() {
+        return userCreatedEvents;
     }
 
     /**
-     * Add an event to the user's list of events
+     * Add an event to the user's list of created events
      * @param event
-     *  The event to add to the user's list of events
+     *  The event to add to the user's list of created events
      */
     public void addEvent(DocumentReference event) {
 
-        if (!this.events.contains(event)) {
-            this.events.add(event);
+        if (!this.userCreatedEvents.contains(event)) {
+            this.userCreatedEvents.add(event);
         }
     }
 
     /**
-     * Remove an event from the user's list of events
+     * Remove an event from the user's list of created events
      * @param event
-     *  The event to remove from the user's list of events
+     *  The event to remove from the user's list of created events
      */
     public void removeEvent(DocumentReference event) {
-        this.events.remove(event);
+        this.userCreatedEvents.remove(event);
     }
 
     /**
