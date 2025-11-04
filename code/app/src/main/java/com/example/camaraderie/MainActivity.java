@@ -21,6 +21,7 @@ import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -74,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         appDataRepository.setSharedData(db.collection("users").document(id).getPath());
 
 
-                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-                        NavController navController = navHostFragment.getNavController();
-                        navController.navigate(R.id.fragment_main);
+//                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+//                        NavController navController = navHostFragment.getNavController();
+//                        navController.navigate(R.id.fragment_main);
                     }
                 }
                 else{
@@ -141,6 +142,10 @@ public class MainActivity extends AppCompatActivity {
             eventViewModel.setLocalEvents(events);
 
         });
+
+        for (DocumentReference eventDocRef : user.getSelectedEvents()) {
+            //TODO: run the navigation to the accept event fragment
+        }
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();

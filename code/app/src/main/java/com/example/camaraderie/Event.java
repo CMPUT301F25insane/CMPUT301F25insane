@@ -18,7 +18,8 @@ public class Event {
     private String eventTime;  // this will probably become a better data type soon
     //private float price = 0.0f;
     private Waitlist waitlist = new Waitlist();
-    private ArrayList<User> selectedUsers = new ArrayList<>();
+    private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
+    private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private int capacity;  // always > 0
     private DocumentReference hostDocRef;
 
@@ -37,7 +38,7 @@ public class Event {
         this.hostDocRef = host;
         this.EventId = eventId;
 
-        this.waitlist.setEventId(this.EventId);  // bind the waitlist to this event
+        //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event
     }
 
     public Event(String eventName, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, String eventId) {
@@ -50,7 +51,7 @@ public class Event {
         this.hostDocRef = host;
         this.EventId = eventId;
 
-        this.waitlist.setEventId(this.EventId);  // bind the waitlist to this event
+        //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event
     }
 
 //    //public float getPrice() {
@@ -129,7 +130,21 @@ public class Event {
         return waitlist;
     }
 
-    public ArrayList<User> getSelectedUsers() {
+    public ArrayList<DocumentReference> getSelectedUsers() {
         return selectedUsers;
+    }
+
+    public ArrayList<DocumentReference> getAcceptedUsers() {
+        return acceptedUsers;
+    }
+
+    public void addAcceptedUser(DocumentReference acceptedUser) {
+        if (!this.acceptedUsers.contains(acceptedUser)) {
+            this.acceptedUsers.add(acceptedUser);
+        }
+    }
+
+    public void updateDB() {
+        // update DB from event
     }
 }

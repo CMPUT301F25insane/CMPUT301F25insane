@@ -28,6 +28,8 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
     }
 
     @Nullable
@@ -45,9 +47,6 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
-
-        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
         binding.eventsList.setAdapter(dashboardEventArrayAdapter);
 
         // Observe LiveData from Activity
@@ -73,5 +72,11 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     // i dont think this should live here, it could violate MVC principles
     public void onEventClick(Event event){
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

@@ -11,7 +11,7 @@ import java.util.Random;
 public class Waitlist {
 
     private ArrayList<DocumentReference> waitlist = new ArrayList<>();
-    private String eventId;
+    private DocumentReference eventDocRef;
 
     public void addUserToWaitlist(DocumentReference user) {
         if (!waitlist.contains(user)) {
@@ -38,15 +38,15 @@ public class Waitlist {
         return this.waitlist.size();
     }
 
-    public String getEventId() {
-        return eventId;
+    public DocumentReference getEventDocRef() {
+        return eventDocRef;
     }
     public DocumentReference getEvent() {
-        return FirebaseFirestore.getInstance().collection("events").document(eventId);
+        return this.eventDocRef;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setEventDocRef(DocumentReference eventDocRef) {
+        this.eventDocRef = eventDocRef;
     }
 
     public ArrayList<DocumentReference> getWaitlist() {return this.waitlist;}
