@@ -77,74 +77,164 @@ public class Event {
 //        this.price = price;
 //    }
 
+    /**
+     * Get maximum capacity of the event
+     * @return
+     *  return capacity of the event
+     */
     public int getCapacity() {
         return capacity;
     }
 
+    /**
+     * Set maximum capacity of the event
+     * @param capacity
+     *  New capacity of the event
+     */
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * Get time of the event
+     * @return
+     *  Return time of the event
+     */
     public String getEventTime() {
         return eventTime;
     }
 
+    /**
+     * Set time of the event
+     * @param eventTime
+     *  New time of the event
+     */
     public void setEventTime(String eventTime) {
         this.eventTime = eventTime;
     }
 
+    /**
+     * Get date of the event
+     * @return
+     *  Return date of the event
+     */
     public Date getEventDate() {
         return eventDate;
     }
 
+    /**
+     * Set date of the event
+     * @param eventDate
+     *  New date of the event
+     */
     public void setEventDate(Date eventDate) {
         this.eventDate = eventDate;
     }
 
+    /**
+     * Get description of the event
+     * @return
+     *  Return description of the event
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Set description of the event
+     * @param description
+     *  New description of the event
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Get registration deadline of the event
+     * @return
+     *  Return registration deadline of the event
+     */
     public Date getRegistrationDeadline() {
         return registrationDeadline;
     }
 
+    /**
+     * Set registration deadline of the event
+     * @param registrationDeadline
+     *  New registration deadline of the event
+     */
     public void setRegistrationDeadline(Date registrationDeadline) {
         this.registrationDeadline = registrationDeadline;
     }
 
+    /**
+     * Get location of the event
+     * @return
+     *  Return location of the event
+     */
     public String getEventLocation() {
         return eventLocation;
     }
 
+    /**
+     * Set location of the event
+     * @param eventLocation
+     *  New location of the event
+     */
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
     }
 
+    /**
+     * Get name of the event
+     * @return
+     *  Return name of the event
+     */
     public String getEventName() {
         return eventName;
     }
 
+    /**
+     * Set name of the event
+     * @param eventName
+     *  New name of the event
+     */
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
 
+    /**
+     * Get id of the event
+     * @return
+     *  Return id of the event
+     */
     public String getEventId() {
         return EventId;
     }
 
+    /**
+     * Get organizer of the event
+     * @return
+     *  Return organizer of the event
+     */
     public DocumentReference getHost() {
         return hostDocRef;
     }
 
+    /**
+     * Get the event waitlist
+     * @return
+     *  Return the event waitlist
+     */
     public Waitlist getWaitlist() {
         return waitlist;
     }
 
+    /**
+     * Get the selected users of the event
+     * @return
+     *  Return the selected users of the event
+     */
     public ArrayList<User> getSelectedUsers() {
         return selectedUsers;
     }
