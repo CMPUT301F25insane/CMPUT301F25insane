@@ -28,6 +28,10 @@ public class UserAcceptedViewModel extends ViewModel {
         user.addAcceptedEvent(eventDocRef);  // add to accepted event
         user.removeSelectedEvent(eventDocRef);  // remove from selectedEvents list (no longer needed)
         user.updateDB();
+
+        if (user.getSelectedEvents().isEmpty()) {
+            // nav tf away
+        }
     }
 
     // user rejects invitation
@@ -40,6 +44,10 @@ public class UserAcceptedViewModel extends ViewModel {
 
         user.removeSelectedEvent(eventDocRef);
         user.updateDB();
+
+        if (user.getSelectedEvents().isEmpty()) {
+            // also leave (NO idea if this works)
+        }
     }
 
 }

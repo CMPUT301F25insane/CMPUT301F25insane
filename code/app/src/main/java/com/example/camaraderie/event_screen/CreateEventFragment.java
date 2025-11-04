@@ -1,6 +1,9 @@
 package com.example.camaraderie.event_screen;
 
+import static com.example.camaraderie.MainActivity.user;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +18,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  *
@@ -69,9 +75,10 @@ public class CreateEventFragment extends Fragment {
                 EditText eventLocation = binding.createEventLocation;
                 EditText eventDescription = binding.createEventDescription;
                 EditText eventCapacity = binding.createEventCapacity;
+                EditText eventTime = binding.createEventTime;
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, eventTime);
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -90,11 +97,13 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDeadline,
                              EditText eventLocation,
                              EditText eventDescription,
-                             EditText eventCapacity) throws ParseException {
+                             EditText eventCapacity,
+                             EditText eventTime) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
         String location = eventLocation.getText().toString();
+        String time = eventTime.getText().toString();
         int capacity = Integer.parseInt(eventCapacity.getText().toString());
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -107,8 +116,21 @@ public class CreateEventFragment extends Fragment {
 
 
 
+        Event event = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), null);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference eventRef = db.collection("Events").document();
+        String eventId = eventRef.getId();
 
-        // navigate back ON SUCCESS
-        NavHostFragment.findNavController(CreateEventFragment.this).navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
+        event.setEventId(eventId);
+        event.setEventDocRef(eventRef);
+
+        eventRef.set(event)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "Event added with ID: " + eventId);
+                    NavHostFragment.findNavController(CreateEventFragment.this)
+                            .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
+
     }
 }

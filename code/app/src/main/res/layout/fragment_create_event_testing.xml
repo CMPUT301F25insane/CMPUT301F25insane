@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Date and Time"
+        android:hint="Date"
         android:inputType="date"
         app:layout_constraintBottom_toTopOf="@+id/createEventDeadline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -136,5 +136,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createEventCapacity" />
+
+    <EditText
+        android:id="@+id/createEventTime"
+        android:layout_width="63dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="92dp"
+        android:ems="10"
+        android:hint="time"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.395"
+        app:layout_constraintStart_toEndOf="@+id/createEventDate"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

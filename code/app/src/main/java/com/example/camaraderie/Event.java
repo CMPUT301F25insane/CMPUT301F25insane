@@ -22,8 +22,9 @@ public class Event {
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private int capacity;  // always > 0
     private DocumentReference hostDocRef;
+    private DocumentReference eventDocRef;
 
-    private String EventId;
+    private String eventId;
 
     public Event() {}  // required for FIREBASE
 
@@ -36,7 +37,7 @@ public class Event {
         this.eventTime = eventTime;
         this.capacity = capacity;
         this.hostDocRef = host;
-        this.EventId = eventId;
+        this.eventId = eventId;
 
         //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event
     }
@@ -49,7 +50,7 @@ public class Event {
         this.eventTime = eventTime;
         this.capacity = capacity;
         this.hostDocRef = host;
-        this.EventId = eventId;
+        this.eventId = eventId;
 
         //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event
     }
@@ -119,10 +120,13 @@ public class Event {
     }
 
     public String getEventId() {
-        return EventId;
+        return eventId;
+    }
+    public void setEventId(String eventId1) {
+        this.eventId = eventId1;
     }
 
-    public DocumentReference getHost() {
+    public DocumentReference getHostDocRef() {
         return hostDocRef;
     }
 
@@ -142,6 +146,14 @@ public class Event {
         if (!this.acceptedUsers.contains(acceptedUser)) {
             this.acceptedUsers.add(acceptedUser);
         }
+    }
+
+    public void setEventDocRef(DocumentReference eventDocRef1) {
+        this.eventDocRef = eventDocRef1;
+    }
+
+    public DocumentReference getEventDocRef() {
+        return this.eventDocRef;
     }
 
     public void updateDB() {
