@@ -22,19 +22,21 @@ public class Util {
 
         for (int i = 0; i < 10; i++) {
 
+            DocumentReference userDocRef = usersRef.document();
+
             User user = new User(
                     "firstname" + i,
                     "phoneNumber" + i,
                     "email" + i + "@gmail.com",
                     "address" + i,
-                    "usrId" + i,
-                    null        // this just wont exist lol
+                    userDocRef.getId(),
+                    userDocRef        // this just wont exist lol
             );
 
 
-            usersRef.add(user);
+            userDocRef.set(user);
 
-
+            DocumentReference eventDocRef = eventsRef.document();
 
             Event event = new Event(
                     "event" + i,
@@ -44,11 +46,11 @@ public class Util {
                     new Date(),
                     "time" + i,
                     i,
-                    usersRef.document("usrId" + i),
-                    "id" + i
+                    userDocRef,
+                    eventDocRef.getId()
             );
 
-            eventsRef.add(event);
+            eventDocRef.set(event);
 
             System.out.println("added user and event " + i);
         }
@@ -95,6 +97,6 @@ public class Util {
         String msg = "isAdmin for User " + user + " set to " + isAdmin;
         user.update("isAdmin", isAdmin)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", msg))
-                .addOnFailureListener(e -> Log.e("Firestore", "Error setting user" + user + " to " + isAdmin));
+                .addOnFailureListener(e -> Log.e("Firestore", "Error setting user" + user + " to " + isAdmin, e));
     }
 }

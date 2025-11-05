@@ -110,37 +110,9 @@ public class MainActivity extends AppCompatActivity {
                                 });
                 });
 
-//        usersRef.whereEqualTo("UserID", id).get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                if (!task.getResult().isEmpty()) {
-//                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-//                        Log.d("Firestore", "Found Document");
-//                        userExists = true;
-//
-//                        appDataRepository.setSharedData(usersRef.document(id).getPath());
-//                        Log.d("set data", usersRef.document(id).getPath());
-//
-//
-////                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-////                        NavController navController = navHostFragment.getNavController();
-////                        navController.navigate(R.id.fragment_main);
-//                    }
-//                }
-//                else{
-//                        Log.d("Firestore", "No Documents");
-//
-//                        userExists = false;
-//                    }
-//                }
-//            else {
-//                Log.d("Firestore", "Did not get documents");
-//            }
-//        });
-
-
-
         // add dummy data
         clearAndAddDummyEvents();
+
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");

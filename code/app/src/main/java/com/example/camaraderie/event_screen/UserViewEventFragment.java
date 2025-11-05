@@ -80,6 +80,7 @@ public class UserViewEventFragment extends Fragment {
 
         });
 
+        //TODO: fix this to be greyed out when the user is not in vs in the event
         binding.unjoinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
