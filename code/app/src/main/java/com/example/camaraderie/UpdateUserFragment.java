@@ -54,7 +54,7 @@ public class UpdateUserFragment extends AppCompatActivity {
 
 
         //String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        String userId = Settings.Secure.ANDROID_ID;
+        String userId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         userDocRef = usersRef.document(userId);
 
@@ -94,6 +94,7 @@ public class UpdateUserFragment extends AppCompatActivity {
                         .addOnFailureListener(e ->
                                 Toast.makeText(UpdateUserFragment.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                         );
+                finish();
             }
         });
 
