@@ -1,8 +1,14 @@
 package com.example.camaraderie;//
 
+import android.util.Log;
+
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * This is a class that defines a user. Admin privileges granted by setting admin to true.
@@ -21,6 +27,8 @@ public class User {
 
     //private String bankNumber;  // REQUIRED to sign up for events, but not to create account (we probably don't need this)
     private ArrayList<DocumentReference> userCreatedEvents = new ArrayList<>();
+    private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
+    private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
 
     /**
      * Constructor for User
@@ -37,7 +45,7 @@ public class User {
      * @param docref
      *  Pointer to an equivalent user document in Firebase
      */
-    public User(String firstName, String phone, String email, String address, String userId, DocumentReference docref){
+    public User(String firstName, String phone, String email, String address, String userId, DocumentReference docref) {
         this.firstName = firstName;
         this.phoneNumber = phone;
         this.email = email;
@@ -170,11 +178,42 @@ public class User {
      */
     public void setDocRef(DocumentReference docRef1) {this.docRef = docRef1;}
 
-//    public String getBankNumber() {
-//        return bankNumber;
-//    }
-//
-//    public void setBankNumber(String bankNumber) {
-//        this.bankNumber = bankNumber;
-//    }
+    public void deleteEvent(DocumentReference event) {
+        this.userCreatedEvents.remove(event);
+        event.delete();  // from db
+    }
+
+    public void removeSelectedEvent(DocumentReference selectedEvent) {
+        this.selectedEvents.remove(selectedEvent);
+    }
+
+    public void updateDB() {
+        // update the DB from the user
+        this.docRef.set(this, SetOptions.merge())
+                .addOnSuccessListener(aVoid ->
+                        Log.d("UserRepository", "User updated"))
+                .addOnFailureListener(e ->
+                        Log.e("UserRepository", "Error updating user", e));
+    }
+
+    public void addAcceptedEvent(DocumentReference eventDocRef) {
+        if (!acceptedEvents.contains(eventDocRef)) {
+            acceptedEvents.add(eventDocRef);
+        }
+    }
+
+    public ArrayList<DocumentReference> getAcceptedEvents() {
+        return acceptedEvents;
+    }
+
+    public ArrayList<DocumentReference> getSelectedEvents() {
+        return selectedEvents;
+    }
+
+    public void addSelectedEvent(DocumentReference event) {
+        if (!selectedEvents.contains(event)) {
+            selectedEvents.add(event);
+        }
+    }
 }
+

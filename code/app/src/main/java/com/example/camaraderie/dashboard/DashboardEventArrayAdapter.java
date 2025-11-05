@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * */
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
-    private OnEventClickListener listener;
+    public OnEventClickListener listener;
 
     /**
      *
@@ -73,7 +73,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                event.getWaitlist().addUserToWaitlist(user.getDocRef());
+                event.addWaitlistUser(user.getDocRef());
             }
         });
 

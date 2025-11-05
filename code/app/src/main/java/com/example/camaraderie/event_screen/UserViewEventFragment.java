@@ -1,6 +1,9 @@
 package com.example.camaraderie.event_screen;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +12,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 
+import static com.example.camaraderie.MainActivity.user;
+
+import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
+import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,27 +33,31 @@ public class UserViewEventFragment extends Fragment {
     private FirebaseFirestore db;
 
     private FragmentViewEventUserBinding binding;
-    private DocumentReference event;
-    private DocumentReference user;
-    private static final String ARG_EVENT = "event";
-    private static final String ARG_USER = "user";
-    private String eventName;
-    private String description;
-    private String deadline;
-    private String dateAndTime;
-    private String location;
-    private DocumentReference hostDocRef;
-    private DocumentReference waitlistDocRef;
-    private String hostName;
+    private DocumentReference eventDocRef;
+    private Event event;
 
-    // Factory method to create a new instance with Event
-    public static UserViewEventFragment newInstance(String event, String user) {
-        UserViewEventFragment fragment = new UserViewEventFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_EVENT, event);
-        args.putString(ARG_USER, user);
-        fragment.setArguments(args);
-        return fragment;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        assert getArguments() != null;
+        String eventPath = getArguments().getString("eventDocRefPath");
+
+        db = FirebaseFirestore.getInstance();
+        eventDocRef = db.collection("Events").document(eventPath);
+        eventDocRef.get().addOnSuccessListener(documentSnapshot -> {
+            event = documentSnapshot.toObject(Event.class);
+            Log.d("Firestore", "Event class loaded form db");
+        })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Event not loaded from db!");
+                    Toast.makeText(requireContext(), "Event Not Found", LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(UserViewEventFragment.this)
+                            .navigate(R.id.fragment_main);
+                    //TODO: HANDLE THIS EXCEPTION
+                });
+
     }
 
     @Override
@@ -60,32 +74,27 @@ public class UserViewEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String eventPath;
-        String userPath;
-        eventPath = (String) getArguments().getSerializable(ARG_EVENT);
-        userPath = (String)  getArguments().getSerializable(ARG_USER);
 
-        db = FirebaseFirestore.getInstance();
-        DocumentReference event = db.document(eventPath);
-        user = db.document(userPath);
 
-        fillTextViews(event);
+        fillTextViews();
 
         binding.joinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                waitlistDocRef.update("users", FieldValue.arrayUnion(user)).addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "You have joined the event", Toast.LENGTH_SHORT).show();
+                Log.d("here", "somehow");
+                eventDocRef.update("waitlist.waitlist", FieldValue.arrayUnion(user.getDocRef())).addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getContext(), "You have joined the event", LENGTH_SHORT).show();
                 });
             }
 
         });
 
+        //TODO: fix this to be greyed out when the user is not in vs in the event
         binding.unjoinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                waitlistDocRef.update("users", FieldValue.arrayRemove(user)).addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "You have left the event", Toast.LENGTH_SHORT).show();
+                eventDocRef.update("waitlist.waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
             }
         });
@@ -98,44 +107,24 @@ public class UserViewEventFragment extends Fragment {
         });
     }
 
-    // NEEDS TO BE CHANGED WHEN THE EVENT DATABASE OBJECTS ARE CREATED
-    private void fillTextViews(DocumentReference event) {
+    private void fillTextViews() {
 
-        event.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    eventName = documentSnapshot.getString("eventName");
-                    description = documentSnapshot.getString("description");
-                    deadline = documentSnapshot.getString("registrationDeadline");
-                    dateAndTime = documentSnapshot.getString("dateAndTime");
-                    location = documentSnapshot.getString("eventLocation");
-                    hostDocRef = documentSnapshot.getDocumentReference("host");
-                    waitlistDocRef = documentSnapshot.getDocumentReference("waitlist");
-                }
-            }
-        });
-
-        hostDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    hostName = documentSnapshot.getString("name");
-                }
-            }
-        });
-
-        binding.eventNameForUserView.setText(eventName);
-        binding.eventDescriptionUserView.setText(description);
-        binding.registrationDeadlineTextUserView.setText(deadline);
-        binding.userEventViewEventDate.setText(dateAndTime);
-        binding.locationOfUserView.setText(location); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
-        binding.hostNameUserView.setText(hostName);
+        binding.eventNameForUserView.setText(event.getEventName());
+        binding.eventDescriptionUserView.setText(event.getDescription());
+        binding.registrationDeadlineTextUserView.setText((CharSequence) event.getRegistrationDeadline());  //TODO: deal with date stuff
+        binding.userEventViewEventDate.setText((CharSequence) event.getEventDate());
+        binding.locationOfUserView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        binding = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         binding = null;
     }
 }

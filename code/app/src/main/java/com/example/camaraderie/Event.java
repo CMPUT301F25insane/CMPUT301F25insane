@@ -1,7 +1,10 @@
 package com.example.camaraderie;//
 
+import android.util.Log;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.sql.Array;
 import java.sql.Time;
@@ -21,12 +24,14 @@ public class Event {
     private Date eventDate;
     private String eventTime;  // this will probably become a better data type soon
     //private float price = 0.0f;
-    private Waitlist waitlist = new Waitlist();
-    private ArrayList<User> selectedUsers = new ArrayList<>();
+    private ArrayList<DocumentReference> waitlist = new ArrayList<>();
+    private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
+    private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private int capacity;  // always > 0
     private DocumentReference hostDocRef;
+    private DocumentReference eventDocRef;
 
-    private String EventId;
+    private String eventId;
 
     /**
      * Empty constructor for event, necessary for Firebase integration
@@ -63,9 +68,9 @@ public class Event {
         this.eventTime = eventTime;
         this.capacity = capacity;
         this.hostDocRef = host;
-        this.EventId = eventId;
+        this.eventId = eventId;
 
-        this.waitlist.setEventId(this.EventId);  // bind the waitlist to this event
+        //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event
     }
 
 
@@ -209,7 +214,10 @@ public class Event {
      *  Return id of the event
      */
     public String getEventId() {
-        return EventId;
+        return eventId;
+    }
+    public void setEventId(String eventId1) {
+        this.eventId = eventId1;
     }
 
     /**
@@ -217,7 +225,7 @@ public class Event {
      * @return
      *  Return organizer of the event
      */
-    public DocumentReference getHost() {
+    public DocumentReference getHostDocRef() {
         return hostDocRef;
     }
 
@@ -226,7 +234,7 @@ public class Event {
      * @return
      *  Return the event waitlist
      */
-    public Waitlist getWaitlist() {
+    public ArrayList<DocumentReference> getWaitlist() {
         return waitlist;
     }
 
@@ -235,7 +243,41 @@ public class Event {
      * @return
      *  Return the selected users of the event
      */
-    public ArrayList<User> getSelectedUsers() {
+    public ArrayList<DocumentReference> getSelectedUsers() {
         return selectedUsers;
+    }
+
+    public ArrayList<DocumentReference> getAcceptedUsers() {
+        return acceptedUsers;
+    }
+
+    public void addAcceptedUser(DocumentReference acceptedUser) {
+        if (!this.acceptedUsers.contains(acceptedUser)) {
+            this.acceptedUsers.add(acceptedUser);
+        }
+    }
+
+    public void setEventDocRef(DocumentReference eventDocRef1) {
+        this.eventDocRef = eventDocRef1;
+    }
+
+    public DocumentReference getEventDocRef() {
+        return this.eventDocRef;
+    }
+
+    public void updateDB() {
+        eventDocRef.set(this, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Successfully update event"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Failed to update event"));
+    }
+
+    public void addWaitlistUser(DocumentReference user) {
+        if (!waitlist.contains(user)) {
+            waitlist.add(user);
+        }
+    }
+
+    public void removeWaitlistUser(DocumentReference user) {
+        waitlist.remove(user);
     }
 }
