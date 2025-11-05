@@ -1,5 +1,7 @@
 package com.example.camaraderie.event_screen;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +12,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 
 import static com.example.camaraderie.MainActivity.user;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
+import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -46,6 +52,9 @@ public class UserViewEventFragment extends Fragment {
         })
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Event not loaded from db!");
+                    Toast.makeText(requireContext(), "Event Not Found", LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(UserViewEventFragment.this)
+                            .navigate(R.id.fragment_main);
                     //TODO: HANDLE THIS EXCEPTION
                 });
 
@@ -74,7 +83,7 @@ public class UserViewEventFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("here", "somehow");
                 eventDocRef.update("waitlist.waitlist", FieldValue.arrayUnion(user.getDocRef())).addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "You have joined the event", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "You have joined the event", LENGTH_SHORT).show();
                 });
             }
 
@@ -85,7 +94,7 @@ public class UserViewEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 eventDocRef.update("waitlist.waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "You have left the event", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
             }
         });
