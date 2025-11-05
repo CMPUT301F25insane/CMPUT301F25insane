@@ -12,8 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentPendingEventsBinding;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -46,8 +48,14 @@ public class UserAcceptedToEventFragment extends Fragment {
                     .addOnFailureListener(e ->
                             Log.e("Firestore", "Failed to get event", e));
         }
-        pendingEventArrayAdapter = new PendingEventArrayAdapter(getContext(), 0, selectedEvents, vm);
+        pendingEventArrayAdapter = new PendingEventArrayAdapter(requireContext(), 0, selectedEvents, vm, this::enableConfirm);
 
+    }
+
+    public void enableConfirm(Object o) {
+        if (user.getSelectedEvents().isEmpty()) {
+            binding.pendingEventsContinueButton.setEnabled(true);
+        }
     }
 
     @Nullable
@@ -62,8 +70,13 @@ public class UserAcceptedToEventFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.pendingEventListView.setAdapter(pendingEventArrayAdapter);
-
-
+        binding.pendingEventsContinueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(UserAcceptedToEventFragment.this)
+                        .navigate(R.id.action_fragment_pending_events_to_fragment_main);
+            }
+        });
 
     }
 

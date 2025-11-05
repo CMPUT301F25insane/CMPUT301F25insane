@@ -6,6 +6,18 @@
     app:startDestination="@id/fragment_main">
 
     <fragment
+        android:id="@+id/fragment_pending_events"
+        android:name="com.example.camaraderie.accepted_screen.UserAcceptedToEventFragment"
+        android:label="Pending events fragment"
+        tools:layout="@layout/fragment_pending_events">
+
+        <action
+            android:id="@+id/action_fragment_pending_events_to_fragment_main"
+            app:destination="@id/fragment_main"/>
+
+    </fragment>
+
+    <fragment
         android:id="@+id/fragment_main"
         android:name="com.example.camaraderie.dashboard.MainFragment"
         android:label="Main Fragment"

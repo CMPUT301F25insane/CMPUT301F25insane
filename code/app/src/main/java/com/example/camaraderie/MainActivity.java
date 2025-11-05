@@ -1,6 +1,6 @@
 package com.example.camaraderie;//
 
-import static com.example.camaraderie.Util.*;
+import static com.example.camaraderie.utilStuff.Util.*;
 
 import android.os.Bundle;
 import android.provider.Settings;

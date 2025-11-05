@@ -16,14 +16,17 @@ import com.example.camaraderie.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
     private UserAcceptedViewModel vm;
-    public PendingEventArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> events, UserAcceptedViewModel vm) {
-        super(context, 0, events);
+    private Consumer enableButton;
+    public PendingEventArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> events, UserAcceptedViewModel vm, Consumer<Object> enableButton) {
+        super(context, resource, events);
 
         this.vm = vm;
+        this.enableButton = enableButton;
     }
 
     @NonNull
@@ -49,6 +52,7 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 vm.userAcceptInvite(event.getEventDocRef());
+                enableButton.accept(new Object());
             }
         });
 
@@ -56,6 +60,7 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 vm.userDeclineInvite(event.getEventDocRef());
+                enableButton.accept(new Object());
             }
         });
 

@@ -1,11 +1,11 @@
-package com.example.camaraderie;//
+package com.example.camaraderie.utilStuff;//
 
+import com.example.camaraderie.Event;
+import com.example.camaraderie.User;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Util {
     public static void clearAndAddDummyEvents() {
