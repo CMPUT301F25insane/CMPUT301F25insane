@@ -84,6 +84,10 @@ public class UpdateUserFragment extends AppCompatActivity {
                 String phoneNo2 = phoneNo1.getText().toString().trim();
                 String address2 = address1.getText().toString().trim();
 
+
+                /*
+                *
+                * */
                 User user_new = new User(name2, phoneNo2, email2, address2, userId, user.getDocRef());
                 userDocRef
                         .set(user_new)
