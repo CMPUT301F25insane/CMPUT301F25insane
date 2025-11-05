@@ -1,6 +1,6 @@
 package com.example.camaraderie;//
 
-import static com.example.camaraderie.Util.*;
+import static com.example.camaraderie.utilStuff.Util.*;
 
 import android.os.Bundle;
 import android.provider.Settings;
@@ -21,6 +21,7 @@ import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,6 +32,9 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * The main activity of the app
+ */
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
@@ -63,24 +67,14 @@ public class MainActivity extends AppCompatActivity {
         usersRef = db.collection("Users");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-
-        usersRef.whereEqualTo("UserID", id).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (!task.getResult().isEmpty()) {
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                        Log.d("Firestore", "Found Document");
-                        userExists = true;
-
-                        appDataRepository.setSharedData(db.collection("users").document(id).getPath());
-
-
-                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-                        NavController navController = navHostFragment.getNavController();
-                        navController.navigate(R.id.fragment_main);
-                    }
-                }
-                else{
-                        Log.d("Firestore", "No Documents");
+        Log.d("Firestore", "Searching for user in database...");
+        usersRef.document(id).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    user = documentSnapshot.toObject(User.class);
+                    Log.d("Firestore", "User found");
+                })
+                .addOnFailureListener(e -> {
+                        Log.e("Firestore", "User does not exist! Creating new user...");
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         LayoutInflater inflater = getLayoutInflater();
                         View dialogView = inflater.inflate(R.layout.fragment_user_info_dialog, null);
@@ -88,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                         EditText Email = dialogView.findViewById(R.id.edit_email_text);
                         EditText address = dialogView.findViewById(R.id.edit_text_address_text);
                         EditText phoneNum = dialogView.findViewById(R.id.edit_phone_number_text);
+
+                        //TODO: deal with empty fields
 
                         builder.setMessage("Please enter Your information to create a profile")
                                 .setView(dialogView)
@@ -97,34 +93,26 @@ public class MainActivity extends AppCompatActivity {
                                     String address2 = address.getText().toString();
                                     String phoneNum2 = phoneNum.getText().toString();
                                     String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-                                    /*
-                                    Map<String, Object> user = new HashMap<>();
-                                    user.put("Full Name", name1);
-                                    user.put("Email", email2);
-                                    user.put("Address", address2);
-                                    user.put("Phone Number", phoneNum2);
-                                    user.put("UserID", id2);*/
+
 
                                     Log.d("Firestore", "wenis");
                                     // TALK TO RAMIZ ABT THIS!!!!!!
                                     // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
-                                    user = new User(name1, email2, address2, phoneNum2, id2, null);
-                                    usersRef.document(id2).set(user);
-                                    user.setDocRef(usersRef.document(id2));
+                                    DocumentReference userDocRef = usersRef.document();
 
-                                }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
-                        userExists = false;
-                    }
-                }
-            else {
-                Log.d("Firestore", "Did not get documents");
-            }
-        });
+                                    user = new User(name1, email2, address2, phoneNum2, id2, userDocRef);
+                                    userDocRef.set(user);
 
+                                    //appDataRepository.setSharedData(usersRef.document(id).getPath());
+                                    //Log.d("set data", usersRef.document(id).getPath());
 
+                                    Log.d("Firestore", "User has been created!");
+                                });
+                });
 
         // add dummy data
         clearAndAddDummyEvents();
+
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
@@ -142,8 +130,20 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+//        appDataRepository.setSharedData(usersRef.document(id).getPath());
+
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
+
+        if (user.isAdmin()) {
+            // navigate to admin fragment
+        }
+
+        if (!user.getSelectedEvents().isEmpty()) {
+            navController.navigate(R.id.fragment_pending_events);
+        }
+
         navController.navigate(R.id.fragment_main);
 
 

@@ -1,12 +1,19 @@
 package com.example.camaraderie;//
 
+import android.util.Log;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * This is a class that defines a user. Admin privileges granted by setting admin to true.
+ * @author fecici, RamizHHH, UmranRahman
+ */
 public class User {
 
     private String firstName;
@@ -19,9 +26,26 @@ public class User {
     private boolean admin = false;
 
     //private String bankNumber;  // REQUIRED to sign up for events, but not to create account (we probably don't need this)
-    private ArrayList<DocumentReference> events = new ArrayList<>();
+    private ArrayList<DocumentReference> userCreatedEvents = new ArrayList<>();
+    private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
+    private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
 
-    public User(String firstName, String phone, String email, String address, String userId, DocumentReference docref){
+    /**
+     * Constructor for User
+     * @param firstName
+     *  First name of the user
+     * @param phone
+     *  Phone number of the user
+     * @param email
+     *  Email of the user
+     * @param address
+     *  Address of the user
+     * @param userId
+     *  Id that uniquely identifies the user
+     * @param docref
+     *  Pointer to an equivalent user document in Firebase
+     */
+    public User(String firstName, String phone, String email, String address, String userId, DocumentReference docref) {
         this.firstName = firstName;
         this.phoneNumber = phone;
         this.email = email;
@@ -30,45 +54,166 @@ public class User {
         this.docRef = docref;
     }
 
-    public ArrayList<DocumentReference> getEvents() {
-        return events;
+    /**
+     * Get the events the user has created
+     * @return
+     *  Return the list of events the user has created
+     */
+    public ArrayList<DocumentReference> getUserCreatedEvents() {
+        return userCreatedEvents;
     }
 
+    /**
+     * Add an event to the user's list of created events
+     * @param event
+     *  The event to add to the user's list of created events
+     */
     public void addEvent(DocumentReference event) {
 
-        if (!this.events.contains(event)) {
-            this.events.add(event);
+        if (!this.userCreatedEvents.contains(event)) {
+            this.userCreatedEvents.add(event);
         }
     }
 
+    /**
+     * Remove an event from the user's list of created events
+     * @param event
+     *  The event to remove from the user's list of created events
+     */
     public void removeEvent(DocumentReference event) {
-        this.events.remove(event);
+        this.userCreatedEvents.remove(event);
     }
 
-
+    /**
+     * Check if the user is an admin
+     * @return
+     *  Return true if user is an admin, false otherwise
+     */
     public boolean isAdmin() {return admin;}
+
+    /**
+     * Set admin status of user
+     * @param this_admin
+     *  True if user should be admin. False otherwise
+     */
     public void setAdmin(boolean this_admin) {  // we MANUALLY create admins for the app
         admin = this_admin;
     }
+
+    /**
+     * Set the first name of the user
+     * @param name
+     *  New first name of the user
+     */
     public void setFirstName(String name) {this.firstName = name;}
+
+    /**
+     * Set the phone number of the user
+     * @param number
+     *  New phone number of the user
+     */
     public void setPhoneNumber(String number) {this.phoneNumber = number;}
+
+    /**
+     * Set email of the user
+     * @param email1
+     *  New email of the user
+     */
     public void setEmail(String email1) {this.email = email1;}
+
+    /**
+     * Set address of the user
+     * @param address1
+     *  New address of the user
+     */
     public void setAddress(String address1) {this.address = address1;}
 
+    /**
+     * Get first name of the user
+     * @return
+     *  Return firstname of the user
+     */
     public String getFirstName() {return this.firstName;}
     //public String getLastName() {return this.lastName;}
+
+    /**
+     * Get phone number of the user
+     * @return
+     *  Return phone number of the user
+     */
     public String getPhoneNumber() {return this.phoneNumber;}
+
+    /**
+     * Get email of the user
+     * @return
+     *  Return email of the user
+     */
     public String getEmail() {return this.email;}
+
+    /**
+     * Get address of the user
+     * @return
+     *  Return address of the user
+     */
     public String getAddress() {return this.address;}
+
+    /**
+     * Get user id of the user
+     * @return
+     *  Return user id of the user
+     */
     public String getUserId() {return this.userId;}
+
+    /**
+     * Get the docRef of the user
+     * @return
+     *  Return the docRef of the user
+     */
     public DocumentReference getDocRef() { return this.docRef;}
+
+    /**
+     * Set the docRef of the user
+     * @param docRef1
+     *  The docRef of the user
+     */
     public void setDocRef(DocumentReference docRef1) {this.docRef = docRef1;}
 
-//    public String getBankNumber() {
-//        return bankNumber;
-//    }
-//
-//    public void setBankNumber(String bankNumber) {
-//        this.bankNumber = bankNumber;
-//    }
+    public void deleteEvent(DocumentReference event) {
+        this.userCreatedEvents.remove(event);
+        event.delete();  // from db
+    }
+
+    public void removeSelectedEvent(DocumentReference selectedEvent) {
+        this.selectedEvents.remove(selectedEvent);
+    }
+
+    public void updateDB() {
+        // update the DB from the user
+        this.docRef.set(this, SetOptions.merge())
+                .addOnSuccessListener(aVoid ->
+                        Log.d("UserRepository", "User updated"))
+                .addOnFailureListener(e ->
+                        Log.e("UserRepository", "Error updating user", e));
+    }
+
+    public void addAcceptedEvent(DocumentReference eventDocRef) {
+        if (!acceptedEvents.contains(eventDocRef)) {
+            acceptedEvents.add(eventDocRef);
+        }
+    }
+
+    public ArrayList<DocumentReference> getAcceptedEvents() {
+        return acceptedEvents;
+    }
+
+    public ArrayList<DocumentReference> getSelectedEvents() {
+        return selectedEvents;
+    }
+
+    public void addSelectedEvent(DocumentReference event) {
+        if (!selectedEvents.contains(event)) {
+            selectedEvents.add(event);
+        }
+    }
 }
+
