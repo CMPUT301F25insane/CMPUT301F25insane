@@ -43,4 +43,50 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/admin_main_screen"
+        android:name="com.example.camaraderie.admin_screen.AdminDashboardFragment"
+        android:label="Admin Main Screen"
+        tools:layout="@layout/fragment_admin_dashboard">
+        <action
+            android:id="@+id/action_admin_main_screen_to_admin_user_data_screen"
+            app:destination="@id/admin_user_data_screen" />
+        <action
+            android:id="@+id/action_admin_main_screen_to_admin_event_images_screen"
+            app:destination="@id/admin_event_images_screen" />
+        <action
+            android:id="@+id/action_admin_main_screen_to_admin_event_data_screen"
+            app:destination="@id/admin_event_data_screen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/admin_user_data_screen"
+        android:name="com.example.camaraderie.admin_screen.AdminDashboardFragment"
+        android:label="Admin User Screen"
+        tools:layout="@layout/fragment_admin_users_view">
+        <action
+            android:id="@+id/action_admin_user_data_screen_to_admin_main_screen"
+            app:destination="@id/admin_main_screen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/admin_event_data_screen"
+        android:name="com.example.camaraderie.admin_screen.AdminDashboardFragment"
+        android:label="Admin Events Screen"
+        tools:layout="@layout/fragment_admin_events_view">
+        <action
+            android:id="@+id/action_admin_event_data_screen_to_admin_main_screen"
+            app:destination="@id/admin_main_screen" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/admin_event_images_screen"
+        android:name="com.example.camaraderie.admin_screen.AdminDashboardFragment"
+        android:label="Admin Images Screen"
+        tools:layout="@layout/fragment_admin_images_view">
+        <action
+            android:id="@+id/action_admin_event_images_screen_to_admin_main_screen"
+            app:destination="@id/admin_main_screen" />
+    </fragment>
+
 </navigation>
