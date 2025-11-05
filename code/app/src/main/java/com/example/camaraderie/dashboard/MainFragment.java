@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.camaraderie.data.AppDataRepositorySecond;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentMainBinding;
@@ -20,8 +19,6 @@ import com.example.camaraderie.databinding.FragmentMainBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -31,10 +28,6 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
     private EventViewModel eventViewModel;
-
-    @Inject
-    AppDataRepositorySecond appDataRepositorySecond;
-
     private FirebaseFirestore db;
 
 
@@ -90,16 +83,11 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
         Log.d("Made it here", event.getEventName());
 
-        /**
-         * Need to get the event from the database. Not working rn
-         */
-
         Bundle args = new Bundle();
 
-        args.putString("event", "Events/14Hilgbolf26MpmU0iPZ");
-        args.putString("user", appDataRepositorySecond.getSharedData());
+        args.putString("eventDocRefPath", event.getEventDocRef().getPath());
 
-        if (args.getString("event") == null){
+        if (args.getString("eventDocRefPath") == null){
             Log.d("Firestore", "Event path is null");
         }
 
