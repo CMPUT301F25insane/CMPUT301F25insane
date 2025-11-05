@@ -31,6 +31,9 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * The main activity of the app
+ */
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
