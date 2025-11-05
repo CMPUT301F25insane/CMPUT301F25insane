@@ -17,6 +17,7 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentMainBinding;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -61,6 +62,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
         super.onViewCreated(view, savedInstanceState);
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
@@ -91,7 +93,6 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     // i dont think this should live here, it could violate MVC principles
     public void onEventClick(Event event){
-        db = FirebaseFirestore.getInstance();
 
         Log.d("Made it here", event.getEventName());
 
@@ -101,19 +102,12 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
         Bundle args = new Bundle();
 
-        db.collection("Events").document("0NasNPEZqFLybsod3SEI").get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        String eventDocPath = document.getReference().getPath();
-                        args.putString("event", eventDocPath);
-                        if (document.exists()) {
-                            Log.d("Firestore", "Document data: " + document.getData());
-                        }
-                    }
-                });
-
+        args.putString("event", "Events/14Hilgbolf26MpmU0iPZ");
         args.putString("user", appDataRepository.getSharedData());
+
+        if (args.getString("event") == null){
+            Log.d("Firestore", "Event path is null");
+        }
 
         NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);
     }

@@ -1,6 +1,7 @@
 package com.example.camaraderie.event_screen;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,14 +68,16 @@ public class UserViewEventFragment extends Fragment {
         userPath = (String)  getArguments().getSerializable(ARG_USER);
 
         db = FirebaseFirestore.getInstance();
-        DocumentReference event = db.document(eventPath);
-        user = db.document(userPath);
+        Log.d("Progress", eventPath + userPath);
+        event = db.document(eventPath);
+        user = db.collection("Users").document("110b89720e2f7766");
 
         fillTextViews(event);
 
         binding.joinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("here", "somehow");
                 waitlistDocRef.update("users", FieldValue.arrayUnion(user)).addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "You have joined the event", Toast.LENGTH_SHORT).show();
                 });
@@ -102,6 +105,8 @@ public class UserViewEventFragment extends Fragment {
     // NEEDS TO BE CHANGED WHEN THE EVENT DATABASE OBJECTS ARE CREATED
     private void fillTextViews(DocumentReference event) {
 
+        Log.d("Huge", "NOthing works" + event);
+
         event.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -112,7 +117,6 @@ public class UserViewEventFragment extends Fragment {
                     dateAndTime = documentSnapshot.getString("dateAndTime");
                     location = documentSnapshot.getString("eventLocation");
                     hostDocRef = documentSnapshot.getDocumentReference("host");
-                    waitlistDocRef = documentSnapshot.getDocumentReference("waitlist");
                 }
             }
         });
