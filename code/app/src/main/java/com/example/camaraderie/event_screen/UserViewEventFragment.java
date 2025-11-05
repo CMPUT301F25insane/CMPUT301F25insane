@@ -2,11 +2,13 @@ package com.example.camaraderie.event_screen;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
+import java.util.Map;
 
 public class UserViewEventFragment extends Fragment {
 
@@ -55,8 +60,16 @@ public class UserViewEventFragment extends Fragment {
                     Toast.makeText(requireContext(), "Event Not Found", LENGTH_SHORT).show();
                     NavHostFragment.findNavController(UserViewEventFragment.this)
                             .navigate(R.id.fragment_main);
-                    //TODO: HANDLE THIS EXCEPTION
                 });
+
+        if(event.getWaitlist().contains(user.getDocRef())) {
+
+            Log.d("Firestore", "User is not in event");
+            Button button = binding.unjoinButtonUserView;
+            button.setEnabled(false);
+            button.setBackgroundColor(Color.GRAY);
+
+        }
 
     }
 
@@ -89,7 +102,6 @@ public class UserViewEventFragment extends Fragment {
 
         });
 
-        //TODO: fix this to be greyed out when the user is not in vs in the event
         binding.unjoinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +109,7 @@ public class UserViewEventFragment extends Fragment {
                     Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
             }
+
         });
 
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {

@@ -59,7 +59,7 @@ public class Event {
      * @param eventId
      *  Id that uniquely identifies the event
      */
-    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, String eventId) {
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
@@ -68,6 +68,7 @@ public class Event {
         this.eventTime = eventTime;
         this.capacity = capacity;
         this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
         this.eventId = eventId;
 
         //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event

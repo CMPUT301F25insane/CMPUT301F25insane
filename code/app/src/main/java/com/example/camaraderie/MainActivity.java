@@ -35,10 +35,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 /**
  * The main activity of the app
  */
-@AndroidEntryPoint
+
 public class MainActivity extends AppCompatActivity {
 
-    @Inject
     AppDataRepository appDataRepository;
     private FirebaseFirestore db;
     public static User user;
@@ -136,13 +135,19 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
 
+        /*
         if (user.isAdmin()) {
             // navigate to admin fragment
         }
+        */
 
+
+
+        /*
         if (!user.getSelectedEvents().isEmpty()) {
             navController.navigate(R.id.fragment_pending_events);
         }
+        */
 
         navController.navigate(R.id.fragment_main);
 

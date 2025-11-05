@@ -1,3 +1,4 @@
+/*
 package com.example.camaraderie.event_screen;
 
 import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
@@ -74,3 +75,4 @@ public class CreateEventModel extends ViewModel {
 
 
 }
+*/

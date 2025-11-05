@@ -18,7 +18,7 @@ public class Util {
         CollectionReference eventsRef = db.collection("Events");
         CollectionReference usersRef = db.collection("Users");
 
-        clearDB();
+        //clearDB();
 
         for (int i = 0; i < 10; i++) {
 
@@ -47,6 +47,7 @@ public class Util {
                     "time" + i,
                     i,
                     userDocRef,
+                    eventDocRef,
                     eventDocRef.getId()
             );
 
@@ -56,6 +57,7 @@ public class Util {
         }
     }
 
+    /*
     public static void clearUsersCollection() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Users")
@@ -99,4 +101,6 @@ public class Util {
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", msg))
                 .addOnFailureListener(e -> Log.e("Firestore", "Error setting user" + user + " to " + isAdmin, e));
     }
+    */
+
 }

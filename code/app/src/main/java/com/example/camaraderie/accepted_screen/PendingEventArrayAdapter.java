@@ -54,6 +54,7 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 vm.userAcceptInvite(event.getEventDocRef());
+
                 if (user.getSelectedEvents().isEmpty()) {
                     parent.findViewById(R.id.pendingEventsContinueButton).setEnabled(true);
                 }
@@ -61,8 +62,10 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             }
         });
 
+
         view.findViewById(R.id.declineEventButton).setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
                 vm.userDeclineInvite(event.getEventDocRef());
                 if (user.getSelectedEvents().isEmpty()) {

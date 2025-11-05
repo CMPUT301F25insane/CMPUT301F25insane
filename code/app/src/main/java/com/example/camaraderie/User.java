@@ -89,13 +89,17 @@ public class User {
      * @return
      *  Return true if user is an admin, false otherwise
      */
+
+    /*
     public boolean isAdmin() {return admin;}
+    */
 
     /**
      * Set admin status of user
      * @param this_admin
      *  True if user should be admin. False otherwise
      */
+
     public void setAdmin(boolean this_admin) {  // we MANUALLY create admins for the app
         admin = this_admin;
     }
@@ -205,6 +209,7 @@ public class User {
     public ArrayList<DocumentReference> getAcceptedEvents() {
         return acceptedEvents;
     }
+
 
     public ArrayList<DocumentReference> getSelectedEvents() {
         return selectedEvents;

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-@AndroidEntryPoint
+
 public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;

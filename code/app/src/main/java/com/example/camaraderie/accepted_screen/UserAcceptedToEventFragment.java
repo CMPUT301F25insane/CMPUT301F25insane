@@ -36,6 +36,7 @@ public class UserAcceptedToEventFragment extends Fragment {
 
         ArrayList<Event> selectedEvents = new ArrayList<>();
 
+
         vm  = new ViewModelProvider(this).get(UserAcceptedViewModel.class);
         for (DocumentReference eventRef : user.getSelectedEvents()) {
             eventRef.get()
