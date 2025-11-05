@@ -146,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        appDataRepository.setSharedData(usersRef.document(id).getPath());
+
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
         navController.navigate(R.id.fragment_main);

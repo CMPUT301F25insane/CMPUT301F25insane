@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
+import static com.example.camaraderie.MainActivity.user;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,7 +26,6 @@ public class UserViewEventFragment extends Fragment {
 
     private FragmentViewEventUserBinding binding;
     private DocumentReference event;
-    private DocumentReference user;
     private static final String ARG_EVENT = "event";
     private static final String ARG_USER = "user";
     private String eventName;
@@ -68,9 +68,8 @@ public class UserViewEventFragment extends Fragment {
         userPath = (String)  getArguments().getSerializable(ARG_USER);
 
         db = FirebaseFirestore.getInstance();
-        Log.d("Progress", eventPath + userPath);
         event = db.document(eventPath);
-        user = db.collection("Users").document("110b89720e2f7766");
+        userPath = user.getUserId();
 
         fillTextViews(event);
 
@@ -110,22 +109,14 @@ public class UserViewEventFragment extends Fragment {
         event.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                Log.d("Here","Event has nothing???");
                 if (documentSnapshot.exists()){
                     eventName = documentSnapshot.getString("eventName");
                     description = documentSnapshot.getString("description");
                     deadline = documentSnapshot.getString("registrationDeadline");
                     dateAndTime = documentSnapshot.getString("dateAndTime");
                     location = documentSnapshot.getString("eventLocation");
-                    hostDocRef = documentSnapshot.getDocumentReference("host");
-                }
-            }
-        });
-
-        hostDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    hostName = documentSnapshot.getString("name");
                 }
             }
         });
@@ -135,7 +126,6 @@ public class UserViewEventFragment extends Fragment {
         binding.registrationDeadlineTextUserView.setText(deadline);
         binding.userEventViewEventDate.setText(dateAndTime);
         binding.locationOfUserView.setText(location); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
-        binding.hostNameUserView.setText(hostName);
     }
 
     @Override
