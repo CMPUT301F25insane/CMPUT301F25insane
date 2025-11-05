@@ -1,0 +1,83 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="173dp"
+    android:background="#3A3FA0">
+
+    <!-- Event name -->
+    <TextView
+        android:id="@+id/eventName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/cambria"
+        android:text="Event Name"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Event deadline -->
+    <TextView
+        android:id="@+id/eventDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="[date] | [registration deadline]"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/eventName"
+        app:layout_constraintTop_toBottomOf="@id/eventName" />
+
+    <!-- Profile image -->
+    <ImageButton
+        android:id="@+id/profile_photo_for_event_item"
+        android:layout_width="61dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <!-- Horizontal chain for 3 buttons -->
+    <Button
+        android:id="@+id/joinButton"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:backgroundTint="@color/custom_join_button_color"
+        android:fontFamily="@font/cambria"
+        android:text="Join"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/seeDescButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/seeDescButton"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:backgroundTint="#59403F3F"
+        android:fontFamily="@font/cambria"
+        android:text="See Description"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/RemoveButton"
+        app:layout_constraintStart_toEndOf="@id/joinButton" />
+
+    <Button
+        android:id="@+id/RemoveButton"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:backgroundTint="#59403F3F"
+        android:fontFamily="@font/cambria"
+        android:text="Remove"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/seeDescButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
