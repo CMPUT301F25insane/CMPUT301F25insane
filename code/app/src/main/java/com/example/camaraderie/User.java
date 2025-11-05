@@ -196,5 +196,24 @@ public class User {
                         Log.e("UserRepository", "Error updating user", e));
     }
 
+    public void addAcceptedEvent(DocumentReference eventDocRef) {
+        if (!acceptedEvents.contains(eventDocRef)) {
+            acceptedEvents.add(eventDocRef);
+        }
+    }
+
+    public ArrayList<DocumentReference> getAcceptedEvents() {
+        return acceptedEvents;
+    }
+
+    public ArrayList<DocumentReference> getSelectedEvents() {
+        return selectedEvents;
+    }
+
+    public void addSelectedEvent(DocumentReference event) {
+        if (!selectedEvents.contains(event)) {
+            selectedEvents.add(event);
+        }
+    }
 }
 

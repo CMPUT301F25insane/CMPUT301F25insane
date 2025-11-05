@@ -1,12 +1,10 @@
-package com.example.camaraderie;
-
-import com.google.firebase.firestore.DocumentReference;
+package com.example.camaraderie.data;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class AppDataRepository {
+public class AppDataRepositorySecond {
     private String userDocPath;
 
     public String getSharedData() {
@@ -18,7 +16,7 @@ public class AppDataRepository {
     }
 
     @Inject
-    public AppDataRepository(){};
+    public AppDataRepositorySecond(){};
 
 
 }

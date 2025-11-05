@@ -12,19 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.camaraderie.AppDataRepository;
+import com.example.camaraderie.data.AppDataRepositorySecond;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentMainBinding;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 
@@ -38,7 +33,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     private EventViewModel eventViewModel;
 
     @Inject
-    AppDataRepository appDataRepository;
+    AppDataRepositorySecond appDataRepositorySecond;
 
     private FirebaseFirestore db;
 
@@ -102,7 +97,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         Bundle args = new Bundle();
 
         args.putString("event", "Events/14Hilgbolf26MpmU0iPZ");
-        args.putString("user", appDataRepository.getSharedData());
+        args.putString("user", appDataRepositorySecond.getSharedData());
 
         if (args.getString("event") == null){
             Log.d("Firestore", "Event path is null");
