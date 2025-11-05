@@ -143,12 +143,18 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        for (DocumentReference eventDocRef : user.getSelectedEvents()) {
-            //TODO: run the navigation to the accept event fragment
-        }
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
+
+        if (user.isAdmin()) {
+            // navigate to admin fragment
+        }
+
+        if (!user.getSelectedEvents().isEmpty()) {
+            navController.navigate(R.id.fragment_pending_events);
+        }
+
         navController.navigate(R.id.fragment_main);
 
 

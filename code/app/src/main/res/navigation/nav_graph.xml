@@ -18,6 +18,21 @@
     </fragment>
 
     <fragment
+        android:id="@+id/_fragment_organizer_view_event"
+        android:name="com.example.camaraderie.event_screen.OrganizerViewEventFragment"
+        android:label="Organizer event view"
+        tools:layout="@layout/fragment_view_event_organizer">
+
+
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_main"
+            app:destination="@id/fragment_main" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_create_event_testing"
+            app:destination="@id/fragment_create_event_testing" />
+    </fragment>
+
+    <fragment
         android:id="@+id/fragment_main"
         android:name="com.example.camaraderie.dashboard.MainFragment"
         android:label="Main Fragment"
@@ -38,6 +53,9 @@
         <action
             android:id="@+id/action_fragment_create_event_testing_to_fragment_main"
             app:destination="@id/fragment_main" />
+        <action
+            android:id="@+id/action_fragment_create_event_testing_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
     <fragment
@@ -52,6 +70,12 @@
         <argument
             android:name="userDocPath"
             app:argType="string" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_main"
+            app:destination="@id/fragment_main" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_create_event_testing"
+            app:destination="@id/fragment_create_event_testing" />
 
     </fragment>
 

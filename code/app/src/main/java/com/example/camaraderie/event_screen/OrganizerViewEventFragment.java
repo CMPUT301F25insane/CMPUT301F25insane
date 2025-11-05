@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.R;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
 
@@ -42,7 +43,21 @@ public class OrganizerViewEventFragment extends Fragment {
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //nav.navigate();// TODO: DO THE NAV GRAPH STUFF HERE PLZ, TYYY);
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_main);
+            }
+        });
+
+        binding.hostEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_create_event_testing);
+            }
+        });
+
+        binding.myEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
