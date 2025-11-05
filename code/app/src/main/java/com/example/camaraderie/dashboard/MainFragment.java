@@ -78,7 +78,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     }
 
-    // i dont think this should live here, it could violate MVC principles
+    // i dont think this should live here, it could violate MVC principles TODO: refactor this later if this is true
     public void onEventClick(Event event){
 
         Log.d("Made it here", event.getEventName());

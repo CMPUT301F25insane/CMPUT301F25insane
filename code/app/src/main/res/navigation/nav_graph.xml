@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_fragment_view_my_events_to_fragment_create_event_testing"
             app:destination="@id/fragment_create_event_testing" />
+        <action
+            android:id="@+id/action_fragment_view_my_events_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
     <fragment
@@ -45,6 +48,9 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_create_event_testing"
             app:destination="@id/fragment_create_event_testing" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
     </fragment>
 
     <fragment
