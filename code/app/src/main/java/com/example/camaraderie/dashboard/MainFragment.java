@@ -17,12 +17,13 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentMainBinding;
 
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 
@@ -92,14 +93,26 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     public void onEventClick(Event event){
         db = FirebaseFirestore.getInstance();
 
+        Log.d("Made it here", event.getEventName());
+
         /**
          * Need to get the event from the database. Not working rn
          */
-        String eventDocPath = db.collection("Events").document(event.getEventName()).getPath();
 
-        Bundle args  = new Bundle();
+        Bundle args = new Bundle();
 
-        args.putString("event", eventDocPath);
+        db.collection("Events").document("0NasNPEZqFLybsod3SEI").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        String eventDocPath = document.getReference().getPath();
+                        args.putString("event", eventDocPath);
+                        if (document.exists()) {
+                            Log.d("Firestore", "Document data: " + document.getData());
+                        }
+                    }
+                });
+
         args.putString("user", appDataRepository.getSharedData());
 
         NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);

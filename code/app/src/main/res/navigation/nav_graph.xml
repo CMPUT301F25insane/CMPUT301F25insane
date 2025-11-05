@@ -34,12 +34,18 @@
         android:label="View Event User Fragment"
         tools:layout="@layout/fragment_view_event_user">
 
-        <argument
-            android:name="eventDocPath"
-            app:argType="string" />
-        <argument
-            android:name="userDocPath"
-            app:argType="string" />
+
+        <action
+            android:id="@id/action_fragment_main_to_fragment_create_event_testing"
+            app:destination="@id/fragment_view_event_user">
+            <argument
+                android:name="eventDocPath"
+                app:argType="string" />
+            <argument
+                android:name="userDocPath"
+                app:argType="string" />
+        </action>
+
 
     </fragment>
 
