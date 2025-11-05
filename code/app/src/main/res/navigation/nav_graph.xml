@@ -77,6 +77,11 @@
             android:id="@+id/action_fragment_view_event_user_to_fragment_create_event_testing"
             app:destination="@id/fragment_create_event_testing" />
 
+        <action
+            android:id="@id/action_fragment_main_to_fragment_create_event_testing"
+            app:destination="@id/fragment_view_event_user"/>
+
+
     </fragment>
 
 </navigation>

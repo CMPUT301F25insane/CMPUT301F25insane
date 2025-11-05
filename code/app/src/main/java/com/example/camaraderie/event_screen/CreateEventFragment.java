@@ -110,7 +110,7 @@ public class CreateEventFragment extends Fragment {
         Date deadline =  formatter.parse(eventDeadline.getText().toString());
         Date date = formatter.parse(eventDate.getText().toString());
 
-        // NEED TO GET TIME, AND PASS HOST AND CREATE EVENT ID
+        // NEED TO GET TIME, AND CREATE EVENT ID
         // validate user input and store in database.
         // DO NOT LEAK THE DB BY DOCUMENT INJECTION BY ACCIDENT
 

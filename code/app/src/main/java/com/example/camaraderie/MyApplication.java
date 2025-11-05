@@ -1,4 +1,4 @@
-package com.example.camaraderie.data;
+package com.example.camaraderie;
 
 import android.app.Application;
 import dagger.hilt.android.HiltAndroidApp;

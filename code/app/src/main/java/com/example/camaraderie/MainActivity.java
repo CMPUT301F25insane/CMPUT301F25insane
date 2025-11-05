@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         usersRef = db.collection("Users");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-
         usersRef.whereEqualTo("UserID", id).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (!task.getResult().isEmpty()) {
@@ -72,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Firestore", "Found Document");
                         userExists = true;
 
-                        appDataRepository.setSharedData(db.collection("users").document(id).getPath());
+                        appDataRepository.setSharedData(usersRef.document(id).getPath());
+                        Log.d("set data", usersRef.document(id).getPath());
+
 
 
 //                        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -112,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
                                     user = new User(name1, email2, address2, phoneNum2, id2, null);
                                     usersRef.document(id2).set(user);
                                     user.setDocRef(usersRef.document(id2));
+                                    appDataRepository.setSharedData(usersRef.document(id).getPath());
+                                    Log.d("set data", usersRef.document(id).getPath());
+
 
                                 }).setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss()).create().show();
                         userExists = false;
@@ -142,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
             eventViewModel.setLocalEvents(events);
 
         });
+
+        appDataRepository.setSharedData(usersRef.document(id).getPath());
 
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
