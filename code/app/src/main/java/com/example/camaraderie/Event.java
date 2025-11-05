@@ -24,7 +24,7 @@ public class Event {
     private Date eventDate;
     private String eventTime;  // this will probably become a better data type soon
     //private float price = 0.0f;
-    private Waitlist waitlist = new Waitlist();
+    private ArrayList<DocumentReference> waitlist = new ArrayList<>();
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private int capacity;  // always > 0
@@ -234,7 +234,7 @@ public class Event {
      * @return
      *  Return the event waitlist
      */
-    public Waitlist getWaitlist() {
+    public ArrayList<DocumentReference> getWaitlist() {
         return waitlist;
     }
 
@@ -269,5 +269,15 @@ public class Event {
         eventDocRef.set(this, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Successfully update event"))
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to update event"));
+    }
+
+    public void addWaitlistUser(DocumentReference user) {
+        if (!waitlist.contains(user)) {
+            waitlist.add(user);
+        }
+    }
+
+    public void removeWaitlistUser(DocumentReference user) {
+        waitlist.remove(user);
     }
 }

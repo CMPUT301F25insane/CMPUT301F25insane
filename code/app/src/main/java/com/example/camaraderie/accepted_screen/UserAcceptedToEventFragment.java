@@ -48,14 +48,8 @@ public class UserAcceptedToEventFragment extends Fragment {
                     .addOnFailureListener(e ->
                             Log.e("Firestore", "Failed to get event", e));
         }
-        pendingEventArrayAdapter = new PendingEventArrayAdapter(requireContext(), 0, selectedEvents, vm, this::enableConfirm);
+        pendingEventArrayAdapter = new PendingEventArrayAdapter(requireContext(), 0, selectedEvents, vm);
 
-    }
-
-    public void enableConfirm(Object o) {
-        if (user.getSelectedEvents().isEmpty()) {
-            binding.pendingEventsContinueButton.setEnabled(true);
-        }
     }
 
     @Nullable

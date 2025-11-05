@@ -1,5 +1,7 @@
 package com.example.camaraderie.accepted_screen;
 
+import static com.example.camaraderie.MainActivity.user;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +23,12 @@ import java.util.function.Consumer;
 public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
     private UserAcceptedViewModel vm;
-    private Consumer enableButton;
-    public PendingEventArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> events, UserAcceptedViewModel vm, Consumer<Object> enableButton) {
+
+    public PendingEventArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> events, UserAcceptedViewModel vm) {
         super(context, resource, events);
 
         this.vm = vm;
-        this.enableButton = enableButton;
+
     }
 
     @NonNull
@@ -52,7 +54,10 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 vm.userAcceptInvite(event.getEventDocRef());
-                enableButton.accept(new Object());
+                if (user.getSelectedEvents().isEmpty()) {
+                    parent.findViewById(R.id.pendingEventsContinueButton).setEnabled(true);
+                }
+
             }
         });
 
@@ -60,7 +65,9 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 vm.userDeclineInvite(event.getEventDocRef());
-                enableButton.accept(new Object());
+                if (user.getSelectedEvents().isEmpty()) {
+                    parent.findViewById(R.id.pendingEventsContinueButton).setEnabled(true);
+                }
             }
         });
 

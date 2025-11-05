@@ -20,7 +20,8 @@
     <fragment
         android:id="@+id/fragment_view_my_events"
         android:name="com.example.camaraderie.my_events.ViewMyEventsFragment"
-        android:label="View My Events">
+        android:label="View My Events"
+        tools:layout="@layout/fragment_view_my_events">
 
 
         <action
