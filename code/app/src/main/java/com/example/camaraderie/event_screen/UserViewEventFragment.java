@@ -99,7 +99,7 @@ public class UserViewEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("here", "somehow");
-                eventDocRef.update("waitlist.waitlist", FieldValue.arrayUnion(user.getDocRef())).addOnSuccessListener(aVoid -> {
+                eventDocRef.update("waitlist", FieldValue.arrayUnion(user.getDocRef())).addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "You have joined the event", LENGTH_SHORT).show();
                 });
                 binding.joinButtonUserView.setEnabled(false);
@@ -115,7 +115,7 @@ public class UserViewEventFragment extends Fragment {
         binding.unjoinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventDocRef.update("waitlist.waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid -> {
+                eventDocRef.update("waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
 
@@ -133,6 +133,20 @@ public class UserViewEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
+            }
+        });
+
+        binding.hostEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_create_event_testing);
+            }
+        });
+
+        binding.myEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_view_my_events);
             }
         });
     }

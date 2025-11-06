@@ -90,15 +90,13 @@ public class MainActivity extends AppCompatActivity {
 
                     }
 
-
-
                 })
                 .addOnFailureListener(e -> {
                     throw new RuntimeException("listen, we fucked up.");
                 });
 
         // add dummy data
-        clearAndAddDummyEvents();
+        clearAndAddDummyEvents();  // WARNING: THIS IS AN ASYNC RELIANT FUNCTION
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
@@ -115,9 +113,6 @@ public class MainActivity extends AppCompatActivity {
             eventViewModel.setLocalEvents(events);
 
         });
-
-//        appDataRepository.setSharedData(usersRef.document(id).getPath());
-
 
     }
 
@@ -143,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 //                    String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
 
-                    Log.d("Firestore", "wenis");
+                    Log.d("Firestore", "wenis (builder built)");
                     // TALK TO RAMIZ ABT THIS!!!!!!
                     // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
                     DocumentReference userDocRef = usersRef.document(id);
