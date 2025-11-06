@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 
+
 public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;

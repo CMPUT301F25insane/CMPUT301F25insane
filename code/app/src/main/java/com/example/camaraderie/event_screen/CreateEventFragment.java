@@ -153,14 +153,10 @@ public class CreateEventFragment extends Fragment {
         // DO NOT LEAK THE DB BY DOCUMENT INJECTION BY ACCIDENT
 
 
-
-        Event event = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), null);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference eventRef = db.collection("Events").document();
         String eventId = eventRef.getId();
-
-        event.setEventId(eventId);
-        event.setEventDocRef(eventRef);
+        Event event = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
 
         eventRef.set(event)
                 .addOnSuccessListener(aVoid -> {

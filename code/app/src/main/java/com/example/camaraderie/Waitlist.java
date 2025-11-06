@@ -7,6 +7,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class handles the waitlist for an event
+ * ONLY GETS CREATED BY EVENT CLASS
+ * */
 /*ONLY GETS CREATED BY EVENT CLASS*/
 
 /**

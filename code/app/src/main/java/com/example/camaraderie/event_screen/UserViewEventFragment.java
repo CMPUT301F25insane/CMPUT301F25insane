@@ -1,26 +1,37 @@
 package com.example.camaraderie.event_screen;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 
 import static com.example.camaraderie.MainActivity.user;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
+import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
+import java.util.Map;
 
 public class UserViewEventFragment extends Fragment {
 
@@ -46,8 +57,19 @@ public class UserViewEventFragment extends Fragment {
         })
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Event not loaded from db!");
-                    //TODO: HANDLE THIS EXCEPTION
+                    Toast.makeText(requireContext(), "Event Not Found", LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(UserViewEventFragment.this)
+                            .navigate(R.id.fragment_main);
                 });
+
+        if(event.getWaitlist().contains(user.getDocRef())) {
+
+            Log.d("Firestore", "User is not in event");
+            Button button = binding.unjoinButtonUserView;
+            button.setEnabled(false);
+            button.setBackgroundColor(Color.GRAY);
+
+        }
 
     }
 
@@ -74,20 +96,20 @@ public class UserViewEventFragment extends Fragment {
             public void onClick(View v) {
                 Log.d("here", "somehow");
                 eventDocRef.update("waitlist.waitlist", FieldValue.arrayUnion(user.getDocRef())).addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "You have joined the event", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "You have joined the event", LENGTH_SHORT).show();
                 });
             }
 
         });
 
-        //TODO: fix this to be greyed out when the user is not in vs in the event
         binding.unjoinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 eventDocRef.update("waitlist.waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "You have left the event", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
             }
+
         });
 
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {

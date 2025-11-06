@@ -19,6 +19,9 @@ import com.example.camaraderie.R;
 
 import java.util.ArrayList;
 
+/**
+ *This is the class that handles the events in a dashboard by creating them and adding functionality to each event item
+ * */
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
     public OnEventClickListener listener;
