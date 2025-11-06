@@ -195,7 +195,7 @@ public class CreateEventFragment extends Fragment {
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.createEventDate.setText(day + "-" + month + "-" + year);
+                binding.createEventDate.setText(year + "-" + (month+1) + "-" + day);
             }
 
         }, 2025, 10, 6);
@@ -209,7 +209,7 @@ public class CreateEventFragment extends Fragment {
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.createEventDeadline.setText(day + "-" + month + "-" + year);
+                binding.createEventDeadline.setText(year + "-" + (month+1) + "-" + day);
             }
 
         }, 2025, 10, 6);
