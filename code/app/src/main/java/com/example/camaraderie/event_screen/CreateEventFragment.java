@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -131,8 +132,8 @@ public class CreateEventFragment extends Fragment {
 
                 try {
                     createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, eventTime);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
             }
         });
