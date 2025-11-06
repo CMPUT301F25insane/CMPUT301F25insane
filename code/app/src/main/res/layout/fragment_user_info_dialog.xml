@@ -11,26 +11,26 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Full Name" />
+        android:hint="Full Name" />
     <EditText
         android:id="@+id/edit_email_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Email" />
+        android:hint="Email" />
     <EditText
         android:id="@+id/edit_text_address_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Address" />
+        android:hint="Address" />
     <EditText
         android:id="@+id/edit_phone_number_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Phone Number" />
+        android:hint="Phone Number" />
 </LinearLayout>

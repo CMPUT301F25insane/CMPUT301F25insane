@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
@@ -26,6 +27,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
+    private NavController nav;
     private EventViewModel eventViewModel;
     private FirebaseFirestore db;
 
@@ -36,6 +38,8 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
+
+        nav = NavHostFragment.findNavController(MainFragment.this);
     }
 
     @Nullable
@@ -70,8 +74,22 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 NavHostFragment.findNavController(MainFragment.this)
-                                          .navigate(R.id.action_fragment_main_to_fragment_create_event_testing);
+
+                nav.navigate(R.id.action_fragment_main_to_fragment_create_event_testing);
+            }
+        });
+
+        binding.myEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action_fragment_main_to_fragment_view_my_events);
+            }
+        });
+
+        binding.accountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO implement the view account fragment
             }
         });
 
@@ -87,7 +105,8 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         args.putString("eventDocRefPath", event.getEventDocRef().getPath());
 
         if (args.getString("eventDocRefPath") == null){
-            Log.d("Firestore", "Event path is null");
+            Log.e("Firestore", "Event path is null");
+            throw new RuntimeException("Firestore event path is null in onEventClick()");
         }
 
         NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);

@@ -161,6 +161,9 @@ public class CreateEventFragment extends Fragment {
         eventRef.set(event)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firestore", "Event added with ID: " + eventId);
+
+                    user.addCreatedEvent(eventRef);
+
                     NavHostFragment.findNavController(CreateEventFragment.this)
                             .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
                 })

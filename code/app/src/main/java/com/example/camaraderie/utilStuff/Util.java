@@ -57,7 +57,7 @@ public class Util {
         }
     }
 
-    /*
+
     public static void clearUsersCollection() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Users")
@@ -101,6 +101,6 @@ public class Util {
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", msg))
                 .addOnFailureListener(e -> Log.e("Firestore", "Error setting user" + user + " to " + isAdmin, e));
     }
-    */
+
 
 }
