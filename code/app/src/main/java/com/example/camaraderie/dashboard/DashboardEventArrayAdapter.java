@@ -1,4 +1,7 @@
-package com.example.camaraderie;//
+package com.example.camaraderie.dashboard;
+
+
+import static com.example.camaraderie.MainActivity.user;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,14 +14,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
+
 import java.util.ArrayList;
 
+/**
+ *This is the class that handles the events in a dashboard by creating them and adding functionality to each event item
+ * */
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
+    public OnEventClickListener listener;
 
+    /**
+     *
+     * @param context
+     *  Context of the activity
+     * @param events
+     *  List of events to be displayed
+     */
     public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
     }
+
+    public interface OnEventClickListener {
+        void onEventClick(Event event);
+    }
+
 
     @NonNull
     @Override
@@ -38,7 +60,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         TextView eventName = view.findViewById(R.id.eventName);
         //TextView eventPrice = view.findViewById(R.id.eventPrice);
         TextView eventDeadline = view.findViewById(R.id.eventDeadline);
-        TextView hostName = view.findViewById(R.id.hostName);
+        //TextView hostName = view.findViewById(R.id.hostName);
 
         eventName.setText(event.getEventName());
         //eventPrice.setText(String.valueOf(event.getPrice()));
@@ -51,14 +73,15 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                event.addWaitlistUser(user.getDocRef());
             }
         });
 
+        // this might be a null ref, perhaps the code should just exist here?
         descButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                listener.onEventClick(event);
             }
         });
 

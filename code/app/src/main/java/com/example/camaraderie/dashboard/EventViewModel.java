@@ -1,11 +1,17 @@
-package com.example.camaraderie;//
+package com.example.camaraderie.dashboard;//
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.camaraderie.Event;
+
 import java.util.ArrayList;
 
+
+/**
+ * This class handles the display for the events dashboard
+ * */
 public class EventViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<Event>> localEvents = new MutableLiveData<>();
