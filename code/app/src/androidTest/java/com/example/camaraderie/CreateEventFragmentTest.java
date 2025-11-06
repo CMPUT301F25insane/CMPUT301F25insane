@@ -9,13 +9,17 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
+import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.example.camaraderie.event_screen.CreateEventFragment;
+import com.example.camaraderie.event_screen.UserViewEventFragment;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,18 +29,23 @@ import org.junit.runner.RunWith;
 @LargeTest
 public class CreateEventFragmentTest {
 
-    @Rule
-    public ActivityScenarioRule<MainActivity> activityRule =
-            new ActivityScenarioRule<>(MainActivity.class);
+    private FragmentScenario<CreateEventFragment> scenario;
+
+    @Before
+    public void setUp() {
+        // Launch the fragment in a container just like in a real Activity
+        scenario = FragmentScenario.launchInContainer(CreateEventFragment.class);
+    }
+    @After
+    public void tearDown() {
+        scenario.close();
+    }
 
 
 
     @Test
     // we are testing if the Create event button is visible on the main screen
     public void testCreateEventButtonVisible() {
-
-        onView(withId(R.id.hostEvent))
-                .perform(click());
         onView(withId(R.id.createEventConfirmButton))
                 .check(matches(isDisplayed()));
     }
@@ -44,16 +53,12 @@ public class CreateEventFragmentTest {
     @Test
     //testing if create event Button if Clickable
     public void testCreateEventButtonClickable() {
-        onView(withId(R.id.hostEvent))
-                .perform(click());
         onView(withId(R.id.createEventConfirmButton))
                 .perform(click());
     }
     @Test
     // we are creating the event by entering the event details as a Organizer and pressing confirm button
     public void testEventDetails() {
-        onView(withId(R.id.hostEvent))
-                .perform(click());
 
         onView(withId(R.id.createEventName)).perform(click());
         onView(withId(R.id.createEventName)).perform(ViewActions.typeText("Free Tickets to Oilers Game"));
@@ -72,6 +77,10 @@ public class CreateEventFragmentTest {
         onView(withId(R.id.createEventDescription)).perform(ViewActions.typeText("20 Lucky individuals will get a front row seats to the oilers game aganist flames"));
         onView(withId(R.id.createEventDescription)).perform(closeSoftKeyboard());
 
+        onView(withId(R.id.createEventLocation)).perform(click());
+        onView(withId(R.id.createEventLocation)).perform(ViewActions.typeText("Edmonton Stadium"));
+        onView(withId(R.id.createEventLocation)).perform(closeSoftKeyboard());
+
         onView(withId(R.id.createEventCapacity)).perform(click());
         onView(withId(R.id.createEventCapacity)).perform(ViewActions.typeText("100"));
         onView(withId(R.id.createEventCapacity)).perform(closeSoftKeyboard());
@@ -83,7 +92,6 @@ public class CreateEventFragmentTest {
     @Test
     //Testing if error appear in the event a Organizer does not input anything or leaves blank field
     public void testEmptyFormShowsError() {
-        onView(withId(R.id.hostEvent)).perform(click());
         onView(withId(R.id.createEventConfirmButton)).perform(click());
         onView(withText("Please fill in all fields"))
                 .check(matches(isDisplayed()));

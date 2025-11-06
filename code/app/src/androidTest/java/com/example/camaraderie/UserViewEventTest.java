@@ -1,6 +1,7 @@
 package com.example.camaraderie;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.fragment.app.testing.FragmentScenario;
@@ -14,6 +15,8 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+
+import static org.hamcrest.Matchers.not;
 
 import org.junit.After;
 import org.junit.Before;
@@ -130,9 +133,33 @@ public class UserViewEventTest {
         onView(withId(R.id.unjoin_button_user_view)).check(matches(isDisplayed()));
     }
 
+    @Test
+    // Test That Join and Unjoin button are mutually Exclusive
+    public void testOnlyOneJoinButtonVisibleAtTime() {
+        onView(withId(R.id.join_button_user_view)).perform(click());
+        onView(withId(R.id.unjoin_button_user_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.join_button_user_view)).check(matches(not(isDisplayed())));
+    }
 
+    @Test
+    //we are testing that edit button is not in User View
+    public void testNoEditButtonInUserView() {
+        onView(withId(R.id.delete_button_org_view)).check(doesNotExist()); // should not appear in UserView
 
+    }
+    @Test
+    //we are testing that Delete button is not in User View
+    public void testNoDeleteButtonInUserView() {
+        onView(withId(R.id.delete_button_org_view)).check(doesNotExist()); // should not appear in UserView
 
-
+    }
 
 }
+
+
+
+
+
+
+
+
