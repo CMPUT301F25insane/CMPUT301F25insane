@@ -25,7 +25,7 @@ public class Util {
             DocumentReference userDocRef = usersRef.document();
 
             User user = new User(
-                    "firstname" + i,
+                    "firstname" + i + userDocRef.getId(),
                     "phoneNumber" + i,
                     "email" + i + "@gmail.com",
                     "address" + i,
@@ -39,7 +39,7 @@ public class Util {
             DocumentReference eventDocRef = eventsRef.document();
 
             Event event = new Event(
-                    "event" + i,
+                    "event" + i + eventDocRef.getId(),
                     "location" + i,
                     new Date(),
                     "desc" + i,
