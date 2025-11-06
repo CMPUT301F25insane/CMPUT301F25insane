@@ -75,6 +75,8 @@ public class Event {
     }
 
 
+
+
 //    //public float getPrice() {
 //        return price;
 //    }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -22,6 +23,7 @@ import static com.example.camaraderie.MainActivity.user;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,12 +43,15 @@ public class UserViewEventFragment extends Fragment {
     private FragmentViewEventUserBinding binding;
     private DocumentReference eventDocRef;
     private Event event;
+    private EventViewModel eventViewModel;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         nav = NavHostFragment.findNavController(UserViewEventFragment.this);
+
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
     }
 
@@ -128,7 +133,13 @@ public class UserViewEventFragment extends Fragment {
                 binding.unjoinButtonUserView.setEnabled(false);
                 binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
 
+                // this is so fuckin jank bro
                 user.removeWaitlistedEvent(eventDocRef);
+                for ( Event event : eventViewModel.getLocalEvents().getValue()) {
+                    if (event.getEventDocRef().equals(eventDocRef)){
+                        event.removeWaitlistUser(user.getDocRef());  // update live data
+                    }
+                }
 
                 nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }

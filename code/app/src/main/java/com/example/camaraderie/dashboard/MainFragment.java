@@ -98,7 +98,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     // i dont think this should live here, it could violate MVC principles TODO: refactor this later if this is true
     public void onEventClick(Event event){
 
-        Log.d("Made it here", event.getEventName());
+        Log.d("Firebase", "User clicked description for" + event.getEventName());
 
         Bundle args = new Bundle();
 
@@ -117,4 +117,35 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         super.onDestroy();
         binding = null;
     }
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+//
+//        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
+//        binding.eventsList.setAdapter(dashboardEventArrayAdapter);
+//
+//        // Observe LiveData for events
+//        eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
+//            dashboardEventArrayAdapter.clear();
+//            dashboardEventArrayAdapter.addAll(events);
+//            dashboardEventArrayAdapter.notifyDataSetChanged();
+//        });
+//
+//        // Filter Button
+//        binding.applyFilterButton.setOnClickListener(v -> {
+//            String selectedInterest = binding.filterInterestSpinner.getSelectedItem().toString();
+//            String dateInput = binding.filterDateInput.getText().toString();
+//
+//            eventViewModel.filterEvents(selectedInterest, dateInput);
+//        });
+//
+//        // Host Event navigation
+//        binding.hostEvent.setOnClickListener(v ->
+//                NavHostFragment.findNavController(MainFragment.this)
+//                        .navigate(R.id.action_fragment_main_to_fragment_create_event_testing)
+//        );
+//    }
+
 }
