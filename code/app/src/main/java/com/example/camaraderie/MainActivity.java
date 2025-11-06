@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
 
-
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
 
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
@@ -65,44 +66,32 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Firestore", "Searching for user in database...");
         usersRef.document(id).get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    user = documentSnapshot.toObject(User.class);
-                    Log.d("Firestore", "User found");
+
+                    if (documentSnapshot.exists()) {
+                        user = documentSnapshot.toObject(User.class);
+                        Log.d("Firestore", "User found");
+
+                        if (user.isAdmin()) {
+                            //TODO: navigate to admin fragment
+                        }
+
+                        if (!user.getSelectedEvents().isEmpty()) {
+                            navController.navigate(R.id.fragment_pending_events);
+                        }
+
+                        // else, nav to the main fragment
+                        navController.navigate(R.id.fragment_main);
+                    }
+                    else {
+                        newUserBuilder(id);  // build user
+                        navController.navigate(R.id.fragment_main);
+                    }
+
+
+
                 })
                 .addOnFailureListener(e -> {
-                        Log.e("Firestore", "User does not exist! Creating new user...");
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        LayoutInflater inflater = getLayoutInflater();
-                        View dialogView = inflater.inflate(R.layout.fragment_user_info_dialog, null);
-                        EditText name = dialogView.findViewById(R.id.edit_full_name_text);
-                        EditText Email = dialogView.findViewById(R.id.edit_email_text);
-                        EditText address = dialogView.findViewById(R.id.edit_text_address_text);
-                        EditText phoneNum = dialogView.findViewById(R.id.edit_phone_number_text);
-
-                        //TODO: deal with empty fields
-
-                        builder.setMessage("Please enter Your information to create a profile")
-                                .setView(dialogView)
-                                .setPositiveButton("Done", (dialog, id1) -> {
-                                    String name1 = name.getText().toString();
-                                    String email2 = Email.getText().toString();
-                                    String address2 = address.getText().toString();
-                                    String phoneNum2 = phoneNum.getText().toString();
-                                    String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
-
-                                    Log.d("Firestore", "wenis");
-                                    // TALK TO RAMIZ ABT THIS!!!!!!
-                                    // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
-                                    DocumentReference userDocRef = usersRef.document();
-
-                                    user = new User(name1, email2, address2, phoneNum2, id2, userDocRef);
-                                    userDocRef.set(user);
-
-                                    //appDataRepository.setSharedData(usersRef.document(id).getPath());
-                                    //Log.d("set data", usersRef.document(id).getPath());
-
-                                    Log.d("Firestore", "User has been created!");
-                                });
+                    throw new RuntimeException("listen, we fucked up.");
                 });
 
         // add dummy data
@@ -128,26 +117,51 @@ public class MainActivity extends AppCompatActivity {
 //        appDataRepository.setSharedData(usersRef.document(id).getPath());
 
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
+    }
 
-        /*
-        if (user.isAdmin()) {
-            // navigate to admin fragment
-        }
-        */
+    private void newUserBuilder(String id) {
+        Log.e("Firestore", "User does not exist! Creating new user...");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.fragment_user_info_dialog, null);
+        EditText name = dialogView.findViewById(R.id.edit_full_name_text);
+        EditText Email = dialogView.findViewById(R.id.edit_email_text);
+        EditText address = dialogView.findViewById(R.id.edit_text_address_text);
+        EditText phoneNum = dialogView.findViewById(R.id.edit_phone_number_text);
+
+        //TODO: deal with empty fields
+
+        builder.setMessage("Please enter Your information to create a profile")
+                .setView(dialogView)
+                .setPositiveButton("Done", (dialog, id1) -> {
+                    String name1 = name.getText().toString();
+                    String email2 = Email.getText().toString();
+                    String address2 = address.getText().toString();
+                    String phoneNum2 = phoneNum.getText().toString();
+//                    String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
 
+                    Log.d("Firestore", "wenis");
+                    // TALK TO RAMIZ ABT THIS!!!!!!
+                    // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
+                    DocumentReference userDocRef = usersRef.document(id);
 
-        /*
-        if (!user.getSelectedEvents().isEmpty()) {
-            navController.navigate(R.id.fragment_pending_events);
-        }
-        */
+                    user = new User(name1, email2, address2, phoneNum2, id, userDocRef);
+                    userDocRef.set(user)
+                            .addOnSuccessListener(
+                                    aVoid -> {Log.d("Firestore", "User has been created!");}
 
-        navController.navigate(R.id.fragment_main);
+                            )
+                            .addOnFailureListener(e -> {
+                                Log.e("Firestore", "Could not create user", e);
+                                throw new RuntimeException(e);
+                            });
+
+                    //appDataRepository.setSharedData(usersRef.document(id).getPath());
+                    //Log.d("set data", usersRef.document(id).getPath());
 
 
+                });
     }
 
     @Override

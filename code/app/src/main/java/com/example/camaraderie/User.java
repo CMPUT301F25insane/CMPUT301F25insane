@@ -220,5 +220,9 @@ public class User {
             selectedEvents.add(event);
         }
     }
+
+    public boolean isAdmin() {
+        return admin;
+    }
 }
 
