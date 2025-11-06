@@ -71,6 +71,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         Button joinButton = view.findViewById(R.id.joinButton);
 
         if (event.getWaitlist().contains(user.getDocRef())) {
+            //TODO figure out why this causes false positives
             joinButton.setEnabled(false);
             joinButton.setBackgroundColor(Color.GRAY);
         }
