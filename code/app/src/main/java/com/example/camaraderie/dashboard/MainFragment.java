@@ -105,7 +105,8 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         args.putString("eventDocRefPath", event.getEventDocRef().getPath());
 
         if (args.getString("eventDocRefPath") == null){
-            Log.d("Firestore", "Event path is null");
+            Log.e("Firestore", "Event path is null");
+            throw new RuntimeException("Firestore event path is null in onEventClick()");
         }
 
         NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);

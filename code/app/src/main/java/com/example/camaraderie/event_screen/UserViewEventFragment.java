@@ -107,6 +107,9 @@ public class UserViewEventFragment extends Fragment {
 
                 binding.unjoinButtonUserView.setEnabled(true);
                 binding.unjoinButtonUserView.setBackgroundColor(Color.RED);
+
+                user.addWaitlistedEvent(eventDocRef);
+
                 nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }
 
@@ -124,6 +127,9 @@ public class UserViewEventFragment extends Fragment {
 
                 binding.unjoinButtonUserView.setEnabled(false);
                 binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
+
+                user.removeWaitlistedEvent(eventDocRef);
+
                 nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }
 
@@ -158,12 +164,6 @@ public class UserViewEventFragment extends Fragment {
         binding.registrationDeadlineTextUserView.setText(event.getRegistrationDeadline().toString());  //TODO: deal with date stuff
         binding.userEventViewEventDate.setText(event.getEventDate().toString());
         binding.locationOfUserView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
     @Override

@@ -31,15 +31,8 @@ public class OrganizerViewEventFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String eventPath = getArguments().getString("eventDocRefPath");
-        db = FirebaseFirestore.getInstance();
-        eventDocRef = db.collection("Events").document(eventPath);
 
-        eventDocRef.get().addOnSuccessListener(
-                documentSnapshot -> {
-                    event = documentSnapshot.toObject(Event.class);
-                }
-        );
+        db = FirebaseFirestore.getInstance();
 
         nav = NavHostFragment.findNavController(OrganizerViewEventFragment.this);
     }
@@ -55,6 +48,15 @@ public class OrganizerViewEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        String eventPath = getArguments().getString("eventDocRefPath");
+        eventDocRef = db.document(eventPath);
+        eventDocRef.get().addOnSuccessListener(
+                documentSnapshot -> {
+                    event = documentSnapshot.toObject(Event.class);
+                    fillTextViews(event);
+                }
+        );
 
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,5 +86,27 @@ public class OrganizerViewEventFragment extends Fragment {
                 //TODO: do the logic for this
             }
         });
+
+        binding.eventEditButtonOrdView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: IMPLEMENT THIS - maybe reuse the create event screen?
+            }
+        });
+    }
+
+    private void fillTextViews(Event event) {
+
+        binding.eventNameForOrgView.setText(event.getEventName());
+        binding.eventDescriptionOrgView.setText(event.getDescription());
+        binding.registrationDeadlineTextOrgView.setText(event.getRegistrationDeadline().toString());  //TODO: deal with date stuff
+        binding.orgEventViewEventDate.setText(event.getEventDate().toString());
+        binding.locationOfOrgView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }
