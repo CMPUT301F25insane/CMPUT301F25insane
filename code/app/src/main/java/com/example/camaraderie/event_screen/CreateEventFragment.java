@@ -2,12 +2,15 @@ package com.example.camaraderie.event_screen;
 
 import static com.example.camaraderie.MainActivity.user;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -74,6 +77,20 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.createEventDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDateDialogue();
+            }
+        });
+
+        binding.createEventDeadline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDeadlineDialogue();
+            }
+        });
+
         binding.createEventPictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,8 +122,8 @@ public class CreateEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 EditText eventName = binding.createEventName;
-                EditText eventDate = binding.createEventDate;
-                EditText eventDeadline = binding.createEventDeadline;
+                TextView eventDate = binding.createEventDate;
+                TextView eventDeadline = binding.createEventDeadline;
                 EditText eventLocation = binding.createEventLocation;
                 EditText eventDescription = binding.createEventDescription;
                 EditText eventCapacity = binding.createEventCapacity;
@@ -131,8 +148,8 @@ public class CreateEventFragment extends Fragment {
     }
 
     private void createEvent(EditText eventName,
-                             EditText eventDate,
-                             EditText eventDeadline,
+                             TextView eventDate,
+                             TextView eventDeadline,
                              EditText eventLocation,
                              EditText eventDescription,
                              EditText eventCapacity,
@@ -147,6 +164,7 @@ public class CreateEventFragment extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date deadline =  formatter.parse(eventDeadline.getText().toString());
         Date date = formatter.parse(eventDate.getText().toString());
+
 
         // NEED TO GET TIME, AND CREATE EVENT ID
         // validate user input and store in database.
@@ -168,6 +186,34 @@ public class CreateEventFragment extends Fragment {
                             .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
+
+    }
+
+    private void openDateDialogue() {
+        DatePickerDialog dateDialog;
+        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                binding.createEventDate.setText(day + "-" + month + "-" + year);
+            }
+
+        }, 2025, 10, 6);
+
+        dateDialog.show();
+
+    }
+
+    private void openDeadlineDialogue() {
+        DatePickerDialog dateDialog;
+        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                binding.createEventDeadline.setText(day + "-" + month + "-" + year);
+            }
+
+        }, 2025, 10, 6);
+
+        dateDialog.show();
 
     }
 }

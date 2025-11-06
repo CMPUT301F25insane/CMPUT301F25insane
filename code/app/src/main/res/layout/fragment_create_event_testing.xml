@@ -18,26 +18,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.354" />
 
-    <EditText
+    <TextView
         android:id="@+id/createEventDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:ems="10"
         android:hint="Date"
         android:inputType="date"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/createEventDeadline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.019"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/createEventDeadline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="4dp"
         android:ems="10"
         android:hint="Registration Deadline"
         android:inputType="date"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/createEventLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.019"
