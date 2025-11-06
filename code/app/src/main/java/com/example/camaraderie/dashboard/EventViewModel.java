@@ -19,4 +19,5 @@ public class EventViewModel extends ViewModel {
     public void setLocalEvents(ArrayList<Event> events) {
         localEvents.setValue(events);
     }
+
 }
