@@ -14,6 +14,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.example.camaraderie.event_screen.CreateEventFragment;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,21 +29,32 @@ public class CreateEventFragmentTest {
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
+
+
     @Test
-    public void testHostEventButtonVisible() {
-        onView(withId(R.id.createEventConfirmButton))
+    // we are testing if the Create event button is visible on the main screen
+    public void testCreateEventButtonVisible() {
+
+        onView(withId(R.id.hostEvent))
                 .perform(click());
         onView(withId(R.id.createEventConfirmButton))
                 .check(matches(isDisplayed()));
     }
 
     @Test
-    public void testHostEventButtonClickable() {
+    //testing if create event Button if Clickable
+    public void testCreateEventButtonClickable() {
+        onView(withId(R.id.hostEvent))
+                .perform(click());
         onView(withId(R.id.createEventConfirmButton))
                 .perform(click());
     }
     @Test
+    // we are creating the event by entering the event details as a Organizer and pressing confirm button
     public void testEventDetails() {
+        onView(withId(R.id.hostEvent))
+                .perform(click());
+
         onView(withId(R.id.createEventName)).perform(click());
         onView(withId(R.id.createEventName)).perform(ViewActions.typeText("Free Tickets to Oilers Game"));
         onView(withId(R.id.createEventName)).perform(closeSoftKeyboard());
@@ -68,7 +81,9 @@ public class CreateEventFragmentTest {
 
     }
     @Test
+    //Testing if error appear in the event a Organizer does not input anything or leaves blank field
     public void testEmptyFormShowsError() {
+        onView(withId(R.id.hostEvent)).perform(click());
         onView(withId(R.id.createEventConfirmButton)).perform(click());
         onView(withText("Please fill in all fields"))
                 .check(matches(isDisplayed()));
