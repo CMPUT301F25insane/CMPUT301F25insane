@@ -1,6 +1,9 @@
 package com.example.camaraderie.event_screen;
 
+import static com.example.camaraderie.MainActivity.user;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +18,43 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
- *
+ * Interface that allows an organizer to create an event
  */
 public class CreateEventFragment extends Fragment {
 
     private FragmentCreateEventTestingBinding binding;
 
+    /**
+     * Instantiate the interface
+     * @param savedInstanceState
+     *  This is the previously saved state of the fragment
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
 
+    /**
+     * Create the view for the fragment
+     * @param inflater
+     *  The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container
+     *  If non-null, this is the parent view that the fragment's
+     *  UI should be attached to.  The fragment should not add the view itself
+     *  but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState
+     *  This is the previously saved state of the fragment
+     * @return
+     *  Return the View for the fragment's UI
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,6 +63,13 @@ public class CreateEventFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Call when the view has been created but before the previous state has been restored
+     * @param view
+     *  The View returned by onCreateView
+     * @param savedInstanceState
+     *  This fragment is being re-constructed from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -51,6 +82,11 @@ public class CreateEventFragment extends Fragment {
         });
 
         binding.createEventBackButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * On pressing the back button, navigate back to the main fragment
+             * @param v
+             *  The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
 
@@ -61,6 +97,11 @@ public class CreateEventFragment extends Fragment {
         });
 
         binding.createEventConfirmButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * On pressing the confirm button, create the event
+             * @param v
+             *  The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 EditText eventName = binding.createEventName;
@@ -69,9 +110,10 @@ public class CreateEventFragment extends Fragment {
                 EditText eventLocation = binding.createEventLocation;
                 EditText eventDescription = binding.createEventDescription;
                 EditText eventCapacity = binding.createEventCapacity;
+                EditText eventTime = binding.createEventTime;
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, eventTime);
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -79,6 +121,9 @@ public class CreateEventFragment extends Fragment {
         });
     }
 
+    /**
+     * Destroy the view for the fragment
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -90,25 +135,36 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDeadline,
                              EditText eventLocation,
                              EditText eventDescription,
-                             EditText eventCapacity) throws ParseException {
+                             EditText eventCapacity,
+                             EditText eventTime) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
         String location = eventLocation.getText().toString();
+        String time = eventTime.getText().toString();
         int capacity = Integer.parseInt(eventCapacity.getText().toString());
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date deadline =  formatter.parse(eventDeadline.getText().toString());
         Date date = formatter.parse(eventDate.getText().toString());
 
-        // NEED TO GET TIME, AND PASS HOST AND CREATE EVENT ID
+        // NEED TO GET TIME, AND CREATE EVENT ID
         // validate user input and store in database.
         // DO NOT LEAK THE DB BY DOCUMENT INJECTION BY ACCIDENT
 
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference eventRef = db.collection("Events").document();
+        String eventId = eventRef.getId();
+        Event event = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
 
+        eventRef.set(event)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "Event added with ID: " + eventId);
+                    NavHostFragment.findNavController(CreateEventFragment.this)
+                            .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
 
-        // navigate back ON SUCCESS
-        NavHostFragment.findNavController(CreateEventFragment.this).navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
     }
 }

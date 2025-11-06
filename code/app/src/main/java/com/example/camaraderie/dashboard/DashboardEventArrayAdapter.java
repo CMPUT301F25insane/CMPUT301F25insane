@@ -19,16 +19,19 @@ import com.example.camaraderie.R;
 
 import java.util.ArrayList;
 
+/**
+ *This is the class that handles the events in a dashboard by creating them and adding functionality to each event item
+ * */
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
-
-
-    private OnEventClickListener listener;
+    public OnEventClickListener listener;
 
     /**
      *
      * @param context
+     *  Context of the activity
      * @param events
+     *  List of events to be displayed
      */
     public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
@@ -70,7 +73,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                event.getWaitlist().addUserToWaitlist(user.getDocRef());
+                event.addWaitlistUser(user.getDocRef());
             }
         });
 

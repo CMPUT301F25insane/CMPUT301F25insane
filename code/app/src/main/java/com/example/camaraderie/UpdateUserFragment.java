@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 /*
  *Updates the current information of the user
  *  */
-public class UpdateUser extends AppCompatActivity {
+public class UpdateUserFragment extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference usersRef;
 
@@ -53,7 +54,7 @@ public class UpdateUser extends AppCompatActivity {
 
 
         //String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        String userId = Settings.Secure.ANDROID_ID;
+        String userId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         userDocRef = usersRef.document(userId);
 
@@ -69,10 +70,10 @@ public class UpdateUser extends AppCompatActivity {
                 phoneNo1.setText(phone3);
                 address1.setText(address3);
             } else {
-                Toast.makeText(UpdateUser.this, "No existing user data found.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UpdateUserFragment.this, "No existing user data found.", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(e ->
-                Toast.makeText(UpdateUser.this, "Failed to load data: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(UpdateUserFragment.this, "Failed to load data: " + e.getMessage(), Toast.LENGTH_SHORT).show()
         );
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -83,21 +84,47 @@ public class UpdateUser extends AppCompatActivity {
                 String phoneNo2 = phoneNo1.getText().toString().trim();
                 String address2 = address1.getText().toString().trim();
 
+
+                /*
+                *
+                * */
                 User user_new = new User(name2, phoneNo2, email2, address2, userId, user.getDocRef());
                 userDocRef
                         .set(user_new)
                         //.update("Full Name", name2, "Phone Number", phoneNo2, "Email", email2, "Address", address2)
                         .addOnSuccessListener(aVoid ->
-                                Toast.makeText(UpdateUser.this, "Profile updated!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(UpdateUserFragment.this, "Profile updated!", Toast.LENGTH_SHORT).show()
                         )
                         .addOnFailureListener(e ->
-                                Toast.makeText(UpdateUser.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(UpdateUserFragment.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                         );
+                finish();
             }
         });
 
         cancel.setOnClickListener(v -> {
             finish();
         });
+
+        Button delete = findViewById(R.id.user_delete);
+
+        delete.setOnClickListener(v -> {
+            new AlertDialog.Builder(UpdateUserFragment.this)
+                    .setTitle("Delete Profile")
+                    .setMessage("Are you sure you want to delete your profile? This action cannot be undone.")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        userDocRef.delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(UpdateUserFragment.this, "Profile deleted!", Toast.LENGTH_SHORT).show();
+                                    finish(); // Go back to MainActivity
+                                })
+                                .addOnFailureListener(e ->
+                                        Toast.makeText(UpdateUserFragment.this, "Delete failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                                );
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+
     }
 }

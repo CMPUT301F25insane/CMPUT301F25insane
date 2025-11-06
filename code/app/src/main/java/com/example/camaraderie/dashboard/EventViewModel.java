@@ -8,6 +8,10 @@ import com.example.camaraderie.Event;
 
 import java.util.ArrayList;
 
+
+/**
+ * This class handles the display for the events dashboard
+ * */
 public class EventViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<Event>> localEvents = new MutableLiveData<>();
@@ -19,5 +23,4 @@ public class EventViewModel extends ViewModel {
     public void setLocalEvents(ArrayList<Event> events) {
         localEvents.setValue(events);
     }
-
 }

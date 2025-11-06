@@ -7,6 +7,10 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * This class handles the waitlist for an event
+ * ONLY GETS CREATED BY EVENT CLASS
+ * */
 /*ONLY GETS CREATED BY EVENT CLASS*/
 
 /**
@@ -16,7 +20,7 @@ import java.util.Random;
 public class Waitlist {
 
     private ArrayList<DocumentReference> waitlist = new ArrayList<>();
-    private String eventId;
+    private DocumentReference eventDocRef;
 
     /**
      * Adds a user to the waitList
@@ -73,9 +77,10 @@ public class Waitlist {
      * @return
      *  Return the event id
      */
-    public String getEventId() {
-        return eventId;
+    public DocumentReference getEventDocRef() {
+        return eventDocRef;
     }
+
 
     /**
      * Get the event the waitlist belongs to
@@ -83,16 +88,16 @@ public class Waitlist {
      *  Return the event
      */
     public DocumentReference getEvent() {
-        return FirebaseFirestore.getInstance().collection("events").document(eventId);
+        return this.eventDocRef;
     }
 
     /**
      * Set the id of the event the waitlist belongs to
-     * @param eventId
+     * @param eventDocRef
      *  New event id
      */
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setEventDocRef(DocumentReference eventDocRef) {
+        this.eventDocRef = eventDocRef;
     }
 
     /**

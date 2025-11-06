@@ -1,6 +1,7 @@
 package com.example.camaraderie.dashboard;//
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +16,26 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentMainBinding;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+
+
 
 public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
     private EventViewModel eventViewModel;
+    private FirebaseFirestore db;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
     }
 
     @Nullable
@@ -43,17 +51,16 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
         super.onViewCreated(view, savedInstanceState);
 
-        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
-
-        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
         binding.eventsList.setAdapter(dashboardEventArrayAdapter);
 
         // Observe LiveData from Activity
         eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
             dashboardEventArrayAdapter.clear();
             dashboardEventArrayAdapter.addAll(events);
+            dashboardEventArrayAdapter.listener = this;
             dashboardEventArrayAdapter.notifyDataSetChanged();
         });
 
@@ -70,9 +77,26 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     }
 
-    // i dont think this should live here, it could violate MVC principles
+    // i dont think this should live here, it could violate MVC principles TODO: refactor this later if this is true
     public void onEventClick(Event event){
 
+        Log.d("Made it here", event.getEventName());
+
+        Bundle args = new Bundle();
+
+        args.putString("eventDocRefPath", event.getEventDocRef().getPath());
+
+        if (args.getString("eventDocRefPath") == null){
+            Log.d("Firestore", "Event path is null");
+        }
+
+        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 //    @Override
 //    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
