@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    val fragmentVersion = "1.8.9"
 
 
     implementation(libs.firebase.storage)
@@ -57,6 +58,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    debugImplementation("androidx.fragment:fragment-testing-manifest:$fragmentVersion")
+    androidTestImplementation("androidx.fragment:fragment-testing:$fragmentVersion")
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-analytics")
+
 }
