@@ -54,6 +54,8 @@ public class User {
         this.docRef = docref;
     }
 
+    public User(){} // for firebase
+
     /**
      * Get the events the user has created
      * @return

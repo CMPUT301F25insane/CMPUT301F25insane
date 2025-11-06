@@ -73,7 +73,7 @@ public class UserViewEventFragment extends Fragment {
                     event = documentSnapshot.toObject(Event.class);
                     Log.d("Firestore", "Event class loaded form db");
 
-                    fillTextViews();
+                    fillTextViews(event);
 
                     if(event.getWaitlist().contains(user.getDocRef())) {
 
@@ -124,7 +124,7 @@ public class UserViewEventFragment extends Fragment {
         });
     }
 
-    private void fillTextViews() {
+    private void fillTextViews(Event event) {
 
         binding.eventNameForUserView.setText(event.getEventName());
         binding.eventDescriptionUserView.setText(event.getDescription());

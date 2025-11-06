@@ -38,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     public static User user;
 
+    private NavController navController;
+
     static private CollectionReference eventsRef;
-    boolean userExists = false;
     static private CollectionReference usersRef;
     private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
@@ -51,13 +52,15 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         //setContentView(R.layout.activity_main);
 
+        //clearDB();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
 
         eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        NavController navController = navHostFragment.getNavController();
+        navController = navHostFragment.getNavController();
 
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
@@ -83,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
                         navController.navigate(R.id.fragment_main);
                     }
                     else {
-                        newUserBuilder(id);  // build user
-                        navController.navigate(R.id.fragment_main);
+                        newUserBuilder(id, navController);  // build user
+
                     }
 
 
@@ -96,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         // add dummy data
         clearAndAddDummyEvents();
-
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void newUserBuilder(String id) {
+    public void newUserBuilder(String id, NavController navController) {
         Log.e("Firestore", "User does not exist! Creating new user...");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -146,10 +148,15 @@ public class MainActivity extends AppCompatActivity {
                     // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
                     DocumentReference userDocRef = usersRef.document(id);
 
-                    user = new User(name1, email2, address2, phoneNum2, id, userDocRef);
-                    userDocRef.set(user)
+                    User newUser = new User(name1, email2, address2, phoneNum2, id, userDocRef);
+                    userDocRef.set(newUser)
                             .addOnSuccessListener(
-                                    aVoid -> {Log.d("Firestore", "User has been created!");}
+                                    aVoid -> {
+                                        Log.d("Firestore", "User has been created!");
+                                        MainActivity.user = newUser;
+                                        navController.navigate(R.id.fragment_main);
+
+                                    }
 
                             )
                             .addOnFailureListener(e -> {
@@ -161,7 +168,10 @@ public class MainActivity extends AppCompatActivity {
                     //Log.d("set data", usersRef.document(id).getPath());
 
 
-                });
+                })
+                .setCancelable(false)
+                .show();
+        //return newUser;
     }
 
     @Override
