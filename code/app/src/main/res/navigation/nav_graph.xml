@@ -64,6 +64,9 @@
         <action
             android:id="@+id/action_fragment_main_to_fragment_view_event_user"
             app:destination="@id/fragment_view_event_user" />
+        <action
+            android:id="@+id/action_fragment_main_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
     </fragment>
 
     <fragment
@@ -98,7 +101,7 @@
             android:id="@+id/action_fragment_view_event_user_to_fragment_create_event_testing"
             app:destination="@id/fragment_create_event_testing" />
         <action
-            android:id="@+id/action_fragment_view_event_user_to_fragment_view_my_events"
+            android:id="@+id/action__fragment_view_event_user_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
 
 

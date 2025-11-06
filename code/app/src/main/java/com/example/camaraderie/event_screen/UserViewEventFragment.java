@@ -146,7 +146,7 @@ public class UserViewEventFragment extends Fragment {
         binding.myEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_view_my_events);
+                nav.navigate(R.id.action__fragment_view_event_user_to_fragment_view_my_events);
             }
         });
     }
