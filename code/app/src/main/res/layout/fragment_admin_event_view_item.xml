@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="173dp"
+    android:layout_height="130dp"
     android:background="#3A3FA0">
 
     <!-- Event name -->
@@ -44,8 +44,8 @@
     <!-- Horizontal chain for 3 buttons -->
     <Button
         android:id="@+id/joinButton"
-        android:layout_width="0dp"
-        android:layout_height="42dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/custom_join_button_color"
         android:fontFamily="@font/cambria"
         android:text="Join"
@@ -58,8 +58,8 @@
 
     <Button
         android:id="@+id/seeDescButton"
-        android:layout_width="0dp"
-        android:layout_height="42dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="#59403F3F"
         android:fontFamily="@font/cambria"
         android:text="See Description"
@@ -70,9 +70,9 @@
 
     <Button
         android:id="@+id/RemoveButton"
-        android:layout_width="0dp"
-        android:layout_height="42dp"
-        android:backgroundTint="#59403F3F"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#ff0000"
         android:fontFamily="@font/cambria"
         android:text="Remove"
         android:textColor="@color/white"
