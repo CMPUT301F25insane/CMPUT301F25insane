@@ -36,6 +36,7 @@ import java.util.Map;
 public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;
+    private NavController nav;
 
     private FragmentViewEventUserBinding binding;
     private DocumentReference eventDocRef;
@@ -45,31 +46,7 @@ public class UserViewEventFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        assert getArguments() != null;
-        String eventPath = getArguments().getString("eventDocRefPath");
-
-        db = FirebaseFirestore.getInstance();
-        eventDocRef = db.document(eventPath);
-        eventDocRef.get().addOnSuccessListener(documentSnapshot -> {
-            event = documentSnapshot.toObject(Event.class);
-            Log.d("Firestore", "Event class loaded form db");
-        })
-                .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Event not loaded from db!");
-                    Toast.makeText(requireContext(), "Event Not Found", LENGTH_SHORT).show();
-                    NavHostFragment.findNavController(UserViewEventFragment.this)
-                            .navigate(R.id.fragment_main);
-                });
-
-        if(event.getWaitlist().contains(user.getDocRef())) {
-
-            Log.d("Firestore", "User is not in event");
-            Button button = binding.unjoinButtonUserView;
-            button.setEnabled(false);
-            button.setBackgroundColor(Color.GRAY);
-
-        }
+        nav = NavHostFragment.findNavController(UserViewEventFragment.this);
 
     }
 
@@ -87,9 +64,36 @@ public class UserViewEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        assert getArguments() != null;
+        String eventPath = getArguments().getString("eventDocRefPath");
 
+        db = FirebaseFirestore.getInstance();
+        eventDocRef = db.document(eventPath);
+        eventDocRef.get().addOnSuccessListener(documentSnapshot -> {
+                    event = documentSnapshot.toObject(Event.class);
+                    Log.d("Firestore", "Event class loaded form db");
 
-        fillTextViews();
+                    fillTextViews();
+
+                    if(event.getWaitlist().contains(user.getDocRef())) {
+
+                        Log.d("Firestore", "User is in event");
+                        binding.joinButtonUserView.setEnabled(false);
+                        binding.joinButtonUserView.setBackgroundColor(Color.GRAY);
+
+                    }
+                    else {
+                        Log.d("Firestore", "User is not in event");
+                        binding.unjoinButtonUserView.setEnabled(false);
+                        binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Event not loaded from db!");
+                    Toast.makeText(requireContext(), "Event Not Found", LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(UserViewEventFragment.this)
+                            .navigate(R.id.fragment_main);
+                });
 
         binding.joinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +119,7 @@ public class UserViewEventFragment extends Fragment {
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }
         });
     }
@@ -124,8 +128,8 @@ public class UserViewEventFragment extends Fragment {
 
         binding.eventNameForUserView.setText(event.getEventName());
         binding.eventDescriptionUserView.setText(event.getDescription());
-        binding.registrationDeadlineTextUserView.setText((CharSequence) event.getRegistrationDeadline());  //TODO: deal with date stuff
-        binding.userEventViewEventDate.setText((CharSequence) event.getEventDate());
+        binding.registrationDeadlineTextUserView.setText(event.getRegistrationDeadline().toString());  //TODO: deal with date stuff
+        binding.userEventViewEventDate.setText(event.getEventDate().toString());
         binding.locationOfUserView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
     }
 
