@@ -102,6 +102,12 @@ public class UserViewEventFragment extends Fragment {
                 eventDocRef.update("waitlist.waitlist", FieldValue.arrayUnion(user.getDocRef())).addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "You have joined the event", LENGTH_SHORT).show();
                 });
+                binding.joinButtonUserView.setEnabled(false);
+                binding.joinButtonUserView.setBackgroundColor(Color.GRAY);
+
+                binding.unjoinButtonUserView.setEnabled(true);
+                binding.unjoinButtonUserView.setBackgroundColor(Color.RED);
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }
 
         });
@@ -112,6 +118,13 @@ public class UserViewEventFragment extends Fragment {
                 eventDocRef.update("waitlist.waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
+
+                binding.joinButtonUserView.setEnabled(true);
+                binding.joinButtonUserView.setBackgroundColor(Color.GREEN);
+
+                binding.unjoinButtonUserView.setEnabled(false);
+                binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }
 
         });
