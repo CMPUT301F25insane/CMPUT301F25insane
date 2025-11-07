@@ -102,7 +102,6 @@
         <action
             android:id="@+id/action_fragment_main_to__fragment_organizer_view_event"
             app:destination="@id/_fragment_organizer_view_event" />
-
     </fragment>
 
     <fragment
@@ -207,6 +206,7 @@
             android:id="@+id/action_update_user_to_fragment_guidelines"
             app:destination="@id/fragment_guidelines" />
     </fragment>
+
 
 
 </navigation>
