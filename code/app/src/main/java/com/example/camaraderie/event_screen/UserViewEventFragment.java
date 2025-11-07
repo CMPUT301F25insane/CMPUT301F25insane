@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -22,6 +23,7 @@ import static com.example.camaraderie.MainActivity.user;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,41 +38,20 @@ import java.util.Map;
 public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;
+    private NavController nav;
 
     private FragmentViewEventUserBinding binding;
     private DocumentReference eventDocRef;
     private Event event;
+    private EventViewModel eventViewModel;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        nav = NavHostFragment.findNavController(UserViewEventFragment.this);
 
-        assert getArguments() != null;
-        String eventPath = getArguments().getString("eventDocRefPath");
-
-        db = FirebaseFirestore.getInstance();
-        eventDocRef = db.document(eventPath);
-
-        eventDocRef.get().addOnSuccessListener(documentSnapshot -> {
-            event = documentSnapshot.toObject(Event.class);
-            Log.d("Firestore", "Event class loaded form db");
-        })
-                .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Event not loaded from db!");
-                    Toast.makeText(requireContext(), "Event Not Found", LENGTH_SHORT).show();
-                    NavHostFragment.findNavController(UserViewEventFragment.this)
-                            .navigate(R.id.fragment_main);
-                });
-
-        if(event.getWaitlist().contains(user.getDocRef())) {
-
-            Log.d("Firestore", "User is not in event");
-            Button button = binding.unjoinButtonUserView;
-            button.setEnabled(false);
-            button.setBackgroundColor(Color.GRAY);
-
-        }
+        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
     }
 
@@ -88,17 +69,53 @@ public class UserViewEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        assert getArguments() != null;
+        String eventPath = getArguments().getString("eventDocRefPath");
 
+        db = FirebaseFirestore.getInstance();
+        eventDocRef = db.document(eventPath);
+        eventDocRef.get().addOnSuccessListener(documentSnapshot -> {
+                    event = documentSnapshot.toObject(Event.class);
+                    Log.d("Firestore", "Event class loaded form db");
 
-        fillTextViews();
+                    fillTextViews(event);
+
+                    if(event.getWaitlist().contains(user.getDocRef())) {
+
+                        Log.d("Firestore", "User is in event");
+                        binding.joinButtonUserView.setEnabled(false);
+                        binding.joinButtonUserView.setBackgroundColor(Color.GRAY);
+
+                    }
+                    else {
+                        Log.d("Firestore", "User is not in event");
+                        binding.unjoinButtonUserView.setEnabled(false);
+                        binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Event not loaded from db!");
+                    Toast.makeText(requireContext(), "Event Not Found", LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(UserViewEventFragment.this)
+                            .navigate(R.id.fragment_main);
+                });
 
         binding.joinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("here", "somehow");
-                eventDocRef.update("waitlist.waitlist", FieldValue.arrayUnion(user.getDocRef())).addOnSuccessListener(aVoid -> {
+                eventDocRef.update("waitlist", FieldValue.arrayUnion(user.getDocRef())).addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "You have joined the event", LENGTH_SHORT).show();
                 });
+                binding.joinButtonUserView.setEnabled(false);
+                binding.joinButtonUserView.setBackgroundColor(Color.GRAY);
+
+                binding.unjoinButtonUserView.setEnabled(true);
+                binding.unjoinButtonUserView.setBackgroundColor(Color.RED);
+
+                user.addWaitlistedEvent(eventDocRef);
+
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }
 
         });
@@ -106,9 +123,25 @@ public class UserViewEventFragment extends Fragment {
         binding.unjoinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventDocRef.update("waitlist.waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid -> {
+                eventDocRef.update("waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
+
+                binding.joinButtonUserView.setEnabled(true);
+                binding.joinButtonUserView.setBackgroundColor(Color.GREEN);
+
+                binding.unjoinButtonUserView.setEnabled(false);
+                binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
+
+                // this is so fuckin jank bro
+                user.removeWaitlistedEvent(eventDocRef);
+                for ( Event event : eventViewModel.getLocalEvents().getValue()) {
+                    if (event.getEventDocRef().equals(eventDocRef)){
+                        event.removeWaitlistUser(user.getDocRef());  // update live data
+                    }
+                }
+
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }
 
         });
@@ -116,24 +149,32 @@ public class UserViewEventFragment extends Fragment {
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
+            }
+        });
+
+        binding.hostEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_create_event_testing);
+            }
+        });
+
+        binding.myEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action__fragment_view_event_user_to_fragment_view_my_events);
             }
         });
     }
 
-    private void fillTextViews() {
+    private void fillTextViews(Event event) {
 
         binding.eventNameForUserView.setText(event.getEventName());
         binding.eventDescriptionUserView.setText(event.getDescription());
-        binding.registrationDeadlineTextUserView.setText((CharSequence) event.getRegistrationDeadline());  //TODO: deal with date stuff
-        binding.userEventViewEventDate.setText((CharSequence) event.getEventDate());
+        binding.registrationDeadlineTextUserView.setText(event.getRegistrationDeadline().toString());  //TODO: deal with date stuff
+        binding.userEventViewEventDate.setText(event.getEventDate().toString());
         binding.locationOfUserView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 
     @Override

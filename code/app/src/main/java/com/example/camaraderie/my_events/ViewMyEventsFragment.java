@@ -1,6 +1,7 @@
 package com.example.camaraderie.my_events;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentViewMyEventsBinding;
 
-public class ViewMyEventsFragment extends Fragment {
+public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayAdapter.OnEventClickListener{
 
     private FragmentViewMyEventsBinding binding;
     NavController nav;
@@ -57,6 +59,22 @@ public class ViewMyEventsFragment extends Fragment {
                 //TODO: do nothing here, we're already in this fragment. maybe later, the button just reloads this?
             }
         });
+    }
+
+    public void onEventClick(Event event){
+
+        Log.d("clicked event description", event.getEventName());
+
+        Bundle args = new Bundle();
+
+        args.putString("eventDocRefPath", event.getEventDocRef().getPath());
+
+        if (args.getString("eventDocRefPath") == null){
+            Log.e("Firestore", "Event path is null");
+            throw new RuntimeException("Firestore event path is null in onEventClick()");
+        }
+
+        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_view_my_events_to__fragment_organizer_view_event, args);
     }
 
     @Override

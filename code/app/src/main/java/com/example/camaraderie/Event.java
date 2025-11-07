@@ -3,6 +3,7 @@ package com.example.camaraderie;//
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -10,6 +11,7 @@ import java.sql.Array;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * This is a class that defines an event
@@ -73,6 +75,8 @@ public class Event {
 
         //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event
     }
+
+
 
 
 //    //public float getPrice() {
@@ -278,7 +282,30 @@ public class Event {
         }
     }
 
+    public void runLottery() {
+
+        for (int i = 0; i < capacity; i++) {
+            if (!waitlist.isEmpty()) {
+                System.out.println(capacity);
+                int rand = new Random().nextInt(waitlist.size());
+                System.out.println(rand);
+                DocumentReference randUser = waitlist.get(rand);
+                selectedUsers.add(randUser);
+                waitlist.remove(randUser);
+
+                // update user fields
+                randUser.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                randUser.update("selectedEvents", FieldValue.arrayUnion(eventDocRef));
+            }
+        }
+
+    }
+
     public void removeWaitlistUser(DocumentReference user) {
         waitlist.remove(user);
+    }
+
+    public void setEventDescription(String description) {
+        this.description = description;
     }
 }

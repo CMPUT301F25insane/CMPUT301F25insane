@@ -2,12 +2,16 @@ package com.example.camaraderie.event_screen;
 
 import static com.example.camaraderie.MainActivity.user;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -23,6 +27,7 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 /**
  * Interface that allows an organizer to create an event
@@ -30,6 +35,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class CreateEventFragment extends Fragment {
 
     private FragmentCreateEventTestingBinding binding;
+    private DocumentReference eventDocRef;
+    private Event event;
+
+    private EditText eventName;
+    private TextView eventDate;
+    private TextView eventDeadline;
+    private EditText eventLocation;
+    private EditText eventDescription;
+    private EditText eventCapacity;
+    private EditText eventTime;
+    private boolean editing = false;
 
     /**
      * Instantiate the interface
@@ -74,6 +90,43 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        eventName = binding.createEventName;
+        eventDate = binding.createEventDate;
+        eventDeadline = binding.createEventDeadline;
+        eventLocation = binding.createEventLocation;
+        eventDescription = binding.createEventDescription;
+        eventCapacity = binding.createEventCapacity;
+        eventTime = binding.createEventTime;
+
+        Bundle args = getArguments();
+        if (args != null) {
+            editing = true;
+
+            String path = args.getString("eventDocRefPath");
+            eventDocRef = FirebaseFirestore.getInstance().document(path);
+
+            eventDocRef.get().addOnSuccessListener(doc -> {
+                event = doc.toObject(Event.class);
+                assert event != null;
+                fillTextViews(event);
+            });
+
+        }
+
+        binding.createEventDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDateDialogue();
+            }
+        });
+
+        binding.createEventDeadline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDeadlineDialogue();
+            }
+        });
+
         binding.createEventPictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,21 +157,23 @@ public class CreateEventFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
-                EditText eventName = binding.createEventName;
-                EditText eventDate = binding.createEventDate;
-                EditText eventDeadline = binding.createEventDeadline;
-                EditText eventLocation = binding.createEventLocation;
-                EditText eventDescription = binding.createEventDescription;
-                EditText eventCapacity = binding.createEventCapacity;
-                EditText eventTime = binding.createEventTime;
-
                 try {
                     createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, eventTime);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void fillTextViews(Event event) {
+        eventName.setText(event.getEventName());
+        eventDate.setText(event.getEventDate().toString());
+        eventDeadline.setText(event.getRegistrationDeadline().toString());
+        eventLocation.setText(event.getEventLocation());
+        eventDescription.setText(event.getDescription());
+        eventCapacity.setText(String.valueOf(event.getCapacity()));
+        eventTime.setText(event.getEventTime());
     }
 
     /**
@@ -131,8 +186,8 @@ public class CreateEventFragment extends Fragment {
     }
 
     private void createEvent(EditText eventName,
-                             EditText eventDate,
-                             EditText eventDeadline,
+                             TextView eventDate,
+                             TextView eventDeadline,
                              EditText eventLocation,
                              EditText eventDescription,
                              EditText eventCapacity,
@@ -148,23 +203,79 @@ public class CreateEventFragment extends Fragment {
         Date deadline =  formatter.parse(eventDeadline.getText().toString());
         Date date = formatter.parse(eventDate.getText().toString());
 
+
         // NEED TO GET TIME, AND CREATE EVENT ID
         // validate user input and store in database.
         // DO NOT LEAK THE DB BY DOCUMENT INJECTION BY ACCIDENT
 
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference eventRef = db.collection("Events").document();
-        String eventId = eventRef.getId();
-        Event event = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
 
-        eventRef.set(event)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Firestore", "Event added with ID: " + eventId);
-                    NavHostFragment.findNavController(CreateEventFragment.this)
-                            .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
-                })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
+        if (editing) {
+            event.setEventName(name);
+            event.setEventDescription(description);
+            event.setEventLocation(location);
+            event.setEventTime(time);
+            event.setRegistrationDeadline(deadline);
+            event.setEventDate(date);
+            event.setCapacity(capacity);
+            eventDocRef.set(event, SetOptions.merge())
+                    .addOnSuccessListener(aVoid -> {
+                        Bundle args = new Bundle();
+                        args.putString("eventDocRefPath", eventDocRef.getPath());
+
+                        NavHostFragment.findNavController(CreateEventFragment.this)
+                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event, args);
+                    })
+                    .addOnFailureListener(e -> Log.e("Firestore", "Error updating event", e));
+        }
+        else {
+            DocumentReference eventRef = db.collection("Events").document();
+            String eventId = eventRef.getId();
+            Event newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
+
+            eventRef.set(newEvent)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("Firestore", "Event added with ID: " + eventId);
+
+                        user.addCreatedEvent(eventRef);
+
+                        Bundle args = new Bundle();
+                        args.putString("eventDocRefPath", eventRef.getPath());
+
+                        NavHostFragment.findNavController(CreateEventFragment.this)
+                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event, args);
+                    })
+                    .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
+
+        }
+
+    }
+
+    private void openDateDialogue() {
+        DatePickerDialog dateDialog;
+        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                binding.createEventDate.setText(year + "-" + (month+1) + "-" + day);
+            }
+
+        }, 2025, 10, 6);
+
+        dateDialog.show();
+
+    }
+
+    private void openDeadlineDialogue() {
+        DatePickerDialog dateDialog;
+        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                binding.createEventDeadline.setText(year + "-" + (month+1) + "-" + day);
+            }
+
+        }, 2025, 10, 6);
+
+        dateDialog.show();
 
     }
 }

@@ -1,5 +1,7 @@
 package com.example.camaraderie.dashboard;//
 
+import static com.example.camaraderie.MainActivity.user;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
@@ -26,6 +30,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     private FragmentMainBinding binding;
     private DashboardEventArrayAdapter dashboardEventArrayAdapter;
+    private NavController nav;
     private EventViewModel eventViewModel;
     private FirebaseFirestore db;
 
@@ -36,6 +41,8 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
+
+        nav = NavHostFragment.findNavController(MainFragment.this);
     }
 
     @Nullable
@@ -55,6 +62,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         super.onViewCreated(view, savedInstanceState);
 
         binding.eventsList.setAdapter(dashboardEventArrayAdapter);
+        binding.nameForMainDashboard.setText(user.getFirstName());
 
         // Observe LiveData from Activity
         eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
@@ -66,12 +74,41 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
         // when USER views EVENT, compare user id to host id, and set the corresponding fragment accordingly
 
-
+        binding.searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
+                    dashboardEventArrayAdapter.clear();
+                    for(int i = 0; i < events.size(); i++){
+                        if(events.get(i).getEventName().toLowerCase().contains(binding.searchBar.getText().toString().toLowerCase())){
+                            dashboardEventArrayAdapter.add(events.get(i));
+                        }
+                    };
+                    dashboardEventArrayAdapter.notifyDataSetChanged();
+                });
+            }
+        });
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 NavHostFragment.findNavController(MainFragment.this)
-                                          .navigate(R.id.action_fragment_main_to_fragment_create_event_testing);
+
+                nav.navigate(R.id.action_fragment_main_to_fragment_create_event_testing);
+            }
+        });
+
+        binding.myEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action_fragment_main_to_fragment_view_my_events);
+            }
+        });
+
+        binding.accountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO implement the view account fragment
+                //BY UMRAN
+                nav.navigate(R.id.action_fragment_main_to_update_user);
             }
         });
 
@@ -80,17 +117,24 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     // i dont think this should live here, it could violate MVC principles TODO: refactor this later if this is true
     public void onEventClick(Event event){
 
-        Log.d("Made it here", event.getEventName());
+        Log.d("Firebase", "User clicked description for" + event.getEventName());
 
         Bundle args = new Bundle();
 
         args.putString("eventDocRefPath", event.getEventDocRef().getPath());
 
         if (args.getString("eventDocRefPath") == null){
-            Log.d("Firestore", "Event path is null");
+            Log.e("Firestore", "Event path is null");
+            throw new RuntimeException("Firestore event path is null in onEventClick()");
         }
 
-        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);
+        if (event.getHostDocRef().equals(user.getDocRef())){
+            NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to__fragment_organizer_view_event, args);
+        }
+
+        else {
+            NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);
+        }
     }
 
     @Override
@@ -98,4 +142,6 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         super.onDestroy();
         binding = null;
     }
+
+
 }

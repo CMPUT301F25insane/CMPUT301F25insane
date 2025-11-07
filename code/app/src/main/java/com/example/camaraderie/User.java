@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -25,8 +26,8 @@ public class User {
 
     private boolean admin = false;
 
-    //private String bankNumber;  // REQUIRED to sign up for events, but not to create account (we probably don't need this)
     private ArrayList<DocumentReference> userCreatedEvents = new ArrayList<>();
+    private ArrayList<DocumentReference> waitlistedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
 
@@ -54,6 +55,8 @@ public class User {
         this.docRef = docref;
     }
 
+    public User(){} // for firebase
+
     /**
      * Get the events the user has created
      * @return
@@ -73,15 +76,6 @@ public class User {
         if (!this.userCreatedEvents.contains(event)) {
             this.userCreatedEvents.add(event);
         }
-    }
-
-    /**
-     * Remove an event from the user's list of created events
-     * @param event
-     *  The event to remove from the user's list of created events
-     */
-    public void removeEvent(DocumentReference event) {
-        this.userCreatedEvents.remove(event);
     }
 
     /**
@@ -182,7 +176,7 @@ public class User {
      */
     public void setDocRef(DocumentReference docRef1) {this.docRef = docRef1;}
 
-    public void deleteEvent(DocumentReference event) {
+    public void deleteCreatedEvent(DocumentReference event) {
         this.userCreatedEvents.remove(event);
         event.delete();  // from db
     }
@@ -218,6 +212,30 @@ public class User {
     public void addSelectedEvent(DocumentReference event) {
         if (!selectedEvents.contains(event)) {
             selectedEvents.add(event);
+        }
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public ArrayList<DocumentReference> getWaitlistedEvents() {
+        return waitlistedEvents;
+    }
+
+    public void addWaitlistedEvent(DocumentReference waitlistedEvent) {
+        if(!waitlistedEvents.contains(waitlistedEvent)){
+            this.waitlistedEvents.add(waitlistedEvent);
+        }
+    }
+
+    public void removeWaitlistedEvent(DocumentReference eventDocRef) {
+        waitlistedEvents.remove(eventDocRef);
+    }
+
+    public void addCreatedEvent(DocumentReference eventRef) {
+        if (!userCreatedEvents.contains(eventRef)) {
+            userCreatedEvents.add(eventRef);
         }
     }
 }

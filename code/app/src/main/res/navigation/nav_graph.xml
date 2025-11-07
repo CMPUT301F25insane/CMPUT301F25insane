@@ -3,7 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/fragment_main">
+    app:startDestination="@id/fragment_loading_screen">
+
+    <fragment
+        android:id="@+id/fragment_loading_screen"
+        android:name="com.example.camaraderie.LoadingScreenFragment"
+        android:label="Loading screen Fragment"
+        tools:layout="@layout/fragment_loading_screen">
+
+        <action
+            android:id="@+id/action_fragment_loading_screen_to_fragment_main"
+            app:destination="@id/fragment_main"/>
+        <action
+            android:id="@+id/action_fragment_loading_screen_to_admin_main_screen"
+            app:destination="@id/admin_main_screen" />
+        <action
+            android:id="@+id/action_fragment_loading_screen_to_fragment_pending_events"
+            app:destination="@id/fragment_pending_events" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_pending_events"
@@ -64,6 +82,15 @@
         <action
             android:id="@+id/action_fragment_main_to_fragment_view_event_user"
             app:destination="@id/fragment_view_event_user" />
+        <action
+            android:id="@+id/action_fragment_main_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action_fragment_main_to_update_user"
+            app:destination="@id/update_user" />
+        <action
+            android:id="@+id/action_fragment_main_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
     <fragment
@@ -97,10 +124,9 @@
         <action
             android:id="@+id/action_fragment_view_event_user_to_fragment_create_event_testing"
             app:destination="@id/fragment_create_event_testing" />
-
         <action
-            android:id="@id/action_fragment_main_to_fragment_create_event_testing"
-            app:destination="@id/fragment_view_event_user"/>
+            android:id="@+id/action__fragment_view_event_user_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
 
 
     </fragment>
@@ -119,6 +145,9 @@
         <action
             android:id="@+id/action_admin_main_screen_to_admin_event_data_screen"
             app:destination="@id/admin_event_data_screen" />
+        <action
+            android:id="@+id/action_admin_main_screen_to_update_user"
+            app:destination="@id/update_user" />
     </fragment>
 
     <fragment
@@ -150,5 +179,19 @@
             android:id="@+id/action_admin_event_images_screen_to_admin_main_screen"
             app:destination="@id/admin_main_screen" />
     </fragment>
+
+    <fragment
+        android:id="@+id/update_user"
+        android:name="com.example.camaraderie.dashboard.MainFragment"
+        android:label="Update Screen"
+        tools:layout="@layout/fragment_update_user">
+        <action
+            android:id="@+id/action_update_user_to_fragment_main"
+            app:destination="@id/fragment_main" />
+        <action
+            android:id="@+id/action_update_user_to_admin_main_screen"
+            app:destination="@id/admin_main_screen" />
+    </fragment>
+
 
 </navigation>

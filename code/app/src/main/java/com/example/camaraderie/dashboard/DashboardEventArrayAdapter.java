@@ -3,7 +3,9 @@ package com.example.camaraderie.dashboard;
 
 import static com.example.camaraderie.MainActivity.user;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
@@ -42,6 +45,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
     }
 
 
+    @SuppressLint("ResourceAsColor")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -68,12 +72,64 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         //hostName.setText(event.getHost().getUsername());
 
         Button joinButton = view.findViewById(R.id.joinButton);
+
+        String path = event.getEventDocRef().getPath();
+
+        boolean userInWaitlist = false;
+        System.out.println(event.getEventId());
+        for (DocumentReference ref : user.getWaitlistedEvents()) {
+            if (ref.getPath().equals(path)) {
+                System.out.println(ref.getPath() + " | " + user.getDocRef().getPath());  // TODO: make this a log
+                userInWaitlist = true;
+                break;
+            }
+        }
+
+        if (!userInWaitlist) {
+            for (DocumentReference ref : user.getSelectedEvents()) {
+                if (ref.getPath().equals(path)) {
+                    userInWaitlist = true;
+                    break;
+                }
+            }
+        }
+
+        if (!userInWaitlist) {
+            for (DocumentReference ref : user.getAcceptedEvents()) {
+                if (ref.getPath().equals(path)) {
+                    userInWaitlist = true;
+                    break;
+                }
+            }
+        }
+
+        // organizer cannot join their own event because that is stupid
+        if (user.getDocRef().equals(event.getHostDocRef())) {
+            userInWaitlist = true;  // change the name later, who cares
+        }
+
+        if (userInWaitlist) {
+            joinButton.setEnabled(false);
+            joinButton.setBackgroundColor(Color.GRAY);
+        }
+        else {
+            joinButton.setEnabled(true);
+            joinButton.setBackgroundColor(Color.parseColor("#AAF2C8"));  // original colour
+        }
+
         Button descButton = view.findViewById(R.id.seeDescButton);
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                joinButton.setBackgroundColor(Color.GRAY);
+                joinButton.setEnabled(false);
                 event.addWaitlistUser(user.getDocRef());
+                user.addWaitlistedEvent(event.getEventDocRef());
+
+                // update db
+                user.updateDB();
+                event.updateDB();
             }
         });
 
