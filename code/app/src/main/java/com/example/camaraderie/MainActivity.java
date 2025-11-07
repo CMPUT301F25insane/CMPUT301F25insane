@@ -55,11 +55,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        //setContentView(R.layout.activity_main);
 
-        //clearDB();
-
-        FirebaseFirestore.getInstance().clearPersistence();
+        //FirebaseFirestore.getInstance().clearPersistence();  // TODO: DO NOT UNCOMMENT THIS CODE
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
@@ -77,54 +74,53 @@ public class MainActivity extends AppCompatActivity {
             pendingDeeplink = getIntent().getData();
         }
 
-        Log.d("Firestore", "Searching for user in database...");
-        usersRef.document(id).get()
-                .addOnSuccessListener(documentSnapshot -> {
+        // add dummy data
+        clearDBAndSeed(
+                () -> {
+            Log.d("Firestore", "Searching for user in database...");
+            usersRef.document(id).get()
+                    .addOnSuccessListener(documentSnapshot -> {
 
-                    if (documentSnapshot.exists()) {
-                        user = documentSnapshot.toObject(User.class);
-                        Log.d("Firestore", "User found");
+                        if (documentSnapshot.exists()) {
+                            user = documentSnapshot.toObject(User.class);
+                            Log.d("Firestore", "User found");
 
-                        if (user.isAdmin()) {
-                            if (pendingDeeplink != null){
-                                handleDeepLink();
+                            if (user.isAdmin()) {
+                                if (pendingDeeplink != null) {
+                                    handleDeepLink();
 
-                            } else {
+                                } else {
 
-                                navController.navigate(R.id.admin_main_screen);
+                                    navController.navigate(R.id.admin_main_screen);
+                                }
                             }
-                        }
 
-                        if (!user.getSelectedEvents().isEmpty()) {
+                            if (!user.getSelectedEvents().isEmpty()) {
+                                if (pendingDeeplink != null) {
+                                    handleDeepLink();
+                                } else {
+                                    navController.navigate(R.id.fragment_pending_events);
+
+                                }
+                            }
+
+                            // else, nav to the main fragment
                             if (pendingDeeplink != null) {
                                 handleDeepLink();
+
                             } else {
-                                navController.navigate(R.id.fragment_pending_events);
-
+                                navController.navigate(R.id.fragment_main);
                             }
+                        } else {
+                            newUserBuilder(id, navController);  // build user
+
                         }
 
-                        // else, nav to the main fragment
-                        if (pendingDeeplink != null){
-                            handleDeepLink();
-
-                        }else{
-                        navController.navigate(R.id.fragment_main);
-                    }
-                        }
-                    else {
-                        newUserBuilder(id, navController);  // build user
-
-                    }
-
-                })
-                .addOnFailureListener(e -> {
-                    throw new RuntimeException("listen, we fucked up.");
-                });
-
-        // add dummy data
-        clearAndAddDummyEvents();  // WARNING: THIS IS AN ASYNC RELIANT FUNCTION
-
+                    })
+                    .addOnFailureListener(e -> {
+                        throw new RuntimeException("listen, we fucked up.");
+                    });
+        });
     }
 
     @Override

@@ -10,96 +10,111 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Util {
-    public static void clearAndAddDummyEvents() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference eventsRef = db.collection("Events");
-        CollectionReference usersRef = db.collection("Users");
 
-        clearDB();
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final CollectionReference eventsRef = db.collection("Events");
+    private static final CollectionReference usersRef = db.collection("Users");
+
+    /**
+     * Clears all documents in both Events and Users, then seeds DB with dummy data.
+     * Calls onComplete when finished.
+     */
+    public static void clearDBAndSeed(Runnable onComplete) {
+        clearEvents(() -> clearUsers(() -> addDummyEvents(onComplete)));
+    }
+
+    /**
+     * Clears the Events collection, then triggers callback.
+     */
+    private static void clearEvents(Runnable onDone) {
+        eventsRef.get().addOnSuccessListener(snapshot -> {
+            WriteBatch batch = db.batch();
+            for (DocumentSnapshot doc : snapshot) batch.delete(doc.getReference());
+
+            batch.commit()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("DB", "Events cleared");
+                        onDone.run();
+                    })
+                    .addOnFailureListener(e -> Log.e("DB", "Failed to clear Events", e));
+        });
+    }
+
+    /**
+     * Clears the Users collection, then triggers callback.
+     */
+    private static void clearUsers(Runnable onDone) {
+        usersRef.get().addOnSuccessListener(snapshot -> {
+            WriteBatch batch = db.batch();
+            for (DocumentSnapshot doc : snapshot) batch.delete(doc.getReference());
+
+            batch.commit()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("DB", "Users cleared");
+                        onDone.run();
+                    })
+                    .addOnFailureListener(e -> Log.e("DB", "Failed to clear Users", e));
+        });
+    }
+
+    /**
+     * Seeds the database with linked Users and Events.
+     */
+    private static void addDummyEvents(Runnable onDone) {
+        WriteBatch batch = db.batch();
+        ArrayList<DocumentReference> userRefs = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
+            DocumentReference userDoc = usersRef.document();
+            DocumentReference eventDoc = eventsRef.document();
 
-            DocumentReference userDocRef = usersRef.document();
-
-            User user = new User(
-                    "firstname" + i + userDocRef.getId(),
-                    "phoneNumber" + i,
-                    "email" + i + "@gmail.com",
-                    "address" + i,
-                    userDocRef.getId(),
-                    userDocRef        // this just wont exist lol
+            User newUser = new User(
+                    "User " + i,
+                    "email" + i + "@mail.com",
+                    "address " + i,
+                    "555-000" + i,
+                    userDoc.getId(),
+                    userDoc
             );
+            batch.set(userDoc, newUser);
+            userRefs.add(userDoc);
 
-
-            userDocRef.set(user);
-
-            DocumentReference eventDocRef = eventsRef.document();
-
-            Event event = new Event(
-                    "event" + i + eventDocRef.getId(),
-                    "location" + i,
+            Event newEvent = new Event(
+                    "Event " + i,
+                    "Location " + i,
                     new Date(),
-                    "desc" + i,
+                    "Description " + i,
                     new Date(),
-                    "time" + i,
-                    i,
-                    userDocRef,
-                    eventDocRef,
-                    eventDocRef.getId()
+                    "5:00 PM",
+                    5,
+                    userDoc,
+                    eventDoc,
+                    eventDoc.getId()
             );
-
-            eventDocRef.set(event);
-
-            System.out.println("added user and event " + i);
+            batch.set(eventDoc, newEvent);
         }
+
+        batch.commit()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("DB", "Dummy users and events added");
+                    onDone.run();
+                })
+                .addOnFailureListener(e -> Log.e("DB", "Failed to seed dummy data", e));
     }
 
-
-    public static void clearUsersCollection() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users")
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    WriteBatch batch = db.batch();
-                    for (DocumentSnapshot doc : snapshot) {
-                        batch.delete(doc.getReference());
-                    }
-                    batch.commit()
-                            .addOnSuccessListener(aVoid -> Log.d("Firestore", "All Users deleted"))
-                            .addOnFailureListener(e -> Log.e("Firestore", "Error deleting Users", e));
-                });
-    }
-
-    public static void clearEventsCollection() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Events")
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    WriteBatch batch = db.batch();
-                    for (DocumentSnapshot doc : snapshot) {
-                        batch.delete(doc.getReference());
-                    }
-                    batch.commit()
-                            .addOnSuccessListener(aVoid -> Log.d("Firestore", "All Events deleted"))
-                            .addOnFailureListener(e -> Log.e("Firestore", "Error deleting Events", e));
-                });
-
-
-    }
-
-    public static void clearDB() {
-        clearEventsCollection();
-        clearUsersCollection();
-    }
-
-    public static void setUserAsAdmin(DocumentReference user, boolean isAdmin) {
-        String msg = "isAdmin for User " + user + " set to " + isAdmin;
-        user.update("isAdmin", isAdmin)
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", msg))
-                .addOnFailureListener(e -> Log.e("Firestore", "Error setting user" + user + " to " + isAdmin, e));
+    /**
+     * Sets admin flag on a user.
+     */
+    public static void setUserAsAdmin(DocumentReference userRef, boolean isAdmin) {
+        userRef.update("admin", isAdmin)
+                .addOnSuccessListener(aVoid ->
+                        Log.d("DB", "Admin flag updated: " + userRef.getId()))
+                .addOnFailureListener(e ->
+                        Log.e("DB", "Failed to set admin flag", e));
     }
 
 
