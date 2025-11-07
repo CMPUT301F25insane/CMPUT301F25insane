@@ -1,9 +1,14 @@
 package com.example.camaraderie.event_screen;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
+import static com.example.camaraderie.MainActivity.user;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +21,8 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class OrganizerViewEventFragment extends Fragment {
@@ -84,13 +91,41 @@ public class OrganizerViewEventFragment extends Fragment {
             public void onClick(View v) {
                 //TODO: make a DIALOGFRAGMENT to ask for CONFIRMATION FIRST
                 //TODO: do the logic for this
+                db.collection("Users").get()
+                        .addOnSuccessListener(snapshot -> {
+                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+                                DocumentReference uRef = userDoc.getReference();
+                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+                            }
+                        });
+
+                user.deleteCreatedEvent(eventDocRef);
+
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_main);
+
             }
         });
 
         binding.eventEditButtonOrdView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: IMPLEMENT THIS - maybe reuse the create event screen?
+                Bundle args = new Bundle();
+                args.putString("eventDocRefPath", eventDocRef.getPath());
+
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_create_event_testing, args);
+            }
+        });
+
+        binding.OrgEventRunLotteryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (event != null) {
+                    event.runLottery();
+                    event.updateDB();
+                    Toast.makeText(getContext(), "Lottery has been run!", LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -102,6 +137,8 @@ public class OrganizerViewEventFragment extends Fragment {
         binding.registrationDeadlineTextOrgView.setText(event.getRegistrationDeadline().toString());  //TODO: deal with date stuff
         binding.orgEventViewEventDate.setText(event.getEventDate().toString());
         binding.locationOfOrgView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
+        binding.hostNameOrgView.setText(user.getFirstName());
+        binding.nameOfOrganizer.setText(user.getFirstName());
     }
 
     @Override

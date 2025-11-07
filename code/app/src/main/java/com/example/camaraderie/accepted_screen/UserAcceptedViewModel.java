@@ -19,9 +19,9 @@ public class UserAcceptedViewModel extends ViewModel {
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added to acceptedList!"))
                 .addOnFailureListener(e -> Log.e("Firestore", "Error adding user", e));
 
-        eventDocRef.update("waitlist", FieldValue.arrayRemove(user.getDocRef()))
+        eventDocRef.update("selectedList", FieldValue.arrayRemove(user.getDocRef()))
                 .addOnSuccessListener(aVoid ->
-                        Log.d("Firestore", "User removed from waitlist! (accepted invitation)"))
+                        Log.d("Firestore", "User removed from selectedList! (accepted invitation)"))
                 .addOnFailureListener(e ->
                         Log.e("Firestore", "Error removing user", e));
 
@@ -32,9 +32,9 @@ public class UserAcceptedViewModel extends ViewModel {
 
     // user rejects invitation
     public void userDeclineInvite(DocumentReference eventDocRef) {
-        eventDocRef.update("waitlist", FieldValue.arrayRemove(user.getDocRef()))
+        eventDocRef.update("selectedList", FieldValue.arrayRemove(user.getDocRef()))
                 .addOnSuccessListener(aVoid ->
-                        Log.d("Firestore", "User removed from waitlist! (accepted invitation)"))
+                        Log.d("Firestore", "User removed from selectedList! (declined invitation)"))
                 .addOnFailureListener(e ->
                         Log.e("Firestore", "Error removing user", e));
 

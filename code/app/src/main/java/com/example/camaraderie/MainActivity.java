@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("Firestore", "User found");
 
                         if (user.isAdmin()) {
-                            //TODO: navigate to admin fragment
+                            navController.navigate(R.id.admin_main_screen);
                         }
 
                         if (!user.getSelectedEvents().isEmpty()) {
@@ -97,22 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
         // add dummy data
         clearAndAddDummyEvents();  // WARNING: THIS IS AN ASYNC RELIANT FUNCTION
-
-        db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("Events");
-        usersRef = db.collection("Users");
-
-        // get database events (this is fine, we don't have that many entries)
-        eventsRef.get().addOnSuccessListener(querySnapshot -> {
-            ArrayList<Event> events = new ArrayList<>();
-            for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                Event event = doc.toObject(Event.class);
-                events.add(event);
-            }
-
-            eventViewModel.setLocalEvents(events);
-
-        });
 
     }
 

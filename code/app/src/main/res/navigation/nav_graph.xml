@@ -3,7 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/fragment_main">
+    app:startDestination="@id/fragment_loading_screen">
+
+    <fragment
+        android:id="@+id/fragment_loading_screen"
+        android:name="com.example.camaraderie.LoadingScreenFragment"
+        android:label="Loading screen Fragment"
+        tools:layout="@layout/fragment_loading_screen">
+
+        <action
+            android:id="@+id/action_fragment_loading_screen_to_fragment_main"
+            app:destination="@id/fragment_main"/>
+        <action
+            android:id="@+id/action_fragment_loading_screen_to_admin_main_screen"
+            app:destination="@id/admin_main_screen" />
+        <action
+            android:id="@+id/action_fragment_loading_screen_to_fragment_pending_events"
+            app:destination="@id/fragment_pending_events" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_pending_events"
@@ -68,8 +86,13 @@
             android:id="@+id/action_fragment_main_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
         <action
+<<<<<<< HEAD
             android:id="@+id/action_fragment_main_to_update_user"
             app:destination="@id/update_user" />
+=======
+            android:id="@+id/action_fragment_main_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
+>>>>>>> 1f70d165b9083154d99dadc36e240d1916b19641
     </fragment>
 
     <fragment

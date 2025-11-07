@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="375dp"
+        android:layout_height="462dp"
+        android:text="Lottery Selection Guidelines:  Our event lottery system is designed to ensure fairness and transparency for all participants. When an event reaches capacity, users who join the waitlist are entered into a randomized selection process. Each waitlisted user has an equal chance of being selected, regardless of the time they joined the waitlist.  Selected users are notified and given the option to accept or decline their spot. Users who accept are confirmed to attend the event. Users who decline, or who do not respond within a reasonable timeframe, will have their spot made available again.  Event organizers may also remove selected users who have not yet accepted if needed (for example, to rerun the lottery and fill spots). This helps ensure that all available spaces are used and that as many interested participants as possible have the opportunity to attend.  Our goal is to provide a fair and accessible process for everyone interested in participating."
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="134dp" />
+
+    <Button
+        android:id="@+id/guidelinesBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="603dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
