@@ -19,6 +19,7 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.databinding.FragmentAdminEventsViewBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class AdminEventsViewFragment extends Fragment {
     private NavController nav;
     private ArrayList<Event> eventsArrayList;
     private EventArrayAdaptor eventsArrayAdapter;
+    private ListenerRegistration eventListener;
 
     public AdminEventsViewFragment() {
         // Required empty public constructor
@@ -64,7 +66,7 @@ public class AdminEventsViewFragment extends Fragment {
         );
     }
     private void loadList(){
-        eventsRef.addSnapshotListener((value, error) -> {
+        eventListener = eventsRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
             }
@@ -78,5 +80,18 @@ public class AdminEventsViewFragment extends Fragment {
                 eventsArrayAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (eventListener != null) {eventListener.remove();}
+        binding = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

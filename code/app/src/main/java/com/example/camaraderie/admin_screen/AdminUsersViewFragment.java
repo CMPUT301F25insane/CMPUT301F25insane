@@ -19,6 +19,7 @@ import com.example.camaraderie.databinding.FragmentAdminDashboardBinding;
 import com.example.camaraderie.databinding.FragmentAdminUsersViewBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class AdminUsersViewFragment extends Fragment {
     private FragmentAdminUsersViewBinding binding;
     FirebaseFirestore db;
     private CollectionReference usersRef;
+    private ListenerRegistration userListener;
     private ArrayList<User> userArrayList;
     private UserArrayAdaptor userArrayAdapter;
     private NavController nav;
@@ -64,7 +66,7 @@ public class AdminUsersViewFragment extends Fragment {
         );
     }
     private void loadList(){
-        usersRef.addSnapshotListener((value, error) -> {
+        userListener = usersRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
                 throw new RuntimeException("Fuck you (users version");
@@ -79,5 +81,18 @@ public class AdminUsersViewFragment extends Fragment {
                 userArrayAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (userListener != null) {userListener.remove();}
+        binding = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

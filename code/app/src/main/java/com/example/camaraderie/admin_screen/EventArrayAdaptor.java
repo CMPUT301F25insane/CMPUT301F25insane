@@ -51,7 +51,7 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
         }
 
         TextView event_name = view.findViewById(R.id.eventName);
-        TextView host_name = view.findViewById(R.id.RegistrationDeadline);
+        TextView deadline = view.findViewById(R.id.RegistrationDeadline);
 
         Button join = view.findViewById(R.id.joinButton);
         Button description = view.findViewById(R.id.seeDescButton);
@@ -59,7 +59,7 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
 
         event_name.setText(event.getEventName());
 
-        host_name.setText(event.getRegistrationDeadline().toString());
+        deadline.setText(event.getRegistrationDeadline().toString());
 
         join.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,19 +85,16 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             public void onClick(View v) {
 
                 DocumentReference eventDocRef = event.getEventDocRef();
-                db.collection("Users")
-                        .addSnapshotListener((snapshot, err) -> {
-
-                            if (err != null) {
-                                throw new RuntimeException("Fuck you");
-                            }
-
+                db.collection("Users").get()
+                        .addOnSuccessListener(snapshot -> {
                             for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
                                 DocumentReference uRef = userDoc.getReference();
                                 uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
                                 uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
                                 uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
                             }
+
+                            eventDocRef.delete();
                         });
             }
         });

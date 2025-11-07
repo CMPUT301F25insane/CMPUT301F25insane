@@ -34,22 +34,19 @@ public class UserAcceptedToEventFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ArrayList<Event> selectedEvents = new ArrayList<>();
-
-
         vm  = new ViewModelProvider(this).get(UserAcceptedViewModel.class);
-        for (DocumentReference eventRef : user.getSelectedEvents()) {
-            eventRef.get()
-                    .addOnSuccessListener(doc -> {
-                        Event event = doc.toObject(Event.class);
-                        if (event != null) {
-                            selectedEvents.add(event);
-                        }
-                    })
-                    .addOnFailureListener(e ->
-                            Log.e("Firestore", "Failed to get event", e));
-        }
+        ArrayList<Event> selectedEvents = new ArrayList<>();
         pendingEventArrayAdapter = new PendingEventArrayAdapter(requireContext(), 0, selectedEvents, vm);
+
+        for (DocumentReference eventRef : user.getSelectedEvents()) {
+            eventRef.get().addOnSuccessListener(doc -> {
+                Event event = doc.toObject(Event.class);
+                if (event != null) {
+                    selectedEvents.add(event);
+                    pendingEventArrayAdapter.notifyDataSetChanged();
+                }
+            });
+        }
 
     }
 
