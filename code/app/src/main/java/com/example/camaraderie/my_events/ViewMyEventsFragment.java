@@ -91,6 +91,13 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
             }
         });
 
+        binding.MyEventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Todo: Go to new My Events Fragment
+            }
+        });
+
 
 
     }
