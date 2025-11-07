@@ -92,10 +92,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete Profile"
-        app:layout_constraintTop_toBottomOf="@id/update_save"
+        app:layout_constraintBottom_toTopOf="@id/admin"
+        app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/admin"/>
+        app:layout_constraintTop_toBottomOf="@id/update_save" />
 
     <Button
         android:id="@+id/admin"
@@ -106,5 +107,16 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_delete"/>
+
+    <Button
+        android:id="@+id/seeGuidelinesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="See guidelines"
+        app:layout_constraintBottom_toTopOf="@+id/admin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_delete"
+        app:layout_constraintTop_toBottomOf="@+id/update_cancel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
