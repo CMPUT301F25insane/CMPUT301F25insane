@@ -89,7 +89,7 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
                 Bundle bundle = new Bundle();
                 bundle.putString("userEventDocRef", user1.getDocRef().getPath());
                 //TODO: add admin view of user profile
-                //nav.navigate(R.id.list_to_detail_view, bundle);
+                nav.navigate(R.id.action_admin_user_data_screen_view_to_admin_user_profile, bundle);
             }
         });
 
