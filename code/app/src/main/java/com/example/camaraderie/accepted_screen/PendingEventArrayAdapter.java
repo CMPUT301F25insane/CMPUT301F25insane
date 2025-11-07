@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +47,7 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
         }
 
         Event event = getItem(position);
-        ((TextView) view.findViewById(R.id.pendingEventDate)).setText((CharSequence) event.getEventDate());
+        ((TextView) view.findViewById(R.id.pendingEventDate)).setText(event.getEventDate().toString());
 
         ((TextView) view.findViewById(R.id.pendingEventName)).setText(event.getEventName());
 
@@ -55,8 +56,8 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             public void onClick(View v) {
                 vm.userAcceptInvite(event.getEventDocRef());
 
-                if (user.getSelectedEvents().isEmpty()) {
-                    parent.findViewById(R.id.pendingEventsContinueButton).setEnabled(true);
+                if (vm.allInvitesResolved()) {
+                    ((Button)parent.findViewById(R.id.pendingEventsContinueButton)).setEnabled(true);
                 }
 
             }
@@ -68,8 +69,8 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
             public void onClick(View v) {
                 vm.userDeclineInvite(event.getEventDocRef());
-                if (user.getSelectedEvents().isEmpty()) {
-                    parent.findViewById(R.id.pendingEventsContinueButton).setEnabled(true);
+                if (vm.allInvitesResolved()) {
+                    ((Button)parent.findViewById(R.id.pendingEventsContinueButton)).setEnabled(true);
                 }
             }
         });

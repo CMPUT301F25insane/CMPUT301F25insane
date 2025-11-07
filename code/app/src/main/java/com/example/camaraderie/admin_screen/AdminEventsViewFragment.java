@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavAction;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -14,9 +17,11 @@ import android.view.ViewGroup;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
+import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentAdminEventsViewBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -25,9 +30,12 @@ public class AdminEventsViewFragment extends Fragment {
 
     private FragmentAdminEventsViewBinding binding;
     FirebaseFirestore db;
-    private CollectionReference usersRef;
+    private CollectionReference eventsRef;
+    private NavController nav;
     private ArrayList<Event> eventsArrayList;
     private EventArrayAdaptor eventsArrayAdapter;
+    private ListenerRegistration eventListener;
+    SharedEventViewModel svm;
 
     public AdminEventsViewFragment() {
         // Required empty public constructor
@@ -44,11 +52,13 @@ public class AdminEventsViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         db = FirebaseFirestore.getInstance();
-        usersRef = db.collection("Users");
+        eventsRef = db.collection("Events");
 
         eventsArrayList = new ArrayList<Event>();
+        nav = NavHostFragment.findNavController(AdminEventsViewFragment.this);
+        svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
 
-        eventsArrayAdapter = new EventArrayAdaptor(requireContext(), eventsArrayList);
+        eventsArrayAdapter = new EventArrayAdaptor(requireContext(), eventsArrayList, nav, svm);
 
         binding.list.setAdapter(eventsArrayAdapter);
 
@@ -56,12 +66,11 @@ public class AdminEventsViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_user_data_screen_to_admin_main_screen)
+                nav.popBackStack()
         );
     }
     private void loadList(){
-        usersRef.addSnapshotListener((value, error) -> {
+        eventListener = eventsRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
             }
@@ -75,5 +84,18 @@ public class AdminEventsViewFragment extends Fragment {
                 eventsArrayAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (eventListener != null) {eventListener.remove();}
+        binding = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

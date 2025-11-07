@@ -28,12 +28,6 @@ import org.junit.runner.RunWith;
 
 
 public class UserViewEventTest {
-//    @Before
-//    public void setup() {
-//        // Launch the fragment in isolation
-//        FragmentScenario<UserViewEventFragment> scenario =
-//                FragmentScenario.launchInContainer(UserViewEventFragment.class);
-//    }
     private FragmentScenario<UserViewEventFragment> scenario;
 
     @Before

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -12,12 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedDispatcher;
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
 import com.example.camaraderie.databinding.FragmentAdminDashboardBinding;
 import com.example.camaraderie.databinding.FragmentAdminUsersViewBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -27,17 +30,19 @@ public class AdminUsersViewFragment extends Fragment {
     private FragmentAdminUsersViewBinding binding;
     FirebaseFirestore db;
     private CollectionReference usersRef;
+    private ListenerRegistration userListener;
     private ArrayList<User> userArrayList;
     private UserArrayAdaptor userArrayAdapter;
-
-    public AdminUsersViewFragment() {
-        // Required empty public constructor
-    }
+    private NavController nav;
+//
+//    public AdminUsersViewFragment() {
+//        // Required empty public constructor
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentAdminUsersViewBinding.inflate(inflater, container, false);
+        binding = FragmentAdminUsersViewBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -48,8 +53,9 @@ public class AdminUsersViewFragment extends Fragment {
         usersRef = db.collection("Users");
 
         userArrayList = new ArrayList<User>();
+        nav = NavHostFragment.findNavController(AdminUsersViewFragment.this);
 
-        userArrayAdapter = new UserArrayAdaptor(requireContext(),userArrayList);
+        userArrayAdapter = new UserArrayAdaptor(requireContext(), userArrayList, nav);
 
         binding.list.setAdapter(userArrayAdapter);
 
@@ -57,14 +63,14 @@ public class AdminUsersViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_user_data_screen_to_admin_main_screen)
+                nav.popBackStack()
         );
     }
     private void loadList(){
-        usersRef.addSnapshotListener((value, error) -> {
+        userListener = usersRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
+                throw new RuntimeException("Fuck you (users version");
             }
             if (value != null && !value.isEmpty()) {
                 userArrayList.clear();
@@ -76,5 +82,18 @@ public class AdminUsersViewFragment extends Fragment {
                 userArrayAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (userListener != null) {userListener.remove();}
+        binding = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

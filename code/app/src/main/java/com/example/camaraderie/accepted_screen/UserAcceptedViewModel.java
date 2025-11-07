@@ -42,4 +42,8 @@ public class UserAcceptedViewModel extends ViewModel {
         user.updateDB();
     }
 
+    public boolean allInvitesResolved() {
+        return user.getSelectedEvents().isEmpty();
+    }
+
 }

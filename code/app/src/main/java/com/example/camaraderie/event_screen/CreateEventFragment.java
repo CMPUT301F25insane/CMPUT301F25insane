@@ -20,10 +20,12 @@ import java.text.SimpleDateFormat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,6 +47,7 @@ public class CreateEventFragment extends Fragment {
     private EditText eventDescription;
     private EditText eventCapacity;
     private EditText eventTime;
+    private EditText optionalLimit;
     private boolean editing = false;
 
     /**
@@ -97,6 +100,7 @@ public class CreateEventFragment extends Fragment {
         eventDescription = binding.createEventDescription;
         eventCapacity = binding.createEventCapacity;
         eventTime = binding.createEventTime;
+        optionalLimit = binding.optionalLimit;
 
         Bundle args = getArguments();
         if (args != null) {
@@ -144,8 +148,7 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
 
                 NavHostFragment.findNavController(CreateEventFragment.this)
-                        .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
-
+                        .popBackStack();
             }
         });
 
@@ -158,7 +161,7 @@ public class CreateEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, eventTime);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
@@ -191,6 +194,7 @@ public class CreateEventFragment extends Fragment {
                              EditText eventLocation,
                              EditText eventDescription,
                              EditText eventCapacity,
+                             EditText optionalLimit,
                              EditText eventTime) throws ParseException {
 
         String name = eventName.getText().toString();
@@ -198,6 +202,10 @@ public class CreateEventFragment extends Fragment {
         String location = eventLocation.getText().toString();
         String time = eventTime.getText().toString();
         int capacity = Integer.parseInt(eventCapacity.getText().toString());
+        int limit = -1;  // false false
+        if (!optionalLimit.getText().toString().isEmpty()){
+            limit = Integer.parseInt(optionalLimit.getText().toString());
+        }
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date deadline =  formatter.parse(eventDeadline.getText().toString());
@@ -218,20 +226,30 @@ public class CreateEventFragment extends Fragment {
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
+            if (limit != -1) {
+                event.setWaitlistLimit(limit);
+            }
             eventDocRef.set(event, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
-                        Bundle args = new Bundle();
-                        args.putString("eventDocRefPath", eventDocRef.getPath());
+                        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+                        vm.setEvent(event);
 
                         NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event, args);
+                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating event", e));
         }
         else {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
-            Event newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
+            Event newEvent;
+            if (limit != -1) {
+                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId);
+            }
+            else {
+                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
+            }
+
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
@@ -239,11 +257,11 @@ public class CreateEventFragment extends Fragment {
 
                         user.addCreatedEvent(eventRef);
 
-                        Bundle args = new Bundle();
-                        args.putString("eventDocRefPath", eventRef.getPath());
+                        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+                        vm.setEvent(newEvent);
 
                         NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event, args);
+                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
 

@@ -93,8 +93,7 @@ public class CreateEventFragmentTest {
     //Testing if error appear in the event a Organizer does not input anything or leaves blank field
     public void testEmptyFormShowsError() {
         onView(withId(R.id.createEventConfirmButton)).perform(click());
-        onView(withText("Please fill in all fields"))
-                .check(matches(isDisplayed()));
+        onView(withText("Please fill in all fields")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
 }
