@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
@@ -53,18 +54,17 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
         name.setText(user.getFirstName());
         user_id.setText(user.getUserId());
 
-        /*
+
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //View profile
                 Bundle bundle = new Bundle();
-                bundle.putString("userId", user.getUserId());
+                bundle.putSerializable("user", user);
 
                 NavController navController = Navigation.findNavController(v);
-                //navController.navigate(R.id.list_to_detail_view, bundle);
+                navController.navigate(R.id.action_admin_user_data_screen_view_to_admin_user_profile, bundle);
             }
-        });*/
+        });
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
