@@ -91,7 +91,6 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 nav.navigate(R.id.action_fragment_main_to_fragment_create_event_testing);
             }
         });
