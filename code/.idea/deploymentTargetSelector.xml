@@ -4,21 +4,6 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-11-07T06:58:13.680384800Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\tahmi\.android\avd\Medium_Phone_API_36.0_2.avd" />
-            </handle>
-          </Target>
-        </DropdownSelection>
-        <DialogSelection />
-      </SelectionState>
-<<<<<<< HEAD
-      <SelectionState runConfigName="Tests in 'com.example.camaraderie'">
-=======
-      <SelectionState runConfigName="AdminUsersViewFragmentTest">
->>>>>>> b2af1ba06d0233de7da35d93e8592bf4f8a9599b
-        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
   </component>
