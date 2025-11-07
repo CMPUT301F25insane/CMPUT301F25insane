@@ -10,6 +10,7 @@ import java.sql.Array;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * This is a class that defines an event
@@ -278,6 +279,21 @@ public class Event {
         if (!waitlist.contains(user)) {
             waitlist.add(user);
         }
+    }
+
+    public void runLottery() {
+
+        for (int i = 0; i < capacity; i++) {
+            if (!waitlist.isEmpty()) {
+                System.out.println(capacity);
+                int rand = new Random().nextInt(waitlist.size());
+                System.out.println(rand);
+                DocumentReference randUser = waitlist.get(rand);
+                selectedUsers.add(randUser);
+                waitlist.remove(randUser);
+            }
+        }
+
     }
 
     public void removeWaitlistUser(DocumentReference user) {

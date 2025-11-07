@@ -3,6 +3,7 @@ package com.example.camaraderie.dashboard;
 
 import static com.example.camaraderie.MainActivity.user;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
@@ -43,6 +45,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
     }
 
 
+    @SuppressLint("ResourceAsColor")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -70,11 +73,25 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
         Button joinButton = view.findViewById(R.id.joinButton);
 
-        if (event.getWaitlist().contains(user.getDocRef())) {
-            //TODO figure out why this causes false positives
+        boolean userInWaitlist = false;
+        System.out.println(event.getEventId());
+        for (DocumentReference ref : user.getWaitlistedEvents()) {
+            if (ref.getPath().equals(event.getEventDocRef().getPath())) {
+                System.out.println(ref.getPath() + " | " + user.getDocRef().getPath());
+                userInWaitlist = true;
+                break;
+            }
+        }
+
+        if (userInWaitlist) {
             joinButton.setEnabled(false);
             joinButton.setBackgroundColor(Color.GRAY);
         }
+        else {
+            joinButton.setEnabled(true);
+            joinButton.setBackgroundColor(Color.parseColor("#AAF2C8"));
+        }
+
         Button descButton = view.findViewById(R.id.seeDescButton);
 
         joinButton.setOnClickListener(new View.OnClickListener() {

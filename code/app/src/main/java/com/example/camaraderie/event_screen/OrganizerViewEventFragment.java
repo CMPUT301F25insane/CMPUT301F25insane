@@ -1,9 +1,14 @@
 package com.example.camaraderie.event_screen;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
+import static com.example.camaraderie.MainActivity.user;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,6 +89,7 @@ public class OrganizerViewEventFragment extends Fragment {
             public void onClick(View v) {
                 //TODO: make a DIALOGFRAGMENT to ask for CONFIRMATION FIRST
                 //TODO: do the logic for this
+
             }
         });
 
@@ -91,6 +97,17 @@ public class OrganizerViewEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: IMPLEMENT THIS - maybe reuse the create event screen?
+            }
+        });
+
+        binding.OrgEventRunLotteryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (event != null) {
+                    event.runLottery();
+                    event.updateDB();
+                    Toast.makeText(getContext(), "Lottery has been run!", LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -102,6 +119,8 @@ public class OrganizerViewEventFragment extends Fragment {
         binding.registrationDeadlineTextOrgView.setText(event.getRegistrationDeadline().toString());  //TODO: deal with date stuff
         binding.orgEventViewEventDate.setText(event.getEventDate().toString());
         binding.locationOfOrgView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
+        binding.hostNameOrgView.setText(user.getFirstName());
+        binding.nameOfOrganizer.setText(user.getFirstName());
     }
 
     @Override

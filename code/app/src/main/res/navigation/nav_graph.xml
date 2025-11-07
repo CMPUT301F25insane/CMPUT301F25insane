@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_fragment_main_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action_fragment_main_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
     <fragment

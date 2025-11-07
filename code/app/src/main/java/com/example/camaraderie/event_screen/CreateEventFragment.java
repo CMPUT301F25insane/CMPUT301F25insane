@@ -183,8 +183,11 @@ public class CreateEventFragment extends Fragment {
 
                     user.addCreatedEvent(eventRef);
 
+                    Bundle args = new Bundle();
+                    args.putString("eventDocRefPath", eventRef.getPath());
+
                     NavHostFragment.findNavController(CreateEventFragment.this)
-                            .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
+                            .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event, args);
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
 

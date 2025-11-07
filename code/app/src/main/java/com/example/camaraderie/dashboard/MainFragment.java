@@ -1,5 +1,7 @@
 package com.example.camaraderie.dashboard;//
 
+import static com.example.camaraderie.MainActivity.user;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
@@ -59,6 +62,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         super.onViewCreated(view, savedInstanceState);
 
         binding.eventsList.setAdapter(dashboardEventArrayAdapter);
+        binding.nameForMainDashboard.setText(user.getFirstName());
 
         // Observe LiveData from Activity
         eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
@@ -109,7 +113,13 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
             throw new RuntimeException("Firestore event path is null in onEventClick()");
         }
 
-        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);
+        if (event.getHostDocRef().equals(user.getDocRef())){
+            NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to__fragment_organizer_view_event, args);
+        }
+
+        else {
+            NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);
+        }
     }
 
     @Override
