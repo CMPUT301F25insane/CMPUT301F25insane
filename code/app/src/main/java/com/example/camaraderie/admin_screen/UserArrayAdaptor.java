@@ -33,10 +33,13 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
 
     private FirebaseFirestore db;
     private ArrayList<User> users;
-    public UserArrayAdaptor(@NonNull Context context, ArrayList<User> user_list){
+    private NavController nav;
+
+    public UserArrayAdaptor(@NonNull Context context, ArrayList<User> user_list, NavController nav){
         super(context, 0, user_list);
         this.db = FirebaseFirestore.getInstance();
         this.users = user_list;
+        this.nav = nav;
     }
 
     @NonNull
