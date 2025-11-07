@@ -23,12 +23,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-@RunWith(AndroidJUnit4.class)
-@LargeTest
 /**
  * we are testing Admin View on Users Fragment
  */
+
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class AdminUsersViewFragmentTest {
     private FragmentScenario<AdminUsersViewFragment> scenario;
 
@@ -41,19 +41,29 @@ public class AdminUsersViewFragmentTest {
     public void tearDown() {
         scenario.close();
     }
+
+    /**
+     * // Check if the "Back" button is visible on screen
+     */
     @Test
     public void testBackButtonIsVisible() {
-        // Check if the "Back" button is visible on screen
+
         onView(withId(R.id.back_button))
                 .check(matches(isDisplayed()));
     }
-
+    /**
+     * Check if the "Back" button is clickable
+     */
     @Test
     public void testBackButtonIsClickable() {
-        // Try clicking the "Back" button
+
         onView(withId(R.id.back_button))
                 .perform(click());
     }
+
+    /**
+     *  Checking if admin mod and list are displayed
+     */
     @Test
     public void testAdminModeAndListDisplayed() {
         onView(withId(R.id.admin_mode)).check(matches(isDisplayed()));

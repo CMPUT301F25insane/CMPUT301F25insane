@@ -13,7 +13,11 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+<<<<<<< HEAD
       <SelectionState runConfigName="Tests in 'com.example.camaraderie'">
+=======
+      <SelectionState runConfigName="AdminUsersViewFragmentTest">
+>>>>>>> b2af1ba06d0233de7da35d93e8592bf4f8a9599b
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
