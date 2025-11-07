@@ -1,9 +1,6 @@
-package com.example.camaraderie.admin_screen;
-
-import static com.example.camaraderie.MainActivity.user;
+package com.example.camaraderie.my_events;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.NavHost;
 
-import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,20 +26,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 /**
- * Array adapter for events as an admin
+ * Event array adapter for events created by the user. They can delete from here.
  */
-public class EventArrayAdaptor extends ArrayAdapter<Event> {
 
-    FirebaseFirestore db;
+public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
+
     private NavController nav;
-    SharedEventViewModel svm;
-    ArrayList<Event> events;
-    public EventArrayAdaptor(@NonNull Context context, ArrayList<Event> events, NavController nav, SharedEventViewModel svm){
-        super(context, 0, events);
-        this.db = FirebaseFirestore.getInstance();
-        this.events = events;
-
+    private FirebaseFirestore db;
+    private SharedEventViewModel svm;
+    public MyCreatedEventsArrayAdapter(@NonNull Context context, int resource, ArrayList<Event> events, NavController nav, SharedEventViewModel svm) {
+        super(context, resource, events);
         this.nav = nav;
+        db = FirebaseFirestore.getInstance();
         this.svm = svm;
     }
 
@@ -67,31 +61,20 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
         Button description = view.findViewById(R.id.seeDescButton);
         Button remove = view.findViewById(R.id.RemoveButton);
 
+        join.setEnabled(false);
+
         event_name.setText(event.getEventName());
 
         deadline.setText(event.getRegistrationDeadline().toString());
-
-        join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                join.setBackgroundColor(Color.GRAY);
-                join.setEnabled(false);
-                event.addWaitlistUser(user.getDocRef());
-                user.addWaitlistedEvent(event.getEventDocRef());
-
-                // update db
-                user.updateDB();
-                event.updateDB();
-            }
-        });
 
         description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //View profile
-
                 svm.setEvent(event);
-                nav.navigate(R.id.fragment_view_event_user);
+
+
+                nav.navigate(R.id._fragment_organizer_view_event);
             }
         });
 
@@ -110,9 +93,12 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
                             }
 
                             eventDocRef.delete();
+                            remove(event);
+                            notifyDataSetChanged();
                         });
             }
         });
+
         return view;
     }
 }

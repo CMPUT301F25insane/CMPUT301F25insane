@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentMainBinding;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,7 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+/**
+ * Dashboard/Main screen for users
+ */
 public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;
@@ -147,26 +150,20 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     }
 
-    // i dont think this should live here, it could violate MVC principles TODO: refactor this later if this is true
     public void onEventClick(Event event){
 
         Log.d("Firebase", "User clicked description for" + event.getEventName());
 
-        Bundle args = new Bundle();
+        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+        vm.setEvent(event);
 
-        args.putString("eventDocRefPath", event.getEventDocRef().getPath());
-
-        if (args.getString("eventDocRefPath") == null){
-            Log.e("Firestore", "Event path is null");
-            throw new RuntimeException("Firestore event path is null in onEventClick()");
-        }
 
         if (event.getHostDocRef().equals(user.getDocRef())){
-            NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to__fragment_organizer_view_event, args);
+            NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to__fragment_organizer_view_event);
         }
 
         else {
-            NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user, args);
+            NavHostFragment.findNavController(this).navigate(R.id.action_fragment_main_to_fragment_view_event_user);
         }
     }
 

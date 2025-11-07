@@ -20,10 +20,12 @@ import java.text.SimpleDateFormat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -146,8 +148,7 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
 
                 NavHostFragment.findNavController(CreateEventFragment.this)
-                        .navigate(R.id.action_fragment_create_event_testing_to_fragment_main);
-
+                        .popBackStack();
             }
         });
 
@@ -230,11 +231,11 @@ public class CreateEventFragment extends Fragment {
             }
             eventDocRef.set(event, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
-                        Bundle args = new Bundle();
-                        args.putString("eventDocRefPath", eventDocRef.getPath());
+                        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+                        vm.setEvent(event);
 
                         NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event, args);
+                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating event", e));
         }
@@ -256,11 +257,11 @@ public class CreateEventFragment extends Fragment {
 
                         user.addCreatedEvent(eventRef);
 
-                        Bundle args = new Bundle();
-                        args.putString("eventDocRefPath", eventRef.getPath());
+                        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+                        vm.setEvent(newEvent);
 
                         NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event, args);
+                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
 

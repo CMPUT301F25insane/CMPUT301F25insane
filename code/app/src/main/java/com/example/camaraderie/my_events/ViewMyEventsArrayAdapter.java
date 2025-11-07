@@ -29,6 +29,9 @@ import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
+/**
+ * Event array adapter for events the user has joined the waitlist for.
+ */
 public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
     private OnEventClickListener listener;

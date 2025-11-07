@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.User;
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.FragmentViewAttendeesBinding;
@@ -24,12 +25,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Screen to view the waitlist for an event. Also shows number of waitlisted users.
+ */
+
 public class ViewWaitlistFragment extends Fragment {
 
     private FragmentViewAttendeesBinding binding;
     private DocumentReference eventDocRef;
     private ViewWaitlistArrayAdapter viewWaitlistArrayAdapter;
     private ViewWaitlistViewModel vm;
+    private SharedEventViewModel svm;
     private Event event;
     private FirebaseFirestore db;
     private NavController nav;
@@ -41,6 +47,8 @@ public class ViewWaitlistFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         nav = NavHostFragment.findNavController(ViewWaitlistFragment.this);
         vm = new ViewModelProvider(requireActivity()).get(ViewWaitlistViewModel.class);
+        svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+
     }
 
     @Nullable
@@ -54,40 +62,17 @@ public class ViewWaitlistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String path = getArguments().getString("eventDocRefPath");
-        eventDocRef = db.document(path);
-        eventDocRef.get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    event = documentSnapshot.toObject(Event.class);
+        svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
+            event = evt;
+            vm.loadWaitlistedUsers(event, users -> {
+                viewWaitlistArrayAdapter = new ViewWaitlistArrayAdapter(requireContext(), 0, users, event, vm);
+                binding.usersInWaitlist.setAdapter(viewWaitlistArrayAdapter);
+            });
+            fillTextViews(event);
+        });
 
-                    vm.loadWaitlistedUsers(event, users -> {
-                        // 'users' is now an ArrayList<User>
-                        viewWaitlistArrayAdapter = new ViewWaitlistArrayAdapter(requireContext(), 0, users, event, vm);
-                        binding.usersInWaitlist.setAdapter(viewWaitlistArrayAdapter);
-                    });
+        binding.backButton.setOnClickListener(v -> nav.popBackStack());
 
-                    fillTextViews(event);
-
-                    binding.backButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            nav.popBackStack();
-
-//                            Bundle arg = new Bundle();
-//
-//                            arg.putString("eventDocRefPath", eventDocRef.getPath());
-//                            if (event.getHostDocRef().equals(user.getDocRef())) {
-//                                nav.navigate(R.id.action_fragment_view_waitlist_to__fragment_organizer_view_event, arg);
-//                            } else if (user.isAdmin()) {
-//                                nav.navigate(R.id.action_fragment_view_waitlist_to_fragment_view_event_user, arg);
-//                            } else {
-//                                // is normal user
-//                                nav.navigate(R.id.action_fragment_view_waitlist_to_fragment_view_event_user, arg);
-//                            }
-                        }
-                    });
-                });
     }
 
     private void fillTextViews(Event event) {

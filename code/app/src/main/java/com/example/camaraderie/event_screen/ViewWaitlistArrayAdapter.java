@@ -23,6 +23,9 @@ import static com.example.camaraderie.MainActivity.user;
 import java.lang.annotation.Documented;
 import java.util.ArrayList;
 
+/**
+ * Array adapter for user objects for fragments involving waitlists
+ */
 public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
 
     private Event event;
@@ -63,7 +66,10 @@ public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
             @Override
             public void onClick(View v) {
                 Log.d("Waitlist kick button", "User attempted to be kicked...");
-                vm.kickUser(entrant, event, () -> notifyDataSetChanged());
+                vm.kickUser(entrant, event, () -> {
+                    remove(entrant);
+                    notifyDataSetChanged();
+                });
             }
         });
 

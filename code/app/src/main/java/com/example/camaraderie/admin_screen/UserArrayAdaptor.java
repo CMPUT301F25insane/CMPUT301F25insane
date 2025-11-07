@@ -1,7 +1,5 @@
 package com.example.camaraderie.admin_screen;
 
-import static com.example.camaraderie.MainActivity.user;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
@@ -25,15 +25,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Array adapter for users as an admin
+ */
+
 public class UserArrayAdaptor extends ArrayAdapter<User> {
 
     private FirebaseFirestore db;
+    private ArrayList<User> users;
     private NavController nav;
 
-    public UserArrayAdaptor(@NonNull Context context, ArrayList<User> users, NavController nav){
-        super(context, 0, users);
+    public UserArrayAdaptor(@NonNull Context context, ArrayList<User> user_list, NavController nav){
+        super(context, 0, user_list);
         this.db = FirebaseFirestore.getInstance();
-
+        this.users = user_list;
         this.nav = nav;
     }
 
@@ -64,7 +69,6 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //View profile
                 Bundle bundle = new Bundle();
                 bundle.putString("userEventDocRef", user1.getDocRef().getPath());
                 //TODO: add admin view of user profile

@@ -17,11 +17,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.databinding.FragmentUpdateUserBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Field;
+/**
+ * This is the screen for users updating their information.
+ */
 
 public class UpdateUserFragment extends Fragment {
     private FirebaseFirestore db;
@@ -77,48 +77,20 @@ public class UpdateUserFragment extends Fragment {
         });
 
         binding.userDelete.setOnClickListener(v -> {
-            for (DocumentReference ref : user.getSelectedEvents()) {
-                ref.update("selectedList", FieldValue.arrayRemove(user.getDocRef()));
-            }
-
-            for (DocumentReference ref : user.getAcceptedEvents()) {
-                ref.update("acceptedList", FieldValue.arrayRemove(user.getDocRef()));
-            }
-
-            for (DocumentReference ref : user.getWaitlistedEvents()) {
-                ref.update("waitlist", FieldValue.arrayRemove(user.getDocRef()));
-            }
-
-            for (DocumentReference eventDocRef : user.getUserCreatedEvents()) {
-                db.collection("Users").get()
-                        .addOnSuccessListener(snapshot -> {
-                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
-                                DocumentReference uRef = userDoc.getReference();
-                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
-                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
-                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
-                            }
-                        });
-
-                user.deleteCreatedEvent(eventDocRef);
-            }
-            user.getDocRef().delete()
-                    .addOnSuccessListener(aVoid -> {
-                        throw new RuntimeException("Congratulations, you no longer have an account :)");
-                    });
+            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+            userDocRef.delete();
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_update_user_to_fragment_main);
         });
 
         binding.updateCancel.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).popBackStack();
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_update_user_to_fragment_main);
         });
 
         binding.admin.setOnClickListener(v -> {
-            if (binding.editTextText.getText().toString().equals("80085")){
-                user.setAdmin(true);
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_update_user_to_admin_main_screen);
-            }
-
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_update_user_to_admin_main_screen);
         });
 
         binding.seeGuidelinesButton.setOnClickListener(new View.OnClickListener() {

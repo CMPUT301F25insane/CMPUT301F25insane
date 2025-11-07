@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedDispatcher;
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
 import com.example.camaraderie.databinding.FragmentAdminDashboardBinding;
@@ -54,7 +55,7 @@ public class AdminUsersViewFragment extends Fragment {
         userArrayList = new ArrayList<User>();
         nav = NavHostFragment.findNavController(AdminUsersViewFragment.this);
 
-        userArrayAdapter = new UserArrayAdaptor(requireContext(), userArrayList, nav);
+        userArrayAdapter = new UserArrayAdaptor(requireContext(), userArrayList, nav); //,nav in constructor
 
         binding.list.setAdapter(userArrayAdapter);
 
@@ -62,7 +63,7 @@ public class AdminUsersViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                NavHostFragment.findNavController(this).popBackStack()
+                nav.popBackStack()
         );
     }
     private void loadList(){
