@@ -86,13 +86,11 @@
             android:id="@+id/action_fragment_main_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
         <action
-<<<<<<< HEAD
             android:id="@+id/action_fragment_main_to_update_user"
             app:destination="@id/update_user" />
-=======
+        <action
             android:id="@+id/action_fragment_main_to__fragment_organizer_view_event"
             app:destination="@id/_fragment_organizer_view_event" />
->>>>>>> 1f70d165b9083154d99dadc36e240d1916b19641
     </fragment>
 
     <fragment
