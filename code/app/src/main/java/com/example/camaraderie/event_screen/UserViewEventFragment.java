@@ -121,6 +121,22 @@ public class UserViewEventFragment extends Fragment {
         binding.userEventViewEventDate.setText(e.getEventDate().toString());
         binding.locationOfUserView.setText(e.getEventLocation());
 
+        db.document(e.getHostDocRef().getPath()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    String hostName = documentSnapshot.getString("firstName");
+
+                    if (binding != null) {
+                        binding.hostNameUserView.setText(hostName);
+                    }
+                }
+
+            }
+
+            });
+
+
         boolean userInWaitlist = e.getWaitlist().contains(user.getDocRef());
         binding.joinButtonUserView.setEnabled(!userInWaitlist);
         binding.unjoinButtonUserView.setEnabled(userInWaitlist);

@@ -7,6 +7,9 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+/**
+ * Class that generates a QR code for the event
+ */
 public class QRCodeGenerator {
 
     /**
