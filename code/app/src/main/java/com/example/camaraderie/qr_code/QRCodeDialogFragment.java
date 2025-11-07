@@ -26,6 +26,12 @@ public class QRCodeDialogFragment extends DialogFragment {
     private ImageView imageView;
     private String eventId;
 
+    /**
+     *
+     * @param eventId id to bind to the QR code
+     * @return return fragment for the QR code
+     */
+
     public static QRCodeDialogFragment newInstance(String eventId){
         QRCodeDialogFragment fragment = new QRCodeDialogFragment();
         Bundle args = new Bundle();
@@ -35,12 +41,31 @@ public class QRCodeDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    /**
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return return inflated view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_fragment_qr_code, container, false);
     }
 
+    /**
+     * set view bindings, display qr code
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     * @throws RuntimeException if WriterException occurs
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -60,6 +85,10 @@ public class QRCodeDialogFragment extends DialogFragment {
         }
     }
 
+    /**
+     * sets bitmap for qr code
+     * @throws WriterException occurs if qrcode fails to generate
+     */
     private void generateAndDisplayQRCode() throws WriterException {
 
         String deeplink = "com.example.camaraderie://event?id=" + eventId;

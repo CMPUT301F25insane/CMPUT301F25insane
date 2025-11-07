@@ -37,6 +37,11 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
     DocumentReference eventDocRef;
     private EventViewModel eventViewModel;
 
+    /**
+     * sets nav, myEvents list, and eventViewModel
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,18 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         nav = NavHostFragment.findNavController(ViewMyEventsFragment.this);
     }
 
+    /**
+     * sets binding
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return binding root
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,6 +71,12 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         return binding.getRoot();
     }
 
+    /**
+     * set bindings and listeners
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -103,6 +126,10 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
     }
 
+    /**
+     * listener to navigate to the organizer view of event
+     * @param event event to set organizer view to
+     */
     public void onEventClick(Event event){
 
         Log.d("clicked event description", event.getEventName());
@@ -122,8 +149,9 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         NavHostFragment.findNavController(this).navigate(R.id._fragment_organizer_view_event);
     }
 
-
-
+    /**
+     * set binding to null
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
