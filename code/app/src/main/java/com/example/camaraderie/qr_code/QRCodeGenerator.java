@@ -9,6 +9,14 @@ import android.graphics.Color;
 
 public class QRCodeGenerator {
 
+    /**
+     * Generates the QR code and returns it as a Bitmap
+     *
+     * @param text
+     * @param size
+     * @return Bitmap
+     * @throws WriterException
+     */
     public static Bitmap generateQRCode(String text, int size) throws WriterException {
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();

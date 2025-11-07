@@ -48,9 +48,6 @@ public class QRCodeDialogFragment extends DialogFragment {
         eventId = args.getString("eventId");
         Log.d("EVENT ID BEING RECEIVED TO THE QRCODE DIALOG FRAGMENT", eventId);
 
-
-
-
         view.findViewById(R.id.back_button).setOnClickListener(v -> dismiss());
 
         try {
