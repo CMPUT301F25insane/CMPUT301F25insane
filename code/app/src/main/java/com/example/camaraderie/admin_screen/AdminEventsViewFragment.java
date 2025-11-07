@@ -27,7 +27,7 @@ public class AdminEventsViewFragment extends Fragment {
     FirebaseFirestore db;
     private CollectionReference usersRef;
     private ArrayList<Event> eventsArrayList;
-    private UserArrayAdaptor eventsArrayAdapter;
+    private EventArrayAdaptor eventsArrayAdapter;
 
     public AdminEventsViewFragment() {
         // Required empty public constructor
@@ -48,7 +48,7 @@ public class AdminEventsViewFragment extends Fragment {
 
         eventsArrayList = new ArrayList<Event>();
 
-        eventsArrayAdapter = new UserArrayAdaptor(requireContext(), eventsArrayList);
+        eventsArrayAdapter = new EventArrayAdaptor(requireContext(), eventsArrayList);
 
         binding.list.setAdapter(eventsArrayAdapter);
 

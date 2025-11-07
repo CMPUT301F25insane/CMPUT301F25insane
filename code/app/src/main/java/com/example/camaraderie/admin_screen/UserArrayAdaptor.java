@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 public class UserArrayAdaptor extends ArrayAdapter<User> {
 
-    FirebaseFirestore db;
-    ArrayList<User> users;
+    private FirebaseFirestore db;
+    private ArrayList<User> users;
     public UserArrayAdaptor(@NonNull Context context, ArrayList<User> users){
         super(context, 0, users);
         this.db = FirebaseFirestore.getInstance();
@@ -33,16 +33,16 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view;
-        if (convertView == null) {
+        View view = convertView;
+        if (view == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_admin_users_view_item, parent, false);
-        }
-        else {
-            // just reuse the garbage view
-            view = convertView;
         }
 
         User user = getItem(position);
+        if (user == null) {
+            return view;
+        }
+
         TextView name = convertView.findViewById(R.id.user_name);
         TextView user_id = convertView.findViewById(R.id.user_id);
         Button profile = convertView.findViewById(R.id.UserProfileButton);
@@ -72,6 +72,6 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
             }
         });
 
-        return convertView;
+        return view;
     }
 }

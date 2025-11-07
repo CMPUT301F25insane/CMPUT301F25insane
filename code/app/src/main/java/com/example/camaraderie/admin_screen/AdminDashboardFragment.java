@@ -52,6 +52,10 @@ public class AdminDashboardFragment extends Fragment {
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_admin_main_screen_to_admin_event_images_screen));
 
+        binding.back.setOnClickListener(v ->
+                NavHostFragment.findNavController(this).
+                        navigate(R.id.action_admin_main_screen_to_update_user));
+
     }
 
     @Override

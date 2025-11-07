@@ -33,23 +33,35 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view;
+        View view = convertView;
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_admin_events_view_item, parent, false);
         }
-        else {
-            // just reuse the garbage view
-            view = convertView;
-        }
 
         Event event = getItem(position);
-        TextView event_name = convertView.findViewById(R.id.);
-        Button profile = convertView.findViewById(R.id.UserProfileButton);
+        if (event == null) {
+            return view;
+        }
+
+        TextView event_name = convertView.findViewById(R.id.eventName);
+        TextView host_name = convertView.findViewById(R.id.RegistrationDeadline);
+
+        Button join = convertView.findViewById(R.id.joinButton);
+        Button description = convertView.findViewById(R.id.seeDescButton);
         Button remove = convertView.findViewById(R.id.RemoveButton);
 
         event_name.setText(event.getEventName());
 
-        profile.setOnClickListener(new View.OnClickListener() {
+        host_name.setText(event.getRegistrationDeadline().toString());
+
+        join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //join function
+            }
+        });
+
+        description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //View profile
@@ -64,12 +76,11 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("Users")
-                        .document(user.getUserId())
+                db.collection("Events")
+                        .document(event.getEventId())
                         .delete();
             }
         });
-
-        return convertView;
+        return view;
     }
 }
