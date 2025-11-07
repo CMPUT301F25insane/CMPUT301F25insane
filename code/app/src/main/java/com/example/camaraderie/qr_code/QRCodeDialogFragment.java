@@ -1,7 +1,9 @@
 package com.example.camaraderie.qr_code;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ public class QRCodeDialogFragment extends DialogFragment {
         Bundle args = new Bundle();
         Log.d("EVENT ID BEING SENT TO THE QRCODE DIALOG FRAGMENT", eventId);
         args.putString("eventId", eventId);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -41,8 +44,11 @@ public class QRCodeDialogFragment extends DialogFragment {
 
         imageView = view.findViewById(R.id.qrImageView);
 
-        Bundle args = new Bundle();
+        Bundle args = getArguments();
         eventId = args.getString("eventId");
+        Log.d("EVENT ID BEING RECEIVED TO THE QRCODE DIALOG FRAGMENT", eventId);
+
+
 
 
         view.findViewById(R.id.back_button).setOnClickListener(v -> dismiss());
@@ -56,7 +62,7 @@ public class QRCodeDialogFragment extends DialogFragment {
 
     private void generateAndDisplayQRCode() throws WriterException {
 
-        String deeplink = "https://myapp.com/event?id=" + eventId;
+        String deeplink = "com.example.camaraderie://event?id=" + eventId;
 
         Bitmap qrCode = QRCodeGenerator.generateQRCode(deeplink, 500);
         imageView.setImageBitmap(qrCode);
