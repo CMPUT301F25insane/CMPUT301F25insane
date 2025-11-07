@@ -81,6 +81,12 @@ public class UserViewEventFragment extends Fragment {
 
                     fillTextViews(event);
 
+                    if (event.getWaitlistLimit() != -1) {
+                        if (event.getWaitlist().size() >= event.getWaitlistLimit()) {
+                            binding.joinButtonUserView.setEnabled(false);  // too full
+                        }
+                    }
+
                     if(event.getWaitlist().contains(user.getDocRef())) {
 
                         Log.d("Firestore", "User is in event");

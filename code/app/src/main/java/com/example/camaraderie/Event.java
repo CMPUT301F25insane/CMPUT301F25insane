@@ -30,6 +30,7 @@ public class Event {
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private int capacity;  // always > 0
+    private int waitlistLimit = -1;
     private DocumentReference hostDocRef;
     private DocumentReference eventDocRef;
 
@@ -73,7 +74,21 @@ public class Event {
         this.eventDocRef = eventDocRef;
         this.eventId = eventId;
 
-        //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event
+    }
+
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int limit, DocumentReference host, DocumentReference eventDocRef, String eventId) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.waitlistLimit = limit;
+        this.eventId = eventId;
+
     }
 
 
@@ -307,5 +322,13 @@ public class Event {
 
     public void setEventDescription(String description) {
         this.description = description;
+    }
+
+    public int getWaitlistLimit() {
+        return waitlistLimit;
+    }
+
+    public void setWaitlistLimit(int waitlistLimit) {
+        this.waitlistLimit = waitlistLimit;
     }
 }

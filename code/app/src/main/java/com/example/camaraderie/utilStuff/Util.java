@@ -18,7 +18,7 @@ public class Util {
         CollectionReference eventsRef = db.collection("Events");
         CollectionReference usersRef = db.collection("Users");
 
-        //clearDB();
+        clearDB();
 
         for (int i = 0; i < 10; i++) {
 
