@@ -172,7 +172,7 @@ public class CreateEventFragment extends Fragment {
         eventDeadline.setText(event.getRegistrationDeadline().toString());
         eventLocation.setText(event.getEventLocation());
         eventDescription.setText(event.getDescription());
-        eventCapacity.setText(event.getCapacity());
+        eventCapacity.setText(String.valueOf(event.getCapacity()));
         eventTime.setText(event.getEventTime());
     }
 

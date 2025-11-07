@@ -111,9 +111,10 @@ public class OrganizerViewEventFragment extends Fragment {
         binding.eventEditButtonOrdView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: IMPLEMENT THIS - maybe reuse the create event screen?
                 Bundle args = new Bundle();
+                args.putString("eventDocRefPath", eventDocRef.getPath());
 
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_create_event_testing, args);
             }
         });
 
