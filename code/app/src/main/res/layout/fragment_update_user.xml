@@ -103,10 +103,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ADMIN MODE :)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.759"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_delete"/>
+        app:layout_constraintTop_toBottomOf="@id/user_delete" />
 
     <Button
         android:id="@+id/seeGuidelinesButton"
@@ -118,5 +119,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/user_delete"
         app:layout_constraintTop_toBottomOf="@+id/update_cancel" />
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="129dp"
+        android:layout_height="46dp"
+        android:ems="10"
+        android:hint="adminPW"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/admin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

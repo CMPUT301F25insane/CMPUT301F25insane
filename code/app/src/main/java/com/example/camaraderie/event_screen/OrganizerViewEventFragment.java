@@ -90,7 +90,6 @@ public class OrganizerViewEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: make a DIALOGFRAGMENT to ask for CONFIRMATION FIRST
-                //TODO: do the logic for this
                 db.collection("Users").get()
                         .addOnSuccessListener(snapshot -> {
                             for (DocumentSnapshot userDoc : snapshot.getDocuments()) {

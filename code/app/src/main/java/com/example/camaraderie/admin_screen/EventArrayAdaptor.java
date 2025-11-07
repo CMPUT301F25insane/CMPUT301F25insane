@@ -66,7 +66,7 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             public void onClick(View v) {
                 //View profile
                 Bundle bundle = new Bundle();
-                bundle.putString("eventId", event.getEventId());
+                bundle.putString("eventDocRefPath", event.getEventId());
 
                 NavController navController = Navigation.findNavController(v);
                 //navController.navigate(R.id.list_to_detail_view, bundle);

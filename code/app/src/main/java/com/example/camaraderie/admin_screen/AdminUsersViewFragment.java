@@ -29,15 +29,15 @@ public class AdminUsersViewFragment extends Fragment {
     private CollectionReference usersRef;
     private ArrayList<User> userArrayList;
     private UserArrayAdaptor userArrayAdapter;
-
-    public AdminUsersViewFragment() {
-        // Required empty public constructor
-    }
+//
+//    public AdminUsersViewFragment() {
+//        // Required empty public constructor
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentAdminUsersViewBinding.inflate(inflater, container, false);
+        binding = FragmentAdminUsersViewBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
