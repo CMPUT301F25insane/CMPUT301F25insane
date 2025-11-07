@@ -41,17 +41,17 @@ public class AdminDashboardFragment extends Fragment {
 
         binding.adminSeeUsers.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_user_data_screen)
+                        .navigate(R.id.action_admin_main_screen_to_admin_user_data_screen_view)
         );
 
         binding.adminSeeEvents.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_event_data_screen)
+                        .navigate(R.id.action_admin_main_screen_to_admin_event_data_screen_view)
         );
 
         binding.adminSeePics.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_event_images_screen));
+                        .navigate(R.id.action_admin_main_screen_to_admin_event_images_screen_view));
 
         binding.back.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)

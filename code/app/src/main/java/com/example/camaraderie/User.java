@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Collection;
  * This is a class that defines a user. Admin privileges granted by setting admin to true.
  * @author fecici, RamizHHH, UmranRahman
  */
-public class User {
+public class User implements Serializable {
 
     private String firstName;
     private String phoneNumber;
