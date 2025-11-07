@@ -194,7 +194,7 @@
 
     <fragment
         android:id="@+id/update_user"
-        android:name="com.example.camaraderie.dashboard.MainFragment"
+        android:name="com.example.camaraderie.UpdateUserFragment"
         android:label="Update Screen"
         tools:layout="@layout/fragment_update_user">
         <action
