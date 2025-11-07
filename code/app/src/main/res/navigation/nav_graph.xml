@@ -26,7 +26,8 @@
     <fragment
         android:id="@+id/fragment_guidelines"
         android:label="guidleins FRagment"
-        android:name="">
+        android:name="com.example.camaraderie.GuidelinesFragment"
+        tools:layout="@layout/fragment_guidelines">
 
         <action
             android:id="@+id/action_fragment_guidelines_to_update_user"
