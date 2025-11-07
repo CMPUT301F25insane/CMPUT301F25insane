@@ -18,6 +18,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -35,14 +38,16 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            view = LayoutInflater.from(getContext())
-                    .inflate(R.layout.fragment_admin_users_view_item, parent, false);
+        View view;
+        if (convertView == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_admin_users_view_item, parent, false);
+        }
+        else {
+            view = convertView;
         }
 
-        User user = getItem(position);
-        if (user == null) {
+        User user1 = getItem(position);
+        if (user1 == null) {
             return view;
         }
 
@@ -51,38 +56,51 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
         Button profile = view.findViewById(R.id.UserProfileButton);
         Button remove = view.findViewById(R.id.RemoveButton);
 
-        name.setText(user.getFirstName());
-        user_id.setText(user.getUserId());
-
+        name.setText(user1.getFirstName());
+        user_id.setText(user1.getUserId());
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("user", user);
-
-                NavController navController = Navigation.findNavController(v);
-                navController.navigate(R.id.action_admin_user_data_screen_view_to_admin_user_profile, bundle);
+                bundle.putString("userEventDocRef", user1.getDocRef().getPath());
+                //TODO: add admin view of user profile
+                //nav.navigate(R.id.list_to_detail_view, bundle);
             }
         });
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("Users")
-                        .document(user.getUserId())
-                        .delete()
-                        .addOnSuccessListener(w -> {
-                            Toast.makeText(getContext(), "User " + user.getFirstName() + " deleted", Toast.LENGTH_SHORT).show();
+                for (DocumentReference ref : user1.getSelectedEvents()) {
+                    ref.update("selectedList", FieldValue.arrayRemove(user1.getDocRef()));
+                }
 
-                            users.remove(position);
-                            notifyDataSetChanged();
-                        })
-                        .addOnFailureListener(e ->
-                                Toast.makeText(getContext(), "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                        );
+                for (DocumentReference ref : user1.getAcceptedEvents()) {
+                    ref.update("acceptedList", FieldValue.arrayRemove(user1.getDocRef()));
+                }
+
+                for (DocumentReference ref : user1.getWaitlistedEvents()) {
+                    ref.update("waitlist", FieldValue.arrayRemove(user1.getDocRef()));
+                }
+
+                for (DocumentReference eventDocRef : user1.getUserCreatedEvents()) {
+                    db.collection("Users").get()
+                            .addOnSuccessListener(snapshot -> {
+                                for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+                                    DocumentReference uRef = userDoc.getReference();
+                                    uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                                    uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+                                    uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+                                }
+                            });
+
+                    user1.deleteCreatedEvent(eventDocRef);
+                }
+                user1.getDocRef().delete();
             }
         });
+
         return view;
     }
 }
