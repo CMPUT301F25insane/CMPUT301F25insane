@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
-import com.example.camaraderie.databinding.FragmentAdminDashboardBinding;
 import com.example.camaraderie.databinding.FragmentAdminUsersViewBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,7 +34,7 @@ public class AdminUsersViewFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentAdminUsersViewBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -47,7 +46,7 @@ public class AdminUsersViewFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
 
-        userArrayList = new ArrayList<User>();
+        userArrayList = new ArrayList<>();
 
         userArrayAdapter = new UserArrayAdaptor(requireContext(),userArrayList);
 
@@ -58,23 +57,29 @@ public class AdminUsersViewFragment extends Fragment {
 
         binding.backButton.setOnClickListener( v ->
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_user_data_screen_to_admin_main_screen)
+                        .navigate(R.id.action_admin_user_data_screen_view_to_admin_main_screen)
         );
     }
     private void loadList(){
         usersRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
+                return;
             }
-            if (value != null && !value.isEmpty()) {
+            if (value != null) {
                 userArrayList.clear();
                 for (QueryDocumentSnapshot snapshot: value){
                     User user = snapshot.toObject(User.class);
                     userArrayList.add(user);
                 }
-
                 userArrayAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // Avoid memory leaks
     }
 }

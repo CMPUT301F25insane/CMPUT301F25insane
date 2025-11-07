@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,12 +44,12 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             return view;
         }
 
-        TextView event_name = convertView.findViewById(R.id.eventName);
-        TextView host_name = convertView.findViewById(R.id.RegistrationDeadline);
+        TextView event_name = view.findViewById(R.id.eventName);
+        TextView host_name = view.findViewById(R.id.RegistrationDeadline);
 
-        Button join = convertView.findViewById(R.id.joinButton);
-        Button description = convertView.findViewById(R.id.seeDescButton);
-        Button remove = convertView.findViewById(R.id.RemoveButton);
+        Button join = view.findViewById(R.id.joinButton);
+        Button description = view.findViewById(R.id.seeDescButton);
+        Button remove = view.findViewById(R.id.RemoveButton);
 
         event_name.setText(event.getEventName());
 
@@ -58,6 +59,7 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 //join function
+                Toast.makeText(getContext(), "Join feature not implemented yet", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -78,7 +80,15 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             public void onClick(View v) {
                 db.collection("Events")
                         .document(event.getEventId())
-                        .delete();
+                        .delete()
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(getContext(), "Event deleted", Toast.LENGTH_SHORT).show();
+                            events.remove(position);
+                            notifyDataSetChanged();
+                        })
+                        .addOnFailureListener(e ->
+                                Toast.makeText(getContext(), "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                        );
             }
         });
         return view;

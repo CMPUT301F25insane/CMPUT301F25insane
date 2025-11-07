@@ -73,7 +73,10 @@ public class UpdateUserFragment extends Fragment {
         });
 
         binding.userDelete.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Not implemented", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+            userDocRef.delete();
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_update_user_to_fragment_main);
         });
 
         binding.updateCancel.setOnClickListener(v -> {
