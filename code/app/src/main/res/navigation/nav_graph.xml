@@ -225,7 +225,6 @@
             app:destination="@id/admin_user_data_screen_view" />
     </fragment>
 
-    </fragment>
 
     <fragment
         android:id="@+id/update_user"
