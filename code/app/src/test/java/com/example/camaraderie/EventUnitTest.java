@@ -13,13 +13,14 @@ import java.util.Date;
 
 public class EventUnitTest {
     private Event event;
+    private DocumentReference mockHost;
     private DocumentReference mockEventRef;
     private DocumentReference mockUser1;
     private DocumentReference mockUser2;
 
     @Before
     public void setUp() {
-        DocumentReference mockHost = mock(DocumentReference.class);
+        mockHost = mock(DocumentReference.class);
         mockEventRef = mock(DocumentReference.class);
         mockUser1 = mock(DocumentReference.class);
         mockUser2 = mock(DocumentReference.class);
