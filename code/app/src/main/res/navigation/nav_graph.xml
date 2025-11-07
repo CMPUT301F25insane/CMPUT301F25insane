@@ -24,6 +24,17 @@
     </fragment>
 
     <fragment
+        android:id="@+id/fragment_guidelines"
+        android:label="guidleins FRagment"
+        android:name="com.example.camaraderie.GuidelinesFragment"
+        tools:layout="@layout/fragment_guidelines">
+
+        <action
+            android:id="@+id/action_fragment_guidelines_to_update_user"
+            app:destination="@id/update_user" />
+    </fragment>
+
+    <fragment
         android:id="@+id/fragment_pending_events"
         android:name="com.example.camaraderie.accepted_screen.UserAcceptedToEventFragment"
         android:label="Pending events fragment"
@@ -85,6 +96,12 @@
         <action
             android:id="@+id/action_fragment_main_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action_fragment_main_to_update_user"
+            app:destination="@id/update_user" />
+        <action
+            android:id="@+id/action_fragment_main_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
     <fragment
@@ -139,6 +156,9 @@
         <action
             android:id="@+id/action_admin_main_screen_to_admin_event_data_screen"
             app:destination="@id/admin_event_data_screen" />
+        <action
+            android:id="@+id/action_admin_main_screen_to_update_user"
+            app:destination="@id/update_user" />
     </fragment>
 
     <fragment
@@ -170,5 +190,23 @@
             android:id="@+id/action_admin_event_images_screen_to_admin_main_screen"
             app:destination="@id/admin_main_screen" />
     </fragment>
+
+    <fragment
+        android:id="@+id/update_user"
+        android:name="com.example.camaraderie.UpdateUserFragment"
+        android:label="Update Screen"
+        tools:layout="@layout/fragment_update_user">
+        <action
+            android:id="@+id/action_update_user_to_fragment_main"
+            app:destination="@id/fragment_main" />
+        <action
+            android:id="@+id/action_update_user_to_admin_main_screen"
+            app:destination="@id/admin_main_screen" />
+        <action
+            android:id="@+id/action_update_user_to_fragment_guidelines"
+            app:destination="@id/fragment_guidelines" />
+    </fragment>
+
+
 
 </navigation>

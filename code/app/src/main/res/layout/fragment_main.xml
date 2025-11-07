@@ -10,16 +10,16 @@
 
     <ListView
         android:id="@+id/eventsList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="401dp"
+        android:layout_height="421dp"
         android:layout_marginBottom="32dp"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.727" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -119,14 +119,25 @@
         android:id="@+id/searchBar"
         android:layout_width="207dp"
         android:layout_height="40dp"
-        android:layout_marginTop="4dp"
         android:ems="10"
         android:fontFamily="@font/cambria_italic"
         android:inputType="text"
-        android:text="Find Events"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/eventsList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_for_search_bar" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:text="Search"
+        app:layout_constraintBottom_toTopOf="@+id/eventsList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/searchBar"
+        app:layout_constraintTop_toBottomOf="@+id/name_for_main_dashboard" />
 </androidx.constraintlayout.widget.ConstraintLayout>
