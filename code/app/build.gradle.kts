@@ -43,6 +43,8 @@ dependencies {
 
     implementation(libs.firebase.storage)
     implementation("com.google.zxing:core:3.5.1")
+    testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("junit:junit:4.13.2")
 
 
     implementation(libs.appcompat)
