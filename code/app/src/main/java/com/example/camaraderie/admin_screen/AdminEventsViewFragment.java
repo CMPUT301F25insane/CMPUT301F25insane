@@ -2,65 +2,78 @@ package com.example.camaraderie.admin_screen;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.camaraderie.R;
+import com.example.camaraderie.Event;
+import com.example.camaraderie.databinding.FragmentAdminEventsViewBinding;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminEventsViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class AdminEventsViewFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FragmentAdminEventsViewBinding binding;
+    FirebaseFirestore db;
+    private CollectionReference usersRef;
+    private ArrayList<Event> eventsArrayList;
+    private UserArrayAdaptor eventsArrayAdapter;
 
     public AdminEventsViewFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AdminEventsViewFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AdminEventsViewFragment newInstance(String param1, String param2) {
-        AdminEventsViewFragment fragment = new AdminEventsViewFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_events_view, container, false);
+        binding = FragmentAdminEventsViewBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        db = FirebaseFirestore.getInstance();
+        usersRef = db.collection("Users");
+
+        eventsArrayList = new ArrayList<Event>();
+
+        eventsArrayAdapter = new UserArrayAdaptor(requireContext(), eventsArrayList);
+
+        binding.list.setAdapter(eventsArrayAdapter);
+
+        //for loading data
+        loadList();
+
+        binding.backButton.setOnClickListener( v ->
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_admin_user_data_screen_to_admin_main_screen)
+        );
+    }
+    private void loadList(){
+        usersRef.addSnapshotListener((value, error) -> {
+            if (error != null) {
+                Log.e("Firestore", error.toString());
+            }
+            if (value != null && !value.isEmpty()) {
+                eventsArrayList.clear();
+                for (QueryDocumentSnapshot snapshot: value){
+                    Event event = snapshot.toObject(Event.class);
+                    eventsArrayList.add(event);
+                }
+
+                eventsArrayAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }
