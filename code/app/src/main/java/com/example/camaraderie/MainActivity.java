@@ -2,6 +2,8 @@ package com.example.camaraderie;//
 
 import static com.example.camaraderie.utilStuff.Util.*;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -45,16 +48,15 @@ public class MainActivity extends AppCompatActivity {
     private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
 
+    private Uri pendingDeeplink = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        //setContentView(R.layout.activity_main);
 
-        //clearDB();
-
-        FirebaseFirestore.getInstance().clearPersistence();
+        //FirebaseFirestore.getInstance().clearPersistence();  // TODO: DO NOT UNCOMMENT THIS CODE
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
@@ -68,37 +70,86 @@ public class MainActivity extends AppCompatActivity {
         usersRef = db.collection("Users");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        Log.d("Firestore", "Searching for user in database...");
-        usersRef.document(id).get()
-                .addOnSuccessListener(documentSnapshot -> {
-
-                    if (documentSnapshot.exists()) {
-                        user = documentSnapshot.toObject(User.class);
-                        Log.d("Firestore", "User found");
-
-                        if (user.isAdmin()) {
-                            navController.navigate(R.id.admin_main_screen);
-                        }
-
-                        if (!user.getSelectedEvents().isEmpty()) {
-                            navController.navigate(R.id.fragment_pending_events);
-                        }
-
-                        // else, nav to the main fragment
-                        navController.navigate(R.id.fragment_main);
-                    }
-                    else {
-                        newUserBuilder(id, navController);  // build user
-
-                    }
-
-                })
-                .addOnFailureListener(e -> {
-                    throw new RuntimeException("listen, we fucked up.");
-                });
+        if (getIntent() != null && getIntent().getData() != null){
+            pendingDeeplink = getIntent().getData();
+        }
 
         // add dummy data
-        clearAndAddDummyEvents();  // WARNING: THIS IS AN ASYNC RELIANT FUNCTION
+        clearDBAndSeed(
+                () -> {
+            Log.d("Firestore", "Searching for user in database...");
+            usersRef.document(id).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+
+                        if (documentSnapshot.exists()) {
+                            user = documentSnapshot.toObject(User.class);
+                            Log.d("Firestore", "User found");
+
+                            if (user.isAdmin()) {
+                                if (pendingDeeplink != null) {
+                                    handleDeepLink();
+
+                                } else {
+
+                                    navController.navigate(R.id.admin_main_screen);
+                                }
+                            }
+
+                            if (!user.getSelectedEvents().isEmpty()) {
+                                if (pendingDeeplink != null) {
+                                    handleDeepLink();
+                                } else {
+                                    navController.navigate(R.id.fragment_pending_events);
+
+                                }
+                            }
+
+                            // else, nav to the main fragment
+                            if (pendingDeeplink != null) {
+                                handleDeepLink();
+
+                            } else {
+                                navController.navigate(R.id.fragment_main);
+                            }
+                        } else {
+                            newUserBuilder(id, navController);  // build user
+
+                        }
+
+                    })
+                    .addOnFailureListener(e -> {
+                        throw new RuntimeException("listen, we fucked up.");
+                    });
+        });
+    }
+
+    @Override
+    protected void onNewIntent(@NonNull Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent.getData() != null){
+            pendingDeeplink = intent.getData();
+
+        } if (user != null){
+            handleDeepLink();
+
+        }
+    }
+
+    private void handleDeepLink(){
+        if (pendingDeeplink == null){
+            return;
+        }
+
+        String eventId = pendingDeeplink.getQueryParameter("id");
+        String eventDocPath = "Events/" + eventId;
+
+        Bundle args = new Bundle();
+        args.putString("eventDocRefPath", eventDocPath);
+
+        pendingDeeplink = null;
+
+        navController.navigate(R.id.fragment_view_event_user, args);
 
     }
 
@@ -135,7 +186,12 @@ public class MainActivity extends AppCompatActivity {
                                     aVoid -> {
                                         Log.d("Firestore", "User has been created!");
                                         MainActivity.user = newUser;
-                                        navController.navigate(R.id.fragment_main);
+
+                                        if (pendingDeeplink != null){
+                                            handleDeepLink();
+                                        } else{
+                                            navController.navigate(R.id.fragment_main);
+                                        }
 
                                     }
 

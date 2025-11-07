@@ -133,11 +133,35 @@
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="40dp"
         android:text="Search"
         app:layout_constraintBottom_toTopOf="@+id/eventsList"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+
+    <TextView
+        android:id="@+id/fromDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginEnd="36dp"
+        android:text="0001-01-01"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/eventsList"
+        app:layout_constraintEnd_toStartOf="@+id/toDateText"
         app:layout_constraintStart_toEndOf="@+id/searchBar"
+        app:layout_constraintTop_toBottomOf="@+id/name_for_main_dashboard" />
+
+    <TextView
+        android:id="@+id/toDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-10dp"
+        android:layout_marginEnd="10dp"
+        android:text="9999-12-31"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/eventsList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fromDateText"
         app:layout_constraintTop_toBottomOf="@+id/name_for_main_dashboard" />
 </androidx.constraintlayout.widget.ConstraintLayout>

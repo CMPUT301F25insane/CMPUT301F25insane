@@ -154,4 +154,14 @@
         app:layout_constraintStart_toEndOf="@+id/createEventDate"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/optionalLimit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="OPTIONAL: waitlist limit"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="6dp"
+        tools:layout_editor_absoluteY="588dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

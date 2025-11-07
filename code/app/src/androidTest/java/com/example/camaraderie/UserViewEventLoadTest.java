@@ -27,6 +27,7 @@ import java.util.Date;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
+// The purpose of this test is to check if the user can view a mocked event.
 public class UserViewEventLoadTest {
     private FragmentScenario<UserViewEventFragment> scenario2;
 

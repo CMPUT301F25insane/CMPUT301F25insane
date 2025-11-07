@@ -16,7 +16,6 @@
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/gradient_for_org_view"
-        app:layout_constraintBottom_toTopOf="@+id/delete_button_user_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_view_profile_image">
@@ -281,4 +280,14 @@
         app:layout_constraintStart_toEndOf="@+id/unjoin_button_user_view"
         app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc"
         app:strokeWidth="3dp" />
+
+    <Button
+        android:id="@+id/adminDeleteEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/join_button_user_view"
+        app:layout_constraintStart_toEndOf="@+id/unjoin_button_user_view"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc" />
 </androidx.constraintlayout.widget.ConstraintLayout>

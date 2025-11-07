@@ -26,6 +26,7 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
+import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -74,11 +75,19 @@ public class UserViewEventFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         eventDocRef = db.document(eventPath);
+
+        Log.d("EVENT PATH",eventPath);
         eventDocRef.get().addOnSuccessListener(documentSnapshot -> {
                     event = documentSnapshot.toObject(Event.class);
                     Log.d("Firestore", "Event class loaded form db");
 
                     fillTextViews(event);
+
+                    if (event.getWaitlistLimit() != -1) {
+                        if (event.getWaitlist().size() >= event.getWaitlistLimit()) {
+                            binding.joinButtonUserView.setEnabled(false);  // too full
+                        }
+                    }
 
                     if(event.getWaitlist().contains(user.getDocRef())) {
 
@@ -120,6 +129,30 @@ public class UserViewEventFragment extends Fragment {
 
         });
 
+        if (user.isAdmin()) {
+            binding.adminDeleteEvent.setEnabled(true);
+        }
+        else {
+            binding.adminDeleteEvent.setEnabled(false);
+        }
+
+        binding.adminDeleteEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.collection("Users").get()
+                        .addOnSuccessListener(snapshot -> {
+                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+                                DocumentReference uRef = userDoc.getReference();
+                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+                            }
+                        });
+
+                nav.navigate(R.id.action_fragment_view_event_user_to_admin_event_data_screen);
+            }
+        });
+
         binding.unjoinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,6 +179,19 @@ public class UserViewEventFragment extends Fragment {
 
         });
 
+        binding.qrButtonUserView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+
+                args.putString("eventId", event.getEventId());
+
+                QRCodeDialogFragment dialogFragment = QRCodeDialogFragment.newInstance(event.getEventId());
+                dialogFragment.show(getParentFragmentManager(), "qr_dialog");
+            }
+
+            });
+
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +210,15 @@ public class UserViewEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 nav.navigate(R.id.action__fragment_view_event_user_to_fragment_view_my_events);
+            }
+        });
+
+        binding.viewAttendeesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putString("eventDocRefPath", eventDocRef.getPath());
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_view_waitlist, args);
             }
         });
     }

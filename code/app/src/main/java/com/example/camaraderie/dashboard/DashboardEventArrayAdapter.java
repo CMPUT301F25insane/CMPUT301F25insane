@@ -107,6 +107,12 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             userInWaitlist = true;  // change the name later, who cares
         }
 
+        if (event.getWaitlistLimit() != -1) {
+            if (event.getWaitlist().size() >= event.getWaitlistLimit()) {
+                userInWaitlist = true;
+            }
+        }
+
         if (userInWaitlist) {
             joinButton.setEnabled(false);
             joinButton.setBackgroundColor(Color.GRAY);
