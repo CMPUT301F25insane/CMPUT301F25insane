@@ -110,8 +110,10 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
                 eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
                     dashboardEventArrayAdapter.clear();
                     for(int i = 0; i < events.size(); i++){
+                        String eventDayMonth = "" + events.get(i).getEventDate().getDay() + events.get(i).getEventDate().getMonth();
+                        String toDateMonth = "" + finalToDate.getDay() + finalToDate.getMonth();
                         if(events.get(i).getEventName().toLowerCase().contains(binding.searchBar.getText().toString().toLowerCase())){
-                            if((events.get(i).getEventDate().after(finalFromDate) && events.get(i).getEventDate().before(finalToDate)) || (events.get(i).getEventDate().equals(finalFromDate)) || (events.get(i).getEventDate().equals(finalToDate))){
+                            if((events.get(i).getEventDate().after(finalFromDate) && events.get(i).getEventDate().before(finalToDate)) || eventDayMonth.equals(toDateMonth)){
                                 dashboardEventArrayAdapter.add(events.get(i));
                             }
                         }
