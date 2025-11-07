@@ -61,6 +61,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
      * @param convertView
      * @param parent
      * @return
+     * We return a view for each list item
      */
 
     @NonNull
@@ -88,7 +89,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         deadline.setText(event.getRegistrationDeadline().toString());
 
         /**
-         * We implement a join button
+         * We implement a join button for the admin to be able to join an event if they wish
          */
 
         join.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +106,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
             }
         });
 
+        /**
+         * We also a description button that allows for the admin to view the events description
+         */
+
         description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +119,11 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
                 nav.navigate(R.id.fragment_view_event_user);
             }
         });
+
+        /**
+         * Lastly we have a remove button that the admin can use to remove a event from the the collection if it violates
+         * guidelines or for whatever reason the admin has
+         */
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
