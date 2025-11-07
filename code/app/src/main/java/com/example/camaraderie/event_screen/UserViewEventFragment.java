@@ -26,6 +26,7 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
+import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -145,6 +146,19 @@ public class UserViewEventFragment extends Fragment {
             }
 
         });
+
+        binding.qrButtonUserView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+
+                args.putString("eventId", event.getEventId());
+
+                QRCodeDialogFragment dialogFragment = QRCodeDialogFragment.newInstance(event.getEventId());
+                dialogFragment.show(getParentFragmentManager(), "qr_dialog");
+            }
+
+            });
 
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
