@@ -74,7 +74,20 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
         // when USER views EVENT, compare user id to host id, and set the corresponding fragment accordingly
 
-
+        binding.searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
+                    dashboardEventArrayAdapter.clear();
+                    for(int i = 0; i < events.size(); i++){
+                        if(events.get(i).getEventName().toLowerCase().contains(binding.searchBar.getText().toString().toLowerCase())){
+                            dashboardEventArrayAdapter.add(events.get(i));
+                        }
+                    };
+                    dashboardEventArrayAdapter.notifyDataSetChanged();
+                });
+            }
+        });
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
