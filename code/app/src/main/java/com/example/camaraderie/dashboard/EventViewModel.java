@@ -16,7 +16,8 @@ import java.util.ArrayList;
 
 
 /**
- * This class handles the display for the events dashboard
+ * EventViewModel extends ViewModel and is used for transferring data and making it easier for the fragments and dialogs
+ * to communicate when it comes to the database
  * */
 public class EventViewModel extends ViewModel {
 
@@ -26,6 +27,15 @@ public class EventViewModel extends ViewModel {
 
     private ListenerRegistration listener;
     private MutableLiveData<ArrayList<Event>> localEvents = new MutableLiveData<>();
+
+    /**
+     * We have a standard constructor that initializes all the information we need
+     * to communicate with the database
+     * In this constructor we first initialize the database and get the instance
+     * We then set the collection references
+     * We then setup a listener and we initialize the events with a new array list
+     * and we add each event to the events array list to be used later
+     */
 
     public EventViewModel() {
         db = FirebaseFirestore.getInstance();
@@ -50,9 +60,20 @@ public class EventViewModel extends ViewModel {
         });
     }
 
+    /**
+     * We also have a getLocalEvents function which just returns local events
+     * @return
+     * We just return a LiveData list of our list of events
+     */
+
     public LiveData<ArrayList<Event>> getLocalEvents() {
         return localEvents;
     }
+
+    /**
+     * We also have a onCleared method which just removes the listener so we dont blow up the database with thousands of
+     * queries
+     */
 
     @Override
     protected void onCleared() {
