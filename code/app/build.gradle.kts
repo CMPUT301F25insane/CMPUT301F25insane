@@ -68,6 +68,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-analytics")
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
-
-
 }
+
+
