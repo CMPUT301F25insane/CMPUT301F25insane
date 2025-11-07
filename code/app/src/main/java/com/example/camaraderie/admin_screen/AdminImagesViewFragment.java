@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 
 import com.example.camaraderie.R;
 
-/**
- * All images currently in the app
- */
 public class AdminImagesViewFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

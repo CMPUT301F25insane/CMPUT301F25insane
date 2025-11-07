@@ -24,6 +24,10 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
+/**
+ * We are testing the Organizer View Event Fragment. We want to ensure that the organizer is able
+ * to edit and delete Events
+ */
 public class OrganizerViewEventFragmentTest {
     private FragmentScenario<OrganizerViewEventFragment> scenario;
 

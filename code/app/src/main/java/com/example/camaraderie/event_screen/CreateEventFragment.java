@@ -32,7 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 /**
- * Interface that allows an organizer to create an event
+ * fragment that allows an organizer to create an event
  */
 public class CreateEventFragment extends Fragment {
 
@@ -51,7 +51,7 @@ public class CreateEventFragment extends Fragment {
     private boolean editing = false;
 
     /**
-     * Instantiate the interface
+     * Instantiate the fragment
      * @param savedInstanceState
      *  This is the previously saved state of the fragment
      */
@@ -83,6 +83,7 @@ public class CreateEventFragment extends Fragment {
     }
 
     /**
+     * sets edittext definitions, gets args if editing and sets bool, sets button listeners
      * Call when the view has been created but before the previous state has been restored
      * @param view
      *  The View returned by onCreateView
@@ -118,6 +119,10 @@ public class CreateEventFragment extends Fragment {
         }
 
         binding.createEventDate.setOnClickListener(new View.OnClickListener() {
+            /**
+             * sets date dialogfragment
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 openDateDialogue();
@@ -125,6 +130,10 @@ public class CreateEventFragment extends Fragment {
         });
 
         binding.createEventDeadline.setOnClickListener(new View.OnClickListener() {
+            /**
+             * sets deadline dialogfragment
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 openDeadlineDialogue();
@@ -132,6 +141,10 @@ public class CreateEventFragment extends Fragment {
         });
 
         binding.createEventPictureButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * setup nav for adding pictures to event
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 // TODO
@@ -160,6 +173,7 @@ public class CreateEventFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
+
                 try {
                     createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime);
                 } catch (Exception e) {
@@ -169,6 +183,10 @@ public class CreateEventFragment extends Fragment {
         });
     }
 
+    /**
+     * fill textviews for fragment
+     * @param event event from whcih to get the details
+     */
     private void fillTextViews(Event event) {
         eventName.setText(event.getEventName());
         eventDate.setText(event.getEventDate().toString());
@@ -188,6 +206,18 @@ public class CreateEventFragment extends Fragment {
         binding = null;
     }
 
+    /**
+     * creates new event and updates db. if editing is true, it updates db instead
+     * @param eventName new name
+     * @param eventDate new date
+     * @param eventDeadline new deadline
+     * @param eventLocation new location
+     * @param eventDescription new description
+     * @param eventCapacity new capatiy
+     * @param optionalLimit new optional limit
+     * @param eventTime new time
+     * @throws ParseException throws parseException if parse fails (mainly date)
+     */
     private void createEvent(EditText eventName,
                              TextView eventDate,
                              TextView eventDeadline,
@@ -269,6 +299,9 @@ public class CreateEventFragment extends Fragment {
 
     }
 
+    /**
+     * event date picker, sets binding textview
+     */
     private void openDateDialogue() {
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
@@ -283,6 +316,9 @@ public class CreateEventFragment extends Fragment {
 
     }
 
+    /**
+     * deadline date picker, sets binding textview
+     */
     private void openDeadlineDialogue() {
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {

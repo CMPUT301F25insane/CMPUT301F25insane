@@ -37,6 +37,11 @@ public class ViewMyCreatedEventsFragment extends Fragment {
     private NavController nav;
     private MyCreatedEventsArrayAdapter adapter;
 
+    /**
+     * setup nav, svm, adapter, adds user created events to event array list
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +75,18 @@ public class ViewMyCreatedEventsFragment extends Fragment {
 
     }
 
+    /**
+     * setup binding
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return binding root
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,6 +94,12 @@ public class ViewMyCreatedEventsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * set bindings for back button, set adapter
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -86,6 +109,9 @@ public class ViewMyCreatedEventsFragment extends Fragment {
         binding.textView5.setText("My created events");
     }
 
+    /**
+     * set binding to null
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
