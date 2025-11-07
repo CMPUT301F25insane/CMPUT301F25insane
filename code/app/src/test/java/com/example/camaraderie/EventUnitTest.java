@@ -3,6 +3,7 @@ package com.example.camaraderie;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
 
@@ -134,7 +135,16 @@ public class EventUnitTest {
 
     @Test
     public void testUpdateDBCallsFirestoreSet() {
+        // Arrange
+        Task<Void> mockTask = mock(Task.class);
+        when(mockEventRef.set(any(), any())).thenReturn(mockTask);
+        when(mockTask.addOnSuccessListener(any())).thenReturn(mockTask);
+        when(mockTask.addOnFailureListener(any())).thenReturn(mockTask);
+
+        // Act
         event.updateDB();
+
+        // Assert
         verify(mockEventRef, times(1)).set(eq(event), eq(SetOptions.merge()));
     }
 
