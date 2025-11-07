@@ -29,12 +29,30 @@ public class UpdateUserFragment extends Fragment {
     private DocumentReference userDocRef;
     private FragmentUpdateUserBinding binding;
 
+    /**
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return binding root
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentUpdateUserBinding.inflate(getLayoutInflater());
 
         return binding.getRoot();
     }
 
+    /**
+     * attaches the layout bindings and button listeners
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -80,28 +98,31 @@ public class UpdateUserFragment extends Fragment {
             Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
             userDocRef.delete();
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_update_user_to_fragment_main);
+                    .navigate(R.id.fragment_main);
         });
 
         binding.updateCancel.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_update_user_to_fragment_main);
+                    .navigate(R.id.fragment_main);
         });
 
         binding.admin.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_update_user_to_admin_main_screen);
+                    .navigate(R.id.admin_main_screen);
         });
 
         binding.seeGuidelinesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(UpdateUserFragment.this)
-                        .navigate(R.id.action_update_user_to_fragment_guidelines);
+                        .navigate(R.id.fragment_guidelines);
             }
         });
     }
 
+    /**
+     * destroys view, sets binding to null to avoid memory leaks
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
