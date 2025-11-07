@@ -79,14 +79,14 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.action_fragment_view_my_events_to_fragment_main);
+                nav.navigate(R.id.fragment_main);
             }
         });
 
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.action_fragment_view_my_events_to_fragment_create_event_testing);
+                nav.navigate(R.id.fragment_create_event_testing);
             }
         });
 
@@ -94,13 +94,6 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
             @Override
             public void onClick(View v) {
                 //TODO: do nothing here, we're already in this fragment. maybe later, the button just reloads this?
-            }
-        });
-
-        binding.MyEventsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Todo: Go to new My Events Fragment
             }
         });
 
@@ -124,9 +117,9 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 //        }
 
         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-        vm.setEvent(event);
+        vm.setEvent(event);  // this is a better way to pass args instead of the bundle. ask me about it (abdul) if you need more info on why it works
 
-        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_view_my_events_to__fragment_organizer_view_event);
+        NavHostFragment.findNavController(this).navigate(R.id._fragment_organizer_view_event);
     }
 
 

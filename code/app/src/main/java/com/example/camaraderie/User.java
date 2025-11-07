@@ -56,6 +56,9 @@ public class User implements Serializable {
         this.docRef = docref;
     }
 
+    /**
+     * empty constructor for firebase to use
+     */
     public User(){} // for firebase
 
     /**
@@ -68,33 +71,18 @@ public class User implements Serializable {
     }
 
     /**
-     * Add an event to the user's list of created events
-     * @param event
-     *  The event to add to the user's list of created events
-     */
-    public void addEvent(DocumentReference event) {
-
-        if (!this.userCreatedEvents.contains(event)) {
-            this.userCreatedEvents.add(event);
-        }
-    }
-
-    /**
      * Check if the user is an admin
      * @return
      *  Return true if user is an admin, false otherwise
      */
-
-    /*
     public boolean isAdmin() {return admin;}
-    */
+
 
     /**
      * Set admin status of user
      * @param this_admin
      *  True if user should be admin. False otherwise
      */
-
     public void setAdmin(boolean this_admin) {  // we MANUALLY create admins for the app
         admin = this_admin;
     }
@@ -177,15 +165,27 @@ public class User implements Serializable {
      */
     public void setDocRef(DocumentReference docRef1) {this.docRef = docRef1;}
 
+    /**
+     * delete a created event and update database
+     * @param event
+     *  The docRef of the event being deleted
+     */
     public void deleteCreatedEvent(DocumentReference event) {
         this.userCreatedEvents.remove(event);
         event.delete();  // from db
     }
 
+    /**
+     * remove an event from the selectedEvents list
+     * @param selectedEvent DocRef of the event to remove from the selected events list
+     */
     public void removeSelectedEvent(DocumentReference selectedEvent) {
         this.selectedEvents.remove(selectedEvent);
     }
 
+    /**
+     * update user in database
+     */
     public void updateDB() {
         // update the DB from the user
         this.docRef.set(this, SetOptions.merge())
@@ -195,45 +195,73 @@ public class User implements Serializable {
                         Log.e("UserRepository", "Error updating user", e));
     }
 
+    /**
+     * add event to accepted events list
+     * @param eventDocRef event being added to list
+     */
     public void addAcceptedEvent(DocumentReference eventDocRef) {
         if (!acceptedEvents.contains(eventDocRef)) {
             acceptedEvents.add(eventDocRef);
         }
     }
 
+    /**
+     *
+     * @return returns accepted events list
+     */
     public ArrayList<DocumentReference> getAcceptedEvents() {
         return acceptedEvents;
     }
 
-
+    /**
+     *
+     * @return selected events list
+     */
     public ArrayList<DocumentReference> getSelectedEvents() {
         return selectedEvents;
     }
 
+    /**
+     * add event to selected events list
+     * @param event event being added to selected events
+     */
     public void addSelectedEvent(DocumentReference event) {
         if (!selectedEvents.contains(event)) {
             selectedEvents.add(event);
         }
     }
 
-    public boolean isAdmin() {
-        return admin;
-    }
 
+    /**
+     *
+     * @return returns waitlisted events list
+     */
     public ArrayList<DocumentReference> getWaitlistedEvents() {
         return waitlistedEvents;
     }
 
+    /**
+     * add event to waitlist list
+     * @param waitlistedEvent event being added to waitlist list
+     */
     public void addWaitlistedEvent(DocumentReference waitlistedEvent) {
         if(!waitlistedEvents.contains(waitlistedEvent)){
             this.waitlistedEvents.add(waitlistedEvent);
         }
     }
 
+    /**
+     * remove event from waitlist
+     * @param eventDocRef event docref being removed from waitlist list
+     */
     public void removeWaitlistedEvent(DocumentReference eventDocRef) {
         waitlistedEvents.remove(eventDocRef);
     }
 
+    /**
+     * add event ref to created events list
+     * @param eventRef ref of event being added to list
+     */
     public void addCreatedEvent(DocumentReference eventRef) {
         if (!userCreatedEvents.contains(eventRef)) {
             userCreatedEvents.add(eventRef);
