@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavAction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
+import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentAdminEventsViewBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,6 +35,7 @@ public class AdminEventsViewFragment extends Fragment {
     private ArrayList<Event> eventsArrayList;
     private EventArrayAdaptor eventsArrayAdapter;
     private ListenerRegistration eventListener;
+    SharedEventViewModel svm;
 
     public AdminEventsViewFragment() {
         // Required empty public constructor
@@ -53,8 +56,9 @@ public class AdminEventsViewFragment extends Fragment {
 
         eventsArrayList = new ArrayList<Event>();
         nav = NavHostFragment.findNavController(AdminEventsViewFragment.this);
+        svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
 
-        eventsArrayAdapter = new EventArrayAdaptor(requireContext(), eventsArrayList, nav);
+        eventsArrayAdapter = new EventArrayAdaptor(requireContext(), eventsArrayList, nav, svm);
 
         binding.list.setAdapter(eventsArrayAdapter);
 
