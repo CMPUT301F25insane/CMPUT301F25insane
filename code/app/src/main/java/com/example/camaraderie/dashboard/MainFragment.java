@@ -140,35 +140,6 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         super.onDestroy();
         binding = null;
     }
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
-//
-//        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
-//        binding.eventsList.setAdapter(dashboardEventArrayAdapter);
-//
-//        // Observe LiveData for events
-//        eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
-//            dashboardEventArrayAdapter.clear();
-//            dashboardEventArrayAdapter.addAll(events);
-//            dashboardEventArrayAdapter.notifyDataSetChanged();
-//        });
-//
-//        // Filter Button
-//        binding.applyFilterButton.setOnClickListener(v -> {
-//            String selectedInterest = binding.filterInterestSpinner.getSelectedItem().toString();
-//            String dateInput = binding.filterDateInput.getText().toString();
-//
-//            eventViewModel.filterEvents(selectedInterest, dateInput);
-//        });
-//
-//        // Host Event navigation
-//        binding.hostEvent.setOnClickListener(v ->
-//                NavHostFragment.findNavController(MainFragment.this)
-//                        .navigate(R.id.action_fragment_main_to_fragment_create_event_testing)
-//        );
-//    }
+
 
 }

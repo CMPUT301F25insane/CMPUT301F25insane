@@ -21,6 +21,8 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class OrganizerViewEventFragment extends Fragment {
@@ -89,6 +91,19 @@ public class OrganizerViewEventFragment extends Fragment {
             public void onClick(View v) {
                 //TODO: make a DIALOGFRAGMENT to ask for CONFIRMATION FIRST
                 //TODO: do the logic for this
+                db.collection("Users").get()
+                        .addOnSuccessListener(snapshot -> {
+                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+                                DocumentReference uRef = userDoc.getReference();
+                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+                            }
+                        });
+
+                user.deleteCreatedEvent(eventDocRef);
+
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_main);
 
             }
         });
@@ -97,6 +112,8 @@ public class OrganizerViewEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: IMPLEMENT THIS - maybe reuse the create event screen?
+                Bundle args = new Bundle();
+
             }
         });
 

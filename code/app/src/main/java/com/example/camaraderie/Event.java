@@ -304,4 +304,8 @@ public class Event {
     public void removeWaitlistUser(DocumentReference user) {
         waitlist.remove(user);
     }
+
+    public void setEventDescription(String description) {
+        this.description = description;
+    }
 }
