@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentAdminEventsViewBinding;
 import com.google.firebase.firestore.CollectionReference;
