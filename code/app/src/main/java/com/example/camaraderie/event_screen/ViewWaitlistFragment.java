@@ -72,17 +72,19 @@ public class ViewWaitlistFragment extends Fragment {
                         @Override
                         public void onClick(View v) {
 
-                            Bundle arg = new Bundle();
+                            nav.popBackStack();
 
-                            arg.putString("eventDocRefPath", eventDocRef.getPath());
-                            if (event.getHostDocRef().equals(user.getDocRef())) {
-                                nav.navigate(R.id.action_fragment_view_waitlist_to__fragment_organizer_view_event, arg);
-                            } else if (user.isAdmin()) {
-                                nav.navigate(R.id.action_fragment_view_waitlist_to_fragment_view_event_user, arg);
-                            } else {
-                                // is normal user
-                                nav.navigate(R.id.action_fragment_view_waitlist_to_fragment_view_event_user, arg);
-                            }
+//                            Bundle arg = new Bundle();
+//
+//                            arg.putString("eventDocRefPath", eventDocRef.getPath());
+//                            if (event.getHostDocRef().equals(user.getDocRef())) {
+//                                nav.navigate(R.id.action_fragment_view_waitlist_to__fragment_organizer_view_event, arg);
+//                            } else if (user.isAdmin()) {
+//                                nav.navigate(R.id.action_fragment_view_waitlist_to_fragment_view_event_user, arg);
+//                            } else {
+//                                // is normal user
+//                                nav.navigate(R.id.action_fragment_view_waitlist_to_fragment_view_event_user, arg);
+//                            }
                         }
                     });
                 });

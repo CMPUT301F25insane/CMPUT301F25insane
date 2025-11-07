@@ -60,8 +60,7 @@ public class AdminUsersViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_user_data_screen_to_admin_main_screen)
+                NavHostFragment.findNavController(this).popBackStack()
         );
     }
     private void loadList(){

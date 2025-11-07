@@ -109,8 +109,7 @@ public class UpdateUserFragment extends Fragment {
         });
 
         binding.updateCancel.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_update_user_to_fragment_main);
+            NavHostFragment.findNavController(this).popBackStack();
         });
 
         binding.admin.setOnClickListener(v -> {
