@@ -13,9 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -23,11 +27,14 @@ import java.util.ArrayList;
 public class EventArrayAdaptor extends ArrayAdapter<Event> {
 
     FirebaseFirestore db;
+    private NavController nav;
     ArrayList<Event> events;
-    public EventArrayAdaptor(@NonNull Context context, ArrayList<Event> events){
+    public EventArrayAdaptor(@NonNull Context context, ArrayList<Event> events, NavController nav){
         super(context, 0, events);
         this.db = FirebaseFirestore.getInstance();
         this.events = events;
+
+        this.nav = nav;
     }
 
     @NonNull
@@ -43,12 +50,12 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             return view;
         }
 
-        TextView event_name = convertView.findViewById(R.id.eventName);
-        TextView host_name = convertView.findViewById(R.id.RegistrationDeadline);
+        TextView event_name = view.findViewById(R.id.eventName);
+        TextView host_name = view.findViewById(R.id.RegistrationDeadline);
 
-        Button join = convertView.findViewById(R.id.joinButton);
-        Button description = convertView.findViewById(R.id.seeDescButton);
-        Button remove = convertView.findViewById(R.id.RemoveButton);
+        Button join = view.findViewById(R.id.joinButton);
+        Button description = view.findViewById(R.id.seeDescButton);
+        Button remove = view.findViewById(R.id.RemoveButton);
 
         event_name.setText(event.getEventName());
 
@@ -66,19 +73,32 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             public void onClick(View v) {
                 //View profile
                 Bundle bundle = new Bundle();
-                bundle.putString("eventId", event.getEventId());
+                bundle.putString("eventDocRefPath", event.getEventDocRef().getPath());
 
-                NavController navController = Navigation.findNavController(v);
-                //navController.navigate(R.id.list_to_detail_view, bundle);
+
+                nav.navigate(R.id.action_admin_event_data_screen_to_fragment_view_event_user, bundle);
             }
         });
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("Events")
-                        .document(event.getEventId())
-                        .delete();
+
+                DocumentReference eventDocRef = event.getEventDocRef();
+                db.collection("Users")
+                        .addSnapshotListener((snapshot, err) -> {
+
+                            if (err != null) {
+                                throw new RuntimeException("Fuck you");
+                            }
+
+                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+                                DocumentReference uRef = userDoc.getReference();
+                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+                            }
+                        });
             }
         });
         return view;

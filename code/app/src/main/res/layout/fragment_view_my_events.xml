@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_resource"
+    >
 
 
     <LinearLayout
@@ -46,5 +48,107 @@
             android:src="@drawable/seeevents" />
 
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/myEventsForViewMyEvents"
+        android:layout_width="319dp"
+        android:layout_height="401dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/gradient_for_org_view"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.628" />
+
+    <TextView
+        android:id="@+id/header_for_see_my_events"
+        android:layout_width="115dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/cambria_italic"
+        android:text="Camaraderie"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/invites_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.372" />
+
+    <TextView
+        android:id="@+id/invites_header"
+        android:layout_width="65dp"
+        android:layout_height="23dp"
+        android:layout_marginBottom="20dp"
+        android:text="Invites"
+        app:layout_constraintBottom_toTopOf="@+id/myEventsForViewMyEvents"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.124"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/white"
+        android:textSize="24dp"
+        android:fontFamily="@font/cambria"
+
+        />
+
+    <ImageButton
+        android:id="@+id/userProfileImageButton"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/name_for_my_events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:fontFamily="@font/cambria"
+        android:layout_marginStart="144dp"
+        android:text="[name]"
+        app:layout_constraintBottom_toTopOf="@+id/myEventsForViewMyEvents"
+        app:layout_constraintEnd_toStartOf="@+id/userProfileImageButton"
+        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintStart_toEndOf="@+id/header_for_see_my_events"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.361" />
+
+    <Button
+        android:id="@+id/MyEventsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Events"
+        app:strokeWidth="3dp"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.127"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myEventsForViewMyEvents"
+        app:layout_constraintVertical_bias="0.428" />
+
+    <Button
+        android:id="@+id/pendingEventButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:text="Pending Events"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.695"
+        app:layout_constraintStart_toEndOf="@+id/MyEventsButton"
+        app:layout_constraintTop_toBottomOf="@+id/myEventsForViewMyEvents"
+        app:layout_constraintVertical_bias="0.428"
+        app:strokeWidth="3dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

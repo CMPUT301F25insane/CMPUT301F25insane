@@ -140,9 +140,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Takes care of the deeplinks that user's use by scanning the QR codes
-     */
     private void handleDeepLink(){
         if (pendingDeeplink == null){
             return;

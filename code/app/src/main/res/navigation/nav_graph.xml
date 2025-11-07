@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_waitlist"
+            app:destination="@id/fragment_view_waitlist" />
     </fragment>
 
     <fragment
@@ -139,6 +142,12 @@
         <action
             android:id="@+id/action__fragment_view_event_user_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_view_waitlist"
+            app:destination="@id/fragment_view_waitlist" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_admin_event_data_screen"
+            app:destination="@id/admin_event_data_screen" />
 
 
     </fragment>
@@ -164,7 +173,7 @@
 
     <fragment
         android:id="@+id/admin_user_data_screen"
-        android:name="com.example.camaraderie.admin_screen.AdminDashboardFragment"
+        android:name="com.example.camaraderie.admin_screen.AdminUsersViewFragment"
         android:label="Admin User Screen"
         tools:layout="@layout/fragment_admin_users_view">
         <action
@@ -173,18 +182,34 @@
     </fragment>
 
     <fragment
+        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        android:id="@+id/fragment_view_waitlist"
+        android:label="View event waitlist"
+        tools:layout="@layout/fragment_view_attendees">
+        <action
+            android:id="@+id/action_fragment_view_waitlist_to_fragment_view_event_user"
+            app:destination="@id/fragment_view_event_user" />
+        <action
+            android:id="@+id/action_fragment_view_waitlist_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
+    </fragment>
+
+    <fragment
         android:id="@+id/admin_event_data_screen"
-        android:name="com.example.camaraderie.admin_screen.AdminDashboardFragment"
+        android:name="com.example.camaraderie.admin_screen.AdminEventsViewFragment"
         android:label="Admin Events Screen"
         tools:layout="@layout/fragment_admin_events_view">
         <action
             android:id="@+id/action_admin_event_data_screen_to_admin_main_screen"
             app:destination="@id/admin_main_screen" />
+        <action
+            android:id="@+id/action_admin_event_data_screen_to_fragment_view_event_user"
+            app:destination="@id/fragment_view_event_user" />
     </fragment>
 
     <fragment
         android:id="@+id/admin_event_images_screen"
-        android:name="com.example.camaraderie.admin_screen.AdminDashboardFragment"
+        android:name="com.example.camaraderie.admin_screen.AdminImagesViewFragment"
         android:label="Admin Images Screen"
         tools:layout="@layout/fragment_admin_images_view">
         <action

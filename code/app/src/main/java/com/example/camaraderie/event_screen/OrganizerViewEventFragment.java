@@ -90,7 +90,6 @@ public class OrganizerViewEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: make a DIALOGFRAGMENT to ask for CONFIRMATION FIRST
-                //TODO: do the logic for this
                 db.collection("Users").get()
                         .addOnSuccessListener(snapshot -> {
                             for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
@@ -126,6 +125,15 @@ public class OrganizerViewEventFragment extends Fragment {
                     event.updateDB();
                     Toast.makeText(getContext(), "Lottery has been run!", LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        binding.viewAttendeesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putString("eventDocRefPath", eventDocRef.getPath());
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_view_waitlist, args);
             }
         });
     }
