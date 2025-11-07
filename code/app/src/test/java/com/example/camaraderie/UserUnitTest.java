@@ -1,7 +1,6 @@
 package com.example.camaraderie;
 
-import static androidx.core.graphics.MatrixKt.times;
-import static com.google.common.base.Verify.verify;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
