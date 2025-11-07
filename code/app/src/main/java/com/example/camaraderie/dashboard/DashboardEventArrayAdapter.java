@@ -3,7 +3,7 @@ package com.example.camaraderie.dashboard;
 
 import static com.example.camaraderie.MainActivity.user;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;

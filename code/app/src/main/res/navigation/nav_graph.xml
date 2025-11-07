@@ -24,6 +24,17 @@
     </fragment>
 
     <fragment
+        android:id="@+id/fragment_guidelines"
+        android:label="guidleins FRagment"
+        android:name="com.example.camaraderie.GuidelinesFragment"
+        tools:layout="@layout/fragment_guidelines">
+
+        <action
+            android:id="@+id/action_fragment_guidelines_to_update_user"
+            app:destination="@id/update_user" />
+    </fragment>
+
+    <fragment
         android:id="@+id/fragment_pending_events"
         android:name="com.example.camaraderie.accepted_screen.UserAcceptedToEventFragment"
         android:label="Pending events fragment"
@@ -182,7 +193,7 @@
 
     <fragment
         android:id="@+id/update_user"
-        android:name="com.example.camaraderie.dashboard.MainFragment"
+        android:name="com.example.camaraderie.UpdateUserFragment"
         android:label="Update Screen"
         tools:layout="@layout/fragment_update_user">
         <action
@@ -191,7 +202,11 @@
         <action
             android:id="@+id/action_update_user_to_admin_main_screen"
             app:destination="@id/admin_main_screen" />
+        <action
+            android:id="@+id/action_update_user_to_fragment_guidelines"
+            app:destination="@id/fragment_guidelines" />
     </fragment>
+
 
 
 </navigation>
