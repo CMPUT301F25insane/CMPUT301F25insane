@@ -1,42 +1,36 @@
 package com.example.camaraderie;
-import androidx.fragment.app.testing.FragmentScenario;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import android.os.Bundle;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import androidx.test.espresso.contrib.RecyclerViewActions;
+import android.os.Bundle;
 
-import com.example.camaraderie.event_screen.CreateEventFragment;
+import androidx.fragment.app.testing.FragmentScenario;
+import androidx.test.espresso.action.ViewActions;
+
+import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.event_screen.UserViewEventFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
+import org.junit.Test;
+
 import java.util.Date;
 
-@RunWith(AndroidJUnit4.class)
-@LargeTest
 /**
- * The purpose of this test is to check if the user can view a mocked event.
+ *The purpose of this is to Test if we can find Mock event in the search results in main fragment
  */
-
-public class UserViewEventLoadTest {
-    private FragmentScenario<UserViewEventFragment> scenario2;
-
+public class SearchEventInMainFragmentTest {
+    private FragmentScenario<MainFragment> scenario2;
     @Test
-    public void userCanViewCreatedEvent() {
-
+    public void SearchEventInMainFragment() {
         // Create mock event data
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("Events").document();
         DocumentReference hostRef = FirebaseFirestore.getInstance().collection("Users").document();
@@ -65,17 +59,18 @@ public class UserViewEventLoadTest {
                 bundle.putString("eventDocRefPath", docRef.getPath());
 
                 // Launch fragment with event data
-                scenario2 = FragmentScenario.launchInContainer(UserViewEventFragment.class, bundle);
+                scenario2 = FragmentScenario.launchInContainer(MainFragment.class, bundle);
 
                 // Verify event details are displayed correctly
-                onView(withId(R.id.event_name_for_user_view))
-                        .check(matches(withText("Free Tickets to Oilers Game")));
+                onView(withId(R.id.searchBar)).perform(ViewActions.typeText("Free Tickets to Oilers Game"));
+                onView(withId(R.id.searchBar)).perform(closeSoftKeyboard());
+                onView(withId(R.id.searchButton)).perform(click());
+                onView(withId(R.id.list))
+                        .perform(RecyclerViewActions.scrollTo(
+                                hasDescendant(withText("Free Tickets to Oilers Game"))
+                        ));
+                onView(withText("Free Tickets to Oilers Game")).check(matches(isDisplayed()));
 
-                onView(withId(R.id.userEventViewEventDate))
-                        .check(matches(withText("2025-12-12")));
-
-                onView(withId(R.id.event_description_user_view))
-                        .check(matches(withText("20 Lucky individuals will get a front row seats to the Oilers game against Flames")));
 
                 scenario2.close();
             });
@@ -84,7 +79,5 @@ public class UserViewEventLoadTest {
 
     }
 }
-
-
 
 

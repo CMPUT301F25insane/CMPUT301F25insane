@@ -11,6 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
+/**
+ * Unit tests for the Event class.
+ *
+ */
+
 
 public class EventUnitTest {
     private Event event;

@@ -26,7 +26,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-// we are testing Admin View on Users Fragment
+/**
+ * we are testing Admin View on Users Fragment
+ */
 public class AdminUsersViewFragmentTest {
     private FragmentScenario<AdminUsersViewFragment> scenario;
 
@@ -53,7 +55,6 @@ public class AdminUsersViewFragmentTest {
                 .perform(click());
     }
     @Test
-    //test is Admin mode is Displayed
     public void testAdminModeAndListDisplayed() {
         onView(withId(R.id.admin_mode)).check(matches(isDisplayed()));
         onView(withId(R.id.list)).check(matches(isDisplayed()));

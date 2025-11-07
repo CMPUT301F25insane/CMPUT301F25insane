@@ -30,6 +30,11 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
+/**
+ * we are testing if AdminDashboard is working well
+ * if the Admin is able to switch to User database, Event database and Image database respectively with the possibility
+ * of switch back to Admin Dashboard
+ */
 public class AdminDashboardFragmentTest {
     private FragmentScenario<AdminDashboardFragment> scenario;
 
