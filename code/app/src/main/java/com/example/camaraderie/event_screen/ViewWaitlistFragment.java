@@ -25,6 +25,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Screen to view the waitlist for an event. Also shows number of waitlisted users.
+ */
+
 public class ViewWaitlistFragment extends Fragment {
 
     private FragmentViewAttendeesBinding binding;

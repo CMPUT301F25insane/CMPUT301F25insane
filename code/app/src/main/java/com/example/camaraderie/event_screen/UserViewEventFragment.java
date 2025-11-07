@@ -37,6 +37,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The screen for user's viewing an uploaded event
+ */
 public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;

@@ -24,6 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Screen for events the user has joined the waitlist for.
+ */
 public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayAdapter.OnEventClickListener{
 
     private FragmentViewMyEventsBinding binding;
@@ -54,6 +57,8 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.nameForMyEvents.setText(user.getFirstName());
 
 
         db = FirebaseFirestore.getInstance();

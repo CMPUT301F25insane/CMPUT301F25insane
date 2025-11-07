@@ -25,6 +25,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Array adapter for users as an admin
+ */
+
 public class UserArrayAdaptor extends ArrayAdapter<User> {
 
     private FirebaseFirestore db;

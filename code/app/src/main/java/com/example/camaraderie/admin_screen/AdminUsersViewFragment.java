@@ -25,6 +25,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Admin view of all users
+ */
+
 public class AdminUsersViewFragment extends Fragment {
 
     private FragmentAdminUsersViewBinding binding;

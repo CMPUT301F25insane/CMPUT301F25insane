@@ -19,6 +19,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Admin view of a user's profile. Can delete a user.
+ */
 public class AdminUserProfileFragment extends Fragment {
 
     private FragmentAdminUserProfileBinding binding;

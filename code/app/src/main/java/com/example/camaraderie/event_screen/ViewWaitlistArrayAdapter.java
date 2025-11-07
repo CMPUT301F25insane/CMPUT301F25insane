@@ -23,6 +23,9 @@ import static com.example.camaraderie.MainActivity.user;
 import java.lang.annotation.Documented;
 import java.util.ArrayList;
 
+/**
+ * Array adapter for user objects for fragments involving waitlists
+ */
 public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
 
     private Event event;
