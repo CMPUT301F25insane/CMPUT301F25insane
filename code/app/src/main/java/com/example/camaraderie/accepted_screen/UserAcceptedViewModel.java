@@ -10,9 +10,27 @@ import com.example.camaraderie.MainActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 
+import org.checkerframework.common.returnsreceiver.qual.This;
+
+/** This is the view model meant to ease the transferring of data between the fragment and array adapter
+ * It extends the ViewModel class and we use it to implement custom methods to make our code easier and cleaner to
+ * Use data
+ */
+
 public class UserAcceptedViewModel extends ViewModel {
 
     // user accepts invitation
+
+    /**
+     * userAcceptInvite takes in one parameter which is a Firestore Document Reference
+     * This method is meant to run the backend code that is needed to allow the user to accept an invite and
+     * store them in the proper spot in the database
+     * @param eventDocRef
+     * The method first updates the acceptedList of the event document reference and puts the user in there and it
+     * also removes the user from the selectedList
+     * It also does the same thing locally with the objects
+     * It does not return
+     */
     public void userAcceptInvite(DocumentReference eventDocRef) {
 
         eventDocRef.update("acceptedList", FieldValue.arrayUnion(user.getDocRef()))
@@ -29,6 +47,11 @@ public class UserAcceptedViewModel extends ViewModel {
         user.removeSelectedEvent(eventDocRef);  // remove from selectedEvents list (no longer needed)
         user.updateDB();
     }
+
+    /**
+     * This method allows for the user
+     * @param eventDocRef
+     */
 
     // user rejects invitation
     public void userDeclineInvite(DocumentReference eventDocRef) {
