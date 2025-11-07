@@ -31,10 +31,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Date;
+/**
+ * This Test File, we will be looking at testing MainFragment
+ * and testing if search functionality works
+ */
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-// This Test File, we will be looking at testing MainFragment
+
 public class MainFragmentTest {
     private FragmentScenario<MainFragment> scenario;
 
@@ -58,6 +62,15 @@ public class MainFragmentTest {
     // we are testing if Search button is clickable on the main screen
     public void SearchButtonClickable() {
         onView(withId(R.id.searchButton)).perform(click());
+    }
+
+    @Test
+    public void searchTest(){
+        onView(withId(R.id.searchBar)).perform(ViewActions.typeText("Oilers"));
+        onView(withId(R.id.searchButton)).perform(click());
+
+
+
     }
 
 

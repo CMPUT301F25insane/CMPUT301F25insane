@@ -95,7 +95,8 @@ public class AdminUsersViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                nav.popBackStack()
+                nav.navigate(R.id.action_admin_user_data_screen_view_to_admin_main_screen)
+                //nav.popBackStack()
         );
     }
 

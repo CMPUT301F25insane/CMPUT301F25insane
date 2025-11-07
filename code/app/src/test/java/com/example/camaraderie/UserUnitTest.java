@@ -11,7 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-
+/**
+ * Unit tests for the User class.
+ *
+ */
 
 public class UserUnitTest {
     private User user;

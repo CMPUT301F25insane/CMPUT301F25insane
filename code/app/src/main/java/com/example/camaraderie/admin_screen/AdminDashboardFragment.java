@@ -81,7 +81,7 @@ public class AdminDashboardFragment extends Fragment {
 
         binding.back.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
-                        .popBackStack());
+                        .navigate(R.id.action_admin_main_screen_to_update_user));
 
     }
 
