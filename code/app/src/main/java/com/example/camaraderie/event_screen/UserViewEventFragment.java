@@ -121,6 +121,30 @@ public class UserViewEventFragment extends Fragment {
 
         });
 
+        if (user.isAdmin()) {
+            binding.adminDeleteEvent.setEnabled(true);
+        }
+        else {
+            binding.adminDeleteEvent.setEnabled(false);
+        }
+
+        binding.adminDeleteEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.collection("Users").get()
+                        .addOnSuccessListener(snapshot -> {
+                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+                                DocumentReference uRef = userDoc.getReference();
+                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+                            }
+                        });
+
+                nav.navigate(R.id.action_fragment_view_event_user_to_admin_event_data_screen);
+            }
+        });
+
         binding.unjoinButtonUserView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

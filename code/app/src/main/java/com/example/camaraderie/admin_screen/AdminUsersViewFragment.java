@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -29,6 +30,7 @@ public class AdminUsersViewFragment extends Fragment {
     private CollectionReference usersRef;
     private ArrayList<User> userArrayList;
     private UserArrayAdaptor userArrayAdapter;
+    private NavController nav;
 //
 //    public AdminUsersViewFragment() {
 //        // Required empty public constructor
@@ -48,8 +50,9 @@ public class AdminUsersViewFragment extends Fragment {
         usersRef = db.collection("Users");
 
         userArrayList = new ArrayList<User>();
+        nav = NavHostFragment.findNavController(AdminUsersViewFragment.this);
 
-        userArrayAdapter = new UserArrayAdaptor(requireContext(),userArrayList);
+        userArrayAdapter = new UserArrayAdaptor(requireContext(), userArrayList, nav);
 
         binding.list.setAdapter(userArrayAdapter);
 
@@ -65,6 +68,7 @@ public class AdminUsersViewFragment extends Fragment {
         usersRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
+                throw new RuntimeException("Fuck you (users version");
             }
             if (value != null && !value.isEmpty()) {
                 userArrayList.clear();

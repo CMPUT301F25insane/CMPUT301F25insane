@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavAction;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -25,7 +27,8 @@ public class AdminEventsViewFragment extends Fragment {
 
     private FragmentAdminEventsViewBinding binding;
     FirebaseFirestore db;
-    private CollectionReference usersRef;
+    private CollectionReference eventsRef;
+    private NavController nav;
     private ArrayList<Event> eventsArrayList;
     private EventArrayAdaptor eventsArrayAdapter;
 
@@ -44,11 +47,12 @@ public class AdminEventsViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         db = FirebaseFirestore.getInstance();
-        usersRef = db.collection("Users");
+        eventsRef = db.collection("Events");
 
         eventsArrayList = new ArrayList<Event>();
+        nav = NavHostFragment.findNavController(AdminEventsViewFragment.this);
 
-        eventsArrayAdapter = new EventArrayAdaptor(requireContext(), eventsArrayList);
+        eventsArrayAdapter = new EventArrayAdaptor(requireContext(), eventsArrayList, nav);
 
         binding.list.setAdapter(eventsArrayAdapter);
 
@@ -57,11 +61,11 @@ public class AdminEventsViewFragment extends Fragment {
 
         binding.backButton.setOnClickListener( v ->
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_user_data_screen_to_admin_main_screen)
+                        .navigate(R.id.action_admin_event_data_screen_to_admin_main_screen)
         );
     }
     private void loadList(){
-        usersRef.addSnapshotListener((value, error) -> {
+        eventsRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
             }

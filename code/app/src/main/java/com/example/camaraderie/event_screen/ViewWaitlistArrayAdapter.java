@@ -1,6 +1,7 @@
 package com.example.camaraderie.event_screen;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
         kickButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Waitlist kick button", "User attempted to be kicked...");
                 vm.kickUser(entrant, event, () -> notifyDataSetChanged());
             }
         });

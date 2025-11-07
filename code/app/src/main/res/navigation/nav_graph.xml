@@ -144,6 +144,9 @@
         <action
             android:id="@+id/action_fragment_view_event_user_to_fragment_view_waitlist"
             app:destination="@id/fragment_view_waitlist" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_admin_event_data_screen"
+            app:destination="@id/admin_event_data_screen" />
 
 
     </fragment>
@@ -198,6 +201,9 @@
         <action
             android:id="@+id/action_admin_event_data_screen_to_admin_main_screen"
             app:destination="@id/admin_main_screen" />
+        <action
+            android:id="@+id/action_admin_event_data_screen_to_fragment_view_event_user"
+            app:destination="@id/fragment_view_event_user" />
     </fragment>
 
     <fragment
