@@ -22,6 +22,7 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
+import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -109,6 +110,19 @@ public class OrganizerViewEventFragment extends Fragment {
                     nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_create_event_testing, args);
                 }
             }
+        });
+
+        binding.qrButtonOrgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+
+                args.putString("eventId", event.getEventId());
+
+                QRCodeDialogFragment dialogFragment = QRCodeDialogFragment.newInstance(event.getEventId());
+                dialogFragment.show(getParentFragmentManager(), "qr_dialog");
+            }
+
         });
     }
 

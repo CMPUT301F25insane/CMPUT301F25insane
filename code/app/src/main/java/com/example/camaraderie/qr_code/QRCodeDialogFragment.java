@@ -18,6 +18,9 @@ import androidx.fragment.app.DialogFragment;
 import com.example.camaraderie.R;
 import com.google.zxing.WriterException;
 
+/**
+ * Dialog fragment that displays a QR code for the event
+ */
 public class QRCodeDialogFragment extends DialogFragment {
 
     private ImageView imageView;
@@ -47,9 +50,6 @@ public class QRCodeDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         eventId = args.getString("eventId");
         Log.d("EVENT ID BEING RECEIVED TO THE QRCODE DIALOG FRAGMENT", eventId);
-
-
-
 
         view.findViewById(R.id.back_button).setOnClickListener(v -> dismiss());
 
