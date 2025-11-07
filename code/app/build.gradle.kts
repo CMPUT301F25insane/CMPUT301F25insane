@@ -38,6 +38,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.espresso.contrib)
+    implementation(libs.fragment.testing)
     val fragmentVersion = "1.8.9"
 
 

@@ -21,7 +21,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+/**
+ * We are testing the Organizer View Event Fragment. We want to ensure that the organizer is able
+ * to edit and delete Events
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class OrganizerViewEventFragmentTest {
@@ -38,79 +41,102 @@ public class OrganizerViewEventFragmentTest {
     }
 
 
-    // we are testing if the Edit event button is visible on the main screen
+    /**
+     *we are testing if the Edit event button is visible on the main screen
+     */
     @Test
     public void editEventButtonVisible() {
         onView(withId(R.id.event_edit_button_ord_view))
                 .check(matches(isDisplayed()));
     }
 
-    //testing if Edit event Button if Clickable
+    /**
+    *testing if Edit event Button if Clickable
+     */
     @Test
     public void editEventButtonClickable() {
         onView(withId(R.id.event_edit_button_ord_view))
                 .perform(click());
     }
 
-    // we are testing if the Edit event button is visible on the main screen
+    /**
+     *we are testing if the Edit event button is visible on the main screen
+     */
     @Test
     public void deleteButtonVisible() {
         onView(withId(R.id.delete_button_org_view))
                 .check(matches(isDisplayed()));
     }
 
-    //testing if Edit event Button if Clickable
+    /**
+    *  testing if Edit event Button if Clickable
+     */
     @Test
     public void deleteButtonClickable() {
         onView(withId(R.id.delete_button_org_view))
                 .perform(click());
     }
 
+    /**
+    *testing if the QR button is visible on the main screen
+     */
     @Test
     public void testQrButtonOrgIsDisplayed() {
-        // Check if the "unjoin" button is visible on screen
+
         onView(withId(R.id.qr_button_org_view))
                 .check(matches(isDisplayed()));
     }
 
+    /**
+     *Check if the "QR" button is clickable
+     */
     @Test
     public void testQrButtonOrgIsClickable() {
-        // Check if the "QR" button is clickable
         onView(withId(R.id.qr_button_org_view))
                 .perform(click());
     }
 
-
+    /**
+     *Check if the view attendees button is visible on screen
+     */
     @Test
     public void viewAttendeesButtonIsDisplayed() {
-        // Check if the "unjoin" button is visible on screen
+        //
         onView(withId(R.id.view_attendees_button))
                 .check(matches(isDisplayed()));
     }
 
+    /**
+     *Check if the view attendees button is clickable on screen
+     */
     @Test
     public void viewAttendeesButtonIsClickable(){
-        // Check if the "QR" button is clickable
         onView(withId(R.id.view_attendees_button))
                 .perform(click());
     }
 
+    /**
+     *Check if the view photo button is visible on screen
+     */
     @Test
     public void viewPhotoButtonIsDisplayed() {
-        // Check if the "unjoin" button is visible on screen
         onView(withId(R.id.view_photos_org_view))
                 .check(matches(isDisplayed()));
     }
 
+    /**
+     *Check if the view photo button is clickable on screen
+     */
     @Test
-    // Check if the "QR" button is clickable
     public void viewPhotoButtonIsClickable(){
         onView(withId(R.id.view_photos_org_view))
                 .perform(click());
     }
 
+    /**
+     *Test Event Info is properly displayed
+     */
     @Test
-    //Test Event Info is properly displayed
     public void testEventDetailsAreDisplayed() {
         onView(withId(R.id.event_name_for_org_view)).check(matches(isDisplayed()));
         onView(withId(R.id.orgEventViewEventDate)).check(matches(isDisplayed()));

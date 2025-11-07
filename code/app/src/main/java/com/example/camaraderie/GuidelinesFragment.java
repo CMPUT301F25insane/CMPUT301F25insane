@@ -19,6 +19,7 @@ import com.example.camaraderie.databinding.FragmentGuidelinesBinding;
 public class GuidelinesFragment extends Fragment {
 
     private FragmentGuidelinesBinding binding;
+
     private NavController nav;
 
     /**

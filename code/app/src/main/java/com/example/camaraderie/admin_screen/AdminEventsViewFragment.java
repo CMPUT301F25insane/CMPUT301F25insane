@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentAdminEventsViewBinding;
 import com.google.firebase.firestore.CollectionReference;
@@ -101,7 +102,7 @@ public class AdminEventsViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                nav.popBackStack()
+                nav.navigate(R.id.action_admin_event_data_screen_view_to_admin_main_screen)
         );
     }
 
