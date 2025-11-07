@@ -90,6 +90,8 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
             @Override
             public void onClick(View v) {
                 //TODO implement the view account fragment
+                //BY UMRAN
+                nav.navigate(R.id.action_fragment_main_to_update_user);
             }
         });
 
