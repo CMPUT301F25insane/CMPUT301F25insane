@@ -70,7 +70,7 @@ public class AdminEventsViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                nav.popBackStack()
+                nav.navigate(R.id.action_admin_event_data_screen_view_to_admin_main_screen)
         );
     }
     private void loadList(){

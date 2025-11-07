@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
 import com.example.camaraderie.databinding.FragmentAdminUserProfileBinding;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -45,19 +46,27 @@ public class AdminUserProfileFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        if(getArguments() != null){
-            user = (User) getArguments().getSerializable("user");
+        if (getArguments() != null) {
+            String userPath = getArguments().getString("userEventDocRef");
 
-        }
+            if (userPath != null) {
+                DocumentReference userRef = db.document(userPath);
+                userRef.get().addOnSuccessListener(snapshot -> {
+                    user = snapshot.toObject(User.class);
 
-        if (user != null) {
-            binding.UserID.setText(user.getUserId());
-            binding.UserEmail.setText(user.getEmail());
-            binding.UserName.setText(user.getFirstName());
-            binding.UserPhoneNo.setText(user.getPhoneNumber());
-            binding.UserAddress.setText(user.getAddress());
-        } else {
-            Toast.makeText(getContext(), "Error: User not found", Toast.LENGTH_SHORT).show();
+                    if (user != null) {
+                        binding.UserIDNumber.setText(user.getUserId());
+                        binding.UserEmail.setText(user.getEmail());
+                        binding.UserName.setText(user.getFirstName());
+                        binding.UserPhoneNo.setText(user.getPhoneNumber());
+                        binding.UserAddress.setText(user.getAddress());
+                    } else {
+                        Toast.makeText(getContext(), "User data not found", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(e ->
+                        Toast.makeText(getContext(), "Error loading user: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
+            }
         }
 
         binding.RemoveButton.setOnClickListener(new View.OnClickListener() {
