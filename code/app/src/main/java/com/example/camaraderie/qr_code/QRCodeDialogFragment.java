@@ -27,11 +27,10 @@ public class QRCodeDialogFragment extends DialogFragment {
     private String eventId;
 
     /**
-     *
+     * Constructor for a QRCodeDialogFragment
      * @param eventId id to bind to the QR code
      * @return return fragment for the QR code
      */
-
     public static QRCodeDialogFragment newInstance(String eventId){
         QRCodeDialogFragment fragment = new QRCodeDialogFragment();
         Bundle args = new Bundle();
@@ -61,10 +60,12 @@ public class QRCodeDialogFragment extends DialogFragment {
 
     /**
      * set view bindings, display qr code
+     * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * has returned, but before any saved state has been restored
      * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
-     * @throws RuntimeException if WriterException occurs
+     * @throws RuntimeException if QR code generation fails
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class QRCodeDialogFragment extends DialogFragment {
     }
 
     /**
-     * sets bitmap for qr code
+     * Creates a deeplink and generates a QR code for it
      * @throws WriterException occurs if qrcode fails to generate
      */
     private void generateAndDisplayQRCode() throws WriterException {
