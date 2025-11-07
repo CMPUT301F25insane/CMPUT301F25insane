@@ -3,6 +3,7 @@ package com.example.camaraderie;//
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -291,6 +292,10 @@ public class Event {
                 DocumentReference randUser = waitlist.get(rand);
                 selectedUsers.add(randUser);
                 waitlist.remove(randUser);
+
+                // update user fields
+                randUser.update("waitlist", FieldValue.arrayRemove(eventDocRef));
+                randUser.update("selectedList", FieldValue.arrayUnion(eventDocRef));
             }
         }
 
