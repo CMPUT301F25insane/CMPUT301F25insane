@@ -4,6 +4,7 @@ package com.example.camaraderie.dashboard;
 import static com.example.camaraderie.MainActivity.user;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,12 +69,25 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         //hostName.setText(event.getHost().getUsername());
 
         Button joinButton = view.findViewById(R.id.joinButton);
+
+        if (event.getWaitlist().contains(user.getDocRef())) {
+            //TODO figure out why this causes false positives
+            joinButton.setEnabled(false);
+            joinButton.setBackgroundColor(Color.GRAY);
+        }
         Button descButton = view.findViewById(R.id.seeDescButton);
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                joinButton.setBackgroundColor(Color.GRAY);
+                joinButton.setEnabled(false);
                 event.addWaitlistUser(user.getDocRef());
+                user.addWaitlistedEvent(event.getEventDocRef());
+
+                // update db
+                user.updateDB();
+                event.updateDB();
             }
         });
 
