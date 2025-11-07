@@ -34,6 +34,9 @@ public class UpdateUserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        db = FirebaseFirestore.getInstance();
+        usersRef = db.collection("Users");
+
         userDocRef = usersRef.document(user.getUserId());
 
         binding.updateName.setText(user.getFirstName());
@@ -81,6 +84,14 @@ public class UpdateUserFragment extends Fragment {
         binding.admin.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_update_user_to_admin_main_screen);
+        });
+
+        binding.seeGuidelinesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(UpdateUserFragment.this)
+                        .navigate(R.id.action_update_user_to_fragment_guidelines);
+            }
         });
     }
 
