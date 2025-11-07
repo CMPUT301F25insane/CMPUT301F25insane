@@ -73,14 +73,39 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
         Button joinButton = view.findViewById(R.id.joinButton);
 
+        String path = event.getEventDocRef().getPath();
+
         boolean userInWaitlist = false;
         System.out.println(event.getEventId());
         for (DocumentReference ref : user.getWaitlistedEvents()) {
-            if (ref.getPath().equals(event.getEventDocRef().getPath())) {
-                System.out.println(ref.getPath() + " | " + user.getDocRef().getPath());
+            if (ref.getPath().equals(path)) {
+                System.out.println(ref.getPath() + " | " + user.getDocRef().getPath());  // TODO: make this a log
                 userInWaitlist = true;
                 break;
             }
+        }
+
+        if (!userInWaitlist) {
+            for (DocumentReference ref : user.getSelectedEvents()) {
+                if (ref.getPath().equals(path)) {
+                    userInWaitlist = true;
+                    break;
+                }
+            }
+        }
+
+        if (!userInWaitlist) {
+            for (DocumentReference ref : user.getAcceptedEvents()) {
+                if (ref.getPath().equals(path)) {
+                    userInWaitlist = true;
+                    break;
+                }
+            }
+        }
+
+        // organizer cannot join their own event because that is stupid
+        if (user.getDocRef().equals(event.getHostDocRef())) {
+            userInWaitlist = true;  // change the name later, who cares
         }
 
         if (userInWaitlist) {
@@ -89,7 +114,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         }
         else {
             joinButton.setEnabled(true);
-            joinButton.setBackgroundColor(Color.parseColor("#AAF2C8"));
+            joinButton.setBackgroundColor(Color.parseColor("#AAF2C8"));  // original colour
         }
 
         Button descButton = view.findViewById(R.id.seeDescButton);
