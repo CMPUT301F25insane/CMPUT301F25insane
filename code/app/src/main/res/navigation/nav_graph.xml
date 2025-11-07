@@ -80,6 +80,9 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_waitlist"
+            app:destination="@id/fragment_view_waitlist" />
     </fragment>
 
     <fragment
@@ -138,6 +141,9 @@
         <action
             android:id="@+id/action__fragment_view_event_user_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_view_waitlist"
+            app:destination="@id/fragment_view_waitlist" />
 
 
     </fragment>
@@ -169,6 +175,19 @@
         <action
             android:id="@+id/action_admin_user_data_screen_to_admin_main_screen"
             app:destination="@id/admin_main_screen" />
+    </fragment>
+
+    <fragment
+        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        android:id="@+id/fragment_view_waitlist"
+        android:label="View event waitlist"
+        tools:layout="@layout/fragment_view_attendees">
+        <action
+            android:id="@+id/action_fragment_view_waitlist_to_fragment_view_event_user"
+            app:destination="@id/fragment_view_event_user" />
+        <action
+            android:id="@+id/action_fragment_view_waitlist_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
     <fragment

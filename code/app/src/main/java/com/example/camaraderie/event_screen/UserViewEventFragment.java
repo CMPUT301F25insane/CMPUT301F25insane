@@ -166,6 +166,15 @@ public class UserViewEventFragment extends Fragment {
                 nav.navigate(R.id.action__fragment_view_event_user_to_fragment_view_my_events);
             }
         });
+
+        binding.viewAttendeesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                args.putString("eventDocRefPath", eventDocRef.getPath());
+                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_view_waitlist, args);
+            }
+        });
     }
 
     private void fillTextViews(Event event) {
