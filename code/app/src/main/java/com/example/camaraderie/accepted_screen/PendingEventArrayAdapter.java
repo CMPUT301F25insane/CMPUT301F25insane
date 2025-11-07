@@ -98,6 +98,7 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
                 }
 
             }
+
         });
 
         /**

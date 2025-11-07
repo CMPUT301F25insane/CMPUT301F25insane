@@ -49,8 +49,12 @@ public class UserAcceptedViewModel extends ViewModel {
     }
 
     /**
-     * This method allows for the user
+     * This method allows for the user to decline events that they have been drawn for
+     * It works by updating the events selected list and removing them
+     * This function uses firebase to do so and we also remove the local user object's
+     * selected event list
      * @param eventDocRef
+     * We dont return anything
      */
 
     // user rejects invitation
@@ -64,6 +68,11 @@ public class UserAcceptedViewModel extends ViewModel {
         user.removeSelectedEvent(eventDocRef);
         user.updateDB();
     }
+
+    /**
+     * This function checks to ensure if the selected events arraylist is empty or not
+     * @return
+     */
 
     public boolean allInvitesResolved() {
         return user.getSelectedEvents().isEmpty();
