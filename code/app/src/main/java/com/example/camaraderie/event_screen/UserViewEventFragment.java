@@ -75,6 +75,8 @@ public class UserViewEventFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         eventDocRef = db.document(eventPath);
+
+        Log.d("EVENT PATH",eventPath);
         eventDocRef.get().addOnSuccessListener(documentSnapshot -> {
                     event = documentSnapshot.toObject(Event.class);
                     Log.d("Firestore", "Event class loaded form db");
