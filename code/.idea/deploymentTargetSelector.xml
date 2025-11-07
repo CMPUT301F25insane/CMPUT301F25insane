@@ -16,7 +16,7 @@
       <SelectionState runConfigName="Tests in 'com.example.camaraderie'">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="AdminDashboardFragmentTest">
+      <SelectionState runConfigName="isQRGenerated()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

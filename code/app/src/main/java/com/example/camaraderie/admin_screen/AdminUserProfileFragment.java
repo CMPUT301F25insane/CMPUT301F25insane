@@ -21,7 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 /**
- * Admin view of a user's profile. Can delete a user.
+ * AdminUserProfileFragment extends Fragment and is used for allows a admin to view different users profile
+ * and remove them from the app
  */
 public class AdminUserProfileFragment extends Fragment {
 
@@ -29,9 +30,27 @@ public class AdminUserProfileFragment extends Fragment {
     private FirebaseFirestore db;
     private User user;
 
+    /**
+     * We require an empty constructor
+     */
+
     public AdminUserProfileFragment() {
         // Required empty public constructor
     }
+
+    /**
+     * onCreateView initializes the xml view for the fragment and is run as soon as we navigate to this fragment
+     * We initialize our binding to inflate the xml and we return the root of the binding as a view
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     * @return
+     * We return a view which is the inflated
+     */
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -39,6 +58,16 @@ public class AdminUserProfileFragment extends Fragment {
         binding = FragmentAdminUserProfileBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
+    /**
+     * onViewCreated initializes all the xml elements and allows us to setup our backend for this components
+     * We get the latest instance of firebase
+     * We check to make sure our arguments are not null and we get the user
+     * We make sure user is not null before grabbing all the id, email etc
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -69,6 +98,12 @@ public class AdminUserProfileFragment extends Fragment {
             }
         }
 
+        /**
+         * We have a remove button that allows for the admin to remove users who are not following guidelines
+         * When the button is clicked we use firebase to remove the user from the Users collection
+         * We grab their userID and delete their document and afterwards navigate back to the admin user data screen
+         */
+
         binding.RemoveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +126,10 @@ public class AdminUserProfileFragment extends Fragment {
                         );
             }
         });
+
+        /**
+         * We also have a back button for the admin to navigate back
+         */
 
         binding.BackButton.setOnClickListener( v ->
                 NavHostFragment.findNavController(this)

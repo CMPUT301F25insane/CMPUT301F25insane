@@ -32,7 +32,11 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-//The Purpose of this test is to test if the UpdateUserFragment is successful. we check if Buttons work and whether user can successfully enter information
+/**
+ * The Purpose of this test is to test if the UpdateUserFragment is successful.
+ * we check if Buttons work and whether user can successfully enter information
+ */
+//
 public class UpdateUserTest {
     private FragmentScenario<UpdateUserFragment> scenario;
 

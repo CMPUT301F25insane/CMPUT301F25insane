@@ -27,6 +27,10 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
+/**
+ * We are testing when the organizer is creating an event. If all buttons
+ * are clickable and if the organizer can create event with all the details
+ */
 public class CreateEventFragmentTest {
 
     private FragmentScenario<CreateEventFragment> scenario;

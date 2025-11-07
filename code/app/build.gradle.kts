@@ -38,11 +38,15 @@ android {
 }
 
 dependencies {
+    implementation(libs.espresso.contrib)
+    implementation(libs.fragment.testing)
     val fragmentVersion = "1.8.9"
 
 
     implementation(libs.firebase.storage)
     implementation("com.google.zxing:core:3.5.1")
+    testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("junit:junit:4.13.2")
 
 
     implementation(libs.appcompat)

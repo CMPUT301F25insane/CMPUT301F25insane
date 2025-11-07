@@ -58,7 +58,9 @@ public class Event {
      * @param capacity
      *  Maximum number of people that can be accepted to the event
      * @param host
-     *  User who is organizing the event
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
      * @param eventId
      *  Id that uniquely identifies the event
      */
@@ -76,6 +78,31 @@ public class Event {
 
     }
 
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param limit
+     * optionally set the limit for people to join the waitlist, set to -1 by default
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     */
     public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int limit, DocumentReference host, DocumentReference eventDocRef, String eventId) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
@@ -236,9 +263,6 @@ public class Event {
     public String getEventId() {
         return eventId;
     }
-    public void setEventId(String eventId1) {
-        this.eventId = eventId1;
-    }
 
     /**
      * Get organizer of the event
@@ -267,68 +291,92 @@ public class Event {
         return selectedUsers;
     }
 
+    /**
+     *
+     * @return returns list of accepted users
+     */
     public ArrayList<DocumentReference> getAcceptedUsers() {
         return acceptedUsers;
     }
 
+    /**
+     * adds user to accepted list
+     * @param acceptedUser user to add to accepted list
+     */
     public void addAcceptedUser(DocumentReference acceptedUser) {
         if (!this.acceptedUsers.contains(acceptedUser)) {
             this.acceptedUsers.add(acceptedUser);
         }
     }
 
+    /**
+     * set the event docref
+     * @param eventDocRef1 new docref to set
+     */
     public void setEventDocRef(DocumentReference eventDocRef1) {
         this.eventDocRef = eventDocRef1;
     }
 
+    /**
+     *
+     * @return returns event doc ref
+     */
     public DocumentReference getEventDocRef() {
         return this.eventDocRef;
     }
 
+    /**
+     * updates event in database
+     */
     public void updateDB() {
         eventDocRef.set(this, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Successfully update event"))
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to update event"));
     }
 
+    /**
+     * adds user to waitlist
+     * @param user user to add to waitlist
+     */
     public void addWaitlistUser(DocumentReference user) {
         if (!waitlist.contains(user)) {
             waitlist.add(user);
         }
     }
 
-    public void runLottery() {
-
-        for (int i = 0; i < capacity; i++) {
-            if (!waitlist.isEmpty()) {
-                System.out.println(capacity);
-                int rand = new Random().nextInt(waitlist.size());
-                System.out.println(rand);
-                DocumentReference randUser = waitlist.get(rand);
-                selectedUsers.add(randUser);
-                waitlist.remove(randUser);
-
-                // update user fields
-                randUser.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
-                randUser.update("selectedEvents", FieldValue.arrayUnion(eventDocRef));
-            }
-        }
-
-    }
-
+    /**
+     * removes user from waitlsit
+     * @param user user that is removed
+     */
     public void removeWaitlistUser(DocumentReference user) {
         waitlist.remove(user);
     }
 
+    /**
+     * sets event descrition
+     * @param description new description to set
+     */
     public void setEventDescription(String description) {
         this.description = description;
     }
 
+    /**
+     *
+     * @return returns optional waitlist limit
+     */
     public int getWaitlistLimit() {
         return waitlistLimit;
     }
 
+    /**
+     * sets waitlist limit
+     * @param waitlistLimit new waitlist limit
+     */
     public void setWaitlistLimit(int waitlistLimit) {
+        if (waitlistLimit < 1) {
+            this.waitlistLimit = -1;  // set to default
+            return;
+        }
         this.waitlistLimit = waitlistLimit;
     }
 }
