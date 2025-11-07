@@ -26,6 +26,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Admin view of a created event
+ */
+
 public class AdminEventsViewFragment extends Fragment {
 
     private FragmentAdminEventsViewBinding binding;

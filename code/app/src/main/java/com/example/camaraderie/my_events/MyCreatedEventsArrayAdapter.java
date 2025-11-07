@@ -25,6 +25,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Event array adapter for events created by the user. They can delete from here.
+ */
+
 public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
 
     private NavController nav;

@@ -33,7 +33,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 
 /**
- * The main activity of the app
+ * The main activity of the app. Deals with QR code scans,login, and initial navigation.
  */
 
 public class MainActivity extends AppCompatActivity {

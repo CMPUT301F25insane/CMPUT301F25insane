@@ -23,6 +23,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Display events the user has been invited to, but hasn't accepted.
+ */
+
 public class UserAcceptedToEventFragment extends Fragment {
 
     private FragmentPendingEventsBinding binding;

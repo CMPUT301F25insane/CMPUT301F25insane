@@ -29,6 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Array adapter for events as an admin
+ */
 public class EventArrayAdaptor extends ArrayAdapter<Event> {
 
     FirebaseFirestore db;

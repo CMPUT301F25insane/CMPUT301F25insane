@@ -24,6 +24,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Screen for events that the user has created.
+ */
+
 public class ViewMyCreatedEventsFragment extends Fragment {
 
     private FragmentMyCreatedEventsBinding binding;

@@ -17,6 +17,10 @@ import android.view.ViewGroup;
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentAdminDashboardBinding;
 
+/**
+ * Dashboard for admins. Can see users, events, and images.
+ */
+
 public class AdminDashboardFragment extends Fragment {
     private FragmentAdminDashboardBinding binding;
 

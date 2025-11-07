@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * Array adapter to display events the user has yet to accept.
+ */
+
 public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
     private UserAcceptedViewModel vm;

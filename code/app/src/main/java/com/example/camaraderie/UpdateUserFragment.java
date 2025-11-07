@@ -19,6 +19,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * This is the screen for users updating their information.
+ */
+
 public class UpdateUserFragment extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference usersRef;
