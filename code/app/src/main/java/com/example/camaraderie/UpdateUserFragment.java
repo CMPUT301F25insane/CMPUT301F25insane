@@ -34,6 +34,9 @@ public class UpdateUserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        db = FirebaseFirestore.getInstance();
+        usersRef = db.collection("Users");
+
         userDocRef = usersRef.document(user.getUserId());
 
         binding.updateName.setText(user.getFirstName());
