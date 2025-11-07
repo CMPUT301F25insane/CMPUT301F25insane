@@ -82,6 +82,14 @@ public class UpdateUserFragment extends Fragment {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_update_user_to_admin_main_screen);
         });
+
+        binding.seeGuidelinesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(UpdateUserFragment.this)
+                        .navigate(R.id.action_update_user_to_fragment_guidelines);
+            }
+        });
     }
 
     @Override
