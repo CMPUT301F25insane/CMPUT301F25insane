@@ -52,7 +52,18 @@ public class MainActivity extends AppCompatActivity {
 
     private Uri pendingDeeplink = null;
 
+    private boolean __DEBUG_DATABASE_CLEAR = true;
 
+
+    /**
+     * sets up the SharedEventViewModel {@link #svm}, sets up the events view model for general event listings,
+     * initializes navcontroller and deeplink functionalities.
+     * clears the database for testing purposes at the moment.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,10 +88,8 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent() != null && getIntent().getData() != null){
             pendingDeeplink = getIntent().getData();
         }
-
-        // add dummy data
-        clearDBAndSeed(
-                () -> {
+        //TODO: this can be refactored into clean functions. it should be. i do not care to do this right now.
+        if (!__DEBUG_DATABASE_CLEAR) {
             Log.d("Firestore", "Searching for user in database...");
             usersRef.document(id).get()
                     .addOnSuccessListener(documentSnapshot -> {
@@ -124,9 +133,65 @@ public class MainActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         throw new RuntimeException("listen, we fucked up.");
                     });
-        });
+        } else {
+            // add dummy data
+            clearDBAndSeed(
+                    () -> {
+                        Log.d("Firestore", "Searching for user in database...");
+                        usersRef.document(id).get()
+                                .addOnSuccessListener(documentSnapshot -> {
+
+                                    if (documentSnapshot.exists()) {
+                                        user = documentSnapshot.toObject(User.class);
+                                        Log.d("Firestore", "User found");
+
+                                        if (user.isAdmin()) {
+                                            if (pendingDeeplink != null) {
+                                                handleDeepLink();
+
+                                            } else {
+
+                                                navController.navigate(R.id.admin_main_screen);
+                                            }
+                                        }
+
+                                        if (!user.getSelectedEvents().isEmpty()) {
+                                            if (pendingDeeplink != null) {
+                                                handleDeepLink();
+                                            } else {
+                                                navController.navigate(R.id.fragment_pending_events);
+
+                                            }
+                                        }
+
+                                        // else, nav to the main fragment
+                                        if (pendingDeeplink != null) {
+                                            handleDeepLink();
+
+                                        } else {
+                                            navController.navigate(R.id.fragment_main);
+                                        }
+                                    } else {
+                                        newUserBuilder(id, navController);  // build user
+
+                                    }
+
+                                })
+                                .addOnFailureListener(e -> {
+                                    throw new RuntimeException("listen, we fucked up.");
+                                });
+                    });
+        }
+
+
+
     }
 
+    /**
+     * handles deeplink on new intent
+     * @param intent The new intent that was used to start the activity
+     *
+     */
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
@@ -140,6 +205,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * sets up the pending deeplinks for qr codes
+     */
     private void handleDeepLink(){
         if (pendingDeeplink == null){
             return;
@@ -161,6 +229,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * creates a dialogfragment to get user information and sets up static user variable
+     * @param id id of teh android device
+     * @param navController navController for the navigation
+     */
     public void newUserBuilder(String id, NavController navController) {
         Log.e("Firestore", "User does not exist! Creating new user...");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -219,6 +292,9 @@ public class MainActivity extends AppCompatActivity {
         //return newUser;
     }
 
+    /**
+     * sets binding to null
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

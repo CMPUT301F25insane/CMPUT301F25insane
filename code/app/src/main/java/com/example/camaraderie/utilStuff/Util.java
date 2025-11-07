@@ -29,6 +29,7 @@ public class Util {
 
     /**
      * Clears the Events collection, then triggers callback.
+     * @param onDone a lambda function defined by the caller
      */
     private static void clearEvents(Runnable onDone) {
         eventsRef.get().addOnSuccessListener(snapshot -> {
@@ -46,6 +47,7 @@ public class Util {
 
     /**
      * Clears the Users collection, then triggers callback.
+     * @param onDone the callback function
      */
     private static void clearUsers(Runnable onDone) {
         usersRef.get().addOnSuccessListener(snapshot -> {
@@ -63,6 +65,7 @@ public class Util {
 
     /**
      * Seeds the database with linked Users and Events.
+     * @param onDone callback function defined by caller as lambda function
      */
     private static void addDummyEvents(Runnable onDone) {
         WriteBatch batch = db.batch();
@@ -108,6 +111,8 @@ public class Util {
 
     /**
      * Sets admin flag on a user.
+     * @param userRef user to set the admin property of
+     * @param isAdmin bool to set isAdmin to
      */
     public static void setUserAsAdmin(DocumentReference userRef, boolean isAdmin) {
         userRef.update("admin", isAdmin)
