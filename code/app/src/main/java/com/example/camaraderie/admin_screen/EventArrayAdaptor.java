@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
+import com.example.camaraderie.SharedEventViewModel;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -31,13 +33,15 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
 
     FirebaseFirestore db;
     private NavController nav;
+    SharedEventViewModel svm;
     ArrayList<Event> events;
-    public EventArrayAdaptor(@NonNull Context context, ArrayList<Event> events, NavController nav){
+    public EventArrayAdaptor(@NonNull Context context, ArrayList<Event> events, NavController nav, SharedEventViewModel svm){
         super(context, 0, events);
         this.db = FirebaseFirestore.getInstance();
         this.events = events;
 
         this.nav = nav;
+        this.svm = svm;
     }
 
     @NonNull
@@ -82,11 +86,9 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 //View profile
-                Bundle bundle = new Bundle();
-                bundle.putString("eventDocRefPath", event.getEventDocRef().getPath());
 
-
-                nav.navigate(R.id.action_admin_event_data_screen_to_fragment_view_event_user, bundle);
+                svm.setEvent(event);
+                nav.navigate(R.id.fragment_view_event_user);
             }
         });
 

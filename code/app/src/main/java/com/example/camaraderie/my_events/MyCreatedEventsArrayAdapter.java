@@ -89,6 +89,8 @@ public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
                             }
 
                             eventDocRef.delete();
+                            remove(event);
+                            notifyDataSetChanged();
                         });
             }
         });
