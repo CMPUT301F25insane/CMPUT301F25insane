@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.activity.OnBackPressedDispatcher;
 
 
 import com.example.camaraderie.dashboard.EventViewModel;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     static private CollectionReference usersRef;
     private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
+    private SharedEventViewModel svm;
 
     private Uri pendingDeeplink = null;
 
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
 
         //FirebaseFirestore.getInstance().clearPersistence();  // TODO: DO NOT UNCOMMENT THIS CODE
+
+        svm = new ViewModelProvider(this).get(SharedEventViewModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
@@ -144,12 +148,16 @@ public class MainActivity extends AppCompatActivity {
         String eventId = pendingDeeplink.getQueryParameter("id");
         String eventDocPath = "Events/" + eventId;
 
-        Bundle args = new Bundle();
-        args.putString("eventDocRefPath", eventDocPath);
+        db.document(eventDocPath).get()
+                .addOnSuccessListener(
+                        doc -> {
+                            Event event = doc.toObject(Event.class);
+                            svm.setEvent(event);
+                            pendingDeeplink = null;
+                            navController.navigate(R.id.fragment_view_event_user);
+                        }
+                );
 
-        pendingDeeplink = null;
-
-        navController.navigate(R.id.fragment_view_event_user, args);
 
     }
 

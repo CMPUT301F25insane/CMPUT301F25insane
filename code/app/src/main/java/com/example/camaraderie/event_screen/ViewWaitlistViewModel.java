@@ -26,7 +26,6 @@ public class ViewWaitlistViewModel extends ViewModel {
         eventRef.update("waitlist", FieldValue.arrayRemove(userRef))
                 .addOnSuccessListener(aVoid -> {
 
-                    // Remove event from the User waitlistedEvents list
                     userRef.update("waitlistedEvents", FieldValue.arrayRemove(eventRef))
                             .addOnSuccessListener(aVoid2 -> {
 

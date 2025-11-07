@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_admin"
+    app:startDestination="@id/admin_main_screen">
+
+    <fragment
+        android:id="@+id/admin_main_screen"
+        android:name="com.example.camaraderie.admin_screen.AdminDashboardFragment"
+        android:label="Admin Dashboard"
+        tools:layout="@layout/fragment_admin_dashboard">
+        <action
+            android:id="@+id/action_admin_to_user_list"
+            app:destination="@id/admin_user_data_screen" />
+        <action
+            android:id="@+id/action_admin_to_event_list"
+            app:destination="@id/admin_event_data_screen" />
+        <action
+            android:id="@+id/action_admin_to_images"
+            app:destination="@id/admin_event_images_screen" />
+    </fragment>
+
+    <fragment android:id="@+id/admin_user_data_screen"
+        android:name="com.example.camaraderie.admin_screen.AdminUsersViewFragment"
+        tools:layout="@layout/fragment_admin_users_view"/>
+
+    <fragment android:id="@+id/admin_event_data_screen"
+        android:name="com.example.camaraderie.admin_screen.AdminEventsViewFragment"
+        tools:layout="@layout/fragment_admin_events_view"/>
+
+    <fragment android:id="@+id/admin_event_images_screen"
+        android:name="com.example.camaraderie.admin_screen.AdminImagesViewFragment"
+        tools:layout="@layout/fragment_admin_images_view"/>
+
+</navigation>

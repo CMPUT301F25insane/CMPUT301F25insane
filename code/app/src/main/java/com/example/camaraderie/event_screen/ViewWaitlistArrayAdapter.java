@@ -63,7 +63,10 @@ public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
             @Override
             public void onClick(View v) {
                 Log.d("Waitlist kick button", "User attempted to be kicked...");
-                vm.kickUser(entrant, event, () -> notifyDataSetChanged());
+                vm.kickUser(entrant, event, () -> {
+                    remove(entrant);
+                    notifyDataSetChanged();
+                });
             }
         });
 

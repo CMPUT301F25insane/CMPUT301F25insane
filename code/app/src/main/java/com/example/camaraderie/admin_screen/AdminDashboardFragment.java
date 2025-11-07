@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.activity.OnBackPressedDispatcher;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,8 @@ public class AdminDashboardFragment extends Fragment {
                         .navigate(R.id.action_admin_main_screen_to_admin_event_images_screen));
 
         binding.back.setOnClickListener(v ->
-                NavHostFragment.findNavController(this).popBackStack());
+                NavHostFragment.findNavController(this)
+                        .popBackStack());
 
     }
 

@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.FragmentViewMyEventsBinding;
 import com.google.firebase.firestore.DocumentReference;
@@ -98,6 +99,8 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
             }
         });
 
+        binding.MyEventsButton.setOnClickListener(v -> nav.navigate(R.id.fragment_my_created_events));
+
 
 
     }
@@ -106,16 +109,19 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
         Log.d("clicked event description", event.getEventName());
 
-        Bundle args = new Bundle();
+//        Bundle args = new Bundle();
+//
+//        args.putString("eventDocRefPath", event.getEventDocRef().getPath());
+//
+//        if (args.getString("eventDocRefPath") == null){
+//            Log.e("Firestore", "Event path is null");
+//            throw new RuntimeException("Firestore event path is null in onEventClick()");
+//        }
 
-        args.putString("eventDocRefPath", event.getEventDocRef().getPath());
+        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+        vm.setEvent(event);
 
-        if (args.getString("eventDocRefPath") == null){
-            Log.e("Firestore", "Event path is null");
-            throw new RuntimeException("Firestore event path is null in onEventClick()");
-        }
-
-        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_view_my_events_to__fragment_organizer_view_event, args);
+        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_view_my_events_to__fragment_organizer_view_event);
     }
 
 

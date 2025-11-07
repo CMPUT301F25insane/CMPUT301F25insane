@@ -28,6 +28,16 @@
     </fragment>
 
     <fragment
+        android:name="com.example.camaraderie.my_events.ViewMyCreatedEventsFragment"
+        android:id="@+id/fragment_my_created_events"
+        tools:layout="@layout/fragment_my_created_events">
+
+        <action
+            android:id="@+id/action_fragment_my_created_events_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
+    </fragment>
+
+    <fragment
         android:id="@+id/fragment_guidelines"
         android:label="guidleins FRagment"
         android:name="com.example.camaraderie.GuidelinesFragment"
@@ -66,6 +76,9 @@
         <action
             android:id="@+id/action_fragment_view_my_events_to__fragment_organizer_view_event"
             app:destination="@id/_fragment_organizer_view_event" />
+        <action
+            android:id="@+id/action_fragment_view_my_events_to_fragment_my_created_events"
+            app:destination="@id/fragment_my_created_events" />
     </fragment>
 
     <fragment

@@ -62,7 +62,7 @@ public class AdminEventsViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                NavHostFragment.findNavController(this).popBackStack()
+                nav.popBackStack()
         );
     }
     private void loadList(){
