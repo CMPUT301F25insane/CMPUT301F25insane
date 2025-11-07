@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         //clearDB();
 
+        FirebaseFirestore.getInstance().clearPersistence();
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
 

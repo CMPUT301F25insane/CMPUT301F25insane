@@ -294,8 +294,8 @@ public class Event {
                 waitlist.remove(randUser);
 
                 // update user fields
-                randUser.update("waitlist", FieldValue.arrayRemove(eventDocRef));
-                randUser.update("selectedList", FieldValue.arrayUnion(eventDocRef));
+                randUser.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                randUser.update("selectedEvents", FieldValue.arrayUnion(eventDocRef));
             }
         }
 
