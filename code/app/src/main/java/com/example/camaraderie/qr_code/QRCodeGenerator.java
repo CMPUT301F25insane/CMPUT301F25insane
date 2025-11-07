@@ -13,7 +13,7 @@ import android.graphics.Color;
 public class QRCodeGenerator {
 
     /**
-     * Generates the QR code and returns it as a Bitmap
+     * Generates the QR code and returns it as a Bitmap.
      *
      * @param text
      * @param size
