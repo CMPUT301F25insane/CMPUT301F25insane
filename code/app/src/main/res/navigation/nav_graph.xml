@@ -5,6 +5,10 @@
     android:id="@+id/nav_graph.xml"
     app:startDestination="@id/fragment_loading_screen">
 
+    <action
+        android:id="@+id/action_global_fragment_view_event_user"
+        app:destination="@id/fragment_view_event_user" />
+
     <fragment
         android:id="@+id/fragment_loading_screen"
         android:name="com.example.camaraderie.LoadingScreenFragment"
@@ -127,10 +131,7 @@
         tools:layout="@layout/fragment_view_event_user">
 
         <argument
-            android:name="eventDocPath"
-            app:argType="string" />
-        <argument
-            android:name="userDocPath"
+            android:name="eventDocRefPath"
             app:argType="string" />
         <action
             android:id="@+id/action_fragment_view_event_user_to_fragment_main"
