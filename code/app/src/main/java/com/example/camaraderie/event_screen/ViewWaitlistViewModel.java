@@ -9,16 +9,31 @@ import com.google.firebase.firestore.FieldValue;
 
 import java.util.ArrayList;
 
+/**
+ * viewmodel for the ViewWaitlistFragment class
+ */
 public class ViewWaitlistViewModel extends ViewModel {
 
+    /**
+     * Waitlist callback interface
+     */
     public interface WaitlistCallback {
         void onUsersLoaded(ArrayList<User> users);
     }
 
+    /**
+     * empty constructor for ViewWaitlistViewModel
+     */
     public ViewWaitlistViewModel() {
 
     }
 
+    /**
+     * functionality for kicking user. updates database for user and event.
+     * @param u user to kick
+     * @param event event from which they are kicked
+     * @param onComplete runnable listener implement by lambda for on-complete
+     */
     public void kickUser(User u, Event event, Runnable onComplete) {
         DocumentReference userRef = u.getDocRef();
         DocumentReference eventRef = event.getEventDocRef();
@@ -38,6 +53,11 @@ public class ViewWaitlistViewModel extends ViewModel {
                 });
     }
 
+    /**
+     * loads waitlisted users
+     * @param event event from whcih to load users
+     * @param callback callback for when this finishes running (lambda function)
+     */
     public void loadWaitlistedUsers(Event event, WaitlistCallback callback) {
         ArrayList<DocumentReference> refs = event.getWaitlist();
         ArrayList<User> result = new ArrayList<>();

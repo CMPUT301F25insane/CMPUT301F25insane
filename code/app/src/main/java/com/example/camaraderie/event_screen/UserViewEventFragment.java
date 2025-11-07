@@ -70,7 +70,7 @@ public class UserViewEventFragment extends Fragment {
     }
 
     /**
-     *
+     * set binding
      * @param inflater The LayoutInflater object that can be used to inflate
      * any views in the fragment,
      * @param container If non-null, this is the parent view that the fragment's
@@ -79,7 +79,7 @@ public class UserViewEventFragment extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      *
-     * @return
+     * @return constructed view
      */
     @Override
     public View onCreateView (LayoutInflater inflater,
@@ -91,7 +91,8 @@ public class UserViewEventFragment extends Fragment {
     }
 
     /**
-     *
+     * set bidnings for each button and other text views. enable and disable buttons based on priviledge,
+     * setup qr code button functions
      * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
@@ -150,6 +151,10 @@ public class UserViewEventFragment extends Fragment {
         });
     }
 
+    /**
+     * updates UI textviews
+     * @param e event to get details from
+     */
     private void updateUI(Event e) {
         binding.eventNameForUserView.setText(e.getEventName());
         binding.eventDescriptionUserView.setText(e.getDescription());
@@ -158,6 +163,10 @@ public class UserViewEventFragment extends Fragment {
         binding.locationOfUserView.setText(e.getEventLocation());
 
         db.document(e.getHostDocRef().getPath()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            /**
+             * on success listener for snapshot
+             * @param documentSnapshot docsnap element from database
+             */
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
@@ -178,6 +187,9 @@ public class UserViewEventFragment extends Fragment {
         binding.unjoinButtonUserView.setEnabled(userInWaitlist);
     }
 
+    /**
+     * handles join, updates database
+     */
     private void handleJoin() {
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
         user.addWaitlistedEvent(event.getEventDocRef());
@@ -185,6 +197,9 @@ public class UserViewEventFragment extends Fragment {
         nav.navigate(R.id.fragment_main);
     }
 
+    /**
+     * handles unjoin, updates database
+     */
     private void handleUnjoin() {
         event.getEventDocRef().update("waitlist", FieldValue.arrayRemove(user.getDocRef()));
         user.removeWaitlistedEvent(event.getEventDocRef());
@@ -192,6 +207,9 @@ public class UserViewEventFragment extends Fragment {
         nav.navigate(R.id.fragment_main);
     }
 
+    /**
+     * admin can delete events, updates database
+     */
     private void adminDeleteEvent() {
         db.collection("Users").get().addOnSuccessListener(snapshot -> {
             for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
@@ -205,6 +223,9 @@ public class UserViewEventFragment extends Fragment {
         nav.navigate(R.id.fragment_main);
     }
 
+    /**
+     * binding set to null
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
