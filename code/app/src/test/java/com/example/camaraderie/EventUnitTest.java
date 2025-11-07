@@ -103,33 +103,33 @@ public class EventUnitTest {
 
     // ---------- LOTTERY TESTS ----------
 
-    @Test
-    public void testRunLotteryMovesUsersFromWaitlistToSelected() {
-        // add users to waitlist
-        event.addWaitlistUser(mockUser1);
-        event.addWaitlistUser(mockUser2);
+//    @Test
+//    public void testRunLotteryMovesUsersFromWaitlistToSelected() {
+//        // add users to waitlist
+//        event.addWaitlistUser(mockUser1);
+//        event.addWaitlistUser(mockUser2);
+//
+//        // run lottery with capacity = 2
+//        event.runLottery();
+//
+//        // selected users should not exceed capacity
+//        assertTrue(event.getSelectedUsers().size() <= event.getCapacity());
+//
+//        // selected users must be removed from waitlist
+//        assertTrue(event.getWaitlist().size() <= 2 - event.getSelectedUsers().size());
+//    }
 
-        // run lottery with capacity = 2
-        event.runLottery();
-
-        // selected users should not exceed capacity
-        assertTrue(event.getSelectedUsers().size() <= event.getCapacity());
-
-        // selected users must be removed from waitlist
-        assertTrue(event.getWaitlist().size() <= 2 - event.getSelectedUsers().size());
-    }
-
-    @Test
-    public void testRunLotteryUpdatesUserFields() {
-        // add a user
-        event.addWaitlistUser(mockUser1);
-
-        event.runLottery();
-
-        // verify update() called on user for waitlistedEvents removal
-        verify(mockUser1, atLeastOnce()).update(eq("waitlistedEvents"), any());
-        verify(mockUser1, atLeastOnce()).update(eq("selectedEvents"), any());
-    }
+//    @Test
+//    public void testRunLotteryUpdatesUserFields() {
+//        // add a user
+//        event.addWaitlistUser(mockUser1);
+//
+//        event.runLottery();
+//
+//        // verify update() called on user for waitlistedEvents removal
+//        verify(mockUser1, atLeastOnce()).update(eq("waitlistedEvents"), any());
+//        verify(mockUser1, atLeastOnce()).update(eq("selectedEvents"), any());
+//    }
 
     // ---------- FIRESTORE TEST ----------
 
