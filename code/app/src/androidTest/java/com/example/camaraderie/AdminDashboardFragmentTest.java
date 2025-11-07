@@ -95,8 +95,10 @@ public class AdminDashboardFragmentTest {
 
     @Test
     // Check whether the activity correctly switched to View Events in Admin perspective and then we switch back to Admin Dashboard
-    public void testActivitySwitchAdminDashboardToViewAdminUser() {
+    public void testActivitySwitchAdminDashboardToViewAdminUser() throws InterruptedException {
         onView(withId(R.id.admin_see_users)).perform(click());
+
+
         // Checking that we are in admin_users_view screen
         onView(withId(R.id.list)).check(matches(isDisplayed()));
         onView(withId(R.id.back_button)).check(matches(isDisplayed()));
@@ -110,6 +112,8 @@ public class AdminDashboardFragmentTest {
         onView(withId(R.id.admin_see_events)).check(matches(isDisplayed()));
         onView(withId(R.id.admin_see_pics)).check(matches(isDisplayed()));
         onView(withId(R.id.back)).check(matches(isDisplayed()));
+
+
     }
 
     @Test
