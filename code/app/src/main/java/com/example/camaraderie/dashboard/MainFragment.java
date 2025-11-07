@@ -2,11 +2,13 @@ package com.example.camaraderie.dashboard;//
 
 import static com.example.camaraderie.MainActivity.user;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,8 +24,9 @@ import com.example.camaraderie.databinding.FragmentMainBinding;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 
 
 public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
@@ -74,14 +77,45 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
         // when USER views EVENT, compare user id to host id, and set the corresponding fragment accordingly
 
+        binding.fromDateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFromDialog();
+            }
+        });
+
+        binding.toDateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openToDialog();
+            }
+        });
+
         binding.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date fromDate = new Date();
+                Date toDate = new Date();
+                try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    fromDate =  formatter.parse(binding.fromDateText.getText().toString());
+                    toDate = formatter.parse(binding.toDateText.getText().toString());
+                }
+                catch (Exception e){
+                    Log.e("Firestore", "Error parsing date", e);
+                }
+
+                Date finalFromDate = fromDate;
+                Date finalToDate = toDate;
                 eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
                     dashboardEventArrayAdapter.clear();
                     for(int i = 0; i < events.size(); i++){
+                        String eventDayMonth = "" + events.get(i).getEventDate().getDay() + events.get(i).getEventDate().getMonth();
+                        String toDateMonth = "" + finalToDate.getDay() + finalToDate.getMonth();
                         if(events.get(i).getEventName().toLowerCase().contains(binding.searchBar.getText().toString().toLowerCase())){
-                            dashboardEventArrayAdapter.add(events.get(i));
+                            if((events.get(i).getEventDate().after(finalFromDate) && events.get(i).getEventDate().before(finalToDate)) || eventDayMonth.equals(toDateMonth)){
+                                dashboardEventArrayAdapter.add(events.get(i));
+                            }
                         }
                     };
                     dashboardEventArrayAdapter.notifyDataSetChanged();
@@ -142,5 +176,32 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         binding = null;
     }
 
+    private void openFromDialog() {
+        DatePickerDialog dateDialog;
+        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                binding.fromDateText.setText(year + "-" + (month+1) + "-" + day);
+            }
+
+        }, 2025, 10, 6);
+
+        dateDialog.show();
+
+    }
+
+    private void openToDialog() {
+        DatePickerDialog dateDialog;
+        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                binding.toDateText.setText(year + "-" + (month+1) + "-" + day);
+            }
+
+        }, 2025, 10, 6);
+
+        dateDialog.show();
+
+    }
 
 }
