@@ -38,7 +38,7 @@ public class GuidelinesFragment extends Fragment {
         binding.guidelinesBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.action_fragment_guidelines_to_update_user);
+                nav.popBackStack();
             }
         });
     }

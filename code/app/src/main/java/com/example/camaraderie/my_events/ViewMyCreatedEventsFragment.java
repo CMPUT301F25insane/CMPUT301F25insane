@@ -1,4 +1,4 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.my_events;
 
 import static com.example.camaraderie.MainActivity.user;
 
@@ -12,45 +12,64 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.User;
-import com.example.camaraderie.dashboard.EventViewModel;
-import com.example.camaraderie.databinding.FragmentViewAttendeesBinding;
+import com.example.camaraderie.databinding.FragmentMyCreatedEventsBinding;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class ViewWaitlistFragment extends Fragment {
+public class ViewMyCreatedEventsFragment extends Fragment {
 
-    private FragmentViewAttendeesBinding binding;
-    private DocumentReference eventDocRef;
-    private ViewWaitlistArrayAdapter viewWaitlistArrayAdapter;
-    private ViewWaitlistViewModel vm;
+    private FragmentMyCreatedEventsBinding binding;
     private SharedEventViewModel svm;
     private Event event;
     private FirebaseFirestore db;
     private NavController nav;
+    private MyCreatedEventsArrayAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
-        nav = NavHostFragment.findNavController(ViewWaitlistFragment.this);
-        vm = new ViewModelProvider(requireActivity()).get(ViewWaitlistViewModel.class);
+        nav = NavHostFragment.findNavController(this);
+        ArrayList<Event> events = new ArrayList<>();
+        ArrayList<DocumentReference> refs = user.getUserCreatedEvents();
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+        adapter = new MyCreatedEventsArrayAdapter(requireContext(), 0, events, nav, svm);
+
+        if (refs.isEmpty()) {
+            return;
+        }
+
+        for (DocumentReference ref : refs) {
+            ref.get().addOnSuccessListener(doc -> {
+                Event e = doc.toObject(Event.class);
+                if (e != null) {
+                    events.add(e);
+                }
+
+
+                if (events.size() == refs.size()) {
+                    adapter.notifyDataSetChanged();
+                }
+            }).addOnFailureListener(err -> {
+                err.printStackTrace();
+            });
+        }
+
 
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentViewAttendeesBinding.inflate(getLayoutInflater());
+        binding = FragmentMyCreatedEventsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -58,26 +77,14 @@ public class ViewWaitlistFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
-            event = evt;
-            vm.loadWaitlistedUsers(event, users -> {
-                viewWaitlistArrayAdapter = new ViewWaitlistArrayAdapter(requireContext(), 0, users, event, vm);
-                binding.usersInWaitlist.setAdapter(viewWaitlistArrayAdapter);
-            });
-            fillTextViews(event);
-        });
-
+        binding.listView.setAdapter(adapter);
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
-
+        binding.textView5.setText("My created events");
     }
-
-    private void fillTextViews(Event event) {
-        binding.attendeesNum.setText(String.valueOf(event.getWaitlist().size()));
-    }
-
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

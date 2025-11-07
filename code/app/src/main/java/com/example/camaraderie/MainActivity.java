@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.activity.OnBackPressedDispatcher;
 
 
 import com.example.camaraderie.dashboard.EventViewModel;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     static private CollectionReference usersRef;
     private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
+    private SharedEventViewModel svm;
 
     private Uri pendingDeeplink = null;
 
@@ -55,11 +57,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        //setContentView(R.layout.activity_main);
 
-        //clearDB();
+        //FirebaseFirestore.getInstance().clearPersistence();  // TODO: DO NOT UNCOMMENT THIS CODE
 
-        FirebaseFirestore.getInstance().clearPersistence();
+        svm = new ViewModelProvider(this).get(SharedEventViewModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
@@ -77,54 +78,53 @@ public class MainActivity extends AppCompatActivity {
             pendingDeeplink = getIntent().getData();
         }
 
-        Log.d("Firestore", "Searching for user in database...");
-        usersRef.document(id).get()
-                .addOnSuccessListener(documentSnapshot -> {
+        // add dummy data
+        clearDBAndSeed(
+                () -> {
+            Log.d("Firestore", "Searching for user in database...");
+            usersRef.document(id).get()
+                    .addOnSuccessListener(documentSnapshot -> {
 
-                    if (documentSnapshot.exists()) {
-                        user = documentSnapshot.toObject(User.class);
-                        Log.d("Firestore", "User found");
+                        if (documentSnapshot.exists()) {
+                            user = documentSnapshot.toObject(User.class);
+                            Log.d("Firestore", "User found");
 
-                        if (user.isAdmin()) {
-                            if (pendingDeeplink != null){
-                                handleDeepLink();
+                            if (user.isAdmin()) {
+                                if (pendingDeeplink != null) {
+                                    handleDeepLink();
 
-                            } else {
+                                } else {
 
-                                navController.navigate(R.id.admin_main_screen);
+                                    navController.navigate(R.id.admin_main_screen);
+                                }
                             }
-                        }
 
-                        if (!user.getSelectedEvents().isEmpty()) {
+                            if (!user.getSelectedEvents().isEmpty()) {
+                                if (pendingDeeplink != null) {
+                                    handleDeepLink();
+                                } else {
+                                    navController.navigate(R.id.fragment_pending_events);
+
+                                }
+                            }
+
+                            // else, nav to the main fragment
                             if (pendingDeeplink != null) {
                                 handleDeepLink();
+
                             } else {
-                                navController.navigate(R.id.fragment_pending_events);
-
+                                navController.navigate(R.id.fragment_main);
                             }
+                        } else {
+                            newUserBuilder(id, navController);  // build user
+
                         }
 
-                        // else, nav to the main fragment
-                        if (pendingDeeplink != null){
-                            handleDeepLink();
-
-                        }else{
-                        navController.navigate(R.id.fragment_main);
-                    }
-                        }
-                    else {
-                        newUserBuilder(id, navController);  // build user
-
-                    }
-
-                })
-                .addOnFailureListener(e -> {
-                    throw new RuntimeException("listen, we fucked up.");
-                });
-
-        // add dummy data
-        clearAndAddDummyEvents();  // WARNING: THIS IS AN ASYNC RELIANT FUNCTION
-
+                    })
+                    .addOnFailureListener(e -> {
+                        throw new RuntimeException("listen, we fucked up.");
+                    });
+        });
     }
 
     @Override
@@ -148,12 +148,16 @@ public class MainActivity extends AppCompatActivity {
         String eventId = pendingDeeplink.getQueryParameter("id");
         String eventDocPath = "Events/" + eventId;
 
-        Bundle args = new Bundle();
-        args.putString("eventDocRefPath", eventDocPath);
+        db.document(eventDocPath).get()
+                .addOnSuccessListener(
+                        doc -> {
+                            Event event = doc.toObject(Event.class);
+                            svm.setEvent(event);
+                            pendingDeeplink = null;
+                            navController.navigate(R.id.fragment_view_event_user);
+                        }
+                );
 
-        pendingDeeplink = null;
-
-        navController.navigate(R.id.fragment_view_event_user, args);
 
     }
 

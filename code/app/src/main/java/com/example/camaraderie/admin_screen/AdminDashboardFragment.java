@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.activity.OnBackPressedDispatcher;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,21 +41,21 @@ public class AdminDashboardFragment extends Fragment {
 
         binding.adminSeeUsers.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_user_data_screen)
+                        .navigate(R.id.action_admin_main_screen_to_admin_user_data_screen_view)
         );
 
         binding.adminSeeEvents.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_event_data_screen)
+                        .navigate(R.id.action_admin_main_screen_to_admin_event_data_screen_view)
         );
 
         binding.adminSeePics.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_event_images_screen));
+                        .navigate(R.id.action_admin_main_screen_to_admin_event_images_screen_view));
 
         binding.back.setOnClickListener(v ->
-                NavHostFragment.findNavController(this).
-                        navigate(R.id.action_admin_main_screen_to_update_user));
+                NavHostFragment.findNavController(this)
+                        .popBackStack());
 
     }
 
