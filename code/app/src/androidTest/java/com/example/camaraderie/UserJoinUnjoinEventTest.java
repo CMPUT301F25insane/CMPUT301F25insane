@@ -15,12 +15,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.Matchers.not;
 
 import com.example.camaraderie.event_screen.UserViewEventFragment;
-
-@RunWith(AndroidJUnit4.class)
-@LargeTest
 /**
  * The purpose of this test is to test when the user to join and unjoin an event.
  */
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class UserJoinUnjoinEventTest {
 
     private FragmentScenario<UserViewEventFragment> scenario;

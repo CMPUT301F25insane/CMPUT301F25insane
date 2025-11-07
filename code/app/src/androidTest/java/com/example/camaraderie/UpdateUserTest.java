@@ -50,32 +50,48 @@ public class UpdateUserTest {
         scenario.close();
     }
 
+
+
+    /**
+    *testing if save button is visible
+     */
     @Test
     public void testSaveButtonIsVisible() {
         onView(withId(R.id.update_save))
                 .check(matches(isDisplayed()));
     }
-
+    /**
+     *testing if save button is clickable
+     */
     @Test
     public void testSaveButtonIsClickable() {
         onView(withId(R.id.update_save))
                 .perform(click());
 
     }
-
+    /**
+     *testing if delete button is visible
+     */
     @Test
     public void testDeleteProfileButtonIsVisible() {
         onView(withId(R.id.user_delete))
                 .check(matches(isDisplayed()));
 
     }
-
+    /**
+     *testing if delete button is clickable
+     */
     @Test
     public void testDeleteProfileButtonIsClickable() {
         onView(withId(R.id.user_delete))
                 .perform(click());
 
     }
+
+
+    /**
+     *testing if we can successfully update user information
+     */
     @Test
     public void testUpdateUser() {
 
@@ -106,8 +122,10 @@ public class UpdateUserTest {
 
     }
 
+    /**
+     * the purpose of this test is to ensure an error is thrown when the user enters an invalid email
+     */
     @Test
-    // the purpose of this test is to ensure an error is thrown when the user enters an invalid email
     public void testInvalidEmail() {
         // Type an invalid email (missing "@")
         onView(withId(R.id.update_email))
@@ -128,9 +146,10 @@ public class UpdateUserTest {
         // Check that Alert Error appears
         onView(withText("Please Enter a valid email address")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
-
+    /**
+     * This Test is to ensure an Alert error is thrown when the user enters an invalid phone number
+     */
     @Test
-    // This Test is to ensure an Alert error is thrown when the user enters an invalid phone number
     public void testInvalidPhoneNumberShowsError() {
         // Type invalid phone (letters or too short)
         onView(withId(R.id.update_phone_no)).perform(replaceText("abc123"), closeSoftKeyboard());
@@ -141,9 +160,10 @@ public class UpdateUserTest {
         // Verify Toast message
         onView(withText("Please enter valid phone number")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
-
+    /**
+    * we are testing what happens when user decides to delete their profile
+     */
     @Test
-    // we are testing what happens when user decides to delete their profile
     public void DeleteProfileTest() {
         onView(withId(R.id.user_delete)).perform(click());
         onView(withText("Are you sure you want to delete your profile?")).check(matches(isDisplayed()));

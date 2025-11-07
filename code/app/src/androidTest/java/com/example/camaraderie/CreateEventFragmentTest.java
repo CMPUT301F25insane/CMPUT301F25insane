@@ -48,20 +48,28 @@ public class CreateEventFragmentTest {
 
 
     @Test
-    // we are testing if the Create event button is visible on the main screen
+    /**
+     * We are testing if the Create event button is visible on the main screen
+     */
     public void testCreateEventButtonVisible() {
         onView(withId(R.id.createEventConfirmButton))
                 .check(matches(isDisplayed()));
     }
 
+
+    /**
+     * We are testing if the Create event button is clickable on the main screen
+     */
     @Test
-    //testing if create event Button if Clickable
     public void testCreateEventButtonClickable() {
         onView(withId(R.id.createEventConfirmButton))
                 .perform(click());
     }
+    /**
+    we are creating the event by entering the event details as a Organizer and pressing confirm button
+     */
     @Test
-    // we are creating the event by entering the event details as a Organizer and pressing confirm button
+    //
     public void testEventDetails() {
 
         onView(withId(R.id.createEventName)).perform(click());
@@ -93,8 +101,11 @@ public class CreateEventFragmentTest {
 
 
     }
+
+    /**
+     * Testing if error appear in the event a Organizer does not input anything or leaves blank field
+     */
     @Test
-    //Testing if error appear in the event a Organizer does not input anything or leaves blank field
     public void testEmptyFormShowsError() {
         onView(withId(R.id.createEventConfirmButton)).perform(click());
         onView(withText("Please fill in all fields")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));

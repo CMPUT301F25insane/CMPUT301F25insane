@@ -31,13 +31,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Date;
-
-@RunWith(AndroidJUnit4.class)
-@LargeTest
 /**
  * This Test File, we will be looking at testing MainFragment
  * and testing if search functionality works
  */
+
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 
 public class MainFragmentTest {
     private FragmentScenario<MainFragment> scenario;
