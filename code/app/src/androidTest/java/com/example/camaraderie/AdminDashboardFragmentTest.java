@@ -2,10 +2,16 @@ package com.example.camaraderie;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
+
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.test.espresso.IdlingPolicies;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -21,12 +27,17 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import static com.google.common.base.CharMatcher.is;
 import static com.google.common.base.Predicates.instanceOf;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
+
+import android.os.SystemClock;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.concurrent.TimeUnit;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -96,7 +107,12 @@ public class AdminDashboardFragmentTest {
     @Test
     // Check whether the activity correctly switched to View Events in Admin perspective and then we switch back to Admin Dashboard
     public void testActivitySwitchAdminDashboardToViewAdminUser() {
+
+
         onView(withId(R.id.admin_see_users)).perform(click());
+
+        IdlingPolicies.setIdlingResourceTimeout(5, TimeUnit.SECONDS);
+
         // Checking that we are in admin_users_view screen
         onView(withId(R.id.list)).check(matches(isDisplayed()));
         onView(withId(R.id.back_button)).check(matches(isDisplayed()));
