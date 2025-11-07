@@ -55,7 +55,7 @@ public class AdminUsersViewFragment extends Fragment {
         userArrayList = new ArrayList<User>();
         nav = NavHostFragment.findNavController(AdminUsersViewFragment.this);
 
-        userArrayAdapter = new UserArrayAdaptor(requireContext(), userArrayList, nav); //,nav in constructor
+        userArrayAdapter = new UserArrayAdaptor(requireContext(), userArrayList, nav);
 
         binding.list.setAdapter(userArrayAdapter);
 
