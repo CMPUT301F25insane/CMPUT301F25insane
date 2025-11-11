@@ -21,6 +21,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
       # - name: Cache Gradle
       #   uses: gradle/actions/setup-gradle@v3
       #   continue-on-error: true
@@ -32,3 +35,13 @@ jobs:
       - name: Build and run unit tests
         working-directory: code
         run: ./gradlew clean testDebugUnitTest
+        
+        # android UI tests 
+      - name: Run Instrumented Tests on Emulator (src/androidTest/java)
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          target: google_apis
+          arch: x86_64
+          working-directory: code
+          script: ./gradlew connectedDebugAndroidTest
