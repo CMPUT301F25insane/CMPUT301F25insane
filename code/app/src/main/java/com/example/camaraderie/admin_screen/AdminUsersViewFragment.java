@@ -110,7 +110,7 @@ public class AdminUsersViewFragment extends Fragment {
         userListener = usersRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
-                throw new RuntimeException("Fuck you (users version");
+                throw new RuntimeException("cringe (users version");
             }
             if (value != null && !value.isEmpty()) {
                 userArrayList.clear();
