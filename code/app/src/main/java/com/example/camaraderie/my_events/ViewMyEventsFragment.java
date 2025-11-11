@@ -33,8 +33,8 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
     private FirebaseFirestore db;
 
     private ViewMyEventsArrayAdapter myEvents;
-    NavController nav;
-    DocumentReference eventDocRef;
+    private NavController nav;
+
     private EventViewModel eventViewModel;
 
     /**
@@ -48,6 +48,7 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         myEvents = new ViewMyEventsArrayAdapter(getContext(), new ArrayList<>());
+        myEvents.listener = this;
 
         nav = NavHostFragment.findNavController(ViewMyEventsFragment.this);
     }
@@ -146,7 +147,7 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         vm.setEvent(event);  // this is a better way to pass args instead of the bundle. ask me about it (abdul) if you need more info on why it works
 
-        NavHostFragment.findNavController(this).navigate(R.id._fragment_organizer_view_event);
+        NavHostFragment.findNavController(this).navigate(R.id.fragment_view_event_user);
     }
 
     /**
