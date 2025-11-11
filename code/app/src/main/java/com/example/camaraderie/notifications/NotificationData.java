@@ -3,7 +3,7 @@ package com.example.camaraderie.notifications;
 /**
  * This class represents a basic notification model
  */
-public class Notification {
+public class NotificationData {
 
     private int id;
     private String message;
@@ -12,7 +12,7 @@ public class Notification {
     /**
      * empty constructor for notification, for firebase
      */
-    public Notification() {}
+    public NotificationData() {}
 
     /**
      * Consructor for Notification
@@ -20,7 +20,7 @@ public class Notification {
      * @param title notification title or tag
      * @param message notification message
      */
-    public Notification(int id, String title, String message) {
+    public NotificationData(int id, String title, String message) {
         this.id = id;
         this.message = message;
         this.title = title;
