@@ -2,10 +2,15 @@ package com.example.camaraderie.notifications;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
+
+import com.example.camaraderie.MainActivity;
+import com.example.camaraderie.R;
 
 /**
  * controller class for sending and cancelling notifications
@@ -36,6 +41,12 @@ public class NotificationController {
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(model.getTitle())
                 .setContentText(model.getMessage())
+
+                // these are for expandable notifications for lines that are too big to fit on 1 line
+                .setStyle(new NotificationCompat.BigTextStyle()
+                .bigText(model.getMessage()))
+
+
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -69,8 +80,27 @@ public class NotificationController {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
 
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this.
             NotificationManager manager = context.getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
         }
     }
+
+    /*private void handleNotificationTap() {
+        //Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context.getApplicationContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("My notification")
+                .setContentText("Hello World!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that fires when the user taps the notification.
+                .setContentIntent(pendingIntent)
+
+                // automatically cancels notif when user taps it
+                .setAutoCancel(true);
+    }*/
 }
