@@ -3,6 +3,8 @@ package com.example.camaraderie;//
 
 import static com.example.camaraderie.utilStuff.Util.*;
 
+import android.Manifest;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,12 +29,14 @@ import androidx.activity.OnBackPressedDispatcher;
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
+import com.example.camaraderie.notifications.NotificationController;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.security.Permissions;
 import java.util.ArrayList;
 
 /**
@@ -56,10 +60,12 @@ public class MainActivity extends AppCompatActivity {
     private Uri pendingDeeplink = null;
 
     private boolean __DEBUG_DATABASE_CLEAR = false;
-
+    private com.example.notifications.NotificationView notificationView;
+    private NotificationController notificationController;
 
     /**
      * sets up the SharedEventViewModel {@link #svm}, sets up the events view model for general event listings,
+     * sets up the notification controller and asks the user for notification permissions
      * initializes navcontroller and deeplink functionalities.
      * clears the database for testing purposes at the moment.
      * @param savedInstanceState If the activity is being re-initialized after
@@ -83,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
+
+        notificationController = new NotificationController(this, notificationView);
+        requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
 
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
