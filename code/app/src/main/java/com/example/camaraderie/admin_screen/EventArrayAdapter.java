@@ -4,7 +4,6 @@ import static com.example.camaraderie.MainActivity.user;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
@@ -29,13 +25,26 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class EventArrayAdaptor extends ArrayAdapter<Event> {
+/**
+ * EventArrayAdapter extends ArrayAdapter to be used to list the events that the admin can view or delete
+ */
+public class EventArrayAdapter extends ArrayAdapter<Event> {
 
     FirebaseFirestore db;
     private NavController nav;
     SharedEventViewModel svm;
     ArrayList<Event> events;
-    public EventArrayAdaptor(@NonNull Context context, ArrayList<Event> events, NavController nav, SharedEventViewModel svm){
+
+    /**
+     * This is a constructor that initializes all the required attributes for the array adapter to to function how we
+     * want it to
+     * @param context
+     * @param events
+     * @param nav
+     * @param svm
+     */
+
+    public EventArrayAdapter(@NonNull Context context, ArrayList<Event> events, NavController nav, SharedEventViewModel svm){
         super(context, 0, events);
         this.db = FirebaseFirestore.getInstance();
         this.events = events;
@@ -43,6 +52,17 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
         this.nav = nav;
         this.svm = svm;
     }
+
+    /**
+     * getView is used for initializing the view of events for our custom display of events
+     * We initialize the view using the layout inflater
+     * We set all the textviews to the values of the events like their name, registration deadline etc
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     * We return a view for each list item
+     */
 
     @NonNull
     @Override
@@ -68,6 +88,10 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
 
         deadline.setText(event.getRegistrationDeadline().toString());
 
+        /**
+         * We implement a join button for the admin to be able to join an event if they wish
+         */
+
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +106,10 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
             }
         });
 
+        /**
+         * We also a description button that allows for the admin to view the events description
+         */
+
         description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +119,11 @@ public class EventArrayAdaptor extends ArrayAdapter<Event> {
                 nav.navigate(R.id.fragment_view_event_user);
             }
         });
+
+        /**
+         * Lastly we have a remove button that the admin can use to remove a event from the the collection if it violates
+         * guidelines or for whatever reason the admin has
+         */
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override

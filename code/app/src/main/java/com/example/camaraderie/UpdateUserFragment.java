@@ -17,7 +17,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.databinding.FragmentUpdateUserBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+/**
+ * This is the screen for users updating their information.
+ */
 
 public class UpdateUserFragment extends Fragment {
     private FirebaseFirestore db;
@@ -25,12 +31,30 @@ public class UpdateUserFragment extends Fragment {
     private DocumentReference userDocRef;
     private FragmentUpdateUserBinding binding;
 
+    /**
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return binding root
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentUpdateUserBinding.inflate(getLayoutInflater());
 
         return binding.getRoot();
     }
 
+    /**
+     * attaches the layout bindings and button listeners
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -74,30 +98,65 @@ public class UpdateUserFragment extends Fragment {
 
         binding.userDelete.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
-            userDocRef.delete();
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_update_user_to_fragment_main);
+
+            for (DocumentReference ref : user.getSelectedEvents()) {
+                ref.update("selectedList", FieldValue.arrayRemove(user.getDocRef()));
+            }
+
+            for (DocumentReference ref : user.getAcceptedEvents()) {
+                ref.update("acceptedList", FieldValue.arrayRemove(user.getDocRef()));
+            }
+
+            for (DocumentReference ref : user.getWaitlistedEvents()) {
+                ref.update("waitlist", FieldValue.arrayRemove(user.getDocRef()));
+            }
+
+            for (DocumentReference eventDocRef : user.getUserCreatedEvents()) {
+                db.collection("Users").get()
+                        .addOnSuccessListener(snapshot -> {
+                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+                                DocumentReference uRef = userDoc.getReference();
+                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+                            }
+                        });
+
+                user.deleteCreatedEvent(eventDocRef);
+            }
+            user.getDocRef().delete();
+            // goodbye
+            getActivity().finish();
+            System.exit(0);
+//            NavHostFragment.findNavController(this)
+//                    .navigate(R.id.fragment_main);
         });
 
         binding.updateCancel.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_update_user_to_fragment_main);
+                    .navigate(R.id.fragment_main);
         });
 
         binding.admin.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_update_user_to_admin_main_screen);
+            if (binding.editTextText.getText().toString().equals("80085")) {
+                user.setAdmin(true);
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.admin_main_screen);
+            }
         });
 
         binding.seeGuidelinesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(UpdateUserFragment.this)
-                        .navigate(R.id.action_update_user_to_fragment_guidelines);
+                        .navigate(R.id.fragment_guidelines);
             }
         });
     }
 
+    /**
+     * destroys view, sets binding to null to avoid memory leaks
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

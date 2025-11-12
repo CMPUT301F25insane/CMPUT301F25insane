@@ -24,26 +24,47 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Screen for events the user has joined the waitlist for.
+ */
 public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayAdapter.OnEventClickListener{
 
     private FragmentViewMyEventsBinding binding;
     private FirebaseFirestore db;
 
     private ViewMyEventsArrayAdapter myEvents;
-    NavController nav;
-    DocumentReference eventDocRef;
+    private NavController nav;
+
     private EventViewModel eventViewModel;
 
+    /**
+     * sets nav, myEvents list, and eventViewModel
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         myEvents = new ViewMyEventsArrayAdapter(getContext(), new ArrayList<>());
+        myEvents.listener = this;
 
         nav = NavHostFragment.findNavController(ViewMyEventsFragment.this);
     }
 
+    /**
+     * sets binding
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return binding root
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,9 +72,17 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         return binding.getRoot();
     }
 
+    /**
+     * set bindings and listeners
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.nameForMyEvents.setText(user.getFirstName());
 
 
         db = FirebaseFirestore.getInstance();
@@ -74,14 +103,14 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.action_fragment_view_my_events_to_fragment_main);
+                nav.navigate(R.id.fragment_main);
             }
         });
 
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.action_fragment_view_my_events_to_fragment_create_event_testing);
+                nav.navigate(R.id.fragment_create_event_testing);
             }
         });
 
@@ -92,19 +121,16 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
             }
         });
 
-        binding.MyEventsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Todo: Go to new My Events Fragment
-            }
-        });
-
         binding.MyEventsButton.setOnClickListener(v -> nav.navigate(R.id.fragment_my_created_events));
 
 
 
     }
 
+    /**
+     * listener to navigate to the organizer view of event
+     * @param event event to set organizer view to
+     */
     public void onEventClick(Event event){
 
         Log.d("clicked event description", event.getEventName());
@@ -119,13 +145,14 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 //        }
 
         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-        vm.setEvent(event);
+        vm.setEvent(event);  // this is a better way to pass args instead of the bundle. ask me about it (abdul) if you need more info on why it works
 
-        NavHostFragment.findNavController(this).navigate(R.id.action_fragment_view_my_events_to__fragment_organizer_view_event);
+        NavHostFragment.findNavController(this).navigate(R.id.fragment_view_event_user);
     }
 
-
-
+    /**
+     * set binding to null
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

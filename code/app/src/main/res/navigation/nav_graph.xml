@@ -150,7 +150,17 @@
         <action
             android:id="@+id/action__fragment_view_event_user_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_view_waitlist"
+            app:destination="@id/fragment_view_waitlist" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_view_waitlist"
+        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        android:label="View Waitlist Fragment"
+        tools:layout="@layout/fragment_view_attendees">
 
     </fragment>
 

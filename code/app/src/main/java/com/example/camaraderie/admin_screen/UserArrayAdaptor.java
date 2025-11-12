@@ -25,11 +25,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * UserArrayAdaptor extends array adapter and we use it to display our custom user items in an array adapter
+ */
+
 public class UserArrayAdaptor extends ArrayAdapter<User> {
 
     private FirebaseFirestore db;
     private ArrayList<User> users;
     private NavController nav;
+
+    /**
+     * We initialize a constructor to setup or attributes
+     * @param context
+     * @param user_list
+     * @param nav
+     */
 
     public UserArrayAdaptor(@NonNull Context context, ArrayList<User> user_list, NavController nav){
         super(context, 0, user_list);
@@ -37,6 +48,16 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
         this.users = user_list;
         this.nav = nav;
     }
+
+    /**
+     * getView is used to initialize the view of users in our array adapter
+     * We setup the information on the xml to fill in with the user's information
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     * We return a view of our user in the array adapter
+     */
 
     @NonNull
     @Override
@@ -68,9 +89,14 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
                 Bundle bundle = new Bundle();
                 bundle.putString("userEventDocRef", user1.getDocRef().getPath());
                 //TODO: add admin view of user profile
-                //nav.navigate(R.id.list_to_detail_view, bundle);
+                nav.navigate(R.id.action_admin_user_data_screen_view_to_admin_user_profile, bundle);
             }
         });
+
+        /**
+         * We have a remove button that allows the admin to to remove a user from the app and removes them from
+         * all waiting lists, accepted lists, and waitlists
+         */
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override

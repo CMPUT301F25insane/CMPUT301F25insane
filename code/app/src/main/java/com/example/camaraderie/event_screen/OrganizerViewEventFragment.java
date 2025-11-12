@@ -22,12 +22,17 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
+import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Random;
+
+/**
+ * The screen for an organizer viewing their own event. They can delete and edit their event here.
+ */
 
 public class OrganizerViewEventFragment extends Fragment {
 
@@ -40,6 +45,11 @@ public class OrganizerViewEventFragment extends Fragment {
 
     private FragmentViewEventOrganizerBinding binding;
 
+    /**
+     * sets svm, nav, and db.
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +60,18 @@ public class OrganizerViewEventFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * set binding
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return binding root
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +80,12 @@ public class OrganizerViewEventFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * sets bidnings for buttons and textviews. svm gets event and updates as appropriate
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,6 +104,10 @@ public class OrganizerViewEventFragment extends Fragment {
         binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
 
         binding.deleteButtonOrgView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * delete functionality for events. updates database
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 //TODO: make a DIALOGFRAGMENT to ask for CONFIRMATION FIRST
@@ -97,6 +129,10 @@ public class OrganizerViewEventFragment extends Fragment {
         });
 
         binding.eventEditButtonOrdView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * navigate to editing create event. set event docref in bundle
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
 
@@ -110,8 +146,29 @@ public class OrganizerViewEventFragment extends Fragment {
                 }
             }
         });
+
+        binding.qrButtonOrgView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * get qr code dialogfragment
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+
+                args.putString("eventId", event.getEventId());
+
+                QRCodeDialogFragment dialogFragment = QRCodeDialogFragment.newInstance(event.getEventId());
+                dialogFragment.show(getParentFragmentManager(), "qr_dialog");
+            }
+
+        });
     }
 
+    /**
+     * updates ui textviews
+     * @param e event from which to get details from
+     */
     private void updateUI(Event e) {
         binding.eventNameForOrgView.setText(e.getEventName());
         binding.registrationDeadlineTextOrgView.setText(e.getRegistrationDeadline().toString());  //TODO: deal with date stuff
@@ -128,6 +185,10 @@ public class OrganizerViewEventFragment extends Fragment {
 
     }
 
+    /**
+     * lottery system, runs while waitlist is nonempty and selectedList size is less than capacity.
+     * updates database, updates UI
+     */
     private void runLottery() {
         Random r = new Random();
 
@@ -150,6 +211,9 @@ public class OrganizerViewEventFragment extends Fragment {
         Toast.makeText(getContext(), "Lottery has been run!", LENGTH_SHORT).show();
     }
 
+    /**
+     * binding set to null
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

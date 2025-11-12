@@ -35,14 +35,22 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
 }
 
+
 dependencies {
+
+
+    implementation(libs.espresso.contrib)
+    implementation(libs.fragment.testing)
     val fragmentVersion = "1.8.9"
 
 
     implementation(libs.firebase.storage)
     implementation("com.google.zxing:core:3.5.1")
+    testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("junit:junit:4.13.2")
 
 
     implementation(libs.appcompat)
@@ -56,6 +64,11 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.play.services.maps)
+
+    configurations.all {
+        exclude(group = "com.google.protobuf", module = "protobuf-lite")
+    }
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -7,8 +7,19 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+/**
+ * Class that generates a QR code for the event
+ */
 public class QRCodeGenerator {
 
+    /**
+     * Generates the QR code and returns it as a Bitmap.
+     *
+     * @param text text to be encoded
+     * @param size size for the QR code
+     * @return Bitmap
+     * @throws WriterException
+     */
     public static Bitmap generateQRCode(String text, int size) throws WriterException {
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();

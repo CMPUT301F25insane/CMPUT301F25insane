@@ -29,7 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+/**
+ * This Fragment is the home screen of the app, it initializes the view for the user when they open the app
+ */
 public class MainFragment extends Fragment implements DashboardEventArrayAdapter.OnEventClickListener {
 
     private FragmentMainBinding binding;
@@ -37,6 +39,14 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     private NavController nav;
     private EventViewModel eventViewModel;
     private FirebaseFirestore db;
+
+    /**
+     * onCreate is run as soon as the app opens and initializes our eventViewModel and our
+     * custom array adapter to be used later in the fragment
+     * We also setup our navigation to be used later
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
 
 
     @Override
@@ -49,6 +59,21 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         nav = NavHostFragment.findNavController(MainFragment.this);
     }
 
+    /**
+     * We have onCreateView which creates the view we need for later and initializes the xml to be associated with this
+     * fragment, we set it up using binding and return the view
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     * Return the view
+     */
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,6 +84,17 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 //        return inflater.inflate(R.layout.fragment_main, container, false);
         return binding.getRoot();
     }
+
+    /**
+     * onViewCreated handles the logic and backend of the UI
+     * We first initalize the database and grab the latest instance
+     * We use binding to setup the array adapter
+     * We also grab the name for the main dashboard
+     * We observe the live data from eventViewModel and we are able to add all the events and set the listener for our adapter
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -92,6 +128,11 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
             }
         });
 
+        /**
+         * We have the search button which allows for us to search through the event or more specifically the user is able
+         * to search for events
+         */
+
         binding.searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +164,11 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
                 });
             }
         });
+
+        /**
+         * We have our menu bar at the bottom of the screen for naviagtion
+         */
+
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +194,11 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
 
     }
 
+    /**
+     * OnEventClick allows for us to navigate to the event they clicked on
+     * @param event
+     */
+
     public void onEventClick(Event event){
 
         Log.d("Firebase", "User clicked description for" + event.getEventName());
@@ -165,12 +216,19 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         }
     }
 
+    /**
+     * onDestroy makes sure that there are no memory leaks
+     */
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         binding = null;
     }
 
+    /**
+     * openFromDialog gives us a dialog to set the text to the date inputted for an initial date to search
+     */
     private void openFromDialog() {
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
@@ -184,6 +242,10 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         dateDialog.show();
 
     }
+
+    /**
+     * We also have a toDate to set and end date
+     */
 
     private void openToDialog() {
         DatePickerDialog dateDialog;

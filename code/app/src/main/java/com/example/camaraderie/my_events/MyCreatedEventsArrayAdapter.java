@@ -1,5 +1,7 @@
 package com.example.camaraderie.my_events;
 
+import static android.view.View.INVISIBLE;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,11 +27,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * Event array adapter for events created by the user. They can delete from here.
+ */
+
 public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
 
     private NavController nav;
     private FirebaseFirestore db;
     private SharedEventViewModel svm;
+
+    /**
+     * constructor for MyCreatedEventArrayAdapter
+     * @param context context
+     * @param resource usually set to 0
+     * @param events events list
+     * @param nav passed in nav controller
+     * @param svm passed sharedeventviewmodel
+     */
     public MyCreatedEventsArrayAdapter(@NonNull Context context, int resource, ArrayList<Event> events, NavController nav, SharedEventViewModel svm) {
         super(context, resource, events);
         this.nav = nav;
@@ -37,6 +52,19 @@ public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
         this.svm = svm;
     }
 
+    /**
+     * set bindings for join, desc, and remove
+     * @param position The position of the item within the adapter's data set of the item whose view
+     *        we want.
+     * @param convertView The old view to reuse, if possible. Note: You should check that this view
+     *        is non-null and of an appropriate type before using. If it is not possible to convert
+     *        this view to display the correct data, this method can create a new view.
+     *        Heterogeneous lists can specify their number of view types, so that this View is
+     *        always of the right type (see {@link #getViewTypeCount()} and
+     *        {@link #getItemViewType(int)}).
+     * @param parent The parent that this view will eventually be attached to
+     * @return constructed view
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -58,12 +86,17 @@ public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
         Button remove = view.findViewById(R.id.RemoveButton);
 
         join.setEnabled(false);
+        join.setVisibility(INVISIBLE);
 
         event_name.setText(event.getEventName());
 
         deadline.setText(event.getRegistrationDeadline().toString());
 
         description.setOnClickListener(new View.OnClickListener() {
+            /**
+             * set svm to this event and navigate to fragment_organizer_view_event
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 //View profile
@@ -75,6 +108,10 @@ public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
         });
 
         remove.setOnClickListener(new View.OnClickListener() {
+            /**
+             * remove logic for deleting event
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
 

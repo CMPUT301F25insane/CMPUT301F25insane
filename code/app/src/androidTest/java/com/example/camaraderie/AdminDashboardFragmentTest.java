@@ -28,6 +28,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
+/**
+ * we are testing if AdminDashboard is working well
+ * if the Admin is able to switch to User database, Event database and Image database respectively with the possibility
+ * of switch back to Admin Dashboard
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AdminDashboardFragmentTest {
@@ -42,59 +48,82 @@ public class AdminDashboardFragmentTest {
     public void tearDown() {
         scenario.close();
     }
-
+    /**
+     * we are testing if User database button is visible on the main screen
+     */
     @Test
-    // we are testing if User database button is visible on the main screen
     public void AdminSeeUserButtonIsVisible () {
         onView(withId(R.id.admin_see_users)).check(matches(isDisplayed()));
     }
-
+    /**
+     * we are testing if User database button is clickable on the main screen
+     */
     @Test
-    // we are testing if User database button is clickable on the main screen
     public void AdminSeeUserButtonClickable() {
         onView(withId(R.id.admin_see_users)).perform(click());
     }
+
+
+    /**
+     * we are testing if Event database button is visible on the main screen
+     */
     @Test
-    // we are testing if Event database button is visible on the main screen
     public void AdminEventDatabaseButtonIsVisible () {
         onView(withId(R.id.admin_see_events)).check(matches(isDisplayed()));
     }
 
+
+    /**
+     * we are testing if Event database button is clickable on the main screen
+     */
     @Test
-    // we are testing if Event database button is clickable on the main screen
     public void AdminEventDatabaseButtonClickable() {
         onView(withId(R.id.admin_see_events)).perform(click());
     }
+
+    /**
+     * we are testing if Image database button is visible on the main screen
+     */
     @Test
-    // we are testing if Image database button is visible on the main screen
     public void AdminImageDatabaseButtonIsVisible () {
         onView(withId(R.id.admin_see_pics)).check(matches(isDisplayed()));
     }
 
+    /**
+     * we are testing if Image database button is clickable on the main screen
+     */
     @Test
-    // we are testing if Image database button is clickable on the main screen
     public void AdminImageDatabaseButtonIsClickable() {
         onView(withId(R.id.admin_see_pics)).perform(click());
     }
+
+    /**
+     * we are testing if back button for Admin is visible on the main screen
+     */
     @Test
-    // we are testing if back button for Admin is visible on the main screen
     public void AdminBackButtonIsVisible () {
         onView(withId(R.id.back)).check(matches(isDisplayed()));
     }
+    /**
+     * we are testing if Image database button for Admin is clickable on the main screen
+     */
 
     @Test
-    // we are testing if Image database button for Admin is clickable on the main screen
     public void AdminBackButtonIsClickable() {
         onView(withId(R.id.back)).perform(click());
     }
+    /**
+     * test is Admin mode is Displayed
+     */
     @Test
-    //test is Admin mode is Displayed
     public void testAdminModeAndListDisplayed() {
         onView(withId(R.id.admin_mode)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check whether the activity correctly switched to View User in Admin perspective and then we switch back to Admin Dashboard
+     */
     @Test
-    // Check whether the activity correctly switched to View Events in Admin perspective and then we switch back to Admin Dashboard
     public void testActivitySwitchAdminDashboardToViewAdminUser() {
         onView(withId(R.id.admin_see_users)).perform(click());
         // Checking that we are in admin_users_view screen
@@ -112,8 +141,10 @@ public class AdminDashboardFragmentTest {
         onView(withId(R.id.back)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Check whether the activity correctly switched to View Events in Admin perspective and then we switch back to Admin Dashboard
+     */
     @Test
-    // Check whether the activity correctly switched to View Events in Admin perspective and then we switch back to Admin Dashboard
     public void testActivitySwitchAdminDashboardToViewAdminEvents() {
         onView(withId(R.id.admin_see_events)).perform(click());
         // Checking that we are in admin_users_view screen
