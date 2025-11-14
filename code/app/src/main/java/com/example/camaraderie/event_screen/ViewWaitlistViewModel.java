@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 public class ViewWaitlistViewModel extends ViewModel {
 
+
     /**
      * Waitlist callback interface
      */
@@ -30,8 +31,9 @@ public class ViewWaitlistViewModel extends ViewModel {
 
     /**
      * functionality for kicking user. updates database for user and event.
-     * @param u user to kick
-     * @param event event from which they are kicked
+     *
+     * @param u          user to kick
+     * @param event      event from which they are kicked
      * @param onComplete runnable listener implement by lambda for on-complete
      */
     public void kickUser(User u, Event event, Runnable onComplete) {
@@ -55,7 +57,8 @@ public class ViewWaitlistViewModel extends ViewModel {
 
     /**
      * loads waitlisted users
-     * @param event event from whcih to load users
+     *
+     * @param event    event from which to load users
      * @param callback callback for when this finishes running (lambda function)
      */
     public void loadWaitlistedUsers(Event event, WaitlistCallback callback) {
@@ -79,6 +82,37 @@ public class ViewWaitlistViewModel extends ViewModel {
 
             }).addOnFailureListener(e -> {
                 e.printStackTrace();
+            });
+        }
+    }
+    /**
+     * loads waitlisted users
+     *
+     * @param event    event from which to load users
+     * @param callback callback for when this finishes running (lambda function)
+     */
+
+    public void loadCancelledUsers(Event event, OnUsersLoadedListener listener) {
+
+        ArrayList<DocumentReference> cancelledRefs = event.getCancelledUsers();
+        ArrayList<User> cancelledUsers = new ArrayList<>();
+
+        if (cancelledRefs == null || cancelledRefs.isEmpty()) {
+            listener.onLoaded(cancelledUsers);
+            return;
+        }
+
+        for (DocumentReference ref : cancelledRefs) {
+            ref.get().addOnSuccessListener(snapshot -> {
+                User user = snapshot.toObject(User.class);
+                if (user != null) {
+                    cancelledUsers.add(user);
+                }
+
+                // When all users have been fetched, trigger callback
+                if (cancelledUsers.size() == cancelledRefs.size()) {
+                    listener.onLoaded(cancelledUsers);
+                }
             });
         }
     }

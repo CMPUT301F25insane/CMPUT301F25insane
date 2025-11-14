@@ -80,6 +80,8 @@ public class ViewWaitlistFragment extends Fragment {
      * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
+     *
+     *
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -93,8 +95,32 @@ public class ViewWaitlistFragment extends Fragment {
             });
             fillTextViews(event);
         });
-
+        // for cancelled users
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
+        binding.viewCancelledToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (event == null) return;
+
+            if (isChecked) {
+                // Load cancelled attendees
+                vm.loadCancelledUsers(event, cancelledUsers -> {
+                    viewWaitlistArrayAdapter.clear();
+                    viewWaitlistArrayAdapter.addAll(cancelledUsers);
+                    viewWaitlistArrayAdapter.notifyDataSetChanged();
+
+                    binding.attendeesNum.setText(String.valueOf(cancelledUsers.size()));
+                });
+
+            } else {
+                // Load normal waitlist
+                vm.loadWaitlistedUsers(event, waitlist -> {
+                    viewWaitlistArrayAdapter.clear();
+                    viewWaitlistArrayAdapter.addAll(waitlist);
+                    viewWaitlistArrayAdapter.notifyDataSetChanged();
+
+                    binding.attendeesNum.setText(String.valueOf(waitlist.size()));
+                });
+            }
+        });
 
     }
 
