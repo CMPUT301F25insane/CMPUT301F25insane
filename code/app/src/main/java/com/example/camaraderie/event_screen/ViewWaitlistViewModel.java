@@ -85,35 +85,7 @@ public class ViewWaitlistViewModel extends ViewModel {
             });
         }
     }
-    /**
-     * loads waitlisted users
-     *
-     * @param event    event from which to load users
-     * @param callback callback for when this finishes running (lambda function)
-     */
 
-    public void loadCancelledUsers(Event event, OnUsersLoadedListener listener) {
 
-        ArrayList<DocumentReference> cancelledRefs = event.getCancelledUsers();
-        ArrayList<User> cancelledUsers = new ArrayList<>();
 
-        if (cancelledRefs == null || cancelledRefs.isEmpty()) {
-            listener.onLoaded(cancelledUsers);
-            return;
-        }
-
-        for (DocumentReference ref : cancelledRefs) {
-            ref.get().addOnSuccessListener(snapshot -> {
-                User user = snapshot.toObject(User.class);
-                if (user != null) {
-                    cancelledUsers.add(user);
-                }
-
-                // When all users have been fetched, trigger callback
-                if (cancelledUsers.size() == cancelledRefs.size()) {
-                    listener.onLoaded(cancelledUsers);
-                }
-            });
-        }
-    }
 }

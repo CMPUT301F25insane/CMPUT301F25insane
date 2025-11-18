@@ -39,6 +39,7 @@ public class ViewWaitlistFragment extends Fragment {
     private Event event;
     private FirebaseFirestore db;
     private NavController nav;
+    private ViewCancelledUsers cu;
 
     /**
      * setup database, nav, event view model, and shareeventsviewmodel
@@ -53,6 +54,7 @@ public class ViewWaitlistFragment extends Fragment {
         nav = NavHostFragment.findNavController(ViewWaitlistFragment.this);
         vm = new ViewModelProvider(requireActivity()).get(ViewWaitlistViewModel.class);
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+        cu = new ViewModelProvider(requireActivity()).get(ViewCancelledUsers.class);
 
     }
 
@@ -102,7 +104,7 @@ public class ViewWaitlistFragment extends Fragment {
 
             if (isChecked) {
                 // Load cancelled attendees
-                vm.loadCancelledUsers(event, cancelledUsers -> {
+                cu.loadCancelledUsers(event, cancelledUsers -> {
                     viewWaitlistArrayAdapter.clear();
                     viewWaitlistArrayAdapter.addAll(cancelledUsers);
                     viewWaitlistArrayAdapter.notifyDataSetChanged();
