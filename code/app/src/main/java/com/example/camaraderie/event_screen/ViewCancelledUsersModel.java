@@ -8,16 +8,22 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
-public class ViewCancelledUsers extends ViewModel {
+/**
+ * a viewmodel for the ViewWaitlistFragment class
+ *  we will be using the same Fragment as ViewWaitlistViewModel since
+ *  Waitlist and Cancelled users will be on the same screen
+ */
+
+public class ViewCancelledUsersModel extends ViewModel {
 
     public interface Cancelledlistcallback {
         void onUsersLoaded(ArrayList<User> users);
     }
 
     /**
-     * empty constructor for ViewCancelledUsers
+     * empty constructor for ViewCancelledUsersModel
      */
-    public ViewCancelledUsers() {
+    public ViewCancelledUsersModel() {
 
     }
 

@@ -1,7 +1,5 @@
 package com.example.camaraderie.event_screen;
 
-import static com.example.camaraderie.MainActivity.user;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +13,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.User;
-import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.FragmentViewAttendeesBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
 
 /**
  * Screen to view the waitlist for an event. Also shows number of waitlisted users.
@@ -39,7 +32,7 @@ public class ViewWaitlistFragment extends Fragment {
     private Event event;
     private FirebaseFirestore db;
     private NavController nav;
-    private ViewCancelledUsers cu;
+    private ViewCancelledUsersModel cu;
 
     /**
      * setup database, nav, event view model, and shareeventsviewmodel
@@ -54,7 +47,7 @@ public class ViewWaitlistFragment extends Fragment {
         nav = NavHostFragment.findNavController(ViewWaitlistFragment.this);
         vm = new ViewModelProvider(requireActivity()).get(ViewWaitlistViewModel.class);
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-        cu = new ViewModelProvider(requireActivity()).get(ViewCancelledUsers.class);
+        cu = new ViewModelProvider(requireActivity()).get(ViewCancelledUsersModel.class);
 
     }
 
@@ -97,8 +90,8 @@ public class ViewWaitlistFragment extends Fragment {
             });
             fillTextViews(event);
         });
-        // for cancelled users
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
+        // for cancelled users
         binding.viewCancelledToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (event == null) return;
 
