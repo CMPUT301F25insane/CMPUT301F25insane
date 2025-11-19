@@ -78,6 +78,7 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-analytics")
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
+    implementation("androidx.activity:activity:1.11.0")
 }
 
 
