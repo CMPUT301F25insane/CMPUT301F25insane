@@ -11,16 +11,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.espresso.action.ViewActions;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.example.camaraderie.event_screen.CreateEventFragment;
-import com.example.camaraderie.event_screen.UserViewEventFragment;
+import com.example.camaraderie.event_screen.organizer_view.CreateEventFragment;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

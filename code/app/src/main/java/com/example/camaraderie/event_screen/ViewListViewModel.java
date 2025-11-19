@@ -1,5 +1,7 @@
 package com.example.camaraderie.event_screen;
 
+import android.util.Log;
+
 import androidx.lifecycle.ViewModel;
 
 import com.example.camaraderie.Event;
@@ -10,22 +12,22 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.ArrayList;
 
 /**
- * viewmodel for the ViewWaitlistFragment class
+ * general viewmodel for handling data for waitlist, selected, accepted, and cancelled lists
  */
-public class ViewWaitlistViewModel extends ViewModel {
+public class ViewListViewModel extends ViewModel {
 
 
     /**
      * Waitlist callback interface
      */
-    public interface WaitlistCallback {
+    public interface ViewListCallback {
         void onUsersLoaded(ArrayList<User> users);
     }
 
     /**
      * empty constructor for ViewWaitlistViewModel
      */
-    public ViewWaitlistViewModel() {
+    public ViewListViewModel() {
 
     }
 
@@ -41,28 +43,28 @@ public class ViewWaitlistViewModel extends ViewModel {
         DocumentReference eventRef = event.getEventDocRef();
 
         eventRef.update("waitlist", FieldValue.arrayRemove(userRef))
-                .addOnSuccessListener(aVoid -> {
+            .addOnSuccessListener(aVoid -> {
 
-                    userRef.update("waitlistedEvents", FieldValue.arrayRemove(eventRef))
-                            .addOnSuccessListener(aVoid2 -> {
+                userRef.update("waitlistedEvents", FieldValue.arrayRemove(eventRef))
+                    .addOnSuccessListener(aVoid2 -> {
 
-                                // Update the local event object too, so UI stays consistent
-                                event.getWaitlist().remove(userRef);
+                        // Update the local event object too, so UI stays consistent
+                        event.getWaitlist().remove(userRef);
 
-                                // Call UI callback to refresh adapter
-                                onComplete.run();
-                            });
-                });
+                        // Call UI callback to refresh adapter
+                        onComplete.run();
+                    });
+            });
     }
 
     /**
      * loads waitlisted users
      *
-     * @param event    event from which to load users
+     * @param refs     references from which to load the users
      * @param callback callback for when this finishes running (lambda function)
      */
-    public void loadWaitlistedUsers(Event event, WaitlistCallback callback) {
-        ArrayList<DocumentReference> refs = event.getWaitlist();
+    public void loadUsersFromList(ArrayList<DocumentReference> refs, ViewListCallback callback) {
+        //ArrayList<DocumentReference> refs = event.getWaitlist();
         ArrayList<User> result = new ArrayList<>();
 
         if (refs.isEmpty()) {
@@ -76,16 +78,15 @@ public class ViewWaitlistViewModel extends ViewModel {
                 result.add(user);
 
                 // Check if all users are loaded
-                if (result.size() == refs.size()) {
+                if (result.size() >= refs.size()) {
                     callback.onUsersLoaded(result);
                 }
 
             }).addOnFailureListener(e -> {
+                Log.e("Firebase", "Error loading users from arraylist", e);
                 e.printStackTrace();
             });
         }
     }
-
-
 
 }

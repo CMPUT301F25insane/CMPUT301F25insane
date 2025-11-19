@@ -1,4 +1,4 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.organizer_view;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -20,7 +20,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
@@ -192,7 +191,7 @@ public class OrganizerViewEventFragment extends Fragment {
     private void runLottery() {
         Random r = new Random();
 
-        while (event.getSelectedUsers().size() < event.getCapacity() &&
+        while (event.getSelectedUsers().size() + event.getAcceptedUsers().size() < event.getCapacity() &&
                 !event.getWaitlist().isEmpty()) {
 
             int index = r.nextInt(event.getWaitlist().size());

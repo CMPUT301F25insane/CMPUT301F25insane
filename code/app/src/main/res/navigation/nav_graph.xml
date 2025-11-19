@@ -78,7 +78,7 @@
 
     <fragment
         android:id="@+id/_fragment_organizer_view_event"
-        android:name="com.example.camaraderie.event_screen.OrganizerViewEventFragment"
+        android:name="com.example.camaraderie.event_screen.organizer_view.OrganizerViewEventFragment"
         android:label="Organizer event view"
         tools:layout="@layout/fragment_view_event_organizer">
 
@@ -118,7 +118,7 @@
 
     <fragment
         android:id="@+id/fragment_create_event_testing"
-        android:name="com.example.camaraderie.event_screen.CreateEventFragment"
+        android:name="com.example.camaraderie.event_screen.organizer_view.CreateEventFragment"
         android:label="Create Event Fragment"
         tools:layout="@layout/fragment_create_event_testing">
         <action
@@ -131,7 +131,7 @@
 
     <fragment
         android:id="@+id/fragment_view_event_user"
-        android:name="com.example.camaraderie.event_screen.UserViewEventFragment"
+        android:name="com.example.camaraderie.event_screen.user_view.UserViewEventFragment"
         android:label="View Event User Fragment"
         tools:layout="@layout/fragment_view_event_user">
 
@@ -158,7 +158,7 @@
 
     <fragment
         android:id="@+id/fragment_view_waitlist"
-        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        android:name="com.example.camaraderie.event_screen.user_lists.waitlist.ViewWaitlistFragment"
         android:label="View Waitlist Fragment"
         tools:layout="@layout/fragment_view_attendees">
 

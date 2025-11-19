@@ -1,4 +1,4 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.user_lists.waitlist;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentViewAttendeesBinding;
+import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -27,12 +28,12 @@ public class ViewWaitlistFragment extends Fragment {
     private FragmentViewAttendeesBinding binding;
     private DocumentReference eventDocRef;
     private ViewWaitlistArrayAdapter viewWaitlistArrayAdapter;
-    private ViewWaitlistViewModel vm;
+    private ViewListViewModel listViewModel;
     private SharedEventViewModel svm;
     private Event event;
     private FirebaseFirestore db;
     private NavController nav;
-    private ViewCancelledUsersModel cu;
+    //private ViewCancelledUsersModel cu;
 
     /**
      * setup database, nav, event view model, and shareeventsviewmodel
@@ -45,9 +46,9 @@ public class ViewWaitlistFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         nav = NavHostFragment.findNavController(ViewWaitlistFragment.this);
-        vm = new ViewModelProvider(requireActivity()).get(ViewWaitlistViewModel.class);
+        listViewModel = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-        cu = new ViewModelProvider(requireActivity()).get(ViewCancelledUsersModel.class);
+        //cu = new ViewModelProvider(requireActivity()).get(ViewCancelledUsersModel.class);
 
     }
 
@@ -84,8 +85,9 @@ public class ViewWaitlistFragment extends Fragment {
 
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             event = evt;
-            vm.loadWaitlistedUsers(event, users -> {
-                viewWaitlistArrayAdapter = new ViewWaitlistArrayAdapter(requireContext(), 0, users, event, vm);
+            listViewModel.loadUsersFromList(event.getWaitlist(), users -> {
+                viewWaitlistArrayAdapter = new ViewWaitlistArrayAdapter(requireContext(), 0, users, event, listViewModel);
+                viewWaitlistArrayAdapter.setNotifyOnChange(true);  // auto calls notifyDataSetChanged when it changes, but im not gonna remove the old calls unless i have to
                 binding.usersInWaitlist.setAdapter(viewWaitlistArrayAdapter);
             });
             fillTextViews(event);
@@ -97,7 +99,7 @@ public class ViewWaitlistFragment extends Fragment {
 
             if (isChecked) {
                 // Load cancelled attendees
-                cu.loadCancelledUsers(event, cancelledUsers -> {
+                listViewModel.loadUsersFromList(event.getCancelledUsers(), cancelledUsers -> {
                     viewWaitlistArrayAdapter.clear();
                     viewWaitlistArrayAdapter.addAll(cancelledUsers);
                     viewWaitlistArrayAdapter.notifyDataSetChanged();
@@ -107,7 +109,7 @@ public class ViewWaitlistFragment extends Fragment {
 
             } else {
                 // Load normal waitlist
-                vm.loadWaitlistedUsers(event, waitlist -> {
+                listViewModel.loadUsersFromList(event.getWaitlist(), waitlist -> {
                     viewWaitlistArrayAdapter.clear();
                     viewWaitlistArrayAdapter.addAll(waitlist);
                     viewWaitlistArrayAdapter.notifyDataSetChanged();

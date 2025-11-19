@@ -1,4 +1,4 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.organizer_view;
 
 import static com.example.camaraderie.MainActivity.user;
 

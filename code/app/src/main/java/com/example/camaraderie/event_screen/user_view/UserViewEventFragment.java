@@ -1,15 +1,9 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.user_view;
 
-import static android.widget.Toast.LENGTH_SHORT;
-
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +18,6 @@ import static com.example.camaraderie.MainActivity.user;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.dashboard.EventViewModel;
-import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,9 +25,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * The screen for user's viewing an uploaded event
@@ -191,10 +180,13 @@ public class UserViewEventFragment extends Fragment {
      * handles join, updates database
      */
     private void handleJoin() {
-        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
-        user.addWaitlistedEvent(event.getEventDocRef());
-        updateUI(event);
-        nav.navigate(R.id.fragment_main);
+        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
+                .addOnSuccessListener(v -> {
+                    user.addWaitlistedEvent(event.getEventDocRef());
+                    updateUI(event);
+                });
+
+        //nav.navigate(R.id.fragment_main);
     }
 
     /**

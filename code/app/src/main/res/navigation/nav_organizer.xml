@@ -12,12 +12,12 @@
 
     <fragment
         android:id="@+id/fragment_view_waitlist"
-        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        android:name="com.example.camaraderie.event_screen.user_lists.waitlist.ViewWaitlistFragment"
         tools:layout="@layout/fragment_view_attendees" />
 
     <fragment
         android:id="@+id/_fragment_organizer_view_event"
-        android:name="com.example.camaraderie.event_screen.OrganizerViewEventFragment"
+        android:name="com.example.camaraderie.event_screen.organizer_view.OrganizerViewEventFragment"
         android:label="Organizer Event Screen">
         <action
             android:id="@+id/action_org_to_waitlist"

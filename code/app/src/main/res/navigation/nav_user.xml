@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/fragment_view_event_user"
-        android:name="com.example.camaraderie.event_screen.UserViewEventFragment"
+        android:name="com.example.camaraderie.event_screen.user_view.UserViewEventFragment"
         tools:layout="@layout/fragment_view_event_user">
 
         <argument
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/fragment_view_waitlist"
-        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        android:name="com.example.camaraderie.event_screen.user_lists.waitlist.ViewWaitlistFragment"
         tools:layout="@layout/fragment_view_attendees" />
 
     <fragment
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/fragment_create_event_testing"
-        android:name="com.example.camaraderie.event_screen.CreateEventFragment"
+        android:name="com.example.camaraderie.event_screen.organizer_view.CreateEventFragment"
         tools:layout="@layout/fragment_create_event_testing" />
 
     <fragment

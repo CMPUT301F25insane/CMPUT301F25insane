@@ -1,4 +1,4 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.user_lists.waitlist;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,12 +15,11 @@ import androidx.annotation.Nullable;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
-import com.example.camaraderie.accepted_screen.PendingEventArrayAdapter;
+import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.google.firebase.firestore.DocumentReference;
 
 import static com.example.camaraderie.MainActivity.user;
 
-import java.lang.annotation.Documented;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +29,7 @@ public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
 
     private Event event;
     private DocumentReference hostRef;
-    private ViewWaitlistViewModel vm;
+    private ViewListViewModel vm;
 
     /**
      * setup event, hostRef, view model for ViewWaitlistViewmodel
@@ -40,7 +39,7 @@ public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
      * @param event event to get details from
      * @param vm viewmodel for waitlist
      */
-    public ViewWaitlistArrayAdapter(@NonNull Context context, int resource, ArrayList<User> users, Event event, ViewWaitlistViewModel vm) {
+    public ViewWaitlistArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<User> users, @NonNull Event event, @NonNull ViewListViewModel vm) {
         super(context, resource, users);
 
         this.event = event;

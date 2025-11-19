@@ -16,7 +16,6 @@ import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.espresso.action.ViewActions;
 
 import com.example.camaraderie.dashboard.MainFragment;
-import com.example.camaraderie.event_screen.UserViewEventFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
