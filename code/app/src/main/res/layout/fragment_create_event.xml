@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_resource"
+    >
+
+    <TextView
+        android:id="@+id/Camaraderie_header_for_create_events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/cambria_italic"
+        android:text="Camaraderie"
+        android:textColor="@color/white"
+        android:textSize="23dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="404dp"
+        android:layout_height="713dp"
+        android:background="@drawable/gradient_for_org_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.786">
+
+        <EditText
+            android:id="@+id/input_field_for_create_event_location"
+            android:layout_width="129dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:ems="25"
+            android:fontFamily="@font/cambria_italic"
+            android:hint="[Location]"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/input_field_for_create_event_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.109"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/input_field_for_create_event_num_of_attendees"
+            android:layout_width="178dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="28dp"
+            android:textColor="@color/white"
+            android:ems="25"
+            android:fontFamily="@font/cambria_italic"
+            android:hint="[Number of Attendees]"
+            android:inputType="text"
+            android:textColorHint="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/button_for_going_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.069"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/input_field_for_create_event_waitlist_limit"
+            android:layout_width="175dp"
+            android:layout_height="46dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="28dp"
+            android:ems="25"
+            android:fontFamily="@font/cambria_italic"
+            android:hint="[Optional Waitlist Limit]"
+            android:inputType="text"
+            android:textColorHint="#9C9C9C"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_for_confirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintStart_toEndOf="@+id/input_field_for_create_event_num_of_attendees" />
+
+        <EditText
+            android:id="@+id/input_field_for_create_event_description"
+            android:layout_width="303dp"
+            android:layout_height="144dp"
+            android:textColor="@color/white"
+            android:layout_marginBottom="40dp"
+            android:ems="25"
+            android:fontFamily="@font/cambria_italic"
+            android:hint="[Description]"
+            android:inputType="text"
+            android:textColorHint="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/button_for_add_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.298"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/input_field_for_create_event_name"
+            android:layout_width="129dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="44dp"
+            android:ems="25"
+            android:fontFamily="@font/cambria_italic"
+            android:hint="[Event Name]"
+            android:inputType="text"
+            android:textColorHint="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/input_field_for_create_event_registration_deadline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <EditText
+            android:id="@+id/input_field_for_create_event_time"
+            android:layout_width="109dp"
+            android:layout_height="41dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="160dp"
+            android:ems="25"
+            android:fontFamily="@font/cambria_italic"
+            android:hint="[Time]"
+            android:inputType="text"
+            android:textColorHint="#9C9C9C"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.345"
+            app:layout_constraintStart_toEndOf="@+id/input_field_for_create_event_date"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/input_field_for_create_event_registration_deadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/white"
+            android:ems="10"
+            android:fontFamily="@font/cambria_italic"
+            android:hint="Registration Deadline"
+            android:inputType="date"
+            android:textColorHint="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/input_field_for_create_event_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.157"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/input_field_for_create_event_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="20dp"
+            android:ems="10"
+            android:fontFamily="@font/cambria_italic"
+            android:hint="Date"
+            android:inputType="date"
+            android:textColorHint="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/input_field_for_create_event_location"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button_for_add_picture"
+            android:layout_width="146dp"
+            android:layout_height="53dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#8FE5E4FF"
+            android:fontFamily="@font/cambria"
+            android:text="Add Picture"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/input_field_for_create_event_num_of_attendees"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.436"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/black"
+            app:strokeWidth="3.5dp" />
+
+        <Button
+            android:id="@+id/button_for_going_back"
+            android:layout_width="146dp"
+            android:layout_height="53dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="#8FE5E4FF"
+            android:fontFamily="@font/cambria"
+            android:text="Back"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/black"
+            app:strokeWidth="3.5dp" />
+
+        <Button
+            android:id="@+id/button_for_confirm"
+            android:layout_width="146dp"
+            android:layout_height="53dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="#B06CF9CC"
+            android:fontFamily="@font/cambria"
+            android:text="Confirm"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.464"
+            app:layout_constraintStart_toEndOf="@+id/button_for_going_back"
+            app:strokeColor="@color/black"
+            app:strokeWidth="3.5dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
