@@ -92,11 +92,18 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
 
         notificationController = new NotificationController(this, notificationView);
+        notificationController.setChannelId("basic_notification_channel");
+        notificationController.createNotificationChannel("Basic Notifications", "General Notifications");
+
         requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
 
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        notificationController.setChannelId(id);
+        notificationController.createNotificationChannel("Personal Notifications", "Personalized Notifications");
+
 
         if (getIntent() != null && getIntent().getData() != null){
             pendingDeeplink = getIntent().getData();

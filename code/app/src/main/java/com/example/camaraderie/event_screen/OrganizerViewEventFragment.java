@@ -22,6 +22,8 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
+import com.example.camaraderie.notifications.NotificationController;
+import com.example.camaraderie.notifications.NotificationData;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,6 +47,8 @@ public class OrganizerViewEventFragment extends Fragment {
 
     private FragmentViewEventOrganizerBinding binding;
 
+    private NotificationController notificationController;
+
     /**
      * sets svm, nav, and db.
      * @param savedInstanceState If the fragment is being re-created from
@@ -58,6 +62,8 @@ public class OrganizerViewEventFragment extends Fragment {
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         nav = NavHostFragment.findNavController(this);
         db = FirebaseFirestore.getInstance();
+        notificationController = new NotificationController(getContext(), (com.example.notifications.NotificationView) getParentFragment());
+
     }
 
     /**
@@ -197,9 +203,11 @@ public class OrganizerViewEventFragment extends Fragment {
 
             int index = r.nextInt(event.getWaitlist().size());
             DocumentReference userRef = event.getWaitlist().get(index);
-
-            event.getWaitlist().remove(userRef);
-            event.getSelectedUsers().add(userRef);
+            String userId = userRef.getId();
+            //Update this function to only work if the user channel exists
+            notificationController.setChannelId(userId);
+            NotificationData notification = new NotificationData(r.nextInt(), "Selected for Event!", "You have been selected for " + event.getEventName());
+            notificationController.sendNotification(notification);
 
             // Update user document lists
             userRef.update("waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
