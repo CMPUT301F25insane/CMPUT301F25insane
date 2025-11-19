@@ -35,6 +35,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.security.Permissions;
 import java.util.ArrayList;
@@ -272,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
                     // TALK TO RAMIZ ABT THIS!!!!!!
                     // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
                     DocumentReference userDocRef = usersRef.document(id);
+                    FirebaseMessaging.getInstance().subscribeToTopic(id);
 
                     User newUser = new User(name1, email2, address2, phoneNum2, id, userDocRef);
                     userDocRef.set(newUser)
