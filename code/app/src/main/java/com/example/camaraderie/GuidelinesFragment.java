@@ -62,9 +62,9 @@ public class GuidelinesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.guidelinesBackButton.setOnClickListener(new View.OnClickListener() {
+        binding.returnButtonForGuidelines.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 nav.popBackStack();
             }
         });

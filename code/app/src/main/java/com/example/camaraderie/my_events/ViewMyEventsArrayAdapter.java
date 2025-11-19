@@ -34,7 +34,7 @@ import java.util.ArrayList;
  */
 public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
-    private OnEventClickListener listener;
+    public OnEventClickListener listener;
     private DocumentReference ref;
     private FirebaseFirestore db;
 
@@ -107,7 +107,7 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
         Button leaveButton = view.findViewById(R.id.leaveButton);
         Button descButton = view.findViewById(R.id.seeDescButtonForMyEvents);
 
-        leaveButton.setText("Delete");
+        //leaveButton.setText("Delete");
         //leaveButton.setBackgroundColor(Color.RED);
 
         leaveButton.setOnClickListener(new View.OnClickListener() {
