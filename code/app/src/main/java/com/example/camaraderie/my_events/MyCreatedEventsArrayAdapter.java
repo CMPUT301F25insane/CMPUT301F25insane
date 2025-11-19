@@ -1,5 +1,7 @@
 package com.example.camaraderie.my_events;
 
+import static android.view.View.INVISIBLE;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -84,6 +86,7 @@ public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
         Button remove = view.findViewById(R.id.RemoveButton);
 
         join.setEnabled(false);
+        join.setVisibility(INVISIBLE);
 
         event_name.setText(event.getEventName());
 

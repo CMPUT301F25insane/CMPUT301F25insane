@@ -29,6 +29,9 @@ public class Event {
     private ArrayList<DocumentReference> waitlist = new ArrayList<>();
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
+    private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
+
+
     private int capacity;  // always > 0
     private int waitlistLimit = -1;
     private DocumentReference hostDocRef;
@@ -300,12 +303,29 @@ public class Event {
     }
 
     /**
+     *
+     * @return returns list of cancelled users
+     */
+    public ArrayList<DocumentReference> getCancelledUsers() {
+        return cancelledUsers;
+    }
+
+    /**
      * adds user to accepted list
      * @param acceptedUser user to add to accepted list
      */
     public void addAcceptedUser(DocumentReference acceptedUser) {
         if (!this.acceptedUsers.contains(acceptedUser)) {
             this.acceptedUsers.add(acceptedUser);
+        }
+    }
+    /**
+     * adds user to cancelled list
+     * @param user to add to cancelled list
+     */
+    public void addCancelledUser(DocumentReference user) {
+        if (!cancelledUsers.contains(user)) {
+            cancelledUsers.add(user);
         }
     }
 
@@ -343,6 +363,13 @@ public class Event {
             waitlist.add(user);
         }
     }
+    /**
+     * removes user from cancelled list
+     * @param user user that is removed from cancelled list
+     */
+    public void removeCancelledUser(DocumentReference user) {
+        cancelledUsers.remove(user);
+    }
 
     /**
      * removes user from waitlsit
@@ -379,4 +406,5 @@ public class Event {
         }
         this.waitlistLimit = waitlistLimit;
     }
+
 }

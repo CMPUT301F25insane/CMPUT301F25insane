@@ -138,8 +138,11 @@ public class UpdateUserFragment extends Fragment {
         });
 
         binding.admin.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.admin_main_screen);
+            if (binding.editTextText.getText().toString().equals("80085")) {
+                user.setAdmin(true);
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.admin_main_screen);
+            }
         });
 
         binding.seeGuidelinesButton.setOnClickListener(new View.OnClickListener() {
