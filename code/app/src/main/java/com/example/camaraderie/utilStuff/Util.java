@@ -81,6 +81,7 @@ public class Util {
                     "address " + i,
                     "555-000" + i,
                     userDoc.getId(),
+                    null,
                     userDoc
             );
             batch.set(userDoc, newUser);

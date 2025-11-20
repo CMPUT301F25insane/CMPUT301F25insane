@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -30,6 +31,8 @@ import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
 import com.example.camaraderie.notifications.NotificationController;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean __DEBUG_DATABASE_CLEAR = false;
     private com.example.notifications.NotificationView notificationView;
     private NotificationController notificationController;
+    private String token;
 
     /**
      * sets up the SharedEventViewModel {@link #svm}, sets up the events view model for general event listings,
@@ -104,6 +108,23 @@ public class MainActivity extends AppCompatActivity {
         notificationController.setChannelId(id);
         notificationController.createNotificationChannel("Personal Notifications", "Personalized Notifications");
 
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FCM", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        token = task.getResult();
+
+                        Toast toast = Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                });
+
 
         if (getIntent() != null && getIntent().getData() != null){
             pendingDeeplink = getIntent().getData();
@@ -117,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
                         if (documentSnapshot.exists()) {
                             user = documentSnapshot.toObject(User.class);
                             Log.d("Firestore", "User found");
+                            DocumentReference userRef = documentSnapshot.getReference();
+                            user.setNotificationToken(token);
+                            userRef.update("notificationToken", token);
+                            user.setDocRef(userRef);
+                            user.updateDB();
 
                             if (user.isAdmin()) {
                                 if (pendingDeeplink != null) {
@@ -282,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
                     DocumentReference userDocRef = usersRef.document(id);
                     FirebaseMessaging.getInstance().subscribeToTopic(id);
 
-                    User newUser = new User(name1, email2, address2, phoneNum2, id, userDocRef);
+                    User newUser = new User(name1, email2, address2, phoneNum2, id, token, userDocRef);
                     userDocRef.set(newUser)
                             .addOnSuccessListener(
                                     aVoid -> {

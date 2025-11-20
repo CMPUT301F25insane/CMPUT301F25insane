@@ -23,6 +23,7 @@ public class User implements Serializable {
     private String email;
     private String address;
     private String userId;
+    private String notificationToken;
     private DocumentReference docRef;
 
     private boolean admin = false;
@@ -47,12 +48,13 @@ public class User implements Serializable {
      * @param docref
      *  Pointer to an equivalent user document in Firebase
      */
-    public User(String firstName, String phone, String email, String address, String userId, DocumentReference docref) {
+    public User(String firstName, String phone, String email, String address, String userId, String notificationToken, DocumentReference docref) {
         this.firstName = firstName;
         this.phoneNumber = phone;
         this.email = email;
         this.address = address;
         this.userId = userId;
+        this.notificationToken = notificationToken;
         this.docRef = docref;
     }
 
@@ -115,11 +117,14 @@ public class User implements Serializable {
      */
     public void setAddress(String address1) {this.address = address1;}
 
+    public void setNotificationToken(String token) {this.notificationToken = token;}
+
     /**
      * Get first name of the user
      * @return
      *  Return firstname of the user
      */
+
     public String getFirstName() {return this.firstName;}
     //public String getLastName() {return this.lastName;}
 
@@ -158,6 +163,7 @@ public class User implements Serializable {
      */
     public DocumentReference getDocRef() { return this.docRef;}
 
+    public String getNotificationToken() {return this.notificationToken;}
     /**
      * Set the docRef of the user
      * @param docRef1

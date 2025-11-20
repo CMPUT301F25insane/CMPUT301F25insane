@@ -205,9 +205,6 @@ public class OrganizerViewEventFragment extends Fragment {
             DocumentReference userRef = event.getWaitlist().get(index);
             String userId = userRef.getId();
             //Update this function to only work if the user channel exists
-            notificationController.setChannelId(userId);
-            NotificationData notification = new NotificationData(r.nextInt(), "Selected for Event!", "You have been selected for " + event.getEventName());
-            notificationController.sendNotification(notification);
 
             // Update user document lists
             userRef.update("waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
