@@ -26,7 +26,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
+import com.example.camaraderie.databinding.FragmentCreateEventBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -36,7 +36,7 @@ import com.google.firebase.firestore.SetOptions;
  */
 public class CreateEventFragment extends Fragment {
 
-    private FragmentCreateEventTestingBinding binding;
+    private FragmentCreateEventBinding binding;
     private DocumentReference eventDocRef;
     private Event event;
 
@@ -78,7 +78,7 @@ public class CreateEventFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        binding = FragmentCreateEventTestingBinding.inflate(getLayoutInflater());
+        binding = FragmentCreateEventBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -94,14 +94,14 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        eventName = binding.createEventName;
-        eventDate = binding.createEventDate;
-        eventDeadline = binding.createEventDeadline;
-        eventLocation = binding.createEventLocation;
-        eventDescription = binding.createEventDescription;
-        eventCapacity = binding.createEventCapacity;
-        eventTime = binding.createEventTime;
-        optionalLimit = binding.optionalLimit;
+        eventName = binding.inputFieldForCreateEventName;
+        eventDate = binding.inputFieldForCreateEventDate;
+        eventDeadline = binding.inputFieldForCreateEventRegistrationDeadline;
+        eventLocation = binding.inputFieldForCreateEventLocation;
+        eventDescription = binding.inputFieldForCreateEventDescription;
+        eventCapacity = binding.inputFieldForCreateEventNumOfAttendees;
+        eventTime = binding.inputFieldForCreateEventTime;
+        optionalLimit = binding.inputFieldForCreateEventWaitlistLimit;
 
         Bundle args = getArguments();
         if (args != null) {
@@ -118,7 +118,7 @@ public class CreateEventFragment extends Fragment {
 
         }
 
-        binding.createEventDate.setOnClickListener(new View.OnClickListener() {
+        binding.inputFieldForCreateEventDate.setOnClickListener(new View.OnClickListener() {
             /**
              * sets date dialogfragment
              * @param v The view that was clicked.
@@ -129,7 +129,7 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.createEventDeadline.setOnClickListener(new View.OnClickListener() {
+        binding.inputFieldForCreateEventRegistrationDeadline.setOnClickListener(new View.OnClickListener() {
             /**
              * sets deadline dialogfragment
              * @param v The view that was clicked.
@@ -140,7 +140,7 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.createEventPictureButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonForAddPicture.setOnClickListener(new View.OnClickListener() {
             /**
              * setup nav for adding pictures to event
              * @param v The view that was clicked.
@@ -151,7 +151,7 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.createEventBackButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonForGoingBack.setOnClickListener(new View.OnClickListener() {
             /**
              * On pressing the back button, navigate back to the main fragment
              * @param v
@@ -165,7 +165,7 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.createEventConfirmButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonForConfirm.setOnClickListener(new View.OnClickListener() {
             /**
              * On pressing the confirm button, create the event
              * @param v
@@ -307,7 +307,7 @@ public class CreateEventFragment extends Fragment {
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.createEventDate.setText(year + "-" + (month+1) + "-" + day);
+                binding.inputFieldForCreateEventDate.setText(year + "-" + (month+1) + "-" + day);
             }
 
         }, 2025, 10, 6);
@@ -324,7 +324,7 @@ public class CreateEventFragment extends Fragment {
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.createEventDeadline.setText(year + "-" + (month+1) + "-" + day);
+                binding.inputFieldForCreateEventRegistrationDeadline.setText(year + "-" + (month+1) + "-" + day);
             }
 
         }, 2025, 10, 6);
