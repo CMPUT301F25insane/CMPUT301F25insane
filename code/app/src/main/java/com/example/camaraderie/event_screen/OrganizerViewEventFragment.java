@@ -163,6 +163,24 @@ public class OrganizerViewEventFragment extends Fragment {
             }
 
         });
+
+        binding.viewPhotosOrgView.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * navigate to view photos fragment
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v){
+                // Send the organizer to a fragment that has a view of the current photo
+                // and a button to upload a photo
+                Bundle args = new Bundle();
+                args.putString("eventId", event.getEventId());
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_organizer_view_photos, args);
+            }
+
+
+        });
     }
 
     /**
