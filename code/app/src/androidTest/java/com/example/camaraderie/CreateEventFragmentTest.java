@@ -10,7 +10,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
+import android.app.DatePickerDialog;
+import android.util.Log;
 import android.widget.DatePicker;
+//import android.widget.DatePicker;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.espresso.action.ViewActions;
@@ -81,19 +84,19 @@ public class CreateEventFragmentTest {
         onView(withId(R.id.input_field_for_create_event_name)).perform(ViewActions.typeText("Free Tickets to Oilers Game"));
         onView(withId(R.id.input_field_for_create_event_name)).perform(closeSoftKeyboard());
 
+        onView(withId(R.id.input_field_for_create_event_registration_deadline)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(matches(isDisplayed()));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2025, 2, 15));
+        onView(withText("OK")).perform(click());
+
+        /*
         onView(withId(R.id.input_field_for_create_event_date)).perform(click());
-        onView(withId(R.id.input_field_for_create_event_registration_deadline)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(matches(isDisplayed()));
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2025, 2, 15));
-        onView(withId(R.id.input_field_for_create_event_date)).perform(closeSoftKeyboard());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2025, 5, 15));
+        onView(withText("OK")).perform(click());
+        */
 
-        onView(withId(R.id.input_field_for_create_event_registration_deadline)).perform(click());
-        onView(withId(R.id.input_field_for_create_event_registration_deadline)).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(matches(isDisplayed()));
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2025, 2, 15));
-        onView(withId(R.id.input_field_for_create_event_registration_deadline)).perform(closeSoftKeyboard());
-
-        onView(withId(R.id.input_field_for_create_event_description)).perform(click());
+        onView(withId(R.id.input_field_for_create_event_description)).check(matches(isDisplayed())).perform(click());
         onView(withId(R.id.input_field_for_create_event_description)).perform(ViewActions.typeText("20 Lucky individuals will get a front row seats to the oilers game aganist flames"));
         onView(withId(R.id.input_field_for_create_event_description)).perform(closeSoftKeyboard());
 
@@ -105,7 +108,11 @@ public class CreateEventFragmentTest {
         onView(withId(R.id.input_field_for_create_event_num_of_attendees)).perform(ViewActions.typeText("100"));
         onView(withId(R.id.input_field_for_create_event_num_of_attendees)).perform(closeSoftKeyboard());
 
-        onView(withId(R.id.createEventConfirmButton)).perform(click());
+        onView(withId(R.id.input_field_for_create_event_time)).perform(click());
+        onView(withId(R.id.input_field_for_create_event_time)).perform(ViewActions.typeText("12:30PM"));
+        onView(withId(R.id.input_field_for_create_event_time)).perform(closeSoftKeyboard());
+
+        onView(withId(R.id.button_for_confirm)).perform(click());
     }
 
     /**
