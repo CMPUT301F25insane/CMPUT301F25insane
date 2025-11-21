@@ -30,7 +30,7 @@ public class GuidelinesFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        nav = NavHostFragment.findNavController(this);
+        //nav = NavHostFragment.findNavController(this);
     }
 
     /**
@@ -61,10 +61,11 @@ public class GuidelinesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        nav = NavHostFragment.findNavController(this);
 
-        binding.guidelinesBackButton.setOnClickListener(new View.OnClickListener() {
+        binding.returnButtonForGuidelines.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 nav.popBackStack();
             }
         });
