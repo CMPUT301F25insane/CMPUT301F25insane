@@ -16,6 +16,11 @@ import java.util.ArrayList;
  */
 public class ViewListViewModel extends ViewModel {
 
+    private ArrayList<User> waitlist = new ArrayList<>();
+    private ArrayList<User> acceptedList = new ArrayList<>();
+    private ArrayList<User> selectedList = new ArrayList<>();
+    private ArrayList<User> cancelledList = new ArrayList<>();
+
 
     /**
      * Waitlist callback interface
@@ -87,6 +92,30 @@ public class ViewListViewModel extends ViewModel {
                 e.printStackTrace();
             });
         }
+    }
+
+    private void generateAllLists(Event event) {
+
+        loadUsersFromList(event.getWaitlist(), waitlistResult -> {
+
+            this.waitlist = waitlistResult;
+
+            loadUsersFromList(event.getSelectedUsers(), selectedResult -> {
+
+                this.selectedList = selectedResult;
+
+                loadUsersFromList(event.getAcceptedUsers(), acceptedResult -> {
+
+                    this.acceptedList = acceptedResult;
+
+                    loadUsersFromList(event.getCancelledUsers(), cancelledResult -> {
+
+                        this.cancelledList = cancelledResult;
+
+                    });
+                });
+            });
+        });
     }
 
 }

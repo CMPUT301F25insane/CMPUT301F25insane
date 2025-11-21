@@ -99,7 +99,7 @@ public class OrganizerViewEventFragmentTest {
     @Test
     public void viewAttendeesButtonIsDisplayed() {
         //
-        onView(withId(R.id.view_attendees_button))
+        onView(withId(R.id.view_lists_button))
                 .check(matches(isDisplayed()));
     }
 
@@ -108,7 +108,7 @@ public class OrganizerViewEventFragmentTest {
      */
     @Test
     public void viewAttendeesButtonIsClickable(){
-        onView(withId(R.id.view_attendees_button))
+        onView(withId(R.id.view_lists_button))
                 .perform(click());
     }
 

@@ -38,7 +38,7 @@ public class ViewSelectedListArrayAdapter extends ArrayAdapter<User> {
         if (convertView == null) {  // convert view is a reused view, to save resources
             // create new view using layout inflater if no recyclable view available
 
-            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_view_attendees_item, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_view_waitlist_or_selected_item, parent, false);
         }
         else {
             // just reuse the garbage view

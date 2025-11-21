@@ -2,6 +2,8 @@ package com.example.camaraderie;//
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,7 +50,7 @@ public class User implements Serializable {
      * @param docref
      *  Pointer to an equivalent user document in Firebase
      */
-    public User(String firstName, String phone, String email, String address, String userId, String notificationToken, DocumentReference docref) {
+    public User(@NonNull String firstName, @NonNull String phone, @NonNull String email, @NonNull String address, @NonNull String userId, String notificationToken, @NonNull DocumentReference docref) {
         this.firstName = firstName;
         this.phoneNumber = phone;
         this.email = email;

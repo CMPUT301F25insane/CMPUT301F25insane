@@ -14,7 +14,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.databinding.FragmentViewAttendeesBinding;
+import com.example.camaraderie.databinding.FragmentViewWaitlistOrSelectedBinding;
+import com.example.camaraderie.databinding.FragmentViewWaitlistOrSelectedBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,11 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * Screen to view the waitlist for an event. Also shows number of waitlisted users.
  */
 
-public class ViewWaitlistFragment extends Fragment {
+public class ViewWaitlistOrSelectedFragment extends Fragment {
 
-    private FragmentViewAttendeesBinding binding;
+    private FragmentViewWaitlistOrSelectedBinding binding;
     private DocumentReference eventDocRef;
-    private ViewWaitlistArrayAdapter viewWaitlistArrayAdapter;
+    private ViewWaitlistOrSelectedArrayAdapter viewWaitlistOrSelectedArrayAdapter;
     private ViewListViewModel listViewModel;
     private SharedEventViewModel svm;
     private Event event;
@@ -45,7 +46,7 @@ public class ViewWaitlistFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         db = FirebaseFirestore.getInstance();
-        nav = NavHostFragment.findNavController(ViewWaitlistFragment.this);
+        nav = NavHostFragment.findNavController(ViewWaitlistOrSelectedFragment.this);
         listViewModel = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         //cu = new ViewModelProvider(requireActivity()).get(ViewCancelledUsersModel.class);
@@ -67,7 +68,7 @@ public class ViewWaitlistFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentViewAttendeesBinding.inflate(getLayoutInflater());
+        binding = FragmentViewWaitlistOrSelectedBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -86,9 +87,9 @@ public class ViewWaitlistFragment extends Fragment {
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             event = evt;
             listViewModel.loadUsersFromList(event.getWaitlist(), users -> {
-                viewWaitlistArrayAdapter = new ViewWaitlistArrayAdapter(requireContext(), 0, users, event, listViewModel);
-                viewWaitlistArrayAdapter.setNotifyOnChange(true);  // auto calls notifyDataSetChanged when it changes, but im not gonna remove the old calls unless i have to
-                binding.usersInWaitlist.setAdapter(viewWaitlistArrayAdapter);
+                viewWaitlistOrSelectedArrayAdapter = new ViewWaitlistOrSelectedArrayAdapter(requireContext(), 0, users, event, listViewModel);
+                viewWaitlistOrSelectedArrayAdapter.setNotifyOnChange(true);  // auto calls notifyDataSetChanged when it changes, but im not gonna remove the old calls unless i have to
+                binding.usersInWaitlist.setAdapter(viewWaitlistOrSelectedArrayAdapter);
             });
             fillTextViews(event);
         });
@@ -100,9 +101,9 @@ public class ViewWaitlistFragment extends Fragment {
             if (isChecked) {
                 // Load cancelled attendees
                 listViewModel.loadUsersFromList(event.getCancelledUsers(), cancelledUsers -> {
-                    viewWaitlistArrayAdapter.clear();
-                    viewWaitlistArrayAdapter.addAll(cancelledUsers);
-                    viewWaitlistArrayAdapter.notifyDataSetChanged();
+                    viewWaitlistOrSelectedArrayAdapter.clear();
+                    viewWaitlistOrSelectedArrayAdapter.addAll(cancelledUsers);
+                    viewWaitlistOrSelectedArrayAdapter.notifyDataSetChanged();
 
                     binding.attendeesNum.setText(String.valueOf(cancelledUsers.size()));
                 });
@@ -110,9 +111,9 @@ public class ViewWaitlistFragment extends Fragment {
             } else {
                 // Load normal waitlist
                 listViewModel.loadUsersFromList(event.getWaitlist(), waitlist -> {
-                    viewWaitlistArrayAdapter.clear();
-                    viewWaitlistArrayAdapter.addAll(waitlist);
-                    viewWaitlistArrayAdapter.notifyDataSetChanged();
+                    viewWaitlistOrSelectedArrayAdapter.clear();
+                    viewWaitlistOrSelectedArrayAdapter.addAll(waitlist);
+                    viewWaitlistOrSelectedArrayAdapter.notifyDataSetChanged();
 
                     binding.attendeesNum.setText(String.valueOf(waitlist.size()));
                 });

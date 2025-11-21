@@ -25,7 +25,7 @@ import java.util.ArrayList;
 /**
  * Array adapter for user objects for fragments involving waitlists
  */
-public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
+public class ViewWaitlistOrSelectedArrayAdapter extends ArrayAdapter<User> {
 
     private Event event;
     private DocumentReference hostRef;
@@ -39,7 +39,7 @@ public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
      * @param event event to get details from
      * @param vm viewmodel for waitlist
      */
-    public ViewWaitlistArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<User> users, @NonNull Event event, @NonNull ViewListViewModel vm) {
+    public ViewWaitlistOrSelectedArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<User> users, @NonNull Event event, @NonNull ViewListViewModel vm) {
         super(context, resource, users);
 
         this.event = event;
@@ -68,7 +68,7 @@ public class ViewWaitlistArrayAdapter extends ArrayAdapter<User> {
         if (convertView == null) {  // convert view is a reused view, to save resources
             // create new view using layout inflater if no recyclable view available
 
-            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_view_attendees_item, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_view_waitlist_or_selected_item, parent, false);
         }
         else {
             // just reuse the garbage view

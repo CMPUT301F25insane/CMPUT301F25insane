@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,14 +39,16 @@ public class ViewAcceptedListArrayAdapter extends ArrayAdapter<User> {
         if (convertView == null) {  // convert view is a reused view, to save resources
             // create new view using layout inflater if no recyclable view available
 
-            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_view_attendees_item, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_view_waitlist_or_selected_item, parent, false);
         }
         else {
             // just reuse the garbage view
             view = convertView;
         }
 
-
+        User user = getItem(position);
+        TextView nameView = view.findViewById(R.id.acceptedName);
+        nameView.setText(user.getFirstName());
 
         return view;
     }

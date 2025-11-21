@@ -13,7 +13,7 @@
         android:layout_width="401dp"
         android:layout_height="421dp"
         android:layout_marginBottom="32dp"
-        android:background="@color/white"
+        android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"

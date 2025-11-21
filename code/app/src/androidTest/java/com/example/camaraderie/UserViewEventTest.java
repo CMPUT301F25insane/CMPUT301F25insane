@@ -86,14 +86,14 @@ public class UserViewEventTest {
     @Test
     public void viewAttendeesButtonIsDisplayed() {
         // Check if the "unjoin" button is visible on screen
-        onView(withId(R.id.view_attendees_button))
+        onView(withId(R.id.view_lists_button))
                 .check(matches(isDisplayed()));
     }
 
     @Test
     public void viewAttendeesButtonIsClickable(){
         // Check if the "QR" button is clickable
-        onView(withId(R.id.view_attendees_button))
+        onView(withId(R.id.view_lists_button))
                 .perform(click());
     }
 

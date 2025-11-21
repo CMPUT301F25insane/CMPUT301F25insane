@@ -51,11 +51,4 @@
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/viewCancelledToggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="view cancelled attendees"
-        tools:layout_editor_absoluteX="169dp"
-        tools:layout_editor_absoluteY="108dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
