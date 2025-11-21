@@ -2,9 +2,12 @@ package com.example.camaraderie;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
@@ -19,6 +22,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import static org.hamcrest.Matchers.not;
 
+import android.view.View;
+
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +74,7 @@ public class AdminUsersViewFragmentTest {
     public void testAdminModeAndListDisplayed() {
         onView(withId(R.id.admin_mode)).check(matches(isDisplayed()));
         onView(withId(R.id.list)).check(matches(isDisplayed()));
-    }
 
+    }
 
 }
