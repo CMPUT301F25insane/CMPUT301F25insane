@@ -92,6 +92,23 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+
+        <argument
+            android:name="eventDocRefPath"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_organizer_view_photos"
+            app:destination="@id/fragment_organizer_view_photos" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_organizer_view_photos"
+        android:name="com.example.camaraderie.image_stuff.OrganizerViewPhotosFragment"
+        android:label="Organizer View Photos"
+        tools:layout="@layout/fragment_organizer_view_photos">
+
     </fragment>
 
     <fragment
