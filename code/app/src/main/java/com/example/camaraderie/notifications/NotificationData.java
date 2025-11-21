@@ -15,7 +15,7 @@ public class NotificationData {
     public NotificationData() {}
 
     /**
-     * Consructor for Notification
+     * Constructor for Notification
      * @param id unique id for notificatio
      * @param title notification title or tag
      * @param message notification message
