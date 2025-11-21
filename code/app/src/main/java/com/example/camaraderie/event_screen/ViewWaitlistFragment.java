@@ -13,8 +13,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentViewAttendeesBinding;
+import com.example.camaraderie.databinding.FragmentViewWaitlistOfAttendeesBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,7 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ViewWaitlistFragment extends Fragment {
 
-    private FragmentViewAttendeesBinding binding;
+    private FragmentViewWaitlistOfAttendeesBinding binding;
     private DocumentReference eventDocRef;
     private ViewWaitlistArrayAdapter viewWaitlistArrayAdapter;
     private ViewWaitlistViewModel vm;
@@ -66,7 +68,7 @@ public class ViewWaitlistFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentViewAttendeesBinding.inflate(getLayoutInflater());
+        binding = FragmentViewWaitlistOfAttendeesBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -90,7 +92,7 @@ public class ViewWaitlistFragment extends Fragment {
             });
             fillTextViews(event);
         });
-        binding.backButton.setOnClickListener(v -> nav.popBackStack());
+        //binding.backButton.setOnClickListener(v -> nav.popBackStack());
         // for cancelled users
         binding.viewCancelledToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (event == null) return;
@@ -102,7 +104,7 @@ public class ViewWaitlistFragment extends Fragment {
                     viewWaitlistArrayAdapter.addAll(cancelledUsers);
                     viewWaitlistArrayAdapter.notifyDataSetChanged();
 
-                    binding.attendeesNum.setText(String.valueOf(cancelledUsers.size()));
+                    binding.NumOfAttendees.setText(String.valueOf(cancelledUsers.size()));
                 });
 
             } else {
@@ -112,8 +114,15 @@ public class ViewWaitlistFragment extends Fragment {
                     viewWaitlistArrayAdapter.addAll(waitlist);
                     viewWaitlistArrayAdapter.notifyDataSetChanged();
 
-                    binding.attendeesNum.setText(String.valueOf(waitlist.size()));
+                    binding.NumOfAttendees.setText(String.valueOf(waitlist.size()));
                 });
+            }
+        });
+
+        binding.returnButtonForOrganizerViewOfWaitlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nav.popBackStack();
             }
         });
 
@@ -124,7 +133,7 @@ public class ViewWaitlistFragment extends Fragment {
      * @param event event for which to get waitlist
      */
     private void fillTextViews(Event event) {
-        binding.attendeesNum.setText(String.valueOf(event.getWaitlist().size()));
+        binding.NumOfAttendees.setText(String.valueOf(event.getWaitlist().size()));
     }
 
     /**
