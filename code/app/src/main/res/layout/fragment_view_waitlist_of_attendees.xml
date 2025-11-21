@@ -9,8 +9,8 @@
 
     <ListView
         android:id="@+id/usersInWaitlist"
-        android:layout_width="407dp"
-        android:layout_height="467dp"
+        android:layout_width="398dp"
+        android:layout_height="496dp"
         android:layout_marginTop="132dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toTopOf="@+id/return_button_for_organizer_view_of_waitlist"

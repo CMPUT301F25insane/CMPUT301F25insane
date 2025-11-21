@@ -13,9 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.databinding.FragmentViewAttendeesBinding;
 import com.example.camaraderie.databinding.FragmentViewWaitlistOfAttendeesBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
