@@ -9,7 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.camaraderie.databinding.FragmentViewAcceptedOrCancelledBinding;
+
 public class ViewAcceptedOrCancelledFragment extends Fragment {
+
+    private FragmentViewAcceptedOrCancelledBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -19,7 +23,8 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        binding = FragmentViewAcceptedOrCancelledBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -35,5 +40,6 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        binding = null;
     }
 }

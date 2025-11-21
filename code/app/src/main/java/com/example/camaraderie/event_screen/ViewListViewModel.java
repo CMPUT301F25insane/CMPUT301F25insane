@@ -22,6 +22,10 @@ public class ViewListViewModel extends ViewModel {
     private ArrayList<User> cancelledList = new ArrayList<>();
 
 
+    private ArrayList<User> focusedListForWS = waitlist;
+    private ArrayList<User> focusedListForAC = acceptedList;
+
+
     /**
      * Waitlist callback interface
      */
@@ -94,7 +98,12 @@ public class ViewListViewModel extends ViewModel {
         }
     }
 
-    private void generateAllLists(Event event) {
+    public ArrayList<User> getWaitlist() {return this.waitlist;}
+    public ArrayList<User> getSelectedList() {return this.selectedList;}
+    public ArrayList<User> getAcceptedList() {return this.acceptedList;}
+    public ArrayList<User> getCancelledList() {return this.cancelledList;}
+
+    public void generateAllLists(Event event, Runnable onComplete) {
 
         loadUsersFromList(event.getWaitlist(), waitlistResult -> {
 
@@ -112,10 +121,19 @@ public class ViewListViewModel extends ViewModel {
 
                         this.cancelledList = cancelledResult;
 
+                        onComplete.run();
+
                     });
                 });
             });
         });
     }
 
+    public ArrayList<User> getFocusedListForAC() {
+        return focusedListForAC;
+    }
+
+    public ArrayList<User> getFocusedListForWS() {
+        return focusedListForWS;
+    }
 }

@@ -102,7 +102,7 @@ public class OrganizerViewEventFragment extends Fragment {
         });
 
         binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
-        binding.viewAttendeesButton.setOnClickListener(v -> nav.navigate(R.id.fragment_view_waitlist));
+        binding.viewListsButton.setOnClickListener(v -> nav.navigate(R.id.fragment_list_testing_interface));
         binding.OrgEventRunLotteryButton.setOnClickListener(v -> runLottery());
 
         binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event_testing));

@@ -68,9 +68,9 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentViewWaitlistOrSelectedBinding.inflate(getLayoutInflater());
+        binding = FragmentViewWaitlistOrSelectedBinding.inflate(inflater, container, false);
         return binding.getRoot();
-    }
+    }//TODO: view model needs proper parent for children and children must be proven
 
     /**
      * setup bindings for buttons, use svm to set event list items
@@ -94,7 +94,7 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
             fillTextViews(event);
         });
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
-        // for cancelled users
+        /*// for cancelled users
         binding.viewCancelledToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (event == null) return;
 
@@ -118,7 +118,7 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
                     binding.attendeesNum.setText(String.valueOf(waitlist.size()));
                 });
             }
-        });
+        });*/
 
     }
 

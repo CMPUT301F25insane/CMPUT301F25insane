@@ -1,5 +1,8 @@
 package com.example.camaraderie.event_screen.user_view;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
+import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,6 +42,7 @@ public class UserViewEventFragment extends Fragment {
     private Event event;
 //    private EventViewModel eventViewModel;
     private SharedEventViewModel svm;
+    private ViewListViewModel vm;
 
 
     /**
@@ -53,6 +58,7 @@ public class UserViewEventFragment extends Fragment {
 //        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+        vm = new ViewModelProvider(this).get(ViewListViewModel.class);
         db = FirebaseFirestore.getInstance();
         nav = NavHostFragment.findNavController(this);
 
@@ -90,26 +96,37 @@ public class UserViewEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // get event details, everything that depends on event as an object exists here
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             event = evt;
             updateUI(evt);
+
+            binding.viewListsButton.setOnClickListener(v -> {
+
+                vm.generateAllLists(event, () -> {
+                    nav.navigate(R.id.fragment_list_testing_interface);
+                });
+            });
         });
 
+        // button handlers
         binding.joinButtonUserView.setOnClickListener(v -> handleJoin());
         binding.unjoinButtonUserView.setOnClickListener(v -> handleUnjoin());
         binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
         binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
         binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event_testing));
-        binding.viewAttendeesButton.setOnClickListener(v -> nav.navigate(R.id.fragment_view_waitlist));
 
+
+        // set up admin delete button
+        binding.adminDeleteEvent.setEnabled(false);
+        binding.adminDeleteEvent.setVisibility(INVISIBLE);
         if (user.isAdmin()) {
             binding.adminDeleteEvent.setEnabled(true);
+            binding.adminDeleteEvent.setVisibility(VISIBLE);
+            binding.adminDeleteEvent.setOnClickListener(v -> adminDeleteEvent());
         }
-        else {
-            binding.adminDeleteEvent.setEnabled(false);
-        }
-        binding.adminDeleteEvent.setOnClickListener(v -> adminDeleteEvent());
 
+        // qr code button
         binding.qrButtonUserView.setOnClickListener(new View.OnClickListener() {
 
             /**
