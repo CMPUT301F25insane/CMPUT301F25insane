@@ -1,4 +1,4 @@
-package com.example.camaraderie.event_screen.user_lists.waitlist;
+package com.example.camaraderie.event_screen.user_lists.waitlist_or_selected;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,11 +14,14 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.User;
 import com.example.camaraderie.databinding.FragmentViewWaitlistOrSelectedBinding;
-import com.example.camaraderie.databinding.FragmentViewWaitlistOrSelectedBinding;
+import com.example.camaraderie.event_screen.UserListType;
 import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 /**
  * Screen to view the waitlist for an event. Also shows number of waitlisted users.
@@ -27,14 +30,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class ViewWaitlistOrSelectedFragment extends Fragment {
 
     private FragmentViewWaitlistOrSelectedBinding binding;
-    private DocumentReference eventDocRef;
-    private ViewWaitlistOrSelectedArrayAdapter viewWaitlistOrSelectedArrayAdapter;
-    private ViewListViewModel listViewModel;
-    private SharedEventViewModel svm;
-    private Event event;
-    private FirebaseFirestore db;
+    private ViewWaitlistOrSelectedArrayAdapter adapter;
+    private ViewListViewModel vm;
+    private ArrayList<User> displayedList;
+    private String capacityText;
+    private String headerText;
     private NavController nav;
-    //private ViewCancelledUsersModel cu;
 
     /**
      * setup database, nav, event view model, and shareeventsviewmodel
@@ -45,12 +46,44 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
         nav = NavHostFragment.findNavController(ViewWaitlistOrSelectedFragment.this);
-        listViewModel = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
-        svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-        //cu = new ViewModelProvider(requireActivity()).get(ViewCancelledUsersModel.class);
+        vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
 
+        Bundle args = getArguments();
+        if (args != null) {
+            UserListType type = UserListType.valueOf(args.getString("type"));
+
+            if (type.equals(UserListType.WAITLIST)) {
+                displayedList = vm.getAcceptedList();
+                headerText = "Waitlisted Entrants:";
+
+
+            } else if (type.equals(UserListType.SELECTEDLIST)) {
+                displayedList = vm.getCancelledList();
+                headerText = "Selected Entrants:";
+
+            }
+            else {
+                throw new RuntimeException("Invalid arguments for ViewAcceptedOrCancelledFragment");
+            }
+
+        }
+        else {
+            throw new RuntimeException("ViewAcceptedOrCancelledFragment must have arguments");
+        }
+
+        capacityText = displayedList.size() + " / " + vm.getEventCapacity();
+
+    }
+
+    public static ViewWaitlistOrSelectedFragment newInstance(UserListType type) {
+
+        ViewWaitlistOrSelectedFragment fragment = new ViewWaitlistOrSelectedFragment();
+        Bundle args = new Bundle();
+        args.putString("type", type.name());
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     /**
@@ -63,14 +96,14 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      *
-     * @return bidning root
+     * @return binding root
      */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentViewWaitlistOrSelectedBinding.inflate(inflater, container, false);
         return binding.getRoot();
-    }//TODO: view model needs proper parent for children and children must be proven
+    }
 
     /**
      * setup bindings for buttons, use svm to set event list items
@@ -84,41 +117,12 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
-            event = evt;
-            listViewModel.loadUsersFromList(event.getWaitlist(), users -> {
-                viewWaitlistOrSelectedArrayAdapter = new ViewWaitlistOrSelectedArrayAdapter(requireContext(), 0, users, event, listViewModel);
-                viewWaitlistOrSelectedArrayAdapter.setNotifyOnChange(true);  // auto calls notifyDataSetChanged when it changes, but im not gonna remove the old calls unless i have to
-                binding.usersInWaitlist.setAdapter(viewWaitlistOrSelectedArrayAdapter);
-            });
-            fillTextViews(event);
-        });
+        adapter = new ViewWaitlistOrSelectedArrayAdapter(requireContext(), 0, displayedList, vm);
+
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
-        /*// for cancelled users
-        binding.viewCancelledToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (event == null) return;
-
-            if (isChecked) {
-                // Load cancelled attendees
-                listViewModel.loadUsersFromList(event.getCancelledUsers(), cancelledUsers -> {
-                    viewWaitlistOrSelectedArrayAdapter.clear();
-                    viewWaitlistOrSelectedArrayAdapter.addAll(cancelledUsers);
-                    viewWaitlistOrSelectedArrayAdapter.notifyDataSetChanged();
-
-                    binding.attendeesNum.setText(String.valueOf(cancelledUsers.size()));
-                });
-
-            } else {
-                // Load normal waitlist
-                listViewModel.loadUsersFromList(event.getWaitlist(), waitlist -> {
-                    viewWaitlistOrSelectedArrayAdapter.clear();
-                    viewWaitlistOrSelectedArrayAdapter.addAll(waitlist);
-                    viewWaitlistOrSelectedArrayAdapter.notifyDataSetChanged();
-
-                    binding.attendeesNum.setText(String.valueOf(waitlist.size()));
-                });
-            }
-        });*/
+        binding.attendeesNum.setText(capacityText);
+        binding.waitlistOrSelectedTextView.setText(headerText);
+        binding.usersInWaitlist.setAdapter(adapter);
 
     }
 

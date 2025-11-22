@@ -58,7 +58,7 @@ public class UserViewEventFragment extends Fragment {
 //        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-        vm = new ViewModelProvider(this).get(ViewListViewModel.class);
+        vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);  // this will live in the activity
         db = FirebaseFirestore.getInstance();
         nav = NavHostFragment.findNavController(this);
 
@@ -101,10 +101,11 @@ public class UserViewEventFragment extends Fragment {
             event = evt;
             updateUI(evt);
 
+            // TODO: only enable this for ADMINS. for users, in its stead, have the event waitlist / capacity.
             binding.viewListsButton.setOnClickListener(v -> {
-
-                vm.generateAllLists(event, () -> {
-                    nav.navigate(R.id.fragment_list_testing_interface);
+                vm.setEvent(event);
+                vm.generateAllLists(() -> {
+                    nav.navigate(R.id.fragment_list_testing_interface); //TODO: user should NOT SEE these lists in general, only capacity.
                 });
             });
         });

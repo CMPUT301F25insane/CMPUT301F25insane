@@ -1,4 +1,4 @@
-package com.example.camaraderie.event_screen.user_lists.accepted_list;
+package com.example.camaraderie.event_screen.user_lists.accepted_or_cancelled_list;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
-import com.example.camaraderie.event_screen.ViewListViewModel;
 
 import java.util.ArrayList;
 
@@ -21,15 +20,12 @@ import java.util.ArrayList;
  *
  * uses its own item xml
  */
-public class ViewAcceptedListArrayAdapter extends ArrayAdapter<User> {
-
-    private ViewListViewModel vm;
+public class ViewAcceptedOrCancelledListArrayAdapter extends ArrayAdapter<User> {
 
 
-    public ViewAcceptedListArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<User> users, @NonNull ViewListViewModel vm) {
+    public ViewAcceptedOrCancelledListArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<User> users) {
         super(context, resource, users);
 
-        this.vm = vm;
     }
 
     @NonNull

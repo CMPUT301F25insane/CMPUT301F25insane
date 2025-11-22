@@ -13,21 +13,28 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentViewListsTestingInterfaceBinding;
+import com.example.camaraderie.event_screen.UserListType;
 import com.example.camaraderie.event_screen.ViewListViewModel;
+import com.example.camaraderie.event_screen.user_lists.accepted_or_cancelled_list.ViewAcceptedOrCancelledFragment;
+import com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedFragment;
 import com.example.camaraderie.event_screen.user_view.UserViewEventFragment;
 
+/**
+ * temporary testing interface. most functionalities will be moved to a roulette style thign in the future
+ */
 public class ListTestingInterfaceFragment extends Fragment {
 
     private FragmentViewListsTestingInterfaceBinding binding;
-    private ViewListViewModel listViewModel;
+//    private ViewListViewModel listViewModel;
     private NavController nav;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         nav = NavHostFragment.findNavController(this);
-        listViewModel = new ViewModelProvider().get(ViewListViewModel.class);
+//        listViewModel = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
     }
 
     @Nullable
@@ -43,6 +50,39 @@ public class ListTestingInterfaceFragment extends Fragment {
 
 
         binding.listTestingBackButton.setOnClickListener(v -> {nav.popBackStack();});
+
+
+        binding.viewAcceptedButton.setOnClickListener(v -> {
+            nav.navigate(
+                    R.id.view_accepted_or_cancelled,
+                    ViewAcceptedOrCancelledFragment.newInstance(UserListType.ACCEPTEDLIST).getArguments()
+            );
+
+        });
+
+        binding.viewCancelledButton.setOnClickListener(v -> {
+            nav.navigate(
+                    R.id.view_accepted_or_cancelled,
+                    ViewAcceptedOrCancelledFragment.newInstance(UserListType.CANCELLEDLIST).getArguments()
+            );
+
+        });
+
+        binding.ViewSelectedButton.setOnClickListener(v -> {
+            nav.navigate(
+                    R.id.fragment_view_waitlist_or_selected,
+                    ViewWaitlistOrSelectedFragment.newInstance(UserListType.SELECTEDLIST).getArguments()
+            );
+
+        });
+
+        binding.ViewWaitlistButton.setOnClickListener(v -> {
+            nav.navigate(
+                    R.id.fragment_view_waitlist_or_selected,
+                    ViewWaitlistOrSelectedFragment.newInstance(UserListType.WAITLIST).getArguments()
+            );
+
+        });
     }
 
     @Override

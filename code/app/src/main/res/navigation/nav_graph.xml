@@ -170,13 +170,13 @@
             app:destination="@id/fragment_view_my_events" />
         <action
             android:id="@+id/action_fragment_view_event_user_to_fragment_view_waitlist"
-            app:destination="@id/fragment_view_waitlist" />
+            app:destination="@id/fragment_view_waitlist_or_selected" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_view_waitlist"
-        android:name="com.example.camaraderie.event_screen.user_lists.waitlist.ViewWaitlistOrSelectedFragment"
+        android:id="@+id/fragment_view_waitlist_or_selected"
+        android:name="com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedFragment"
         android:label="View Waitlist Fragment"
         tools:layout="@layout/fragment_view_waitlist_or_selected">
 

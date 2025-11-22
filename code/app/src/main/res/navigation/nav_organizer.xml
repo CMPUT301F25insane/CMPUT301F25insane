@@ -15,8 +15,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_view_waitlist"
-        android:name="com.example.camaraderie.event_screen.user_lists.waitlist.ViewWaitlistOrSelectedFragment"
+        android:id="@+id/fragment_view_waitlist_or_selected"
+        android:name="com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedFragment"
         tools:layout="@layout/fragment_view_waitlist_or_selected" >
         <action
             android:id="@+id/action_fragment_view_waitlist_to_fragment_list_testing_interface"
@@ -30,7 +30,7 @@
         tools:layout="@layout/fragment_view_event_organizer">
         <action
             android:id="@+id/action_org_to_waitlist"
-            app:destination="@id/fragment_view_waitlist" />
+            app:destination="@id/fragment_view_waitlist_or_selected" />
         <action
             android:id="@+id/action_org_to_edit"
             app:destination="@id/fragment_create_event_testing" />
@@ -62,14 +62,14 @@
             app:destination="@id/_fragment_organizer_view_event" />
         <action
             android:id="@+id/action_fragment_list_testing_interface_to_fragment_view_waitlist"
-            app:destination="@id/fragment_view_waitlist" />
+            app:destination="@id/fragment_view_waitlist_or_selected" />
         <action
             android:id="@+id/action_fragment_list_testing_interface_to_view_accepted_or_cancelled"
             app:destination="@id/view_accepted_or_cancelled" />
     </fragment>
 
     <fragment
-        android:name="com.example.camaraderie.event_screen.user_lists.accepted_list.ViewAcceptedOrCancelledFragment"
+        android:name="com.example.camaraderie.event_screen.user_lists.accepted_or_cancelled_list.ViewAcceptedOrCancelledFragment"
         android:id="@+id/view_accepted_or_cancelled"
         android:label="View accepted or cancelled fragment"
         tools:layout="@layout/fragment_view_accepted_or_cancelled">

@@ -20,11 +20,7 @@ public class ViewListViewModel extends ViewModel {
     private ArrayList<User> acceptedList = new ArrayList<>();
     private ArrayList<User> selectedList = new ArrayList<>();
     private ArrayList<User> cancelledList = new ArrayList<>();
-
-
-    private ArrayList<User> focusedListForWS = waitlist;
-    private ArrayList<User> focusedListForAC = acceptedList;
-
+    private Event event;
 
     /**
      * Waitlist callback interface
@@ -33,10 +29,44 @@ public class ViewListViewModel extends ViewModel {
         void onUsersLoaded(ArrayList<User> users);
     }
 
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public int getEventCapacity() {
+        return event.getCapacity();
+    }
+
     /**
      * empty constructor for ViewWaitlistViewModel
+     * probably not needed but its not grey so idk lol
      */
     public ViewListViewModel() {
+
+    }
+
+    public ArrayList<User> getList(UserListType type) {
+
+        switch (type) {
+            case WAITLIST:
+                return waitlist;
+
+            case ACCEPTEDLIST:
+                return acceptedList;
+
+            case SELECTEDLIST:
+                return selectedList;
+
+            case CANCELLEDLIST:
+                return cancelledList;
+
+            default:
+                return new ArrayList<User>();
+        }
 
     }
 
@@ -44,10 +74,9 @@ public class ViewListViewModel extends ViewModel {
      * functionality for kicking user. updates database for user and event.
      *
      * @param u          user to kick
-     * @param event      event from which they are kicked
      * @param onComplete runnable listener implement by lambda for on-complete
      */
-    public void kickUser(User u, Event event, Runnable onComplete) {
+    public void kickUser(User u, Runnable onComplete) {
         DocumentReference userRef = u.getDocRef();
         DocumentReference eventRef = event.getEventDocRef();
 
@@ -103,7 +132,7 @@ public class ViewListViewModel extends ViewModel {
     public ArrayList<User> getAcceptedList() {return this.acceptedList;}
     public ArrayList<User> getCancelledList() {return this.cancelledList;}
 
-    public void generateAllLists(Event event, Runnable onComplete) {
+    public void generateAllLists(Runnable onComplete) {
 
         loadUsersFromList(event.getWaitlist(), waitlistResult -> {
 
@@ -127,13 +156,5 @@ public class ViewListViewModel extends ViewModel {
                 });
             });
         });
-    }
-
-    public ArrayList<User> getFocusedListForAC() {
-        return focusedListForAC;
-    }
-
-    public ArrayList<User> getFocusedListForWS() {
-        return focusedListForWS;
     }
 }

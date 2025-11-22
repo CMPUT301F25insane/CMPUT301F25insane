@@ -1,4 +1,7 @@
-package com.example.camaraderie.event_screen.user_lists.waitlist;
+package com.example.camaraderie.event_screen.user_lists.waitlist_or_selected;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 import android.content.Context;
 import android.util.Log;
@@ -27,7 +30,6 @@ import java.util.ArrayList;
  */
 public class ViewWaitlistOrSelectedArrayAdapter extends ArrayAdapter<User> {
 
-    private Event event;
     private DocumentReference hostRef;
     private ViewListViewModel vm;
 
@@ -36,16 +38,13 @@ public class ViewWaitlistOrSelectedArrayAdapter extends ArrayAdapter<User> {
      * @param context context
      * @param resource resource, usually set to 0
      * @param users users list
-     * @param event event to get details from
      * @param vm viewmodel for waitlist
      */
-    public ViewWaitlistOrSelectedArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<User> users, @NonNull Event event, @NonNull ViewListViewModel vm) {
+    public ViewWaitlistOrSelectedArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<User> users, @NonNull ViewListViewModel vm) {
         super(context, resource, users);
 
-        this.event = event;
-        this.hostRef = event.getHostDocRef();
-
         this.vm = vm;
+        this.hostRef = vm.getEvent().getHostDocRef();
     }
 
     /**
@@ -90,7 +89,7 @@ public class ViewWaitlistOrSelectedArrayAdapter extends ArrayAdapter<User> {
             @Override
             public void onClick(View v) {
                 Log.d("Waitlist kick button", "User attempted to be kicked...");
-                vm.kickUser(entrant, event, () -> {
+                vm.kickUser(entrant, () -> {
                     remove(entrant);
                     notifyDataSetChanged();
                 });
@@ -102,17 +101,20 @@ public class ViewWaitlistOrSelectedArrayAdapter extends ArrayAdapter<User> {
         if (user.getDocRef().equals(hostRef)) {
             // HOST FEATURES
             kickButton.setEnabled(true);
+            kickButton.setVisibility(VISIBLE);
         }
 
         if (user.isAdmin()) {
             // admin features
 
             kickButton.setEnabled(true);
+            kickButton.setVisibility(VISIBLE);
         }
 
         else {
             // normal shit
             kickButton.setEnabled(false);
+            kickButton.setVisibility(INVISIBLE);
 
         }
         return view;
