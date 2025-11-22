@@ -1,6 +1,7 @@
 package com.example.camaraderie;//
 
 
+import static android.app.ProgressDialog.show;
 import static com.example.camaraderie.utilStuff.Util.*;
 
 import android.Manifest;
@@ -13,6 +14,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
@@ -30,6 +32,7 @@ import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
 import com.example.camaraderie.notifications.NotificationController;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -248,60 +251,74 @@ public class MainActivity extends AppCompatActivity {
      */
     public void newUserBuilder(String id, NavController navController) {
         Log.e("Firestore", "User does not exist! Creating new user...");
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new MaterialAlertDialogBuilder(this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.fragment_user_info_dialog, null);
-        EditText name = dialogView.findViewById(R.id.edit_full_name_text);
-        EditText Email = dialogView.findViewById(R.id.edit_email_text);
-        EditText address = dialogView.findViewById(R.id.edit_text_address_text);
-        EditText phoneNum = dialogView.findViewById(R.id.edit_phone_number_text);
+        EditText name = dialogView.findViewById(R.id.Name_field_for_dialog);
+        EditText Email = dialogView.findViewById(R.id.email_field_for_dialog);
+        EditText address = dialogView.findViewById(R.id.Address_field_for_dialog);
+        EditText phoneNum = dialogView.findViewById(R.id.PhoneNo_field_for_dialog);
 
         //TODO: deal with empty fields
 
-        builder.setMessage("Please enter Your information to create a profile")
+        builder
                 .setView(dialogView)
-                .setPositiveButton("Done", (dialog, id1) -> {
-                    String name1 = name.getText().toString();
-                    String email2 = Email.getText().toString();
-                    String phoneNum2 = phoneNum.getText().toString();
-                    String address2 = address.getText().toString();
+                .setCancelable(false);
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+
+        Button confirm_button = dialogView.findViewById(R.id.confirm_button_for_creating_profile);
+
+        confirm_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name1 = name.getText().toString();
+                String email2 = Email.getText().toString();
+                String phoneNum2 = phoneNum.getText().toString();
+                String address2 = address.getText().toString();
 //                    String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
 
-                    Log.d("Firestore", "wenis (builder built)");
-                    // TALK TO RAMIZ ABT THIS!!!!!!
-                    // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
-                    DocumentReference userDocRef = usersRef.document(id);
+                Log.d("Firestore", "wenis (builder built)");
+                // TALK TO RAMIZ ABT THIS!!!!!!
+                // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
+                DocumentReference userDocRef = usersRef.document(id);
 
-                    User newUser = new User(name1, email2, phoneNum2, address2, id, userDocRef);
-                    userDocRef.set(newUser)
-                            .addOnSuccessListener(
-                                    aVoid -> {
-                                        Log.d("Firestore", "User has been created!");
-                                        MainActivity.user = newUser;
+                User newUser = new User(name1, email2, phoneNum2, address2, id, userDocRef);
+                userDocRef.set(newUser)
+                        .addOnSuccessListener(
+                                aVoid -> {
+                                    Log.d("Firestore", "User has been created!");
+                                    MainActivity.user = newUser;
 
-                                        if (pendingDeeplink != null){
-                                            handleDeepLink();
-                                        } else{
-                                            navController.navigate(R.id.fragment_main);
-                                        }
-
+                                    if (pendingDeeplink != null){
+                                        handleDeepLink();
+                                    } else{
+                                        navController.navigate(R.id.fragment_main);
                                     }
 
-                            )
-                            .addOnFailureListener(e -> {
-                                Log.e("Firestore", "Could not create user", e);
-                                throw new RuntimeException(e);
-                            });
+                                }
 
-                    //appDataRepository.setSharedData(usersRef.document(id).getPath());
-                    //Log.d("set data", usersRef.document(id).getPath());
+                        )
+                        .addOnFailureListener(e -> {
+                            Log.e("Firestore", "Could not create user", e);
+                            throw new RuntimeException(e);
+                        });
 
+                alertDialog.dismiss();
+            }
+        });
 
-                })
-                .setCancelable(false)
-                .show();
-        //return newUser;
+        Button cancel_button = dialogView.findViewById(R.id.Cancel_button_for_creating_profile);
+
+        cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.exit(0);
+            }
+        });
     }
 
     /**
