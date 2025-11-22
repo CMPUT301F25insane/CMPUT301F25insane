@@ -46,7 +46,7 @@ public class OrganizerViewEventFragment extends Fragment {
 
     private FragmentViewEventOrganizerBinding binding;
 
-    private NotificationController notificationController;
+    //private NotificationController notificationController;
 
     /**
      * sets svm, nav, and db.
@@ -61,7 +61,7 @@ public class OrganizerViewEventFragment extends Fragment {
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         nav = NavHostFragment.findNavController(this);
         db = FirebaseFirestore.getInstance();
-        notificationController = new NotificationController(getContext(), (com.example.notifications.NotificationView) getParentFragment());
+        //notificationController = new NotificationController(getContext(), (com.example.notifications.NotificationView) getParentFragment());
 
     }
 

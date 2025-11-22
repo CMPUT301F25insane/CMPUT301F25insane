@@ -25,6 +25,7 @@ import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.progressindicator.IndeterminateDrawable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -108,6 +109,11 @@ public class UserViewEventFragment extends Fragment {
                     nav.navigate(R.id.fragment_list_testing_interface); //TODO: user should NOT SEE these lists in general, only capacity.
                 });
             });
+
+            if (!user.isAdmin()) {
+                binding.viewListsButton.setEnabled(false);
+                binding.viewListsButton.setVisibility(INVISIBLE);
+            }
         });
 
         // button handlers
