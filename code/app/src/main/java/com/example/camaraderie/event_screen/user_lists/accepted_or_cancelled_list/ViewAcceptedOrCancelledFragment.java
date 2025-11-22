@@ -42,6 +42,7 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO: this is causing a null pointer crash
         vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
         nav = NavHostFragment.findNavController(this);
 
