@@ -87,6 +87,7 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
         db = FirebaseFirestore.getInstance();
         binding.myEventsForViewMyEvents.setAdapter(myEvents);
+        binding.userProfileImageButton.setOnClickListener(v -> nav.navigate(R.id.update_user));
         //binding.nameForMyEvents.setText(user.getFirstName());
         eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
             myEvents.clear();

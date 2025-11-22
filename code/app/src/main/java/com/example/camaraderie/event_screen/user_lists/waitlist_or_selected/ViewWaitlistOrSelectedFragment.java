@@ -46,34 +46,6 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        nav = NavHostFragment.findNavController(ViewWaitlistOrSelectedFragment.this);
-        vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
-
-        Bundle args = getArguments();
-        if (args != null) {
-            UserListType type = UserListType.valueOf(args.getString("type"));
-
-            if (type.equals(UserListType.WAITLIST)) {
-                displayedList = vm.getAcceptedList();
-                headerText = "Waitlisted Entrants:";
-
-
-            } else if (type.equals(UserListType.SELECTEDLIST)) {
-                displayedList = vm.getCancelledList();
-                headerText = "Selected Entrants:";
-
-            }
-            else {
-                throw new RuntimeException("Invalid arguments for ViewAcceptedOrCancelledFragment");
-            }
-
-        }
-        else {
-            throw new RuntimeException("ViewAcceptedOrCancelledFragment must have arguments");
-        }
-
-        capacityText = displayedList.size() + " / " + vm.getEventCapacity();
-
     }
 
     public static ViewWaitlistOrSelectedFragment newInstance(UserListType type) {
@@ -116,6 +88,34 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        nav = NavHostFragment.findNavController(ViewWaitlistOrSelectedFragment.this);
+        vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            UserListType type = UserListType.valueOf(args.getString("type"));
+
+            if (type.equals(UserListType.WAITLIST)) {
+                displayedList = vm.getWaitlist();
+                headerText = "Waitlisted Entrants:";
+
+
+            } else if (type.equals(UserListType.SELECTEDLIST)) {
+                displayedList = vm.getSelectedList();
+                headerText = "Selected Entrants:";
+
+            }
+            else {
+                throw new RuntimeException("Invalid arguments for ViewAcceptedOrCancelledFragment");
+            }
+
+        }
+        else {
+            throw new RuntimeException("ViewAcceptedOrCancelledFragment must have arguments");
+        }
+
+        capacityText = displayedList.size() + " / " + vm.getEventCapacity();
 
         adapter = new ViewWaitlistOrSelectedArrayAdapter(requireContext(), 0, displayedList, vm);
 

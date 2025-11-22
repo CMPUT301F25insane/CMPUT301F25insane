@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
+import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentViewListsTestingInterfaceBinding;
 import com.example.camaraderie.event_screen.UserListType;
 import com.example.camaraderie.event_screen.ViewListViewModel;
@@ -50,8 +52,28 @@ public class ListTestingInterfaceFragment extends Fragment {
 
 
         binding.listTestingBackButton.setOnClickListener(v -> {nav.popBackStack();});
+        SharedEventViewModel svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+        ViewListViewModel vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
+        svm.getEvent().observe(getViewLifecycleOwner(), event -> {
+            vm.setEvent(event);
+            setButtonBindings();
+        });
 
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    private void setButtonBindings() {
         binding.viewAcceptedButton.setOnClickListener(v -> {
             nav.navigate(
                     R.id.view_accepted_or_cancelled,
@@ -83,16 +105,5 @@ public class ListTestingInterfaceFragment extends Fragment {
             );
 
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

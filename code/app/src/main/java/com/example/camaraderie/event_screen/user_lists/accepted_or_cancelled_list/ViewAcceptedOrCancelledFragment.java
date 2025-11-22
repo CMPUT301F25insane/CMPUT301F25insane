@@ -41,8 +41,19 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        // TODO: this is causing a null pointer crash
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentViewAcceptedOrCancelledBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
         nav = NavHostFragment.findNavController(this);
 
@@ -68,18 +79,6 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
         else {
             throw new RuntimeException("ViewAcceptedOrCancelledFragment must have arguments");
         }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentViewAcceptedOrCancelledBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         binding.acceptedOrCancelledBackButton.setOnClickListener(v -> {nav.popBackStack();});
 

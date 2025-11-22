@@ -101,6 +101,9 @@ public class OrganizerViewEventFragment extends Fragment {
             updateUI(evt);
         });
 
+        binding.orgViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
+
+        binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
         binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
         binding.viewListsButton.setOnClickListener(v -> nav.navigate(R.id.fragment_list_testing_interface));
         binding.OrgEventRunLotteryButton.setOnClickListener(v -> runLottery());

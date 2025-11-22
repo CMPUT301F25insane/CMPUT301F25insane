@@ -32,8 +32,7 @@ public class ViewMyCreatedEventsFragment extends Fragment {
 
     private FragmentMyCreatedEventsBinding binding;
     private SharedEventViewModel svm;
-    private Event event;
-    private FirebaseFirestore db;
+    private MyEventsViewModel vm;
     private NavController nav;
     private MyCreatedEventsArrayAdapter adapter;
 
@@ -47,32 +46,8 @@ public class ViewMyCreatedEventsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         nav = NavHostFragment.findNavController(this);
-        ArrayList<Event> events = new ArrayList<>();
-        ArrayList<DocumentReference> refs = user.getUserCreatedEvents();
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-        adapter = new MyCreatedEventsArrayAdapter(requireContext(), 0, events, nav, svm);
-
-        if (refs.isEmpty()) {
-            return;
-        }
-
-        for (DocumentReference ref : refs) {
-            ref.get().addOnSuccessListener(doc -> {
-                Event e = doc.toObject(Event.class);
-                if (e != null) {
-                    events.add(e);
-                }
-
-
-                if (events.size() == refs.size()) {
-                    adapter.notifyDataSetChanged();
-                }
-            }).addOnFailureListener(err -> {
-                err.printStackTrace();
-            });
-        }
-
-
+        vm = new ViewModelProvider(requireActivity()).get(MyEventsViewModel.class);
     }
 
     /**
@@ -103,6 +78,13 @@ public class ViewMyCreatedEventsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        vm.getUserCreatedEvents(
+                events -> {
+                    adapter = new MyCreatedEventsArrayAdapter(requireContext(), 0, events, nav, svm);
+                    adapter.notifyDataSetChanged();
+                    adapter.setNotifyOnChange(true);
+                });
 
         binding.listView.setAdapter(adapter);
         binding.backButton.setOnClickListener(v -> nav.popBackStack());

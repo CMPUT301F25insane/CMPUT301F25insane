@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_fragment_view_my_events_to_fragment_my_created_events"
             app:destination="@id/fragment_my_created_events" />
+        <action
+            android:id="@+id/action_fragment_view_my_events_to_update_user"
+            app:destination="@id/update_user" />
     </fragment>
 
     <fragment
@@ -104,6 +107,9 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_list_testing_interface2"
             app:destination="@id/fragment_list_testing_interface" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_update_user"
+            app:destination="@id/update_user" />
 
     </fragment>
 
@@ -177,6 +183,9 @@
         <action
             android:id="@+id/action_fragment_view_event_user_to_fragment_list_testing_interface"
             app:destination="@id/fragment_list_testing_interface" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_update_user"
+            app:destination="@id/update_user" />
 
     </fragment>
 
