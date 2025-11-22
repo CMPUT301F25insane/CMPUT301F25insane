@@ -63,19 +63,19 @@ public class UpdateUserFragment extends Fragment {
 
         userDocRef = usersRef.document(user.getUserId());
 
-        binding.updateName.setText(user.getFirstName());
-        binding.updateEmail.setText(user.getEmail());
-        binding.updatePhoneNo.setText(user.getPhoneNumber());
-        binding.updateAddress.setText(user.getAddress());
+        binding.nameFieldForUpdateUser.setText(user.getFirstName());
+        binding.emailFieldForUpdateUser.setText(user.getEmail());
+        binding.phoneFieldForUpdateUser3.setText(user.getPhoneNumber());
+        binding.addressFieldForUpdateUser2.setText(user.getAddress());
 
 
-        binding.updateSave.setOnClickListener(new View.OnClickListener() {
+        binding.confirmButtonForUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = binding.updateName.getText().toString().trim();
-                String email = binding.updateEmail.getText().toString().trim();
-                String address = binding.updateAddress.getText().toString().trim();
-                String phone_no = binding.updatePhoneNo.getText().toString().trim();
+                String name = binding.nameFieldForUpdateUser.getText().toString().trim();
+                String email = binding.emailFieldForUpdateUser.getText().toString().trim();
+                String address = binding.addressFieldForUpdateUser2.getText().toString().trim();
+                String phone_no = binding.phoneFieldForUpdateUser3.getText().toString().trim();
 
                 userDocRef
                         .update(
@@ -96,7 +96,7 @@ public class UpdateUserFragment extends Fragment {
             }
         });
 
-        binding.userDelete.setOnClickListener(v -> {
+        binding.DeleteButtonForUserProfile.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
 
             for (DocumentReference ref : user.getSelectedEvents()) {
@@ -132,20 +132,20 @@ public class UpdateUserFragment extends Fragment {
 //                    .navigate(R.id.fragment_main);
         });
 
-        binding.updateCancel.setOnClickListener(v -> {
+        binding.cancelButtonForUserProfile.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.fragment_main);
         });
 
-        binding.admin.setOnClickListener(v -> {
-            if (binding.editTextText.getText().toString().equals("80085")) {
+        binding.adminButtonForUserProfile2.setOnClickListener(v -> {
+            if (binding.adminPasswordForUserProfile.getText().toString().equals("80085")) {
                 user.setAdmin(true);
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.admin_main_screen);
             }
         });
 
-        binding.seeGuidelinesButton.setOnClickListener(new View.OnClickListener() {
+        binding.guidelinesButtonForUserProfile3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(UpdateUserFragment.this)

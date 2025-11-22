@@ -263,8 +263,8 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Done", (dialog, id1) -> {
                     String name1 = name.getText().toString();
                     String email2 = Email.getText().toString();
-                    String address2 = address.getText().toString();
                     String phoneNum2 = phoneNum.getText().toString();
+                    String address2 = address.getText().toString();
 //                    String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
 
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
                     // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
                     DocumentReference userDocRef = usersRef.document(id);
 
-                    User newUser = new User(name1, email2, address2, phoneNum2, id, userDocRef);
+                    User newUser = new User(name1, email2, phoneNum2, address2, id, userDocRef);
                     userDocRef.set(newUser)
                             .addOnSuccessListener(
                                     aVoid -> {

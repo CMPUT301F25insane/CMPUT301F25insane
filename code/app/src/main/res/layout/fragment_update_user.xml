@@ -4,131 +4,205 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_resource"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="366dp"
+        android:layout_height="643dp"
+        android:background="@drawable/gradient_for_org_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.715">
+
+        <EditText
+            android:id="@+id/name_field_for_update_user"
+            android:layout_width="343dp"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Name"
+            android:textColor="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/email_field_for_update_user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.695"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.669" />
+
+        <EditText
+            android:id="@+id/address_field_for_update_user2"
+            android:layout_width="343dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="32dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/address"
+            android:textColor="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/phone_field_for_update_user3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.695"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <EditText
+            android:id="@+id/email_field_for_update_user"
+            android:layout_width="343dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="32dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Email"
+            android:textColor="#9C9C9C"
+            app:layout_constraintBottom_toTopOf="@+id/address_field_for_update_user2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.695"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <EditText
+            android:id="@+id/phone_field_for_update_user3"
+            android:layout_width="343dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="320dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Phone Number"
+            android:textColor="#9C9C9C"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.521"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/confirm_button_for_user_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="#B06CF9CC"
+            android:fontFamily="@font/cambria"
+            android:text="Confirm"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.744"
+            app:layout_constraintStart_toEndOf="@+id/cancel_button_for_user_profile"
+            app:layout_constraintTop_toBottomOf="@+id/phone_field_for_update_user3"
+            app:strokeWidth="3.5dp" />
+
+        <Button
+            android:id="@+id/cancel_button_for_user_profile"
+            android:layout_width="104dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="36dp"
+            android:backgroundTint="#8FE5E4FF"
+            android:fontFamily="@font/cambria"
+            android:text="Cancel"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.091"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_field_for_update_user3"
+            app:strokeWidth="3.5dp" />
+
+        <Button
+            android:id="@+id/guidelines_button_for_user_profile3"
+            android:layout_width="129dp"
+            android:layout_height="69dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#8FE5E4FF"
+            android:fontFamily="@font/cambria"
+            android:text="See Guidelines"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/admin_button_for_user_profile2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.057"
+            app:layout_constraintStart_toEndOf="@+id/Delete_button_for_user_profile"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_button_for_user_profile"
+            app:layout_constraintVertical_bias="0.0"
+            app:strokeWidth="3.5dp" />
+
+        <Button
+            android:id="@+id/admin_button_for_user_profile2"
+            android:layout_width="104dp"
+            android:layout_height="49dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="48dp"
+            android:backgroundTint="#8FE5E4FF"
+            android:fontFamily="@font/cambria"
+            android:text="Admin"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_button_for_user_profile"
+            app:layout_constraintVertical_bias="0.952"
+            app:strokeWidth="3.5dp" />
+
+        <Button
+            android:id="@+id/Delete_button_for_user_profile"
+            android:layout_width="122dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#B0F96C6E"
+            android:fontFamily="@font/cambria"
+            android:text="Delete Profile"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.098"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cancel_button_for_user_profile"
+            app:strokeWidth="3.5dp" />
+
+        <EditText
+            android:id="@+id/admin_password_for_user_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="40dp"
+            android:ems="10"
+            android:fontFamily="@font/cambria"
+            android:hint="Admin Passcode"
+            android:inputType="numberPassword"
+            android:textColor="#9C9C9C"
+            android:textColorHint="#9C9C9C"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/admin_button_for_user_profile2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Delete_button_for_user_profile"
+            app:layout_constraintVertical_bias="0.807" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Update User Profile"
-        android:textSize="40sp"
+        android:id="@+id/camaraderie_header_for_update_user"
+        android:layout_width="146dp"
+        android:layout_height="41dp"
+        android:fontFamily="@font/cambria_italic"
+        android:text="Camaraderie"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.06"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        />
-
-    <EditText
-        android:id="@+id/update_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/name"
-        android:textSize="25sp"
-        android:paddingTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintBottom_toTopOf="@id/update_email"/>
-
-    <EditText
-        android:id="@+id/update_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/email"
-        android:textSize="25sp"
-        android:paddingTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/update_name"
-        app:layout_constraintBottom_toTopOf="@id/update_phone_no"/>
-
-    <EditText
-        android:id="@+id/update_phone_no"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/phone_number"
-        android:textSize="25sp"
-        android:paddingTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/update_email"
-        app:layout_constraintBottom_toTopOf="@id/update_address"/>
-
-    <EditText
-        android:id="@+id/update_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/address"
-        android:textSize="25sp"
-        android:paddingTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/update_phone_no"
-        app:layout_constraintBottom_toTopOf="@id/update_save"/>
-
-    <Button
-        android:id="@+id/update_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintBottom_toTopOf="@id/user_delete"
-        app:layout_constraintEnd_toStartOf="@+id/update_cancel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/update_address" />
-
-    <Button
-        android:id="@+id/update_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="76dp"
-        android:text="Cancel / Back"
-        app:layout_constraintBottom_toTopOf="@id/user_delete"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/update_save"
-        app:layout_constraintTop_toBottomOf="@id/update_address" />
-
-    <Button
-        android:id="@+id/user_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete Profile"
-        app:layout_constraintBottom_toTopOf="@id/admin"
-        app:layout_constraintHorizontal_bias="0.151"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/update_save" />
-
-    <Button
-        android:id="@+id/admin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ADMIN MODE :)"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.759"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_delete" />
-
-    <Button
-        android:id="@+id/seeGuidelinesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="See guidelines"
-        app:layout_constraintBottom_toTopOf="@+id/admin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/user_delete"
-        app:layout_constraintTop_toBottomOf="@+id/update_cancel" />
-
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="129dp"
-        android:layout_height="46dp"
-        android:ems="10"
-        android:hint="adminPW"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/admin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_delete" />
-
+        app:layout_constraintVertical_bias="0.592" />
 </androidx.constraintlayout.widget.ConstraintLayout>
