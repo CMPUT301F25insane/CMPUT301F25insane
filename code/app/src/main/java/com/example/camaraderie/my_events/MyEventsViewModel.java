@@ -31,6 +31,7 @@ public class MyEventsViewModel extends ViewModel {
 
         ArrayList<DocumentReference> refs = user.getUserCreatedEvents();
         if (refs.isEmpty()) {
+            Log.d("Firebase", "User has no created events");
             return;
         }
 

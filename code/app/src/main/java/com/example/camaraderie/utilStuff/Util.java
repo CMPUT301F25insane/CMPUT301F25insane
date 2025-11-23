@@ -13,6 +13,9 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * util class for convenience functions
+ */
 public class Util {
 
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
