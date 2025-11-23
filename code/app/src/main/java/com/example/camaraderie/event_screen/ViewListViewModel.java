@@ -116,7 +116,7 @@ public class ViewListViewModel extends ViewModel {
                 result.add(user);
 
                 // Check if all users are loaded
-                if (result.size() >= refs.size()) {
+                if (result.size() == refs.size()) {
                     callback.onUsersLoaded(result);
                 }
 

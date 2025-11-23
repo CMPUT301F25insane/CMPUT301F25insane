@@ -1,5 +1,7 @@
 package com.example.camaraderie.utilStuff;
 
+import android.util.Log;
+
 import com.example.camaraderie.User;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
@@ -8,6 +10,7 @@ import com.google.firebase.firestore.WriteBatch;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserDeleter {
@@ -56,6 +59,12 @@ public class UserDeleter {
     }
 
     private void updateUsersLists(Runnable onComplete) {
+
+        if (createdEvents.isEmpty()) {
+            onComplete.run();
+            return;
+        }
+
         deserializeEventLists(() -> {
 
             // at this point, all docref lists exist for all events.
@@ -119,22 +128,33 @@ public class UserDeleter {
         ArrayList<DocumentReference> allLists = new ArrayList<>();
         AtomicInteger count = new AtomicInteger();
         int size = createdEvents.size();
+        if (size == 0) {
+            onComplete.onListLoaded(allLists);
+            return;
+        }
         for (DocumentReference ref : createdEvents) {
             ref.get()
                 .addOnSuccessListener(
                     snapshot -> {
-                        ArrayList<DocumentReference> list = (ArrayList<DocumentReference>) snapshot.get(key); // inshaallah this works
+                        List<DocumentReference> list = (List<DocumentReference>) snapshot.get(key); // inshaallah this works
                         if (list != null) {
                             allLists.addAll(list);
-                            count.getAndIncrement();
                         }
-                    }
-                );
-        }
 
-        // as long as we have successfully ran through all events
-        if (count.get() >= size) {
-            onComplete.onListLoaded(allLists);
+
+                        // as long as we have successfully ran through all events
+                        if (count.incrementAndGet() == size) {
+                            onComplete.onListLoaded(allLists);
+                        }
+
+                    }
+                )
+                    .addOnFailureListener(e -> {
+                        Log.e("Firebase", "list failed to load!", e);
+                        if (count.incrementAndGet() == size) {
+                            onComplete.onListLoaded(allLists);
+                        }
+                    });
         }
     }
 }
