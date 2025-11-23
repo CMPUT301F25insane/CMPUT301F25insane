@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
                         // Get new FCM registration token
                         token = task.getResult();
 
-                        Toast toast = Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG);
-                        toast.show();
+                        //Toast toast = Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG);
+                        //toast.show();
                     }
                 });
 
@@ -314,6 +314,26 @@ public class MainActivity extends AppCompatActivity {
                                     aVoid -> {
                                         Log.d("Firestore", "User has been created!");
                                         MainActivity.user = newUser;
+                                        FirebaseMessaging.getInstance().getToken()
+                                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<String> task) {
+                                                        if (!task.isSuccessful()) {
+                                                            Log.w("FCM", "Fetching FCM registration token failed", task.getException());
+                                                            return;
+                                                        }
+
+                                                        // Get new FCM registration token
+                                                        token = task.getResult();
+
+                                                        //Toast toast = Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG);
+                                                        //toast.show();
+                                                    }
+                                                });
+                                        user.setNotificationToken(token);
+                                        userDocRef.update("notificationToken", token);
+                                        user.setDocRef(userDocRef);
+                                        user.updateDB();
 
                                         if (pendingDeeplink != null){
                                             handleDeepLink();
