@@ -14,10 +14,12 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.databinding.FragmentViewWaitlistOfAttendeesBinding;
 import com.example.camaraderie.User;
 import com.example.camaraderie.databinding.FragmentViewWaitlistOrSelectedBinding;
 import com.example.camaraderie.event_screen.UserListType;
 import com.example.camaraderie.event_screen.ViewListViewModel;
+import com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedArrayAdapter;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,13 +31,16 @@ import java.util.ArrayList;
 
 public class ViewWaitlistOrSelectedFragment extends Fragment {
 
-    private FragmentViewWaitlistOrSelectedBinding binding;
+    private FragmentViewWaitlistOfAttendeesBinding binding;
+    private DocumentReference eventDocRef;
     private ViewWaitlistOrSelectedArrayAdapter adapter;
     private ViewListViewModel vm;
+    private SharedEventViewModel svm;
     private ArrayList<User> displayedList;
     private String capacityText;
     private String headerText;
     private NavController nav;
+
 
     /**
      * setup database, nav, event view model, and shareeventsviewmodel
@@ -73,7 +78,7 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentViewWaitlistOrSelectedBinding.inflate(inflater, container, false);
+        binding = FragmentViewWaitlistOfAttendeesBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -119,9 +124,9 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
 
         adapter = new ViewWaitlistOrSelectedArrayAdapter(requireContext(), 0, displayedList, vm);
 
-        binding.backButton.setOnClickListener(v -> nav.popBackStack());
-        binding.attendeesNum.setText(capacityText);
-        binding.waitlistOrSelectedTextView.setText(headerText);
+        binding.returnButtonForOrganizerViewOfWaitlist.setOnClickListener(v -> nav.popBackStack());
+        binding.NumOfAttendees.setText(capacityText);
+        binding.headerForWaitlistPage.setText(headerText);
         binding.usersInWaitlist.setAdapter(adapter);
 
     }
@@ -131,7 +136,7 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
      * @param event event for which to get waitlist
      */
     private void fillTextViews(Event event) {
-        binding.attendeesNum.setText(String.valueOf(event.getWaitlist().size()));
+        binding.NumOfAttendees.setText(String.valueOf(event.getWaitlist().size()));
     }
 
     /**

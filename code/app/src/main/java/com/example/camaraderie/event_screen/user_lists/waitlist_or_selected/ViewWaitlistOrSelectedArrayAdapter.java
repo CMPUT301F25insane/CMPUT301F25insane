@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import static com.example.camaraderie.MainActivity.user;
 
+import java.lang.annotation.Documented;
 import java.util.ArrayList;
 
 /**
@@ -67,7 +68,7 @@ public class ViewWaitlistOrSelectedArrayAdapter extends ArrayAdapter<User> {
         if (convertView == null) {  // convert view is a reused view, to save resources
             // create new view using layout inflater if no recyclable view available
 
-            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_view_waitlist_or_selected_item, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_view_waitlist_of_attendees_item, parent, false);
         }
         else {
             // just reuse the garbage view
@@ -76,10 +77,10 @@ public class ViewWaitlistOrSelectedArrayAdapter extends ArrayAdapter<User> {
 
         User entrant = getItem(position);
 
-        TextView name = view.findViewById(R.id.entrantName);
+        TextView name = view.findViewById(R.id.name_of_user_for_org_view_of_waitlist);
         name.setText(entrant.getFirstName());
 
-        Button kickButton = view.findViewById(R.id.kickFromEventButton);
+        Button kickButton = view.findViewById(R.id.kick_from_event_button);
 
         kickButton.setOnClickListener(new View.OnClickListener() {
             /**
