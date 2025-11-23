@@ -2,6 +2,7 @@ package com.example.camaraderie.admin_screen;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
+import com.example.camaraderie.utilStuff.UserDeleter;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -101,32 +103,37 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (DocumentReference ref : user1.getSelectedEvents()) {
-                    ref.update("selectedList", FieldValue.arrayRemove(user1.getDocRef()));
-                }
-
-                for (DocumentReference ref : user1.getAcceptedEvents()) {
-                    ref.update("acceptedList", FieldValue.arrayRemove(user1.getDocRef()));
-                }
-
-                for (DocumentReference ref : user1.getWaitlistedEvents()) {
-                    ref.update("waitlist", FieldValue.arrayRemove(user1.getDocRef()));
-                }
-
-                for (DocumentReference eventDocRef : user1.getUserCreatedEvents()) {
-                    db.collection("Users").get()
-                            .addOnSuccessListener(snapshot -> {
-                                for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
-                                    DocumentReference uRef = userDoc.getReference();
-                                    uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
-                                    uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
-                                    uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
-                                }
-                            });
-
-                    user1.deleteCreatedEvent(eventDocRef);
-                }
-                user1.getDocRef().delete();
+//                for (DocumentReference ref : user1.getSelectedEvents()) {
+//                    ref.update("selectedList", FieldValue.arrayRemove(user1.getDocRef()));
+//                }
+//
+//                for (DocumentReference ref : user1.getAcceptedEvents()) {
+//                    ref.update("acceptedList", FieldValue.arrayRemove(user1.getDocRef()));
+//                }
+//
+//                for (DocumentReference ref : user1.getWaitlistedEvents()) {
+//                    ref.update("waitlist", FieldValue.arrayRemove(user1.getDocRef()));
+//                }
+//
+//                for (DocumentReference eventDocRef : user1.getUserCreatedEvents()) {
+//                    db.collection("Users").get()
+//                            .addOnSuccessListener(snapshot -> {
+//                                for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+//                                    DocumentReference uRef = userDoc.getReference();
+//                                    uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+//                                    uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+//                                    uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+//                                }
+//                            });
+//
+//                    user1.deleteCreatedEvent(eventDocRef);
+//                }
+//                user1.getDocRef().delete();
+                UserDeleter deleter = new UserDeleter(user1);
+                deleter.DeleteUser(()->{
+                    Log.d("Firebase", "Admin has deleted user");
+                    notifyDataSetChanged();
+                });
             }
         });
 

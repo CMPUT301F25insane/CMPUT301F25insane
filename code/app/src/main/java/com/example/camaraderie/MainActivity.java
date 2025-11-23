@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
                 DocumentReference userDocRef = usersRef.document(id);
                 FirebaseMessaging.getInstance().subscribeToTopic(id);
 
-                User newUser = new User(name1, email2, phoneNum2, address2, id, token, userDocRef);
+                User newUser = new User(name1, phoneNum2, email2, address2, id, token, userDocRef);
                 userDocRef.set(newUser)
                         .addOnSuccessListener(
                                 aVoid -> {

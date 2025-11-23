@@ -73,7 +73,7 @@
 
     <fragment
         android:id="@+id/update_user"
-        android:name="com.example.camaraderie.UpdateUserFragment"
+        android:name="com.example.camaraderie.updateUserStuff.UpdateUserFragment"
         tools:layout="@layout/fragment_update_user" >
         <action
             android:id="@+id/action_update_user_to_fragment_main2"

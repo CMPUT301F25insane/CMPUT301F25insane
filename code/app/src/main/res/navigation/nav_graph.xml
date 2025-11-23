@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_loading_screen"
-        android:name="com.example.camaraderie.LoadingScreenFragment"
+        android:name="com.example.camaraderie.utilStuff.LoadingScreenFragment"
         android:label="Loading screen Fragment"
         tools:layout="@layout/fragment_loading_screen">
 
@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/fragment_guidelines"
         android:label="guidleins FRagment"
-        android:name="com.example.camaraderie.GuidelinesFragment"
+        android:name="com.example.camaraderie.updateUserStuff.GuidelinesFragment"
         tools:layout="@layout/fragment_guidelines">
 
         <action
@@ -304,7 +304,7 @@
 
     <fragment
         android:id="@+id/update_user"
-        android:name="com.example.camaraderie.UpdateUserFragment"
+        android:name="com.example.camaraderie.updateUserStuff.UpdateUserFragment"
         android:label="Update Screen"
         tools:layout="@layout/fragment_update_user">
 

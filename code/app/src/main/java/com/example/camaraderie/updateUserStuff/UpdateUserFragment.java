@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie.updateUserStuff;
 
 import static com.example.camaraderie.MainActivity.user;
 
@@ -6,20 +6,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentUpdateUserBinding;
+import com.example.camaraderie.utilStuff.UserDeleter;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 /**
  * This is the screen for users updating their information.
@@ -30,6 +33,13 @@ public class UpdateUserFragment extends Fragment {
     private CollectionReference usersRef;
     private DocumentReference userDocRef;
     private FragmentUpdateUserBinding binding;
+    private NavController nav;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        nav = NavHostFragment.findNavController(this);
+    }
 
     /**
      *
@@ -96,60 +106,38 @@ public class UpdateUserFragment extends Fragment {
             }
         });
 
+        // TODO: to fix this, we need to use batches and use .commit on the batch (instead of the for loop, then after all as been finished, we can safely exit the app. the asyncronicity of firebase does not let the user get deleted before teh app closes
         binding.DeleteButtonForUserProfile.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
 
-            for (DocumentReference ref : user.getSelectedEvents()) {
-                ref.update("selectedList", FieldValue.arrayRemove(user.getDocRef()));
-            }
+            deleteUser(
+                    () -> {
+                        // goodbye
+                        assert getActivity() != null;
+                        getActivity().finish();
+                        System.exit(0);
+                    }
+            );
 
-            for (DocumentReference ref : user.getAcceptedEvents()) {
-                ref.update("acceptedList", FieldValue.arrayRemove(user.getDocRef()));
-            }
 
-            for (DocumentReference ref : user.getWaitlistedEvents()) {
-                ref.update("waitlist", FieldValue.arrayRemove(user.getDocRef()));
-            }
-
-            for (DocumentReference eventDocRef : user.getUserCreatedEvents()) {
-                db.collection("Users").get()
-                        .addOnSuccessListener(snapshot -> {
-                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
-                                DocumentReference uRef = userDoc.getReference();
-                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
-                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
-                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
-                            }
-                        });
-
-                user.deleteCreatedEvent(eventDocRef);
-            }
-            user.getDocRef().delete();
-            // goodbye
-            getActivity().finish();
-            System.exit(0);
 //            NavHostFragment.findNavController(this)
 //                    .navigate(R.id.fragment_main);
         });
 
         binding.cancelButtonForUserProfile.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.fragment_main);
+            nav.popBackStack();
         });
 
         binding.adminButtonForUserProfile2.setOnClickListener(v -> {
             if (binding.adminPasswordForUserProfile.getText().toString().equals("80085")) {
                 user.setAdmin(true);
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.admin_main_screen);
+                nav.navigate(R.id.admin_main_screen);
             }
         });
 
         binding.guidelinesButtonForUserProfile3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavHostFragment.findNavController(UpdateUserFragment.this)
-                        .navigate(R.id.fragment_guidelines);
+                nav.navigate(R.id.fragment_guidelines);
             }
         });
     }
@@ -161,5 +149,12 @@ public class UpdateUserFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null; // avoid memory leaks
+    }
+
+    private void deleteUser(Runnable onComplete) {
+        Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+
+        UserDeleter deleter = new UserDeleter(user);
+        deleter.DeleteUser(onComplete);
     }
 }

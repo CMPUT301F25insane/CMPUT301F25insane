@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie.updateUserStuff;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

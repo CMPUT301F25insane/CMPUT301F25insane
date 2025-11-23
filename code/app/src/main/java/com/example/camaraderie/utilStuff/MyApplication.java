@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie.utilStuff;
 
 import android.app.Application;
 
