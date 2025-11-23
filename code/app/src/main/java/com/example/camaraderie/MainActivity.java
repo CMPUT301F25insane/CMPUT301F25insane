@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Uri pendingDeeplink = null;
 
-    private boolean __DEBUG_DATABASE_CLEAR = false;
+    private boolean __DEBUG_DATABASE_CLEAR = true;
     private com.example.notifications.NotificationView notificationView;
     private NotificationController notificationController;
     private String token;

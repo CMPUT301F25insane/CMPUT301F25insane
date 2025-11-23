@@ -97,7 +97,7 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
         TextView eventDeadline = view.findViewById(R.id.eventDeadlineForMyEvents);
         //TextView hostName = view.findViewById(R.id.hostName);
 
-        assert event != null;
+        if (event == null) {return view;}
         eventName.setText(event.getEventName());
         eventDocref = db.document(event.getEventDocRef().getPath());
         //eventPrice.setText(String.valueOf(event.getPrice()));
