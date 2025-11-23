@@ -1,5 +1,6 @@
 package com.example.camaraderie.image_stuff;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +83,21 @@ public class OrganizerViewPhotosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Registers a photo picker activity launcher in single-select mode.
+        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                    // Callback is invoked after the user selects a media item or closes the
+                    // photo picker.
+                    if (uri != null) {
+                        Log.d("PhotoPicker", "Selected URI: " + uri);
+                        binding.imageView2.setImageURI(uri);
+                        //Add code to save the photo into the database
+                    } else {
+                        Log.d("PhotoPicker", "No media selected");
+                    }
+                });
+
+
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
             eventDocRef = event.getEventDocRef();
@@ -90,6 +106,10 @@ public class OrganizerViewPhotosFragment extends Fragment {
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
 
         binding.addPhotosButton.setOnClickListener(v -> {
+            // Launch the photo picker and let the user choose only images.
+            pickMedia.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
 
 
         });
