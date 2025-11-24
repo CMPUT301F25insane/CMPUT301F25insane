@@ -46,6 +46,10 @@ jobs:
       # -------------------------
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+
+      # DEBUG
+      - name: List available system images
+        run: sdkmanager --list
   
       # -------------------------
       # CREATE EMULATOR
