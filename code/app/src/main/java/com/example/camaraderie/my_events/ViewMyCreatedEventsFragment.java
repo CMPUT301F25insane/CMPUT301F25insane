@@ -105,8 +105,8 @@ public class ViewMyCreatedEventsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.listView.setAdapter(adapter);
-        binding.backButton.setOnClickListener(v -> nav.popBackStack());
-        binding.textView5.setText("My created events");
+        binding.backButtonForMyCreatedEvents.setOnClickListener(v -> nav.popBackStack());
+        //binding.textView5.setText("My created events");
     }
 
     /**
