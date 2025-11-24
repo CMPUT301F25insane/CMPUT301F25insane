@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "no" | avdmanager create avd \
             --name test \
-            --package "system-images;android-32;google_apis_arm64-v8a" \
+            --package "system-images;android-36-ext19;google_apis;arm64-v8a" \
             --device "pixel_6"
       
       # -------------------------
