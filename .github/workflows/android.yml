@@ -50,6 +50,10 @@ jobs:
       # DEBUG
       - name: List available system images
         run: sdkmanager --list | grep -i "arm64"
+
+      - name: Install required packages
+        run: |
+          sdkmanager "platforms;android-33" "system-images;android-33;google_apis;arm64-v8a"
   
       # -------------------------
       # CREATE EMULATOR
@@ -58,7 +62,7 @@ jobs:
         run: |
           echo "no" | avdmanager create avd \
             --name test \
-            --package "system-images;android-34;android-tv;arm64-v8a" \
+            --package "system-images;android-33;google_apis;arm64-v8a" \
             --device "pixel_6"
       
       # -------------------------
