@@ -1,13 +1,11 @@
 package com.example.camaraderie;//
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
-import java.sql.Array;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,10 +22,16 @@ public class Event {
     private Date eventDate;
     private String eventTime;  // this will probably become a better data type soon
     //private float price = 0.0f;
+
+    private Uri eventPosterUri;
     private ArrayList<DocumentReference> waitlist = new ArrayList<>();
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
+    private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
+
+
     private int capacity;  // always > 0
+    private int waitlistLimit = -1;
     private DocumentReference hostDocRef;
     private DocumentReference eventDocRef;
 
@@ -55,7 +59,9 @@ public class Event {
      * @param capacity
      *  Maximum number of people that can be accepted to the event
      * @param host
-     *  User who is organizing the event
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
      * @param eventId
      *  Id that uniquely identifies the event
      */
@@ -71,7 +77,129 @@ public class Event {
         this.eventDocRef = eventDocRef;
         this.eventId = eventId;
 
-        //this.waitlist.setEventDocRef(this.EventId);  // bind the waitlist to this event
+    }
+
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     * @param uri
+     *  uri of the event poster
+     */
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.eventId = eventId;
+        this.eventPosterUri = uri;
+
+    }
+
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param limit
+     * optionally set the limit for people to join the waitlist, set to -1 by default
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     */
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int limit, DocumentReference host, DocumentReference eventDocRef, String eventId) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.waitlistLimit = limit;
+        this.eventId = eventId;
+
+    }
+
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param limit
+     * optionally set the limit for people to join the waitlist, set to -1 by default
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     * @param uri
+     *  uri of the event poster
+     */
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int limit, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.waitlistLimit = limit;
+        this.eventId = eventId;
+        this.eventPosterUri = uri;
+
     }
 
 
@@ -219,15 +347,21 @@ public class Event {
     public String getEventId() {
         return eventId;
     }
-    public void setEventId(String eventId1) {
-        this.eventId = eventId1;
-    }
 
     /**
      * Get organizer of the event
      * @return
      *  Return organizer of the event
      */
+
+    public void setPosterUri(Uri uri){
+        this.eventPosterUri = uri;
+    }
+
+    public Uri getPosterUri(){
+        return eventPosterUri;
+    }
+
     public DocumentReference getHostDocRef() {
         return hostDocRef;
     }
@@ -250,37 +384,117 @@ public class Event {
         return selectedUsers;
     }
 
+    /**
+     *
+     * @return returns list of accepted users
+     */
     public ArrayList<DocumentReference> getAcceptedUsers() {
         return acceptedUsers;
     }
 
+    /**
+     *
+     * @return returns list of cancelled users
+     */
+    public ArrayList<DocumentReference> getCancelledUsers() {
+        return cancelledUsers;
+    }
+
+    /**
+     * adds user to accepted list
+     * @param acceptedUser user to add to accepted list
+     */
     public void addAcceptedUser(DocumentReference acceptedUser) {
         if (!this.acceptedUsers.contains(acceptedUser)) {
             this.acceptedUsers.add(acceptedUser);
         }
     }
+    /**
+     * adds user to cancelled list
+     * @param user to add to cancelled list
+     */
+    public void addCancelledUser(DocumentReference user) {
+        if (!cancelledUsers.contains(user)) {
+            cancelledUsers.add(user);
+        }
+    }
 
+    /**
+     * set the event docref
+     * @param eventDocRef1 new docref to set
+     */
     public void setEventDocRef(DocumentReference eventDocRef1) {
         this.eventDocRef = eventDocRef1;
     }
 
+    /**
+     *
+     * @return returns event doc ref
+     */
     public DocumentReference getEventDocRef() {
         return this.eventDocRef;
     }
 
+    /**
+     * updates event in database
+     */
     public void updateDB() {
         eventDocRef.set(this, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Successfully update event"))
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to update event"));
     }
 
+    /**
+     * adds user to waitlist
+     * @param user user to add to waitlist
+     */
     public void addWaitlistUser(DocumentReference user) {
         if (!waitlist.contains(user)) {
             waitlist.add(user);
         }
     }
+    /**
+     * removes user from cancelled list
+     * @param user user that is removed from cancelled list
+     */
+    public void removeCancelledUser(DocumentReference user) {
+        cancelledUsers.remove(user);
+    }
 
+    /**
+     * removes user from waitlsit
+     * @param user user that is removed
+     */
     public void removeWaitlistUser(DocumentReference user) {
         waitlist.remove(user);
     }
+
+    /**
+     * sets event descrition
+     * @param description new description to set
+     */
+    public void setEventDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     *
+     * @return returns optional waitlist limit
+     */
+    public int getWaitlistLimit() {
+        return waitlistLimit;
+    }
+
+    /**
+     * sets waitlist limit
+     * @param waitlistLimit new waitlist limit
+     */
+    public void setWaitlistLimit(int waitlistLimit) {
+        if (waitlistLimit < 1) {
+            this.waitlistLimit = -1;  // set to default
+            return;
+        }
+        this.waitlistLimit = waitlistLimit;
+    }
+
 }

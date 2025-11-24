@@ -22,18 +22,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+/**
+ * We are testing UserViewEventFragment on whether it's buttons or text are visible and clickable.
+ * We are also testing on the join and unjoin button functionality
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-
-
 public class UserViewEventTest {
-//    @Before
-//    public void setup() {
-//        // Launch the fragment in isolation
-//        FragmentScenario<UserViewEventFragment> scenario =
-//                FragmentScenario.launchInContainer(UserViewEventFragment.class);
-//    }
     private FragmentScenario<UserViewEventFragment> scenario;
 
     @Before

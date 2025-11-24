@@ -24,6 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.Date;
+/**
+ * The purpose of this test is to check if the user can view a mocked event.
+ */
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest

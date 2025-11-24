@@ -3,128 +3,163 @@ package com.example.camaraderie;
 import static com.example.camaraderie.MainActivity.user;
 
 import android.os.Bundle;
-import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.databinding.FragmentUpdateUserBinding;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-/*
- *Updates the current information of the user
- *  */
-public class UpdateUserFragment extends AppCompatActivity {
+/**
+ * This is the screen for users updating their information.
+ */
+
+public class UpdateUserFragment extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference usersRef;
-
     private DocumentReference userDocRef;
+    private FragmentUpdateUserBinding binding;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.fragment_update_user);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+    /**
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return binding root
+     */
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentUpdateUserBinding.inflate(getLayoutInflater());
+
+        return binding.getRoot();
+    }
+
+    /**
+     * attaches the layout bindings and button listeners
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
 
+        userDocRef = usersRef.document(user.getUserId());
 
-        EditText name1 = findViewById(R.id.update_name);
-        EditText email1 = findViewById(R.id.update_email);
-        EditText phoneNo1 = findViewById(R.id.update_phone_no);
-        EditText address1 = findViewById(R.id.update_address);
-
-        Button save = findViewById(R.id.update_save);
-        Button cancel = findViewById(R.id.update_cancel);
+        binding.updateName.setText(user.getFirstName());
+        binding.updateEmail.setText(user.getEmail());
+        binding.updatePhoneNo.setText(user.getPhoneNumber());
+        binding.updateAddress.setText(user.getAddress());
 
 
-        //String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        String userId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
-        userDocRef = usersRef.document(userId);
-
-        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                String name3 = documentSnapshot.getString("Full Name");
-                String email3 = documentSnapshot.getString("Email");
-                String phone3 = documentSnapshot.getString("Phone Number");
-                String address3 = documentSnapshot.getString("Address");
-
-                name1.setText(name3);
-                email1.setText(email3);
-                phoneNo1.setText(phone3);
-                address1.setText(address3);
-            } else {
-                Toast.makeText(UpdateUserFragment.this, "No existing user data found.", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(e ->
-                Toast.makeText(UpdateUserFragment.this, "Failed to load data: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-        );
-
-        save.setOnClickListener(new View.OnClickListener() {
+        binding.updateSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name2 = name1.getText().toString().trim();
-                String email2 = email1.getText().toString().trim();
-                String phoneNo2 = phoneNo1.getText().toString().trim();
-                String address2 = address1.getText().toString().trim();
+                String name = binding.updateName.getText().toString().trim();
+                String email = binding.updateEmail.getText().toString().trim();
+                String address = binding.updateAddress.getText().toString().trim();
+                String phone_no = binding.updatePhoneNo.getText().toString().trim();
 
-
-                /*
-                *
-                * */
-                User user_new = new User(name2, phoneNo2, email2, address2, userId, user.getDocRef());
                 userDocRef
-                        .set(user_new)
-                        //.update("Full Name", name2, "Phone Number", phoneNo2, "Email", email2, "Address", address2)
-                        .addOnSuccessListener(aVoid ->
-                                Toast.makeText(UpdateUserFragment.this, "Profile updated!", Toast.LENGTH_SHORT).show()
-                        )
-                        .addOnFailureListener(e ->
-                                Toast.makeText(UpdateUserFragment.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                        );
-                finish();
+                        .update(
+                                "firstName",name,
+                                "email", email,
+                                "phoneNumber", phone_no,
+                                "address", address)
+                        .addOnSuccessListener(a -> {
+                            Toast.makeText(getContext(), "User updated successfully", Toast.LENGTH_SHORT).show();
+
+                            user.setFirstName(name);
+                            user.setEmail(email);
+                            user.setPhoneNumber(phone_no);
+                            user.setAddress(address);})
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getContext(), "Failed to update user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
             }
         });
 
-        cancel.setOnClickListener(v -> {
-            finish();
+        binding.userDelete.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+
+            for (DocumentReference ref : user.getSelectedEvents()) {
+                ref.update("selectedList", FieldValue.arrayRemove(user.getDocRef()));
+            }
+
+            for (DocumentReference ref : user.getAcceptedEvents()) {
+                ref.update("acceptedList", FieldValue.arrayRemove(user.getDocRef()));
+            }
+
+            for (DocumentReference ref : user.getWaitlistedEvents()) {
+                ref.update("waitlist", FieldValue.arrayRemove(user.getDocRef()));
+            }
+
+            for (DocumentReference eventDocRef : user.getUserCreatedEvents()) {
+                db.collection("Users").get()
+                        .addOnSuccessListener(snapshot -> {
+                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
+                                DocumentReference uRef = userDoc.getReference();
+                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
+                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
+                            }
+                        });
+
+                user.deleteCreatedEvent(eventDocRef);
+            }
+            user.getDocRef().delete();
+            // goodbye
+            getActivity().finish();
+            System.exit(0);
+//            NavHostFragment.findNavController(this)
+//                    .navigate(R.id.fragment_main);
         });
 
-        Button delete = findViewById(R.id.user_delete);
-
-        delete.setOnClickListener(v -> {
-            new AlertDialog.Builder(UpdateUserFragment.this)
-                    .setTitle("Delete Profile")
-                    .setMessage("Are you sure you want to delete your profile? This action cannot be undone.")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        userDocRef.delete()
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(UpdateUserFragment.this, "Profile deleted!", Toast.LENGTH_SHORT).show();
-                                    finish(); // Go back to MainActivity
-                                })
-                                .addOnFailureListener(e ->
-                                        Toast.makeText(UpdateUserFragment.this, "Delete failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                                );
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
+        binding.updateCancel.setOnClickListener(v -> {
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.fragment_main);
         });
 
+        binding.admin.setOnClickListener(v -> {
+            if (binding.editTextText.getText().toString().equals("80085")) {
+                user.setAdmin(true);
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.admin_main_screen);
+            }
+        });
+
+        binding.seeGuidelinesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(UpdateUserFragment.this)
+                        .navigate(R.id.fragment_guidelines);
+            }
+        });
+    }
+
+    /**
+     * destroys view, sets binding to null to avoid memory leaks
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // avoid memory leaks
     }
 }

@@ -17,4 +17,6 @@
     <string name="email">Email</string>
     <string name="phone_number">Phone Number</string>
     <string name="address">Address</string>
+
+    <string name="header_for_guidelines"><u>Guidelines</u></string>
 </resources>

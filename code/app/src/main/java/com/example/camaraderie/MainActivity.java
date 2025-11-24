@@ -1,7 +1,13 @@
 package com.example.camaraderie;//
 
+
 import static com.example.camaraderie.utilStuff.Util.*;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -10,26 +16,32 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.activity.OnBackPressedDispatcher;
 
 
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
+import com.example.camaraderie.notifications.NotificationController;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.security.Permissions;
 import java.util.ArrayList;
 
 /**
- * The main activity of the app
+ * The main activity of the app. Deals with QR code scans,login, and initial navigation.
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -44,15 +56,32 @@ public class MainActivity extends AppCompatActivity {
     static private CollectionReference usersRef;
     private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
+    private SharedEventViewModel svm;
 
+    private Uri pendingDeeplink = null;
 
+    private boolean __DEBUG_DATABASE_CLEAR = false;
+    private com.example.notifications.NotificationView notificationView;
+    private NotificationController notificationController;
+
+    /**
+     * sets up the SharedEventViewModel {@link #svm}, sets up the events view model for general event listings,
+     * sets up the notification controller and asks the user for notification permissions
+     * initializes navcontroller and deeplink functionalities.
+     * clears the database for testing purposes at the moment.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        //setContentView(R.layout.activity_main);
 
-        //clearDB();
+        //FirebaseFirestore.getInstance().clearPersistence();  // TODO: DO NOT UNCOMMENT THIS CODE
+
+        svm = new ViewModelProvider(this).get(SharedEventViewModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
         setContentView(binding.getRoot());
@@ -62,60 +91,162 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
 
+        notificationController = new NotificationController(this, notificationView);
+        requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
+
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection("Users");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        Log.d("Firestore", "Searching for user in database...");
-        usersRef.document(id).get()
-                .addOnSuccessListener(documentSnapshot -> {
+        if (getIntent() != null && getIntent().getData() != null){
+            pendingDeeplink = getIntent().getData();
+        }
+        //TODO: this can be refactored into clean functions. it should be. i do not care to do this right now.
+        if (!__DEBUG_DATABASE_CLEAR) {
+            Log.d("Firestore", "Searching for user in database...");
+            usersRef.document(id).get()
+                    .addOnSuccessListener(documentSnapshot -> {
 
-                    if (documentSnapshot.exists()) {
-                        user = documentSnapshot.toObject(User.class);
-                        Log.d("Firestore", "User found");
+                        if (documentSnapshot.exists()) {
+                            user = documentSnapshot.toObject(User.class);
+                            Log.d("Firestore", "User found");
 
-                        if (user.isAdmin()) {
-                            //TODO: navigate to admin fragment
+                            if (user.isAdmin()) {
+                                if (pendingDeeplink != null) {
+                                    handleDeepLink();
+
+                                } else {
+
+                                    navController.navigate(R.id.admin_main_screen);
+                                }
+                            }
+
+                            if (!user.getSelectedEvents().isEmpty()) {
+                                if (pendingDeeplink != null) {
+                                    handleDeepLink();
+                                } else {
+                                    navController.navigate(R.id.fragment_pending_events);
+
+                                }
+                            }
+
+                            // else, nav to the main fragment
+                            if (pendingDeeplink != null) {
+                                handleDeepLink();
+
+                            } else {
+                                navController.navigate(R.id.fragment_main);
+                            }
+                        } else {
+                            newUserBuilder(id, navController);  // build user
+
                         }
 
-                        if (!user.getSelectedEvents().isEmpty()) {
-                            navController.navigate(R.id.fragment_pending_events);
-                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        throw new RuntimeException("listen, we fucked up.");
+                    });
+        } else {
+            // add dummy data
+            clearDBAndSeed(
+                    () -> {
+                        Log.d("Firestore", "Searching for user in database...");
+                        usersRef.document(id).get()
+                                .addOnSuccessListener(documentSnapshot -> {
 
-                        // else, nav to the main fragment
-                        navController.navigate(R.id.fragment_main);
-                    }
-                    else {
-                        newUserBuilder(id, navController);  // build user
+                                    if (documentSnapshot.exists()) {
+                                        user = documentSnapshot.toObject(User.class);
+                                        Log.d("Firestore", "User found");
 
-                    }
+                                        if (user.isAdmin()) {
+                                            if (pendingDeeplink != null) {
+                                                handleDeepLink();
 
-                })
-                .addOnFailureListener(e -> {
-                    throw new RuntimeException("listen, we fucked up.");
-                });
+                                            } else {
 
-        // add dummy data
-        clearAndAddDummyEvents();  // WARNING: THIS IS AN ASYNC RELIANT FUNCTION
+                                                navController.navigate(R.id.admin_main_screen);
+                                            }
+                                        }
 
-        db = FirebaseFirestore.getInstance();
-        eventsRef = db.collection("Events");
-        usersRef = db.collection("Users");
+                                        if (!user.getSelectedEvents().isEmpty()) {
+                                            if (pendingDeeplink != null) {
+                                                handleDeepLink();
+                                            } else {
+                                                navController.navigate(R.id.fragment_pending_events);
 
-        // get database events (this is fine, we don't have that many entries)
-        eventsRef.get().addOnSuccessListener(querySnapshot -> {
-            ArrayList<Event> events = new ArrayList<>();
-            for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                Event event = doc.toObject(Event.class);
-                events.add(event);
-            }
+                                            }
+                                        }
 
-            eventViewModel.setLocalEvents(events);
+                                        // else, nav to the main fragment
+                                        if (pendingDeeplink != null) {
+                                            handleDeepLink();
 
-        });
+                                        } else {
+                                            navController.navigate(R.id.fragment_main);
+                                        }
+                                    } else {
+                                        newUserBuilder(id, navController);  // build user
+
+                                    }
+
+                                })
+                                .addOnFailureListener(e -> {
+                                    throw new RuntimeException("listen, we fucked up.");
+                                });
+                    });
+        }
+
+
 
     }
 
+    /**
+     * handles deeplink on new intent
+     * @param intent The new intent that was used to start the activity
+     *
+     */
+    @Override
+    protected void onNewIntent(@NonNull Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent.getData() != null){
+            pendingDeeplink = intent.getData();
+
+        } if (user != null){
+            handleDeepLink();
+
+        }
+    }
+
+    /**
+     * sets up the pending deeplinks for qr codes
+     */
+    private void handleDeepLink(){
+        if (pendingDeeplink == null){
+            return;
+        }
+
+        String eventId = pendingDeeplink.getQueryParameter("id");
+        String eventDocPath = "Events/" + eventId;
+
+        db.document(eventDocPath).get()
+                .addOnSuccessListener(
+                        doc -> {
+                            Event event = doc.toObject(Event.class);
+                            svm.setEvent(event);
+                            pendingDeeplink = null;
+                            navController.navigate(R.id.fragment_view_event_user);
+                        }
+                );
+
+
+    }
+
+    /**
+     * creates a dialogfragment to get user information and sets up static user variable
+     * @param id id of teh android device
+     * @param navController navController for the navigation
+     */
     public void newUserBuilder(String id, NavController navController) {
         Log.e("Firestore", "User does not exist! Creating new user...");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -142,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
                     // TALK TO RAMIZ ABT THIS!!!!!!
                     // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events
                     DocumentReference userDocRef = usersRef.document(id);
+                    FirebaseMessaging.getInstance().subscribeToTopic(id);
 
                     User newUser = new User(name1, email2, address2, phoneNum2, id, userDocRef);
                     userDocRef.set(newUser)
@@ -149,7 +281,12 @@ public class MainActivity extends AppCompatActivity {
                                     aVoid -> {
                                         Log.d("Firestore", "User has been created!");
                                         MainActivity.user = newUser;
-                                        navController.navigate(R.id.fragment_main);
+
+                                        if (pendingDeeplink != null){
+                                            handleDeepLink();
+                                        } else{
+                                            navController.navigate(R.id.fragment_main);
+                                        }
 
                                     }
 
@@ -169,6 +306,9 @@ public class MainActivity extends AppCompatActivity {
         //return newUser;
     }
 
+    /**
+     * sets binding to null
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

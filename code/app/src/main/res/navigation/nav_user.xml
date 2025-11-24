@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_user"
+    app:startDestination="@id/fragment_main">
+
+    <fragment
+        android:id="@+id/fragment_main"
+        android:name="com.example.camaraderie.dashboard.MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action android:id="@+id/action_main_to_event"
+            app:destination="@id/fragment_view_event_user" />
+        <action android:id="@+id/action_main_to_my_events"
+            app:destination="@id/fragment_view_my_events" />
+        <action android:id="@+id/action_main_to_create"
+            app:destination="@id/fragment_create_event_testing" />
+        <action android:id="@+id/action_main_to_update_user"
+            app:destination="@id/update_user" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_view_event_user"
+        android:name="com.example.camaraderie.event_screen.UserViewEventFragment"
+        tools:layout="@layout/fragment_view_event_user">
+
+        <argument
+            android:name="eventDocRefPath"
+            app:argType="string" />
+
+        <action android:id="@+id/action_event_to_waitlist"
+            app:destination="@id/fragment_view_waitlist" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_view_waitlist"
+        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        tools:layout="@layout/fragment_view_attendees" />
+
+    <fragment
+        android:id="@+id/fragment_view_my_events"
+        android:name="com.example.camaraderie.my_events.ViewMyEventsFragment"
+        tools:layout="@layout/fragment_view_my_events" />
+
+    <fragment
+        android:id="@+id/fragment_create_event_testing"
+        android:name="com.example.camaraderie.event_screen.CreateEventFragment"
+        tools:layout="@layout/fragment_create_event_testing" />
+
+    <fragment
+        android:id="@+id/update_user"
+        android:name="com.example.camaraderie.UpdateUserFragment"
+        tools:layout="@layout/fragment_update_user" />
+
+</navigation>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_root.xml"
+    app:startDestination="@id/fragment_loading_screen">
+
+    <fragment
+        android:id="@+id/fragment_loading_screen"
+        android:name="com.example.camaraderie.LoadingScreenFragment"
+        tools:layout="@layout/fragment_loading_screen">
+        <action
+            android:id="@+id/action_loading_to_user"
+            app:destination="@id/nav_user" />
+        <action
+            android:id="@+id/action_loading_to_organizer"
+            app:destination="@id/nav_organizer" />
+        <action
+            android:id="@+id/action_loading_to_admin"
+            app:destination="@id/nav_admin" />
+        <action
+            android:id="@+id/action_loading_to_pending"
+            app:destination="@id/fragment_pending_events" />
+    </fragment>
+
+    <!-- Pending Events stays global so it can return to user dashboard -->
+    <fragment
+        android:id="@+id/fragment_pending_events"
+        android:name="com.example.camaraderie.accepted_screen.UserAcceptedToEventFragment"
+        tools:layout="@layout/fragment_pending_events">
+        <action
+            android:id="@+id/action_fragment_pending_events_to_nav_user"
+            app:destination="@id/nav_user" />
+    </fragment>
+
+    <!-- Include the three subgraphs -->
+    <include app:graph="@navigation/nav_user" />
+    <include app:graph="@navigation/nav_organizer" />
+    <include app:graph="@navigation/nav_admin" />
+
+</navigation>

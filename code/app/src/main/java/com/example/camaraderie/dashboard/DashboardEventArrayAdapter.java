@@ -3,7 +3,9 @@ package com.example.camaraderie.dashboard;
 
 import static com.example.camaraderie.MainActivity.user;
 
+
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +18,20 @@ import androidx.annotation.Nullable;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
 /**
- *This is the class that handles the events in a dashboard by creating them and adding functionality to each event item
+ * DashboardEventArrayAdapter extends ArrayAdapter and is used to display events on the home screen
+ * that the user can join, it formats events to be able to be used in the dashboard
  * */
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
     public OnEventClickListener listener;
 
     /**
-     *
+     * A default constructor
      * @param context
      *  Context of the activity
      * @param events
@@ -37,9 +41,27 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         super(context, 0, events);
     }
 
+    /**
+     * A interface to setup onEventClick to be used later
+     */
+
     public interface OnEventClickListener {
         void onEventClick(Event event);
     }
+
+    /**
+     * getView to initialize the view of the events for this custom array adapter
+     * It allows for use to implement the backend for our various buttons and text
+     * We first set the view to the custom xml we have for each item, and so we inflate it
+     * We grab the information from the xml like the eventName and eventDeadline fields and store
+     * them in textview objects
+     * We then set them to be the correct information
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     * A view that
+     */
 
 
     @NonNull
@@ -68,14 +90,116 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         //hostName.setText(event.getHost().getUsername());
 
         Button joinButton = view.findViewById(R.id.joinButton);
+
+        String path = event.getEventDocRef().getPath();
+
+        /**
+         * We go through each document reference in the waitlist for each user and
+         * If their path is equal to the path of the current document, we say that the user
+         * is in that waitlist and set the boolean to true
+         */
+
+        boolean userInWaitlist = false;
+        System.out.println(event.getEventId());
+        for (DocumentReference ref : user.getWaitlistedEvents()) {
+            if (ref.getPath().equals(path)) {
+                System.out.println(ref.getPath() + " | " + user.getDocRef().getPath());  // TODO: make this a log
+                userInWaitlist = true;
+                break;
+            }
+        }
+
+        /**
+         * If the user is selected then we set the boolean to true
+         */
+
+        if (!userInWaitlist) {
+            for (DocumentReference ref : user.getSelectedEvents()) {
+                if (ref.getPath().equals(path)) {
+                    userInWaitlist = true;
+                    break;
+                }
+            }
+        }
+
+        /**
+         * If the user is accepted then we set the boolean to true
+         */
+
+        if (!userInWaitlist) {
+            for (DocumentReference ref : user.getAcceptedEvents()) {
+                if (ref.getPath().equals(path)) {
+                    userInWaitlist = true;
+                    break;
+                }
+            }
+        }
+
+        /**
+         * If the user we are looking at is the organizer of an event we set it to true
+         */
+
+        // organizer cannot join their own event because that is stupid
+        if (user.getDocRef().equals(event.getHostDocRef())) {
+            userInWaitlist = true;  // change the name later, who cares
+        }
+
+        /**
+         * If the waitlist size of the event is greater than the limit of the waitlist then we set the
+         * boolean to true
+         */
+
+        if (event.getWaitlistLimit() != -1) {
+            if (event.getWaitlist().size() >= event.getWaitlistLimit()) {
+                userInWaitlist = true;
+            }
+        }
+
+        /**
+         * If at any point the the boolean is true then we gray out the button because they
+         * are not eligible to join that event
+         */
+
+        if (userInWaitlist) {
+            joinButton.setEnabled(false);
+            joinButton.setBackgroundColor(Color.GRAY);
+        }
+        else {
+            joinButton.setEnabled(true);
+            joinButton.setBackgroundColor(Color.parseColor("#AAF2C8"));  // original colour
+        }
+
+        /**
+         * We have a join button so that the user can join right then and there and not have to view the
+         * description of the event
+         */
+
         Button descButton = view.findViewById(R.id.seeDescButton);
+
+        /**
+         * When they click the join button, we first gray out the button and disable it so that
+         * they cant join multiple times
+         * We then add the user to the events waitlist and the local objects waitlist attribute as well
+         */
 
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                joinButton.setBackgroundColor(Color.GRAY);
+                joinButton.setEnabled(false);
                 event.addWaitlistUser(user.getDocRef());
+                user.addWaitlistedEvent(event.getEventDocRef());
+
+                // update db
+                user.updateDB();
+                event.updateDB();
             }
         });
+
+        /**
+         * We also have a see description button so that the user can see
+         * the details about the event
+         */
 
         // this might be a null ref, perhaps the code should just exist here?
         descButton.setOnClickListener(new View.OnClickListener() {

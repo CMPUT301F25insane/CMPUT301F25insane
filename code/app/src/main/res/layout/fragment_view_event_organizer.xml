@@ -12,8 +12,9 @@
         android:layout_width="381dp"
         android:layout_height="459dp"
         android:background="@drawable/gradient_for_org_view"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="84dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/org_view_profile_image">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_of_event_name_and_host_image"
@@ -80,6 +81,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/attendeeCountOrganizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="#F6EAEA"
+                android:textColorLink="#DEDEDE"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_deadline_text_org_view" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -159,8 +172,10 @@
             android:id="@+id/mapView_for_org_view"
             android:layout_width="322dp"
             android:layout_height="82dp"
-            tools:layout_editor_absoluteX="31dp"
-            tools:layout_editor_absoluteY="361dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_attendees_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -243,20 +258,34 @@
         android:id="@+id/delete_button_org_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete"
+        android:layout_marginStart="16dp"
         android:backgroundTint="#9E2C0A"
-        app:strokeWidth = "3dp"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="551dp" />
+        android:text="Delete"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
+        app:strokeWidth="3dp" />
 
     <Button
         android:id="@+id/event_edit_button_ord_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#AAD6F2"
+        android:text="Edit"
         android:textColor="@color/black"
-        app:strokeWidth = "3dp"
-        tools:layout_editor_absoluteX="283dp"
-        tools:layout_editor_absoluteY="551dp" />
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
+        app:strokeWidth="3dp" />
+
+    <Button
+        android:id="@+id/OrgEventRunLotteryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="run lottery"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/event_edit_button_ord_view"
+        app:layout_constraintStart_toEndOf="@+id/delete_button_org_view"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_organizer"
+    app:startDestination="@id/fragment_view_my_events">
+
+    <fragment
+        android:id="@+id/fragment_view_my_events"
+        android:name="com.example.camaraderie.my_events.ViewMyEventsFragment"
+        tools:layout="@layout/fragment_view_my_events" />
+
+    <fragment
+        android:id="@+id/fragment_view_waitlist"
+        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        tools:layout="@layout/fragment_view_attendees" />
+
+    <fragment
+        android:id="@+id/_fragment_organizer_view_event"
+        android:name="com.example.camaraderie.event_screen.OrganizerViewEventFragment"
+        android:label="Organizer Event Screen">
+        <action
+            android:id="@+id/action_org_to_waitlist"
+            app:destination="@id/fragment_view_waitlist" />
+        <action
+            android:id="@+id/action_org_to_edit"
+            app:destination="@id/fragment_create_event_testing" />
+
+        <argument
+            android:name="eventDocRefPath"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_organizer_view_photos"
+            app:destination="@id/fragment_organizer_view_photos" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_organizer_view_photos"
+        android:name="com.example.camaraderie.image_stuff.OrganizerViewPhotosFragment"
+        android:label="Organizer View Photos"
+        tools:layout="@layout/fragment_organizer_view_photos">
+
+    </fragment>
+
+</navigation>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_resource"
+    >
+
+    <TextView
+        android:id="@+id/guidelinestextview"
+        android:layout_width="335dp"
+        android:layout_height="498dp"
+        android:fontFamily="@font/cambria"
+        android:gravity="center"
+        android:text="Lottery Selection Guidelines:  Our event lottery system is designed to ensure fairness and transparency for all participants. When an event reaches capacity, users who join the waitlist are entered into a randomized selection process. Each waitlisted user has an equal chance of being selected, regardless of the time they joined the waitlist.  Selected users are notified and given the option to accept or decline their spot. Users who accept are confirmed to attend the event. Users who decline, or who do not respond within a reasonable timeframe, will have their spot made available again.  Event organizers may also remove selected users who have not yet accepted if needed (for example, to rerun the lottery and fill spots). This helps ensure that all available spaces are used and that as many interested participants as possible have the opportunity to attend.  Our goal is to provide a fair and accessible process for everyone interested in participating."
+        android:textColor="@color/white"
+        android:textSize="19dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_above_guidelines"
+        app:layout_constraintVertical_bias="0.101" />
+
+    <Button
+        android:id="@+id/return_button_for_guidelines"
+        android:layout_width="117dp"
+        android:layout_height="49dp"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:text="Return"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guidelinestextview"
+        app:strokeColor="#040404"
+        app:strokeWidth="3dp" />
+
+    <TextView
+        android:id="@+id/header_above_guidelines"
+        android:layout_width="215dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="68dp"
+        android:fontFamily="@font/cambria"
+        android:gravity="center"
+        android:text="@string/header_for_guidelines"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/camaraderie_header_for_guidelines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/cambria_italic"
+        android:text="Camaraderie"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
