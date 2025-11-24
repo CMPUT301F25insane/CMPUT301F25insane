@@ -78,4 +78,5 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-analytics")
 
+    implementation("org.maplibre.gl:android-sdk:11.13.5")
 }
