@@ -8,7 +8,81 @@ on:
   workflow_dispatch:
 
 jobs:
+  ui-tests:
+    name: ui-tests
+    runs-on: 'macos-latest'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # -------------------------
+      # SETUP JDK
+      # -------------------------
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Make gradlew executable
+        working-directory: code
+        run: chmod +x gradlew
+
+      # -------------------------
+      # CACHE GRADLE
+      # -------------------------
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # -------------------------
+      # SETUP ANDROID SDK
+      # -------------------------
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+  
+      # -------------------------
+      # CREATE EMULATOR
+      # -------------------------
+      - name: Create AVD
+        run: |
+          echo "no" | avdmanager create avd \
+            --name test \
+            --package "system-images;android-30;google_apis;x86_64" \
+            --device "pixel"
+      
+      # -------------------------
+      # START EMULATOR
+      # -------------------------
+      - name: Start emulator
+        run: |
+          nohup emulator -avd test -no-audio -no-window -gpu swiftshader_indirect -no-snapshot &
+          adb wait-for-device
+          adb shell settings put global window_animation_scale 0 &
+          adb shell settings put global transition_animation_scale 0 &
+          adb shell settings put global animator_duration_scale 0 &
+        timeout-minutes: 2
+
+      - name: Ensure emulator fully booted
+        run: |
+          while [[ $(adb shell getprop sys.boot_completed 2>/dev/null) != "1" ]]; do
+            sleep 1
+          done
+  
+      # -------------------------
+      # RUN TESTS
+      # -------------------------
+      - name: Run UI tests
+        run: ./gradlew connectedDebugAndroidTest
+        timeout-minutes: 15
+  
   build:
+    name: junit tests
     runs-on: ubuntu-latest
 
     steps:
@@ -37,15 +111,15 @@ jobs:
         run: ./gradlew clean testDebugUnitTest
         
         # android UI tests 
-      - name: Run Instrumented Tests on Emulator (src/androidTest/java)
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 33
-          target: google_apis
-          arch: x86_64
-          profile: pixel_6
-          force-avd-creation: true
-          emulator-options: "-no-snapshot -noaudio -no-boot-anim -camera-back none"
-          disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest
-          working-directory: code
+      # - name: Run Instrumented Tests on Emulator (src/androidTest/java)
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 33
+      #     target: google_apis
+      #     arch: x86_64
+      #     profile: pixel_6
+      #     force-avd-creation: true
+      #     emulator-options: "-no-snapshot -noaudio -no-boot-anim -camera-back none"
+      #     disable-animations: true
+      #     script: ./gradlew connectedDebugAndroidTest
+      #     working-directory: code
