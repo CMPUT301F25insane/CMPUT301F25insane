@@ -42,7 +42,7 @@ dependencies {
 
 
     implementation(libs.firebase.storage)
-
+    implementation ("com.google.zxing:core:3.5.1")
 
     implementation(libs.appcompat)
     implementation(libs.material)
