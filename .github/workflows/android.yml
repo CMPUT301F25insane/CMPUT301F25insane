@@ -49,7 +49,7 @@ jobs:
 
       # DEBUG
       - name: List available system images
-        run: sdkmanager --list
+        run: sdkmanager --list | grep -i "arm64"
   
       # -------------------------
       # CREATE EMULATOR
