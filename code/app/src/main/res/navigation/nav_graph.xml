@@ -92,6 +92,9 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_map"
+            app:destination="@id/map" />
     </fragment>
 
     <fragment
@@ -251,6 +254,16 @@
         <action
             android:id="@+id/action_update_user_to_fragment_guidelines"
             app:destination="@id/fragment_guidelines" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.example.camaraderie.event_screen.LocationMapFragment"
+        android:label="map"
+        tools:layout="@layout/fragment_location_map">
+        <action
+            android:id="@+id/action_map_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
 
