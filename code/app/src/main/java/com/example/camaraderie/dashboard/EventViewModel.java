@@ -69,11 +69,16 @@ public class EventViewModel extends ViewModel {
         });
     }
 
+    private void updateData() {
+
+
+    }
+
     private void runRegistrationDeadline(Event event) {
 
         // run the lottery automatically when the deadline passes
         Date date = new Date();
-        if (event.getRegistrationDeadline().before(date)) {
+        if (event.getRegistrationDeadline().after(date)) {
             return;
         }
 
@@ -83,7 +88,7 @@ public class EventViewModel extends ViewModel {
 
     private Boolean filterPassedEvents(Event event) {
         Date date = new Date();
-        if (event.getEventDate().after(date)) {
+        if (event.getEventDate().before(date)) {
             return false;
         }
 
