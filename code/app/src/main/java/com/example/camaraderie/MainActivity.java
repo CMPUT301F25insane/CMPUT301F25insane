@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Uri pendingDeeplink = null;
 
-    private boolean __DEBUG_DATABASE_CLEAR = true;
+    private boolean __DEBUG_DATABASE_CLEAR = false;
     private com.example.notifications.NotificationView notificationView;
     private NotificationController notificationController;
     private String token;
@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
                         // Get new FCM registration token
                         token = task.getResult();
 
-                        Toast toast = Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG);
-                        toast.show();
+                        //Toast toast = Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG);
+                        //toast.show();
                     }
                 });
 
@@ -321,20 +321,41 @@ public class MainActivity extends AppCompatActivity {
                 DocumentReference userDocRef = usersRef.document(id);
                 FirebaseMessaging.getInstance().subscribeToTopic(id);
 
+
                 User newUser = new User(name1, phoneNum2, email2, address2, id, token, userDocRef);
                 userDocRef.set(newUser)
                         .addOnSuccessListener(
                                 aVoid -> {
                                     Log.d("Firestore", "User has been created!");
                                     MainActivity.user = newUser;
+                                    FirebaseMessaging.getInstance().getToken()
+                                            .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<String> task) {
+                                                    if (!task.isSuccessful()) {
+                                                        Log.w("FCM", "Fetching FCM registration token failed", task.getException());
+                                                        return;
+                                                    }
 
-                                    if (pendingDeeplink != null){
-                                        handleDeepLink();
-                                    } else{
-                                        navController.navigate(R.id.fragment_main);
-                                    }
+                                                    // Get new FCM registration token
+                                                    token = task.getResult();
 
+                                                    //Toast toast = Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG);
+                                                    //toast.show();
+                                                }
+                                            });
+                                    user.setNotificationToken(token);
+                                    userDocRef.update("notificationToken", token);
+                                    user.setDocRef(userDocRef);
+                                    user.updateDB();
+
+                                if (pendingDeeplink != null){
+                                    handleDeepLink();
+                                } else{
+                                    navController.navigate(R.id.fragment_main);
                                 }
+
+                            }
 
                         )
                         .addOnFailureListener(e -> {

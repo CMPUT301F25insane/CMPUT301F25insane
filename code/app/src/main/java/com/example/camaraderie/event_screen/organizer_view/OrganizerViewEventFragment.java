@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
 import com.example.camaraderie.notifications.NotificationController;
 import com.example.camaraderie.notifications.NotificationData;
@@ -189,6 +190,13 @@ public class OrganizerViewEventFragment extends Fragment {
 
 
         });
+
+        binding.showMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_map);
+            }
+        });
     }
 
     /**
@@ -223,8 +231,9 @@ public class OrganizerViewEventFragment extends Fragment {
 
             int index = r.nextInt(event.getWaitlist().size());
             DocumentReference userRef = event.getWaitlist().get(index);
-            String userId = userRef.getId();
-            //Update this function to only work if the user channel exists
+
+            event.getWaitlist().remove(userRef);
+            event.getSelectedUsers().add(userRef);
 
             // Update user document lists
             userRef.update("waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));

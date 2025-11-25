@@ -168,14 +168,26 @@
             app:layout_constraintTop_toBottomOf="@+id/layout_of_event_name_and_host_image"
             app:layout_constraintVertical_bias="0.517" />
 
-        <com.google.android.gms.maps.MapView
+        <!--<com.google.android.gms.maps.MapView
             android:id="@+id/mapView_for_org_view"
             android:layout_width="322dp"
             android:layout_height="82dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_lists_button" />
+            app:layout_constraintTop_toBottomOf="@+id/view_attendees_button" />-->
+
+        <Button
+            android:id="@+id/showMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Map"
+            app:layout_constraintTop_toBottomOf="@id/view_lists_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
