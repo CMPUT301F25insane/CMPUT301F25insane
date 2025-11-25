@@ -195,13 +195,19 @@ public class User implements Serializable {
     /**
      * update user in database
      */
-    public void updateDB() {
+    public void updateDB(Runnable onComplete) {
         // update the DB from the user
         this.docRef.set(this, SetOptions.merge())
-                .addOnSuccessListener(aVoid ->
-                        Log.d("UserRepository", "User updated"))
+                .addOnSuccessListener(aVoid -> {
+                            Log.d("UserRepository", "User updated");
+                            onComplete.run();
+                        })
+
                 .addOnFailureListener(e ->
-                        Log.e("UserRepository", "Error updating user", e));
+                        {
+                            Log.e("UserRepository", "Error updating user", e);
+                            onComplete.run();
+                        });
     }
 
     /**

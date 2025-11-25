@@ -140,7 +140,10 @@ public class MainActivity extends AppCompatActivity {
                             user.setNotificationToken(token);
                             userRef.update("notificationToken", token);
                             user.setDocRef(userRef);
-                            user.updateDB();
+                            user.updateDB( () -> {
+                                // no need to do anything here because it seemed to be working before
+                                return;
+                            });
 
                             if (user.isAdmin()) {
                                 if (pendingDeeplink != null) {
@@ -342,7 +345,9 @@ public class MainActivity extends AppCompatActivity {
                                     user.setNotificationToken(token);
                                     userDocRef.update("notificationToken", token);
                                     user.setDocRef(userDocRef);
-                                    user.updateDB();
+                                    user.updateDB(() -> {
+                                        return;
+                                    });
 
                                 if (pendingDeeplink != null){
                                     handleDeepLink();

@@ -1,8 +1,12 @@
 package com.example.camaraderie.my_events;
 
+import android.util.Log;
+
 import com.example.camaraderie.Event;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.Random;
 
@@ -15,6 +19,8 @@ public class LotteryRunner {
     public static void runLottery(Event event) {
         Random r = new Random();
 
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+
         while (event.getSelectedUsers().size() + event.getAcceptedUsers().size() < event.getCapacity() &&
                 !event.getWaitlist().isEmpty()) {
 
@@ -25,10 +31,13 @@ public class LotteryRunner {
             event.getSelectedUsers().add(userRef);
 
             // Update user document lists
-            userRef.update("waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
-            userRef.update("selectedEvents", FieldValue.arrayUnion(event.getEventDocRef()));
+            batch.update(userRef, "waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
+            batch.update(userRef, "selectedEvents", FieldValue.arrayUnion(event.getEventDocRef()));
         }
 
-        event.updateDB();
+        event.updateDB(() -> {
+            batch.commit().addOnSuccessListener(v -> Log.d("Firebase", "Lottery run for event: " + event.getEventId()))
+                    .addOnFailureListener(e -> Log.e("Firebase", "Error running lottery for event: " + event.getEventId(), e));
+        });
     }
 }

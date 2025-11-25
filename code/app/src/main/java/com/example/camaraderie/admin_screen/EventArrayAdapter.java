@@ -101,8 +101,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
                 user.addWaitlistedEvent(event.getEventDocRef());
 
                 // update db
-                user.updateDB();
-                event.updateDB();
+                user.updateDB(() -> {
+                    event.updateDB(() -> {return;});
+                });
+
             }
         });
 
