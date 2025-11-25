@@ -15,15 +15,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
 import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.google.firebase.firestore.DocumentReference;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
-import java.lang.annotation.Documented;
 import java.util.ArrayList;
 
 /**

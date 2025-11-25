@@ -1,7 +1,7 @@
 package com.example.camaraderie.dashboard;
 
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 
 import android.content.Context;

@@ -1,19 +1,11 @@
 package com.example.camaraderie.image_stuff;
 
-import static android.widget.Toast.LENGTH_SHORT;
-
-import static com.example.camaraderie.MainActivity.user;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,19 +14,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.dashboard.MainFragment;
-import com.example.camaraderie.databinding.FragmentOrganizerViewPhotosBinding;
 import com.example.camaraderie.databinding.FragmentUserViewPhotosBinding;
-import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
-import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Random;
 
 public class UserViewPhotosFragment extends Fragment{
 

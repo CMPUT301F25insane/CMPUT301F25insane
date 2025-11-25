@@ -9,6 +9,7 @@ import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.filters.LargeTest;
 
 import com.example.camaraderie.admin_screen.AdminEventsViewFragment;
+import com.example.camaraderie.main.MainActivity;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,6 +1,6 @@
 package com.example.camaraderie.admin_screen;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.content.Context;
 import android.graphics.Color;

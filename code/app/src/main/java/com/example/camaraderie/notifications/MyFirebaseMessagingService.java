@@ -1,10 +1,5 @@
-package com.example.camaraderie;
+package com.example.camaraderie.notifications;
 
-import android.util.Log;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
