@@ -82,3 +82,6 @@ dependencies {
 }
 
 
+
+    implementation("org.maplibre.gl:android-sdk:11.13.5")
+}
