@@ -1,6 +1,6 @@
 package com.example.camaraderie.updateUserStuff;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,10 +19,7 @@ import com.example.camaraderie.databinding.FragmentUpdateUserBinding;
 import com.example.camaraderie.utilStuff.UserDeleter;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.WriteBatch;
 
 /**
  * This is the screen for users updating their information.

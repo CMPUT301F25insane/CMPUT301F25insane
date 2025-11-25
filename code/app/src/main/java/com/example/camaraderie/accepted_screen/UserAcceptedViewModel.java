@@ -1,16 +1,13 @@
 package com.example.camaraderie.accepted_screen;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.camaraderie.MainActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
-
-import org.checkerframework.common.returnsreceiver.qual.This;
 
 /** This is the view model meant to ease the transferring of data between the fragment and array adapter
  * It extends the ViewModel class and we use it to implement custom methods to make our code easier and cleaner to

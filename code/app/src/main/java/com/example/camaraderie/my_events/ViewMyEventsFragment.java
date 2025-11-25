@@ -2,7 +2,7 @@ package com.example.camaraderie.my_events;
 
 import android.os.Bundle;
 import android.util.Log;
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.FragmentViewMyEventsBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;

@@ -1,12 +1,10 @@
-package com.example.camaraderie;//
+package com.example.camaraderie.main;//
 
 
 import static android.app.ProgressDialog.show;
 import static com.example.camaraderie.utilStuff.Util.*;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,19 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.activity.OnBackPressedDispatcher;
 
 
+import com.example.camaraderie.Event;
+import com.example.camaraderie.R;
+import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.User;
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
@@ -38,13 +37,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.security.Permissions;
-import java.util.ArrayList;
 
 /**
  * The main activity of the app. Deals with QR code scans,login, and initial navigation.

@@ -1,6 +1,6 @@
 package com.example.camaraderie.admin_screen;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.os.Bundle;
 
@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.activity.OnBackPressedDispatcher;
 
 import android.view.LayoutInflater;
 import android.view.View;

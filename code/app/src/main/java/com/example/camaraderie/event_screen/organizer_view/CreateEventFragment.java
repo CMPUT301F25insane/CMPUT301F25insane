@@ -1,6 +1,6 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.app.DatePickerDialog;
 import android.net.Uri;
@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;

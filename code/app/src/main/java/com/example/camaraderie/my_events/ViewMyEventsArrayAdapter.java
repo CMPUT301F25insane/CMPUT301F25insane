@@ -1,7 +1,7 @@
 package com.example.camaraderie.my_events;
 
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -24,8 +24,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 

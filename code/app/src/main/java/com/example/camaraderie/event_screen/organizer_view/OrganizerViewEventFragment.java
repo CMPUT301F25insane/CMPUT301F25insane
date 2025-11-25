@@ -2,7 +2,7 @@ package com.example.camaraderie.event_screen.organizer_view;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,10 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
-import com.example.camaraderie.notifications.NotificationController;
-import com.example.camaraderie.notifications.NotificationData;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
