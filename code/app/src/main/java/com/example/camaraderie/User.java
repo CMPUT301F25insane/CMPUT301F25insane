@@ -2,15 +2,11 @@ package com.example.camaraderie;//
 
 import android.util.Log;
 
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * This is a class that defines a user. Admin privileges granted by setting admin to true.
@@ -61,7 +57,7 @@ public class User implements Serializable {
     /**
      * empty constructor for firebase to use
      */
-    public User(){} // for firebase
+    public User(String host, String number, String mail, String address, String id, DocumentReference hostRef){} // for firebase
 
     /**
      * Get the events the user has created
