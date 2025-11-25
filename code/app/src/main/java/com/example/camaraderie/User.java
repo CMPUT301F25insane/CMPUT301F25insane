@@ -280,6 +280,7 @@ public class User implements Serializable {
     public void addCreatedEvent(DocumentReference eventRef) {
         if (!userCreatedEvents.contains(eventRef)) {
             userCreatedEvents.add(eventRef);
+            updateDB(()-> {});
         }
     }
 
@@ -296,5 +297,30 @@ public class User implements Serializable {
     public void removeCancelledEvent(DocumentReference cancelledEvent) {
         cancelledEvents.remove(cancelledEvent);
     }
+
+    public void setAcceptedEvents(ArrayList<DocumentReference> acceptedEvents) {
+        this.acceptedEvents = acceptedEvents;
+    }
+
+    public void setCancelledEvents(ArrayList<DocumentReference> cancelledEvents) {
+        this.cancelledEvents = cancelledEvents;
+    }
+
+    public void setSelectedEvents(ArrayList<DocumentReference> selectedEvents) {
+        this.selectedEvents = selectedEvents;
+    }
+
+    public void setUserCreatedEvents(ArrayList<DocumentReference> userCreatedEvents) {
+        this.userCreatedEvents = userCreatedEvents;
+    }
+
+    public void setWaitlistedEvents(ArrayList<DocumentReference> waitlistedEvents) {
+        this.waitlistedEvents = waitlistedEvents;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
+
 
