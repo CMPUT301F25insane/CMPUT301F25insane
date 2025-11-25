@@ -15,6 +15,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentMyCreatedEventsBinding;
 
+import java.util.ArrayList;
+
 /**
  * Screen for events that the user has created.
  */
@@ -70,16 +72,21 @@ public class ViewMyCreatedEventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.backButtonForMyCreatedEvents.setOnClickListener(v -> nav.popBackStack());
+
+        adapter = new MyCreatedEventsArrayAdapter(requireContext(), 0, new ArrayList<>(), nav, svm);
+        adapter.setNotifyOnChange(true);
+        binding.listView.setAdapter(adapter);
+
         vm.getUserCreatedEvents(
                 events -> {
                     System.out.println(events.size());
-                    adapter = new MyCreatedEventsArrayAdapter(requireContext(), 0, events, nav, svm);
-                    adapter.notifyDataSetChanged();
-                    adapter.setNotifyOnChange(true);
+                    adapter.addAll(events);
+                    adapter.notifyDataSetChanged();  // PARANOIAAAAAAA
                 });
 
-        binding.listView.setAdapter(adapter);
-        binding.backButtonForMyCreatedEvents.setOnClickListener(v -> nav.popBackStack());
+
+
         //binding.textView5.setText("My created events");
     }
 
