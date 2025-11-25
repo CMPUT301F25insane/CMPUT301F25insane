@@ -48,8 +48,8 @@ jobs:
         uses: android-actions/setup-android@v3
 
       # DEBUG
-      - name: List available system images
-        run: sdkmanager --list | grep -i "arm64"
+      #- name: List available system images
+      #  run: sdkmanager --list | grep -i "arm64"
 
       - name: Install required packages
         run: |
@@ -73,11 +73,10 @@ jobs:
       # -------------------------
       - name: Start emulator
         run: |
-          EMULATOR=$ANDROID_HOME/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless
   
-          chmod +x $EMULATOR
+          chmod +x emulator
         
-          nohup $EMULATOR \
+          nohup emulator \
               -avd test \
               -no-window \
               -no-audio \
