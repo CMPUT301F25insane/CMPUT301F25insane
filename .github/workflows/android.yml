@@ -141,8 +141,9 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_6
-          
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -metrics-collection
+
+          # debug: removed '-gpu swiftshader_indirect'
+          emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -camera-back none -metrics-collection
           disable-animations: true
           script: cd code && ./gradlew connectedDebugAndroidTest
           timeout-minutes: 20
