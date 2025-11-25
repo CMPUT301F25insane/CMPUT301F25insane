@@ -122,7 +122,9 @@ jobs:
       # Setup Gradle caching
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
-
+      # DEBUG
+      - name: List available system images
+        run: sdkmanager --list | grep -i "x86"
       - name: debug step for emulator entitlements.xml
         run: ls ~/Library/Android/sdk/emulator/qemu/darwin-arm64
 
