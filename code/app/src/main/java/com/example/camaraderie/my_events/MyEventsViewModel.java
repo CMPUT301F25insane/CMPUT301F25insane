@@ -43,8 +43,10 @@ public class MyEventsViewModel extends ViewModel {
             ref.get().addOnSuccessListener(doc -> {
                 Event e = doc.toObject(Event.class);
                 if (e != null) {
-                    runRegistrationDeadline(e);
-                    events.add(e);
+                    if (filterPassedEvents(e)) {
+                        runRegistrationDeadline(e);
+                        events.add(e);
+                    }
                 }
 
                 if (events.size() == refs.size()) {
@@ -67,5 +69,14 @@ public class MyEventsViewModel extends ViewModel {
 
         runLottery(event);
 
+    }
+
+    private Boolean filterPassedEvents(Event event) {
+        Date date = new Date();
+        if (event.getEventDate().after(date)) {
+            return false;
+        }
+
+        return true;
     }
 }
