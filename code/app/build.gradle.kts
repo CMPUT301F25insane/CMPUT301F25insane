@@ -79,9 +79,5 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
     implementation("androidx.activity:activity:1.11.0")
-}
-
-
-
     implementation("org.maplibre.gl:android-sdk:11.13.5")
 }

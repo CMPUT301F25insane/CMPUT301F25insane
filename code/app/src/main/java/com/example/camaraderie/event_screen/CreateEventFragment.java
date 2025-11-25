@@ -139,7 +139,6 @@ public class CreateEventFragment extends Fragment {
                     }
                 });
 
-        binding.createEventDate.setOnClickListener(new View.OnClickListener() {
         binding.inputFieldForCreateEventDate.setOnClickListener(new View.OnClickListener() {
             /**
              * sets date dialogfragment
