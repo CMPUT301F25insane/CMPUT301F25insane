@@ -34,6 +34,7 @@
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_organizer_view_photos"
             app:destination="@id/fragment_organizer_view_photos" />
 
+
     </fragment>
 
     <fragment

@@ -149,6 +149,17 @@ public class UserViewEventFragment extends Fragment {
                 nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
             }
         });
+
+        binding.viewPhotosUserView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Send the user to a fragment that has a view of the current photo
+                Bundle args = new Bundle();
+                args.putString("eventId", event.getEventId());
+                nav.navigate(R.id.action__fragment_user_view_event_to_fragment_user_view_photos, args);
+            }
+        });
     }
 
     /**

@@ -30,6 +30,10 @@
 
         <action android:id="@+id/action_event_to_waitlist"
             app:destination="@id/fragment_view_waitlist" />
+
+        <action android:id="@+id/action__fragment_user_view_event_to_fragment_user_view_photos"
+            app:destination="@id/fragment_user_view_photos"/>
+
     </fragment>
 
     <fragment
@@ -51,5 +55,13 @@
         android:id="@+id/update_user"
         android:name="com.example.camaraderie.UpdateUserFragment"
         tools:layout="@layout/fragment_update_user" />
+
+    <fragment
+        android:id="@+id/fragment_user_view_photos"
+        android:name="com.example.camaraderie.image_stuff.UserViewPhotosFragment"
+        android:label="User View Photos"
+        tools:layout="@layout/fragment_user_view_photos">
+    </fragment>
+
 
 </navigation>
