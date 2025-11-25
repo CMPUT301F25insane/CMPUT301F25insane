@@ -83,6 +83,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.x")
     implementation("com.firebaseui:firebase-ui-storage:9.0.0")
 
+    //commit check
     implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
     implementation("com.google.firebase:firebase-storage")
 }
