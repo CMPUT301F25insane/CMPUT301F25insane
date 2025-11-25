@@ -123,6 +123,9 @@ jobs:
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
 
+      - name: debug step for emulator entitlements.xml
+        run: ls ~/Library/Android/sdk/emulator/qemu/darwin-arm64
+
       - name: Run Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -131,10 +134,10 @@ jobs:
           arch: arm64-v8a
           profile: pixel_6
           
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -metrics-collection
           disable-animations: true
-          # Navigate to your code directory and run the test
           script: cd code && ./gradlew connectedDebugAndroidTest
+          timeout-minutes: 20
   
   build:
     name: junit tests
