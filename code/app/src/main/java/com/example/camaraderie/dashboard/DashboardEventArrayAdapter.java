@@ -180,6 +180,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
          * When they click the join button, we first gray out the button and disable it so that
          * they cant join multiple times
          * We then add the user to the events waitlist and the local objects waitlist attribute as well
+         * add the event to the user's registration history
          */
 
         joinButton.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +190,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
                 joinButton.setEnabled(false);
                 event.addWaitlistUser(user.getDocRef());
                 user.addWaitlistedEvent(event.getEventDocRef());
+                user.addEventToHistory(event.getEventDocRef());
 
                 // update db
                 user.updateDB();

@@ -99,6 +99,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
                 join.setEnabled(false);
                 event.addWaitlistUser(user.getDocRef());
                 user.addWaitlistedEvent(event.getEventDocRef());
+                user.addEventToHistory(event.getEventDocRef());
 
                 // update db
                 user.updateDB();

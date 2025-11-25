@@ -193,6 +193,7 @@ public class UserViewEventFragment extends Fragment {
     private void handleJoin() {
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
         user.addWaitlistedEvent(event.getEventDocRef());
+        user.addEventToHistory(event.getEventDocRef());
         updateUI(event);
         nav.navigate(R.id.fragment_main);
     }
@@ -203,6 +204,7 @@ public class UserViewEventFragment extends Fragment {
     private void handleUnjoin() {
         event.getEventDocRef().update("waitlist", FieldValue.arrayRemove(user.getDocRef()));
         user.removeWaitlistedEvent(event.getEventDocRef());
+        user.removeEventFromHistory(event.getEventDocRef());
         updateUI(event);
         nav.navigate(R.id.fragment_main);
     }
