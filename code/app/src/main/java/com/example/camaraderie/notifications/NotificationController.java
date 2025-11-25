@@ -14,14 +14,14 @@ public class NotificationController {
 
     private String CHANNEL_ID;
     private Context context;
-    private com.example.notifications.NotificationView view;
+    private NotificationView view;
 
     /**
      * constructor for NotificationController
      * @param context current context
      * @param view the fragment for which to set this controller to
      */
-    public NotificationController(Context context, com.example.notifications.NotificationView view) {
+    public NotificationController(Context context, NotificationView view) {
         this.context = context.getApplicationContext();
         this.view = view;
         //createNotificationChannel();

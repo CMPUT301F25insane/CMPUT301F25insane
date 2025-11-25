@@ -32,6 +32,7 @@ import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
 import com.example.camaraderie.notifications.NotificationController;
+import com.example.camaraderie.notifications.NotificationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private Uri pendingDeeplink = null;
 
     private boolean __DEBUG_DATABASE_CLEAR = false;
-    private com.example.notifications.NotificationView notificationView;
+    private NotificationView notificationView;
     private NotificationController notificationController;
     private String token;
 

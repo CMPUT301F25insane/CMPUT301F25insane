@@ -1,4 +1,4 @@
-package com.example.notifications;
+package com.example.camaraderie.notifications;
 
 public interface NotificationView {
     void onNotificationSent(int notificationId);
