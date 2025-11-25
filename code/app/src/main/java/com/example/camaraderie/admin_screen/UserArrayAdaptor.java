@@ -130,8 +130,9 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
 //                }
 //                user1.getDocRef().delete();
                 UserDeleter deleter = new UserDeleter(user1);
+                String id = user1.getUserId();
                 deleter.DeleteUser(()->{
-                    Log.d("Firebase", "Admin has deleted user");
+                    Log.d("Firebase", "Admin has deleted user" + id);
                     notifyDataSetChanged();
                 });
             }
