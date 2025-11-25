@@ -26,6 +26,7 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentOrganizerViewPhotosBinding;
+import com.example.camaraderie.databinding.FragmentUserViewPhotosBinding;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
@@ -44,7 +45,7 @@ public class UserViewPhotosFragment extends Fragment{
 
     private Event event;
 
-    private FragmentOrganizerViewPhotosBinding binding;
+    private FragmentUserViewPhotosBinding binding;
 
     /**
      * sets svm, nav, and db.
@@ -77,7 +78,7 @@ public class UserViewPhotosFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentOrganizerViewPhotosBinding.inflate(inflater, container, false);
+        binding = FragmentUserViewPhotosBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
     }
