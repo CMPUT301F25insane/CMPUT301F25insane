@@ -73,18 +73,25 @@ jobs:
       # -------------------------
       - name: Start emulator
         run: |
-
-          EMULATOR=$ANDROID_HOME/emulator/qemu/darwin-aarch64/emulator-arm64
-
-          ls $ANDROID_HOME/emulator/qemu/darwin-aarch64/
-          nohup emulator -avd test -no-audio -no-window -gpu swiftshader_indirect -no-snapshot &
+          EMULATOR=$ANDROID_HOME/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless
+  
+          chmod +x $EMULATOR
+        
+          nohup $EMULATOR \
+              -avd test \
+              -no-window \
+              -no-audio \
+              -no-snapshot \
+              -gpu swiftshader_indirect \
+              -qemu -cpu max &
+        
           adb wait-for-device
-
+        
           until adb shell getprop sys.boot_completed | grep -m 1 "1"; do sleep 1; done
-          
-          adb shell settings put global window_animation_scale 0 &
-          adb shell settings put global transition_animation_scale 0 &
-          adb shell settings put global animator_duration_scale 0 &
+        
+          adb shell settings put global window_animation_scale 0
+          adb shell settings put global transition_animation_scale 0
+          adb shell settings put global animator_duration_scale 0
         timeout-minutes: 5
 
       - name: Ensure emulator fully booted
