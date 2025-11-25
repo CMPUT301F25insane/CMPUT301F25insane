@@ -163,6 +163,13 @@ public class OrganizerViewEventFragment extends Fragment {
             }
 
         });
+
+        binding.showMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_map);
+            }
+        });
     }
 
     /**

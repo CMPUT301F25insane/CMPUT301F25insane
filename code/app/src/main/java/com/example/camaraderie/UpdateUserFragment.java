@@ -96,6 +96,7 @@ public class UpdateUserFragment extends Fragment {
             }
         });
 
+
         binding.userDelete.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
 

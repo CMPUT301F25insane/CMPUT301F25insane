@@ -120,6 +120,7 @@
             app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
             app:layout_constraintVertical_bias="1.0" />
 
+        <!--
         <FrameLayout
             android:id="@+id/orgEventViewGoogleMapsLayoutPlaceHolder"
             android:layout_width="365dp"
@@ -127,7 +128,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-        </FrameLayout>
+        </FrameLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
