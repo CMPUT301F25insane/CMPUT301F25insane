@@ -39,6 +39,10 @@
         <action
             android:id="@+id/action_fragment_view_event_user_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+
+        <action android:id="@+id/action__fragment_user_view_event_to_fragment_user_view_photos"
+            app:destination="@id/fragment_user_view_photos"/>
+
     </fragment>
 
     <fragment
@@ -65,7 +69,7 @@
     <fragment
         android:id="@+id/fragment_create_event_testing"
         android:name="com.example.camaraderie.event_screen.organizer_view.CreateEventFragment"
-        tools:layout="@layout/fragment_create_event_testing" >
+        tools:layout="@layout/fragment_create_event" >
         <action
             android:id="@+id/action_fragment_create_event_testing_to_fragment_main2"
             app:destination="@id/fragment_main" />
@@ -79,5 +83,13 @@
             android:id="@+id/action_update_user_to_fragment_main2"
             app:destination="@id/fragment_main" />
     </fragment>
+
+    <fragment
+        android:id="@+id/fragment_user_view_photos"
+        android:name="com.example.camaraderie.image_stuff.UserViewPhotosFragment"
+        android:label="User View Photos"
+        tools:layout="@layout/fragment_user_view_photos">
+    </fragment>
+
 
 </navigation>

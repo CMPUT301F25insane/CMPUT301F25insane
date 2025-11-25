@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -23,7 +24,12 @@ import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentOrganizerViewPhotosBinding;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.UUID;
 
 public class OrganizerViewPhotosFragment extends Fragment {
 
@@ -92,6 +98,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
                         binding.imageView2.setImageURI(uri);
                         //Add code to save the photo into the database
+                        uploadImageToFirebase(uri);
                     } else {
                         Log.d("PhotoPicker", "No media selected");
                     }
@@ -100,6 +107,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
 
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
+            Log.d("Event:", event.getEventId());
             eventDocRef = event.getEventDocRef();
         });
 
@@ -114,5 +122,44 @@ public class OrganizerViewPhotosFragment extends Fragment {
 
         });
 
+    }
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        // Show progress indicator
+
+        // Create reference to Firebase Storage
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        String filename = "event_photos/" + System.currentTimeMillis() + "_" + UUID.randomUUID().toString() + ".jpg";
+        StorageReference imageRef = storageRef.child(filename);
+
+        // Upload file to Firebase Storage
+        imageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // Get download URL
+                    imageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                        // Save download URL to Firestore
+                        savePhotoUrlToFirestore(downloadUri.toString());
+                        Log.d("PhotoPicker", "Image uploaded successfully: " + downloadUri);
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("PhotoPicker", "Upload failed: " + e.getMessage());
+                })
+                .addOnProgressListener(snapshot -> {
+                    // Show upload progress if needed
+                    double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                    Log.d("PhotoPicker", "Upload is " + progress + "% done");
+                });
+    }
+
+    private void savePhotoUrlToFirestore(String imageUrl) {
+        // Add the download URL to the photos array in Firestore
+        eventDocRef.update("photos", FieldValue.arrayUnion(imageUrl))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("PhotoPicker", "Photo URL saved to Firestore");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("PhotoPicker", "Error saving photo URL: " + e.getMessage());
+                });
     }
 }
