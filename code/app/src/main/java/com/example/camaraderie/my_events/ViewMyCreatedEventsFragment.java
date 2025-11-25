@@ -72,6 +72,7 @@ public class ViewMyCreatedEventsFragment extends Fragment {
 
         vm.getUserCreatedEvents(
                 events -> {
+                    System.out.println(events.size());
                     adapter = new MyCreatedEventsArrayAdapter(requireContext(), 0, events, nav, svm);
                     adapter.notifyDataSetChanged();
                     adapter.setNotifyOnChange(true);

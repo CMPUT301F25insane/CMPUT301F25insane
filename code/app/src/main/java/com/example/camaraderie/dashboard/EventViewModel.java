@@ -1,5 +1,7 @@
 package com.example.camaraderie.dashboard;//
 
+import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
+
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -13,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -52,12 +55,39 @@ public class EventViewModel extends ViewModel {
             assert querySnapshot != null;
             for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                 Event event = doc.toObject(Event.class);
-                events.add(event);
+
+                if (event != null) {
+                    if (filterPassedEvents(event)) {
+                        runRegistrationDeadline(event);
+                        events.add(event);
+                    }
+                }
             }
 
             localEvents.setValue(events);
 
         });
+    }
+
+    private void runRegistrationDeadline(Event event) {
+
+        // run the lottery automatically when the deadline passes
+        Date date = new Date();
+        if (event.getRegistrationDeadline().before(date)) {
+            return;
+        }
+
+        runLottery(event);
+
+    }
+
+    private Boolean filterPassedEvents(Event event) {
+        Date date = new Date();
+        if (event.getEventDate().after(date)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

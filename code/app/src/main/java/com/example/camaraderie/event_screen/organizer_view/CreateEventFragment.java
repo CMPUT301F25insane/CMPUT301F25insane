@@ -323,11 +323,12 @@ public class CreateEventFragment extends Fragment {
 
                         user.addCreatedEvent(eventRef);
 
-                        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-                        vm.setEvent(newEvent);
-
-                        NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                        user.updateDB(() -> {
+                            SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+                            vm.setEvent(newEvent);
+                            NavHostFragment.findNavController(CreateEventFragment.this)
+                                    .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                        });
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
 
