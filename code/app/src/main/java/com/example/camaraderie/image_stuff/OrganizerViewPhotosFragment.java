@@ -100,6 +100,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
 
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
+            Log.d("Event:", event.getEventId());
             eventDocRef = event.getEventDocRef();
         });
 
