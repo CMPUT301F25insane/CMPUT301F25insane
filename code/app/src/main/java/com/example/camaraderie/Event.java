@@ -165,12 +165,11 @@ public class Event {
 
     }
 
-<<<<<<< HEAD
     //location getters and setters
     public boolean isGeoEnabled() {
         return geoEnabled;
     }
-=======
+
     /**
      * Constructor for event
      * @param eventName
@@ -213,8 +212,6 @@ public class Event {
         this.eventPosterUri = uri;
 
     }
-
->>>>>>> 9456355f6dc9634830a3accaf3eb9b75ecaf48b1
 
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
