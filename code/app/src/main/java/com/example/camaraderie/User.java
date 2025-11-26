@@ -35,14 +35,9 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
-
-<<<<<<< HEAD
     //geolocation
     private boolean geoEnabled;
-=======
     private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
-
->>>>>>> 35aafcd78b6cedb5a4f0ba6fb08a69f02eb4a3a1
 
     /**
      * Constructor for User

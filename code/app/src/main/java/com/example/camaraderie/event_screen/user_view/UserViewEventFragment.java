@@ -31,13 +31,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-<<<<<<< HEAD:code/app/src/main/java/com/example/camaraderie/event_screen/UserViewEventFragment.java
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-=======
->>>>>>> 9456355f6dc9634830a3accaf3eb9b75ecaf48b1:code/app/src/main/java/com/example/camaraderie/event_screen/user_view/UserViewEventFragment.java
 /**
  * The screen for user's viewing an uploaded event
  */
@@ -222,7 +219,6 @@ public class UserViewEventFragment extends Fragment {
      * handles join, updates database
      */
     private void handleJoin() {
-<<<<<<< HEAD:code/app/src/main/java/com/example/camaraderie/event_screen/UserViewEventFragment.java
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
         user.addWaitlistedEvent(event.getEventDocRef());
 
@@ -234,7 +230,6 @@ public class UserViewEventFragment extends Fragment {
 
         updateUI(event);
         nav.navigate(R.id.fragment_main);
-=======
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
                 .addOnSuccessListener(v -> {
                     user.addWaitlistedEvent(event.getEventDocRef());
@@ -242,7 +237,6 @@ public class UserViewEventFragment extends Fragment {
                 });
 
         //nav.navigate(R.id.fragment_main);
->>>>>>> 9456355f6dc9634830a3accaf3eb9b75ecaf48b1:code/app/src/main/java/com/example/camaraderie/event_screen/user_view/UserViewEventFragment.java
     }
 
     /**
