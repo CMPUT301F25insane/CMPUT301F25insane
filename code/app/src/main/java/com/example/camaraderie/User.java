@@ -308,6 +308,7 @@ public class User implements Serializable {
 
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
+    }
 
     public ArrayList<DocumentReference> getCancelledEvents() {
         return cancelledEvents;

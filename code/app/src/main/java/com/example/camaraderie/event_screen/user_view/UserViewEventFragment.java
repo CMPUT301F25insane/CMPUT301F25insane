@@ -223,9 +223,7 @@ public class UserViewEventFragment extends Fragment {
         user.addWaitlistedEvent(event.getEventDocRef());
 
         //
-        if (user.isGeoEnabled() && event.isGeoEnabled()){
-            getUserLocation();
-        }
+            //getUserLocation();
         //geolocation aspect
 
         updateUI(event);
