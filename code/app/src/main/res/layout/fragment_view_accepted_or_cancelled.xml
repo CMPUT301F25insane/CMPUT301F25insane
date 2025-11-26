@@ -42,8 +42,8 @@
 
     <ListView
         android:id="@+id/usersList"
-        android:layout_width="358dp"
-        android:layout_height="497dp"
+        android:layout_width="375dp"
+        android:layout_height="653dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
