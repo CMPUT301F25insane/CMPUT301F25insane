@@ -29,6 +29,9 @@ public class Event {
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
 
+    //Geolocation - Umran
+    private boolean geoEnabled;
+    private ArrayList<Location> locationArrayList;
 
     private int capacity;  // always > 0
     private int waitlistLimit = -1;
@@ -64,6 +67,8 @@ public class Event {
      * event docref that points to the event in the database
      * @param eventId
      *  Id that uniquely identifies the event
+     * @param geoEnabled
+     *  enable or disable the geolocation requirement for the event
      */
     public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId) {
         this.eventName = eventName;
@@ -76,7 +81,8 @@ public class Event {
         this.hostDocRef = host;
         this.eventDocRef = eventDocRef;
         this.eventId = eventId;
-
+        this.geoEnabled = false;
+        locationArrayList = new ArrayList<Location>();
     }
 
     /**
@@ -159,6 +165,11 @@ public class Event {
 
     }
 
+    //location getters and setters
+    public boolean isGeoEnabled() {
+        return geoEnabled;
+    }
+
     /**
      * Constructor for event
      * @param eventName
@@ -202,10 +213,20 @@ public class Event {
 
     }
 
+    public void setGeoEnabled(boolean geoEnabled) {
+        this.geoEnabled = geoEnabled;
+    }
 
+    public ArrayList<Location> getLocationArrayList() {
+        return locationArrayList;
+    }
 
+    public void setLocationArrayList(Location location) {
+        this.locationArrayList.add(location);
+    }
+    //logic needed for map
 
-//    //public float getPrice() {
+    //    //public float getPrice() {
 //        return price;
 //    }
 

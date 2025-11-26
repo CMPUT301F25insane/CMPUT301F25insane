@@ -1,15 +1,20 @@
 package com.example.camaraderie.accepted_screen;
 
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
 
 import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
+import com.example.camaraderie.Event;
+import com.example.camaraderie.my_events.LotteryRunner;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
+
+import java.util.Objects;
 
 /** This is the view model meant to ease the transferring of data between the fragment and array adapter
  * It extends the ViewModel class and we use it to implement custom methods to make our code easier and cleaner to
@@ -62,10 +67,23 @@ public class UserAcceptedViewModel extends ViewModel {
     public void userDeclineInvite(DocumentReference eventDocRef) {
         user.removeSelectedEvent(eventDocRef);
 
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        batch.update(eventDocRef, "selectedList", FieldValue.arrayRemove(user.getDocRef()));
+        batch.update(eventDocRef, "cancelledList", FieldValue.arrayUnion(user.getDocRef()));
+
         user.updateDB(() -> {
-            eventDocRef.update("selectedList", FieldValue.arrayRemove(user.getDocRef()))
-                    .addOnSuccessListener(aVoid ->
-                            Log.d("Firestore", "User removed from selectedList! (declined invitation)"))
+            batch.commit()
+                    .addOnSuccessListener(aVoid -> {
+
+                        Log.d("Firestore", "User removed from selectedList! (declined invitation)");
+
+                        // rerun lottery
+                        eventDocRef.get()
+                                .addOnSuccessListener(doc -> {
+                                    runLottery(Objects.requireNonNull(doc.toObject(Event.class)));
+                                });
+
+                    })
                     .addOnFailureListener(e ->
                             Log.e("Firestore", "Error removing user", e));
         });
@@ -73,7 +91,7 @@ public class UserAcceptedViewModel extends ViewModel {
 
     /**
      * This function checks to ensure if the selected events arraylist is empty or not
-     * @return
+     * @return bool on whether or not the selected events is empty
      */
 
     public boolean allInvitesResolved() {

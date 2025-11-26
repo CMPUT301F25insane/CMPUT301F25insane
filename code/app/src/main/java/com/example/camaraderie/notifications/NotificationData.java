@@ -1,5 +1,7 @@
 package com.example.camaraderie.notifications;
 
+import com.google.firebase.firestore.DocumentReference;
+
 /**
  * This class represents a basic notification model
  */
@@ -8,6 +10,7 @@ public class NotificationData {
     private int id;
     private String message;
     private String title;
+    private DocumentReference ref;
 
     /**
      * empty constructor for notification, for firebase
@@ -20,10 +23,11 @@ public class NotificationData {
      * @param title notification title or tag
      * @param message notification message
      */
-    public NotificationData(int id, String title, String message) {
+    public NotificationData(int id, String title, String message, DocumentReference ref) {
         this.id = id;
         this.message = message;
         this.title = title;
+        this.ref = ref;
     }
 
     /**
@@ -73,4 +77,14 @@ public class NotificationData {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public DocumentReference getRef() {
+        return ref;
+    }
+
+    public void setRef(DocumentReference ref) {
+        this.ref = ref;
+    }
+
+
 }

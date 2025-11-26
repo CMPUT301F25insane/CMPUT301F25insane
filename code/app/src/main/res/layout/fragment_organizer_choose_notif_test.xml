@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/choosenotifBack"
+        android:layout_width="match_parent"
+        android:layout_height="127dp"
+        android:text="back" />
+
+    <Button
+        android:id="@+id/acceptedNotifButton"
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:text="accepted" />
+
+    <Button
+        android:id="@+id/waitlistNotifButton"
+        android:layout_width="match_parent"
+        android:layout_height="127dp"
+        android:text="waitlist" />
+
+    <Button
+        android:id="@+id/selectedButtonNotifs"
+        android:layout_width="match_parent"
+        android:layout_height="139dp"
+        android:text="Selected" />
+
+    <Button
+        android:id="@+id/cancelledButtonNotif"
+        android:layout_width="match_parent"
+        android:layout_height="167dp"
+        android:text="cancelled" />
+</LinearLayout>

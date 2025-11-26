@@ -24,6 +24,17 @@
     </fragment>
 
     <fragment
+        android:name="com.example.camaraderie.event_screen.organizer_view.OrganizerNotificationFragment"
+        android:id="@+id/organizerNotificationFragment"
+        android:label="organizer notification screen"
+        tools:layout="@layout/fragment_organizer_notification_dialog_test">
+
+        <action
+            android:id="@+id/action_organizerNotificationFragment_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
+    </fragment>
+
+    <fragment
         android:name="com.example.camaraderie.my_events.ViewMyCreatedEventsFragment"
         android:id="@+id/fragment_my_created_events"
         tools:layout="@layout/fragment_my_created_events">
@@ -113,6 +124,9 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_update_user"
             app:destination="@id/update_user" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_organizerNotificationFragment"
+            app:destination="@id/organizerNotificationFragment" />
 
     </fragment>
 

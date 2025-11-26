@@ -43,10 +43,11 @@ public class MyEventsViewModel extends ViewModel {
             ref.get().addOnSuccessListener(doc -> {
                 Event e = doc.toObject(Event.class);
                 if (e != null) {
-                    if (filterPassedEvents(e)) {
-                        runRegistrationDeadline(e);
-                        events.add(e);
-                    }
+                    System.out.println("EVENT LOADED FROM USER: " + e.getEventId());
+                    events.add(e);
+                }
+                else {
+                    Log.e("Firebase", "EVENT " + ref + " COULD NOT BE LOADED FROM USER");
                 }
 
                 if (events.size() == refs.size()) {
@@ -59,24 +60,4 @@ public class MyEventsViewModel extends ViewModel {
         }
     }
 
-    private void runRegistrationDeadline(Event event) {
-
-        // run the lottery automatically when the deadline passes
-        Date date = new Date();
-        if (event.getRegistrationDeadline().before(date)) {
-            return;
-        }
-
-        runLottery(event);
-
-    }
-
-    private Boolean filterPassedEvents(Event event) {
-        Date date = new Date();
-        if (event.getEventDate().after(date)) {
-            return false;
-        }
-
-        return true;
-    }
 }

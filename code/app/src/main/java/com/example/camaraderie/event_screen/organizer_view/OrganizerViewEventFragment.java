@@ -199,6 +199,18 @@ public class OrganizerViewEventFragment extends Fragment {
                 nav.navigate(R.id.action__fragment_organizer_view_event_to_map);
             }
         });
+
+
+        //TODO: make diagolg builder for announcement sending, or separate screen.
+        //TODO: use the new organizernotificationhandler class to deal with that shit.
+        //TODO: flow is as such: handler updates db, db automatically picks up on this (functions) \
+        // and handles it, db handler calls the fcm, fcm calls the receiver,
+        // receiver formats the remoteMessage. then notif is built, then displayed on users device.
+
+        binding.orgNotifScreenButton.setOnClickListener(v -> {
+            nav.navigate(R.id.organizerNotificationFragment);
+        });
+
     }
 
     /**
