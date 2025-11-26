@@ -287,7 +287,6 @@ public class User implements Serializable {
         }
     }
 
-<<<<<<< HEAD
     //geolocation
     public boolean isGeoEnabled() {
         return geoEnabled;
@@ -295,7 +294,7 @@ public class User implements Serializable {
 
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
-=======
+
     public ArrayList<DocumentReference> getCancelledEvents() {
         return cancelledEvents;
     }
@@ -332,7 +331,6 @@ public class User implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
->>>>>>> 9456355f6dc9634830a3accaf3eb9b75ecaf48b1
     }
 }
 
