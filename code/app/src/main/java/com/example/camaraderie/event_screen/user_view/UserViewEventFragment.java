@@ -19,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import static com.example.camaraderie.main.MainActivity.user;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.Location;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
@@ -29,6 +30,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The screen for user's viewing an uploaded event
@@ -214,6 +219,17 @@ public class UserViewEventFragment extends Fragment {
      * handles join, updates database
      */
     private void handleJoin() {
+        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
+        user.addWaitlistedEvent(event.getEventDocRef());
+
+        //
+        if (user.isGeoEnabled() && event.isGeoEnabled()){
+            getUserLocation();
+        }
+        //geolocation aspect
+
+        updateUI(event);
+        nav.navigate(R.id.fragment_main);
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
                 .addOnSuccessListener(v -> {
                     user.addWaitlistedEvent(event.getEventDocRef());
@@ -248,6 +264,8 @@ public class UserViewEventFragment extends Fragment {
         event.getEventDocRef().delete();
         nav.navigate(R.id.fragment_main);
     }
+
+    private void getUserLocation(){}
 
     /**
      * binding set to null

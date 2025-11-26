@@ -10,8 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="366dp"
-        android:layout_height="643dp"
+        android:layout_width="377dp"
+        android:layout_height="698dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
