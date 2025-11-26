@@ -1,5 +1,7 @@
 package com.example.camaraderie.main;
 
+import androidx.annotation.Nullable;
+
 import com.example.camaraderie.notifications.FirebaseMessagingReceiver;
 import com.example.camaraderie.notifications.NotificationData;
 import com.google.firebase.firestore.DocumentReference;
@@ -63,8 +65,13 @@ public class LoadUser {
     }
 
 
-    public void loadAllData(Runnable onComplete) {
+    public void loadAllData(@Nullable Runnable onComplete) {
         checkForNotifications();
+
+
+        if (onComplete != null) {
+            onComplete.run();
+        }
 
     }
 }

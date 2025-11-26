@@ -2,6 +2,7 @@ package com.example.camaraderie.dashboard;
 
 
 import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import static com.example.camaraderie.main.MainActivity.user;
 
 
@@ -22,6 +23,7 @@ import com.example.camaraderie.R;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * DashboardEventArrayAdapter extends ArrayAdapter and is used to display events on the home screen
@@ -136,7 +138,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             }
         }
 
-        /**
+        /*
          * If the waitlist size of the event is greater than the limit of the waitlist then we set the
          * boolean to true
          */
@@ -147,7 +149,11 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             }
         }
 
-        /**
+        if (event.getRegistrationDeadline().before(new Date())) {
+            userInWaitlist = true;
+        }
+
+        /*
          * If at any point the the boolean is true then we gray out the button because they
          * are not eligible to join that event
          */
@@ -162,22 +168,23 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             joinButton.setBackgroundColor(Color.GRAY);
         }
         else {
+            joinButton.setVisibility(VISIBLE);
             joinButton.setEnabled(true);
             joinButton.setBackgroundColor(Color.parseColor("#AAF2C8"));  // original colour
         }
 
-        /**
+        /*
          * If the user we are looking at is the organizer of an event we set it to true
          */
 
-        /**
+        /*
          * We have a join button so that the user can join right then and there and not have to view the
          * description of the event
          */
 
         Button descButton = view.findViewById(R.id.seeDescButton);
 
-        /**
+        /*
          * When they click the join button, we first gray out the button and disable it so that
          * they cant join multiple times
          * We then add the user to the events waitlist and the local objects waitlist attribute as well
@@ -201,7 +208,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             }
         });
 
-        /**
+        /*
          * We also have a see description button so that the user can see
          * the details about the event
          */
