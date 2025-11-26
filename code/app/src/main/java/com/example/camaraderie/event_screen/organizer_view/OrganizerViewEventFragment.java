@@ -28,8 +28,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Random;
-
 /**
  * The screen for an organizer viewing their own event. They can delete and edit their event here.
  */

@@ -18,9 +18,7 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentUpdateUserBinding;
 import com.example.camaraderie.main.LoadUser;
 import com.example.camaraderie.utilStuff.UserDeleter;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * This is the screen for users updating their information.

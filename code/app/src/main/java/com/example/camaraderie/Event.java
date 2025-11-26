@@ -70,7 +70,7 @@ public class Event {
      * @param geoEnabled
      *  enable or disable the geolocation requirement for the event
      */
-    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId) {
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri, int limit) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
@@ -163,6 +163,9 @@ public class Event {
         this.waitlistLimit = limit;
         this.eventId = eventId;
 
+    }
+
+    public Event(String s, String s1, Date date, String s2, Date date1, String s3, int i, DocumentReference userDoc, DocumentReference eventDoc, String id) {
     }
 
     //location getters and setters
