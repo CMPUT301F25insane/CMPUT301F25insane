@@ -36,6 +36,9 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
 
+    private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
+
+
     /**
      * Constructor for User
      * @param firstName
@@ -218,6 +221,20 @@ public class User implements Serializable {
         if (!acceptedEvents.contains(eventDocRef)) {
             acceptedEvents.add(eventDocRef);
         }
+    }
+
+    public void addEventToHistory(DocumentReference eventDocRef) {
+        if (!userEventHistory.contains(eventDocRef)) {
+            userEventHistory.add(eventDocRef);
+        }
+    }
+
+    public void removeEventFromHistory(DocumentReference eventDocRef) {
+        userEventHistory.remove(eventDocRef);
+    }
+
+    public ArrayList<DocumentReference> getEventHistory() {
+        return userEventHistory;
     }
 
     /**
