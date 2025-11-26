@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentOrganizerNotificationDialogTestBinding;
 import com.google.firebase.firestore.DocumentReference;
@@ -78,7 +79,7 @@ public class OrganizerNotificationFragment extends Fragment {
                 // on success
                 () -> {
                     Log.d("Organizer Notifications", "God loves us");
-                    nav.popBackStack();
+                    nav.popBackStack(R.id._fragment_organizer_view_event, false);
                 },
 
                 // on screw up

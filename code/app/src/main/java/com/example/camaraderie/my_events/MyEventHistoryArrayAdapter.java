@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import androidx.annotation.NonNull;
 

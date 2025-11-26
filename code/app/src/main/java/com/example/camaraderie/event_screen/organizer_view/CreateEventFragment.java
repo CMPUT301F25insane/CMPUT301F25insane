@@ -220,6 +220,9 @@ public class CreateEventFragment extends Fragment {
         eventDescription.setText(event.getDescription());
         eventCapacity.setText(String.valueOf(event.getCapacity()));
         eventTime.setText(event.getEventTime());
+        if (event.getWaitlistLimit() != -1) {
+            binding.inputFieldForCreateEventWaitlistLimit.setText(String.valueOf(event.getWaitlistLimit()));
+        }
     }
 
     /**
@@ -283,9 +286,8 @@ public class CreateEventFragment extends Fragment {
             event.setEventDate(date);
             event.setCapacity(capacity);
             event.setPosterUri(eventPosterUri);
-            if (limit != -1) {
-                event.setWaitlistLimit(limit);
-            }
+            event.setWaitlistLimit(limit);
+
             eventDocRef.set(event, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
@@ -300,13 +302,8 @@ public class CreateEventFragment extends Fragment {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            if (limit != -1) {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri);
-            }
-            else {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId, eventPosterUri);
-            }
-
+            boolean geoloc = false;  // for now
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri, geoloc);
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {

@@ -121,8 +121,8 @@ public class UpdateUserFragment extends Fragment {
         });
 
         binding.cancelButtonForUserProfile.setOnClickListener(v -> {
-            nav.navigate(R.id.action_update_user_to_fragment_main);
-            //nav.popBackStack();
+            //nav.navigate(R.id.action_update_user_to_fragment_main);
+            nav.popBackStack();
         });
 
         binding.adminButtonForUserProfile2.setOnClickListener(v -> {

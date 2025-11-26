@@ -43,22 +43,22 @@ public class OrganizerNotificationChooserFragment extends Fragment {
 
         binding.acceptedNotifButton.setOnClickListener(v -> {
             args.putString("list", "acceptedList");
-            nav.navigate(R.id.organizerNotificationFragment);
+            nav.navigate(R.id.organizerNotificationFragment, args);
         });
 
         binding.cancelledButtonNotif.setOnClickListener(v -> {
             args.putString("list", "cancelledList");
-            nav.navigate(R.id.organizerNotificationFragment);
+            nav.navigate(R.id.organizerNotificationFragment, args);
         });
 
         binding.waitlistNotifButton.setOnClickListener(v -> {
             args.putString("list", "waitlist");
-            nav.navigate(R.id.organizerNotificationFragment);
+            nav.navigate(R.id.organizerNotificationFragment, args);
         });
 
         binding.selectedButtonNotifs.setOnClickListener(v -> {
             args.putString("list", "selectedList");
-            nav.navigate(R.id.organizerNotificationFragment);
+            nav.navigate(R.id.organizerNotificationFragment, args);
         });
 
     }
