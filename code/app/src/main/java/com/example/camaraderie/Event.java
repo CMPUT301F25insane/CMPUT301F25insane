@@ -1,17 +1,13 @@
 package com.example.camaraderie;//
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
-import java.sql.Array;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 /**
  * This is a class that defines an event
@@ -26,6 +22,8 @@ public class Event {
     private Date eventDate;
     private String eventTime;  // this will probably become a better data type soon
     //private float price = 0.0f;
+
+    private Uri eventPosterUri;
     private ArrayList<DocumentReference> waitlist = new ArrayList<>();
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
@@ -103,6 +101,46 @@ public class Event {
      *  Time (in hours) that the event takes place
      * @param capacity
      *  Maximum number of people that can be accepted to the event
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     * @param uri
+     *  uri of the event poster
+     */
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.eventId = eventId;
+        this.eventPosterUri = uri;
+
+    }
+
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
      * @param limit
      * optionally set the limit for people to join the waitlist, set to -1 by default
      * @param host
@@ -127,10 +165,56 @@ public class Event {
 
     }
 
+<<<<<<< HEAD
     //location getters and setters
     public boolean isGeoEnabled() {
         return geoEnabled;
     }
+=======
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param limit
+     * optionally set the limit for people to join the waitlist, set to -1 by default
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     * @param uri
+     *  uri of the event poster
+     */
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int limit, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.waitlistLimit = limit;
+        this.eventId = eventId;
+        this.eventPosterUri = uri;
+
+    }
+
+>>>>>>> 9456355f6dc9634830a3accaf3eb9b75ecaf48b1
 
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
@@ -293,6 +377,15 @@ public class Event {
      * @return
      *  Return organizer of the event
      */
+
+    public void setPosterUri(Uri uri){
+        this.eventPosterUri = uri;
+    }
+
+    public Uri getPosterUri(){
+        return eventPosterUri;
+    }
+
     public DocumentReference getHostDocRef() {
         return hostDocRef;
     }
@@ -369,10 +462,16 @@ public class Event {
     /**
      * updates event in database
      */
-    public void updateDB() {
+    public void updateDB(Runnable onComplete) {
         eventDocRef.set(this, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Successfully update event"))
-                .addOnFailureListener(e -> Log.e("Firestore", "Failed to update event"));
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "Successfully update event");
+                    onComplete.run();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Failed to update event");
+                    onComplete.run();
+                });
     }
 
     /**

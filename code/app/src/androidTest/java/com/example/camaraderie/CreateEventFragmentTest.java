@@ -5,19 +5,26 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
+import android.app.DatePickerDialog;
+import android.util.Log;
+import android.widget.DatePicker;
+//import android.widget.DatePicker;
+
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.example.camaraderie.event_screen.CreateEventFragment;
-import com.example.camaraderie.event_screen.UserViewEventFragment;
-
+import com.example.camaraderie.event_screen.organizer_view.CreateEventFragment;
+import com.example.camaraderie.event_screen.user_view.UserViewEventFragment;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -52,7 +59,7 @@ public class CreateEventFragmentTest {
      * We are testing if the Create event button is visible on the main screen
      */
     public void testCreateEventButtonVisible() {
-        onView(withId(R.id.createEventConfirmButton))
+        onView(withId(R.id.button_for_confirm))
                 .check(matches(isDisplayed()));
     }
 
@@ -62,7 +69,7 @@ public class CreateEventFragmentTest {
      */
     @Test
     public void testCreateEventButtonClickable() {
-        onView(withId(R.id.createEventConfirmButton))
+        onView(withId(R.id.button_for_confirm))
                 .perform(click());
     }
     /**
@@ -72,34 +79,39 @@ public class CreateEventFragmentTest {
     //
     public void testEventDetails() {
 
-        onView(withId(R.id.createEventName)).perform(click());
-        onView(withId(R.id.createEventName)).perform(ViewActions.typeText("Free Tickets to Oilers Game"));
-        onView(withId(R.id.createEventName)).perform(closeSoftKeyboard());
+        onView(withId(R.id.input_field_for_create_event_name)).perform(click());
+        onView(withId(R.id.input_field_for_create_event_name)).perform(ViewActions.typeText("Free Tickets to Oilers Game"));
+        onView(withId(R.id.input_field_for_create_event_name)).perform(closeSoftKeyboard());
 
-        onView(withId(R.id.createEventDate)).perform(click());
-        onView(withId(R.id.createEventDate)).perform(ViewActions.typeText("2025-12-12"));
-        onView(withId(R.id.createEventDate)).perform(closeSoftKeyboard());
+        onView(withId(R.id.input_field_for_create_event_registration_deadline)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(matches(isDisplayed()));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2025, 2, 15));
+        onView(withText("OK")).perform(click());
 
+        /*
+        onView(withId(R.id.input_field_for_create_event_date)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).check(matches(isDisplayed()));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2025, 5, 15));
+        onView(withText("OK")).perform(click());
+        */
 
-        onView(withId(R.id.createEventDeadline)).perform(click());
-        onView(withId(R.id.createEventDeadline)).perform(ViewActions.typeText("2025-11-30"));
-        onView(withId(R.id.createEventDeadline)).perform(closeSoftKeyboard());
+        onView(withId(R.id.input_field_for_create_event_description)).check(matches(isDisplayed())).perform(click());
+        onView(withId(R.id.input_field_for_create_event_description)).perform(ViewActions.typeText("20 Lucky individuals will get a front row seats to the oilers game aganist flames"));
+        onView(withId(R.id.input_field_for_create_event_description)).perform(closeSoftKeyboard());
 
-        onView(withId(R.id.createEventDescription)).perform(click());
-        onView(withId(R.id.createEventDescription)).perform(ViewActions.typeText("20 Lucky individuals will get a front row seats to the oilers game aganist flames"));
-        onView(withId(R.id.createEventDescription)).perform(closeSoftKeyboard());
+        onView(withId(R.id.input_field_for_create_event_location)).perform(click());
+        onView(withId(R.id.input_field_for_create_event_location)).perform(ViewActions.typeText("Edmonton Stadium"));
+        onView(withId(R.id.input_field_for_create_event_location)).perform(closeSoftKeyboard());
 
-        onView(withId(R.id.createEventLocation)).perform(click());
-        onView(withId(R.id.createEventLocation)).perform(ViewActions.typeText("Edmonton Stadium"));
-        onView(withId(R.id.createEventLocation)).perform(closeSoftKeyboard());
+        onView(withId(R.id.input_field_for_create_event_num_of_attendees)).perform(click());
+        onView(withId(R.id.input_field_for_create_event_num_of_attendees)).perform(ViewActions.typeText("100"));
+        onView(withId(R.id.input_field_for_create_event_num_of_attendees)).perform(closeSoftKeyboard());
 
-        onView(withId(R.id.createEventCapacity)).perform(click());
-        onView(withId(R.id.createEventCapacity)).perform(ViewActions.typeText("100"));
-        onView(withId(R.id.createEventCapacity)).perform(closeSoftKeyboard());
+        onView(withId(R.id.input_field_for_create_event_time)).perform(click());
+        onView(withId(R.id.input_field_for_create_event_time)).perform(ViewActions.typeText("12:30PM"));
+        onView(withId(R.id.input_field_for_create_event_time)).perform(closeSoftKeyboard());
 
-        onView(withId(R.id.createEventConfirmButton)).perform(click());
-
-
+        onView(withId(R.id.button_for_confirm)).perform(click());
     }
 
     /**

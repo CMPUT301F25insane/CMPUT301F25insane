@@ -7,8 +7,149 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+
 jobs:
+  # ui-tests:
+  #   name: ui-tests
+  #   runs-on: 'macos-latest'
+  #   steps:
+  #     - name: Checkout repo
+  #       uses: actions/checkout@v4
+
+  #     # -------------------------
+  #     # SETUP JDK
+  #     # -------------------------
+  #     - name: Set up JDK 17
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: 17
+  #     - name: Make gradlew executable
+  #       working-directory: code
+  #       run: chmod +x gradlew
+
+  #     # -------------------------
+  #     # CACHE GRADLE
+  #     # -------------------------
+  #     - name: Cache Gradle
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           ~/.gradle/caches
+  #           ~/.gradle/wrapper
+  #         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-gradle-
+
+  #     # -------------------------
+  #     # SETUP ANDROID SDK
+  #     # -------------------------
+  #     - name: Set up Android SDK
+  #       uses: android-actions/setup-android@v3
+
+  #     # DEBUG
+  #     #- name: List available system images
+  #     #  run: sdkmanager --list | grep -i "arm64"
+
+  #     - name: Install required packages
+  #       run: |
+  #             sdkmanager --install "emulator" \
+  #              "platform-tools" \
+  #              "platforms;android-33" \
+  #              "system-images;android-33;google_apis;arm64-v8a"
+  
+  #     # -------------------------
+  #     # CREATE EMULATOR
+  #     # -------------------------
+  #     - name: Create AVD
+  #       run: |
+  #         echo "no" | avdmanager create avd \
+  #           --name test \
+  #           --package "system-images;android-33;google_apis;arm64-v8a" \
+  #           --device "pixel_6"
+      
+  #     # -------------------------
+  #     # START EMULATOR
+  #     # -------------------------
+  #     - name: Start emulator
+  #       run: |
+  
+  #         chmod +x emulator
+        
+  #         nohup emulator \
+  #             -avd test \
+  #             -no-window \
+  #             -no-audio \
+  #             -no-snapshot \
+  #             -gpu swiftshader_indirect \
+  #             -qemu -cpu max &
+        
+  #         adb wait-for-device
+        
+  #         until adb shell getprop sys.boot_completed | grep -m 1 "1"; do sleep 1; done
+        
+  #         adb shell settings put global window_animation_scale 0
+  #         adb shell settings put global transition_animation_scale 0
+  #         adb shell settings put global animator_duration_scale 0
+  #       timeout-minutes: 5
+
+  #     - name: Ensure emulator fully booted
+  #       run: |
+  #         while [[ $(adb shell getprop sys.boot_completed 2>/dev/null) != "1" ]]; do
+  #           sleep 1
+  #         done
+  
+  #     # -------------------------
+  #     # RUN TESTS
+  #     # -------------------------
+  #     - name: Run UI tests
+  #       run: ./gradlew connectedDebugAndroidTest
+  #       timeout-minutes: 15
+  ui-tests:
+  
+    name: ui-tests
+    runs-on: macos-15-intel
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      # Setup Gradle caching
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v3
+        
+      # setup android sdk
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        
+      # DEBUG
+      - name: List available system images
+        run: sdkmanager --list | grep -i "x86"
+      # - name: debug step for emulator entitlements.xml
+      #   run: ls ~/Library/Android/sdk/emulator/qemu/darwin-arm64
+
+      # system-images;android-34;google_apis;x86_64
+      - name: Run Instrumented Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+
+          # debug: removed '-gpu swiftshader_indirect'
+          emulator-options: -no-snapshot -no-window -noaudio -no-boot-anim -camera-back none -metrics-collection
+          disable-animations: true
+          script: cd code && ./gradlew connectedDebugAndroidTest
+          timeout-minutes: 20
+  
   build:
+    name: junit tests
     runs-on: ubuntu-latest
 
     steps:
@@ -37,15 +178,15 @@ jobs:
         run: ./gradlew clean testDebugUnitTest
         
         # android UI tests 
-      - name: Run Instrumented Tests on Emulator (src/androidTest/java)
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 33
-          target: google_apis
-          arch: x86_64
-          profile: pixel_6
-          force-avd-creation: true
-          emulator-options: "-no-snapshot -noaudio -no-boot-anim -camera-back none"
-          disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest
-          working-directory: code
+      # - name: Run Instrumented Tests on Emulator (src/androidTest/java)
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 33
+      #     target: google_apis
+      #     arch: x86_64
+      #     profile: pixel_6
+      #     force-avd-creation: true
+      #     emulator-options: "-no-snapshot -noaudio -no-boot-anim -camera-back none"
+      #     disable-animations: true
+      #     script: ./gradlew connectedDebugAndroidTest
+      #     working-directory: code

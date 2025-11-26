@@ -2,7 +2,7 @@ package com.example.camaraderie.my_events;
 
 import android.os.Bundle;
 import android.util.Log;
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.FragmentViewMyEventsBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,7 +34,6 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
     private ViewMyEventsArrayAdapter myEvents;
     private NavController nav;
 
-    private EventViewModel eventViewModel;
 
     /**
      * sets nav, myEvents list, and eventViewModel
@@ -46,7 +44,6 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
         myEvents = new ViewMyEventsArrayAdapter(getContext(), new ArrayList<>());
         myEvents.listener = this;
 
@@ -87,16 +84,16 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
         db = FirebaseFirestore.getInstance();
         binding.myEventsForViewMyEvents.setAdapter(myEvents);
+        binding.userProfileImageButton.setOnClickListener(v -> nav.navigate(R.id.update_user));
         //binding.nameForMyEvents.setText(user.getFirstName());
-        eventViewModel.getLocalEvents().observe(getViewLifecycleOwner(), events -> {
-            myEvents.clear();
-            for(Event event : events) {
-                if (event.getWaitlist() != null && event.getWaitlist().contains(user.getDocRef())) {
-                    myEvents.add(event);
-                }
-            }
-            myEvents.notifyDataSetChanged();
-        });
+
+        for (DocumentReference eventRef : user.getWaitlistedEvents()) {
+            eventRef.get().addOnSuccessListener(snapshot -> {
+                Event event = snapshot.toObject(Event.class);
+                myEvents.add(event);
+                myEvents.notifyDataSetChanged();
+            });
+        }
 
 
 

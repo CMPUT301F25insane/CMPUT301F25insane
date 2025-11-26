@@ -1,11 +1,8 @@
 package com.example.camaraderie;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,16 +10,13 @@ import android.os.Bundle;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 
-import com.example.camaraderie.event_screen.CreateEventFragment;
-import com.example.camaraderie.event_screen.UserViewEventFragment;
+import com.example.camaraderie.event_screen.user_view.UserViewEventFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
 import java.util.Date;
 /**
  * The purpose of this test is to check if the user can view a mocked event.

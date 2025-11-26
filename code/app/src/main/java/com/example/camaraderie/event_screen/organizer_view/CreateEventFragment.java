@@ -1,8 +1,9 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.organizer_view;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.app.DatePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,8 +30,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.databinding.FragmentCreateEventTestingBinding;
+import com.example.camaraderie.databinding.FragmentCreateEventBinding;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -36,7 +41,7 @@ import com.google.firebase.firestore.SetOptions;
  */
 public class CreateEventFragment extends Fragment {
 
-    private FragmentCreateEventTestingBinding binding;
+    private FragmentCreateEventBinding binding;
     private DocumentReference eventDocRef;
     private Event event;
 
@@ -48,6 +53,8 @@ public class CreateEventFragment extends Fragment {
     private EditText eventCapacity;
     private EditText eventTime;
     private EditText optionalLimit;
+
+    private Uri eventPosterUri;
     private boolean editing = false;
 
     /**
@@ -78,7 +85,7 @@ public class CreateEventFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        binding = FragmentCreateEventTestingBinding.inflate(getLayoutInflater());
+        binding = FragmentCreateEventBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -94,20 +101,21 @@ public class CreateEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        eventName = binding.createEventName;
-        eventDate = binding.createEventDate;
-        eventDeadline = binding.createEventDeadline;
-        eventLocation = binding.createEventLocation;
-        eventDescription = binding.createEventDescription;
-        eventCapacity = binding.createEventCapacity;
-        eventTime = binding.createEventTime;
-        optionalLimit = binding.optionalLimit;
+        eventName = binding.inputFieldForCreateEventName;
+        eventDate = binding.inputFieldForCreateEventDate;
+        eventDeadline = binding.inputFieldForCreateEventRegistrationDeadline;
+        eventLocation = binding.inputFieldForCreateEventLocation;
+        eventDescription = binding.inputFieldForCreateEventDescription;
+        eventCapacity = binding.inputFieldForCreateEventNumOfAttendees;
+        eventTime = binding.inputFieldForCreateEventTime;
+        optionalLimit = binding.inputFieldForCreateEventWaitlistLimit;
 
         Bundle args = getArguments();
         if (args != null) {
             editing = true;
 
             String path = args.getString("eventDocRefPath");
+            assert path != null;
             eventDocRef = FirebaseFirestore.getInstance().document(path);
 
             eventDocRef.get().addOnSuccessListener(doc -> {
@@ -118,9 +126,25 @@ public class CreateEventFragment extends Fragment {
 
         }
 
-        binding.createEventDate.setOnClickListener(new View.OnClickListener() {
+        // Registers a photo picker activity launcher in single-select mode.
+        ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
+                registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                    // Callback is invoked after the user selects a media item or closes the
+                    // photo picker.
+                    if (uri != null) {
+                        Log.d("PhotoPicker", "Selected URI: " + uri);
+                        //Add code to save the photo into the database
+                        //Need to set the Uri to the event's uri
+                        eventPosterUri = uri;
+                    } else {
+                        Log.d("PhotoPicker", "No media selected");
+                    }
+                });
+
+        binding.inputFieldForCreateEventDate.setOnClickListener(new View.OnClickListener() {
             /**
              * sets date dialogfragment
+             *
              * @param v The view that was clicked.
              */
             @Override
@@ -129,9 +153,10 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.createEventDeadline.setOnClickListener(new View.OnClickListener() {
+        binding.inputFieldForCreateEventRegistrationDeadline.setOnClickListener(new View.OnClickListener() {
             /**
              * sets deadline dialogfragment
+             *
              * @param v The view that was clicked.
              */
             @Override
@@ -140,18 +165,7 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.createEventPictureButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * setup nav for adding pictures to event
-             * @param v The view that was clicked.
-             */
-            @Override
-            public void onClick(View v) {
-                // TODO
-            }
-        });
-
-        binding.createEventBackButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonForGoingBack.setOnClickListener(new View.OnClickListener() {
             /**
              * On pressing the back button, navigate back to the main fragment
              * @param v
@@ -165,7 +179,7 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.createEventConfirmButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonForConfirm.setOnClickListener(new View.OnClickListener() {
             /**
              * On pressing the confirm button, create the event
              * @param v
@@ -175,10 +189,20 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventPosterUri);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        binding.buttonForAddPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch the photo picker and let the user choose only images.
+                pickMedia.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
             }
         });
     }
@@ -225,7 +249,8 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDescription,
                              EditText eventCapacity,
                              EditText optionalLimit,
-                             EditText eventTime) throws ParseException {
+                             EditText eventTime,
+                             Uri eventPosterUri) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
@@ -256,6 +281,7 @@ public class CreateEventFragment extends Fragment {
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
+            event.setPosterUri(eventPosterUri);
             if (limit != -1) {
                 event.setWaitlistLimit(limit);
             }
@@ -274,10 +300,10 @@ public class CreateEventFragment extends Fragment {
             String eventId = eventRef.getId();
             Event newEvent;
             if (limit != -1) {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId);
+                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri);
             }
             else {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
+                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId, eventPosterUri);
             }
 
 
@@ -287,11 +313,17 @@ public class CreateEventFragment extends Fragment {
 
                         user.addCreatedEvent(eventRef);
 
-                        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-                        vm.setEvent(newEvent);
+                        user.getDocRef().update("userCreatedEvents", FieldValue.arrayUnion(eventRef))
+                            .addOnSuccessListener(v -> {
+                                //user.updateDB(() -> {
+                                    SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+                                    vm.setEvent(newEvent);
+                                    NavHostFragment.findNavController(CreateEventFragment.this)
+                                            .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                                //});
+                            });
 
-                        NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
 
@@ -304,10 +336,11 @@ public class CreateEventFragment extends Fragment {
      */
     private void openDateDialogue() {
         DatePickerDialog dateDialog;
-        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.createEventDate.setText(year + "-" + (month+1) + "-" + day);
+                String format = year + "-" + (month+1) + "-" + day;
+                binding.inputFieldForCreateEventDate.setText(format);
             }
 
         }, 2025, 10, 6);
@@ -321,10 +354,11 @@ public class CreateEventFragment extends Fragment {
      */
     private void openDeadlineDialogue() {
         DatePickerDialog dateDialog;
-        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.createEventDeadline.setText(year + "-" + (month+1) + "-" + day);
+                String format = year + "-" + (month+1) + "-" + day;
+                binding.inputFieldForCreateEventRegistrationDeadline.setText(format);
             }
 
         }, 2025, 10, 6);

@@ -2,35 +2,36 @@ package com.example.camaraderie.notifications;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
-
-import com.example.camaraderie.MainActivity;
-import com.example.camaraderie.R;
 
 /**
  * controller class for sending and cancelling notifications
  */
 public class NotificationController {
 
-    private static final String CHANNEL_ID = "basic_notification_channel";
+    private String CHANNEL_ID;
     private Context context;
-    private com.example.notifications.NotificationView view;
+    private NotificationView view;
 
     /**
      * constructor for NotificationController
      * @param context current context
      * @param view the fragment for which to set this controller to
      */
-    public NotificationController(Context context, com.example.notifications.NotificationView view) {
+    public NotificationController(Context context, NotificationView view) {
         this.context = context.getApplicationContext();
         this.view = view;
-        createNotificationChannel();
+        //createNotificationChannel();
     }
+
+    public void setChannelId(String id) {
+        CHANNEL_ID = id;
+    }
+
+    public String getChannelId() {return this.CHANNEL_ID;}
 
     /**
      * send notification
@@ -71,10 +72,10 @@ public class NotificationController {
     /**
      * setup code for creating a basic notification channel
      */
-    private void createNotificationChannel() {
+    public void createNotificationChannel(CharSequence name, String description) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Basic Notifications";
-            String description = "General Notifications";
+            //CharSequence name = "Basic Notifications";
+            //String description = "General Notifications";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);

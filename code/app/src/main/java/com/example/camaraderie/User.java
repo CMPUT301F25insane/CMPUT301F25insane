@@ -2,6 +2,8 @@ package com.example.camaraderie;//
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,6 +25,7 @@ public class User implements Serializable {
     private String email;
     private String address;
     private String userId;
+    private String notificationToken;
     private DocumentReference docRef;
 
     private boolean admin = false;
@@ -31,6 +34,7 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> waitlistedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
+    private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
 
     //geolocation
     private boolean geoEnabled;
@@ -50,12 +54,13 @@ public class User implements Serializable {
      * @param docref
      *  Pointer to an equivalent user document in Firebase
      */
-    public User(String firstName, String phone, String email, String address, String userId, DocumentReference docref) {
+    public User(@NonNull String firstName, @NonNull String phone, @NonNull String email, @NonNull String address, @NonNull String userId, String notificationToken, @NonNull DocumentReference docref) {
         this.firstName = firstName;
         this.phoneNumber = phone;
         this.email = email;
         this.address = address;
         this.userId = userId;
+        this.notificationToken = notificationToken;
         this.docRef = docref;
     }
 
@@ -118,11 +123,14 @@ public class User implements Serializable {
      */
     public void setAddress(String address1) {this.address = address1;}
 
+    public void setNotificationToken(String token) {this.notificationToken = token;}
+
     /**
      * Get first name of the user
      * @return
      *  Return firstname of the user
      */
+
     public String getFirstName() {return this.firstName;}
     //public String getLastName() {return this.lastName;}
 
@@ -161,6 +169,7 @@ public class User implements Serializable {
      */
     public DocumentReference getDocRef() { return this.docRef;}
 
+    public String getNotificationToken() {return this.notificationToken;}
     /**
      * Set the docRef of the user
      * @param docRef1
@@ -189,13 +198,19 @@ public class User implements Serializable {
     /**
      * update user in database
      */
-    public void updateDB() {
+    public void updateDB(Runnable onComplete) {
         // update the DB from the user
         this.docRef.set(this, SetOptions.merge())
-                .addOnSuccessListener(aVoid ->
-                        Log.d("UserRepository", "User updated"))
+                .addOnSuccessListener(aVoid -> {
+                            Log.d("UserRepository", "User updated");
+                            onComplete.run();
+                        })
+
                 .addOnFailureListener(e ->
-                        Log.e("UserRepository", "Error updating user", e));
+                        {
+                            Log.e("UserRepository", "Error updating user", e);
+                            onComplete.run();
+                        });
     }
 
     /**
@@ -268,9 +283,11 @@ public class User implements Serializable {
     public void addCreatedEvent(DocumentReference eventRef) {
         if (!userCreatedEvents.contains(eventRef)) {
             userCreatedEvents.add(eventRef);
+            updateDB(()-> {});
         }
     }
 
+<<<<<<< HEAD
     //geolocation
     public boolean isGeoEnabled() {
         return geoEnabled;
@@ -278,6 +295,45 @@ public class User implements Serializable {
 
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
+=======
+    public ArrayList<DocumentReference> getCancelledEvents() {
+        return cancelledEvents;
+    }
+
+    public void addCancelledEvent(DocumentReference cancelledEvent) {
+        if (!cancelledEvents.contains(cancelledEvent)) {
+            this.cancelledEvents.add(cancelledEvent);
+        }
+    }
+
+    public void removeCancelledEvent(DocumentReference cancelledEvent) {
+        cancelledEvents.remove(cancelledEvent);
+    }
+
+    public void setAcceptedEvents(ArrayList<DocumentReference> acceptedEvents) {
+        this.acceptedEvents = acceptedEvents;
+    }
+
+    public void setCancelledEvents(ArrayList<DocumentReference> cancelledEvents) {
+        this.cancelledEvents = cancelledEvents;
+    }
+
+    public void setSelectedEvents(ArrayList<DocumentReference> selectedEvents) {
+        this.selectedEvents = selectedEvents;
+    }
+
+    public void setUserCreatedEvents(ArrayList<DocumentReference> userCreatedEvents) {
+        this.userCreatedEvents = userCreatedEvents;
+    }
+
+    public void setWaitlistedEvents(ArrayList<DocumentReference> waitlistedEvents) {
+        this.waitlistedEvents = waitlistedEvents;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+>>>>>>> 9456355f6dc9634830a3accaf3eb9b75ecaf48b1
     }
 }
+
 

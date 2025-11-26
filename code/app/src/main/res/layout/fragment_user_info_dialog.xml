@@ -1,36 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#39629F"
+    >
 
+    <TextView
+        android:id="@+id/Create_Profile_Header"
+        android:layout_width="246dp"
+        android:layout_height="51dp"
+        android:fontFamily="@font/cambria"
+        android:text="Create profile"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.079" />
 
     <EditText
-        android:id="@+id/edit_full_name_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/Name_field_for_dialog"
+        android:layout_width="282dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:fontFamily="@font/cambria"
+        android:hint="Name"
         android:inputType="text"
-        android:hint="Full Name" />
+        android:textColorHint="@color/white"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/email_field_for_dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Create_Profile_Header"
+        app:layout_constraintVertical_bias="0.0" />
+
     <EditText
-        android:id="@+id/edit_email_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/email_field_for_dialog"
+        android:layout_width="282dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
+        android:fontFamily="@font/cambria"
+        android:hint="Email"
         android:inputType="text"
-        android:hint="Email" />
+        android:textColorHint="@color/white"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/PhoneNo_field_for_dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Create_Profile_Header"
+        app:layout_constraintVertical_bias="1.0" />
+
     <EditText
-        android:id="@+id/edit_text_address_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/PhoneNo_field_for_dialog"
+        android:layout_width="282dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
+        android:fontFamily="@font/cambria"
+        android:textColor="@color/white"
+        android:hint="Phone Number"
         android:inputType="text"
-        android:hint="Address" />
+        android:textColorHint="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/Address_field_for_dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Create_Profile_Header"
+        app:layout_constraintVertical_bias="0.948" />
+
     <EditText
-        android:id="@+id/edit_phone_number_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/Address_field_for_dialog"
+        android:layout_width="282dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
+        android:fontFamily="@font/cambria"
+        android:hint="Address"
+        android:textColor="@color/white"
         android:inputType="text"
-        android:hint="Phone Number" />
-</LinearLayout>
+        android:textColorHint="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/confirm_button_for_creating_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Create_Profile_Header"
+        app:layout_constraintVertical_bias="0.904" />
+
+    <Button
+        android:id="@+id/confirm_button_for_creating_profile"
+        android:layout_width="115dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="316dp"
+        android:backgroundTint="#F5AAF2C8"
+        android:fontFamily="@font/cambria"
+        android:text="Confirm"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.814"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Create_Profile_Header"
+        app:strokeWidth="3.5dp" />
+
+    <Button
+        android:id="@+id/Cancel_button_for_creating_profile"
+        android:layout_width="115dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#FF0000"
+        android:fontFamily="@font/cambria"
+        android:text="Cancel"
+        android:textColor="@color/black"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/confirm_button_for_creating_profile"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Address_field_for_dialog"
+        app:strokeWidth="3.5dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

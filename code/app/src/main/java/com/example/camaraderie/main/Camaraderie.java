@@ -1,4 +1,4 @@
-package com.example.camaraderie;
+package com.example.camaraderie.main;
 
 import android.app.Application;
 
@@ -10,7 +10,7 @@ import org.maplibre.android.MapLibre;
  * Now this is the thing necessary to get a global instance of a map
  * "coconut.jpg"
  */
-public class MyApplication extends Application{
+public class Camaraderie extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
