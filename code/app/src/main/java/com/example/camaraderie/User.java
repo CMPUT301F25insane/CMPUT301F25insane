@@ -35,6 +35,9 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
+    //geolocation
+    private boolean geoEnabled;
+    private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
 
     /**
      * Constructor for User
@@ -220,6 +223,20 @@ public class User implements Serializable {
         }
     }
 
+    public void addEventToHistory(DocumentReference eventDocRef) {
+        if (!userEventHistory.contains(eventDocRef)) {
+            userEventHistory.add(eventDocRef);
+        }
+    }
+
+    public void removeEventFromHistory(DocumentReference eventDocRef) {
+        userEventHistory.remove(eventDocRef);
+    }
+
+    public ArrayList<DocumentReference> getEventHistory() {
+        return userEventHistory;
+    }
+
     /**
      *
      * @return returns accepted events list
@@ -280,8 +297,17 @@ public class User implements Serializable {
     public void addCreatedEvent(DocumentReference eventRef) {
         if (!userCreatedEvents.contains(eventRef)) {
             userCreatedEvents.add(eventRef);
+            updateDB(()-> {});
         }
     }
+
+    //geolocation
+    public boolean isGeoEnabled() {
+        return geoEnabled;
+    }
+
+    public void setGeoEnabled(boolean geoEnabled) {
+        this.geoEnabled = geoEnabled;
 
     public ArrayList<DocumentReference> getCancelledEvents() {
         return cancelledEvents;
@@ -296,5 +322,30 @@ public class User implements Serializable {
     public void removeCancelledEvent(DocumentReference cancelledEvent) {
         cancelledEvents.remove(cancelledEvent);
     }
+
+    public void setAcceptedEvents(ArrayList<DocumentReference> acceptedEvents) {
+        this.acceptedEvents = acceptedEvents;
+    }
+
+    public void setCancelledEvents(ArrayList<DocumentReference> cancelledEvents) {
+        this.cancelledEvents = cancelledEvents;
+    }
+
+    public void setSelectedEvents(ArrayList<DocumentReference> selectedEvents) {
+        this.selectedEvents = selectedEvents;
+    }
+
+    public void setUserCreatedEvents(ArrayList<DocumentReference> userCreatedEvents) {
+        this.userCreatedEvents = userCreatedEvents;
+    }
+
+    public void setWaitlistedEvents(ArrayList<DocumentReference> waitlistedEvents) {
+        this.waitlistedEvents = waitlistedEvents;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
+
 

@@ -62,8 +62,12 @@ public class UserAcceptedViewModel extends ViewModel {
     public void userDeclineInvite(DocumentReference eventDocRef) {
         user.removeSelectedEvent(eventDocRef);
 
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        batch.update(eventDocRef, "selectedList", FieldValue.arrayRemove(user.getDocRef()));
+        batch.update(eventDocRef, "cancelledList", FieldValue.arrayUnion(user.getDocRef()));
+
         user.updateDB(() -> {
-            eventDocRef.update("selectedList", FieldValue.arrayRemove(user.getDocRef()))
+            batch.commit()
                     .addOnSuccessListener(aVoid ->
                             Log.d("Firestore", "User removed from selectedList! (declined invitation)"))
                     .addOnFailureListener(e ->
@@ -73,7 +77,7 @@ public class UserAcceptedViewModel extends ViewModel {
 
     /**
      * This function checks to ensure if the selected events arraylist is empty or not
-     * @return
+     * @return bool on whether or not the selected events is empty
      */
 
     public boolean allInvitesResolved() {

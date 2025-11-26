@@ -33,6 +33,7 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventBinding;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -115,6 +116,7 @@ public class CreateEventFragment extends Fragment {
             editing = true;
 
             String path = args.getString("eventDocRefPath");
+            assert path != null;
             eventDocRef = FirebaseFirestore.getInstance().document(path);
 
             eventDocRef.get().addOnSuccessListener(doc -> {
@@ -161,18 +163,6 @@ public class CreateEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openDeadlineDialogue();
-            }
-        });
-
-        binding.buttonForAddPicture.setOnClickListener(new View.OnClickListener() {
-            /**
-             * setup nav for adding pictures to event
-             *
-             * @param v The view that was clicked.
-             */
-            @Override
-            public void onClick(View v) {
-                // TODO
             }
         });
 
@@ -324,11 +314,17 @@ public class CreateEventFragment extends Fragment {
 
                         user.addCreatedEvent(eventRef);
 
-                        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-                        vm.setEvent(newEvent);
+                        user.getDocRef().update("userCreatedEvents", FieldValue.arrayUnion(eventRef))
+                            .addOnSuccessListener(v -> {
+                                //user.updateDB(() -> {
+                                    SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+                                    vm.setEvent(newEvent);
+                                    NavHostFragment.findNavController(CreateEventFragment.this)
+                                            .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                                //});
+                            });
 
-                        NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
 
@@ -341,10 +337,11 @@ public class CreateEventFragment extends Fragment {
      */
     private void openDateDialogue() {
         DatePickerDialog dateDialog;
-        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.inputFieldForCreateEventDate.setText(year + "-" + (month+1) + "-" + day);
+                String format = year + "-" + (month+1) + "-" + day;
+                binding.inputFieldForCreateEventDate.setText(format);
             }
 
         }, 2025, 10, 6);
@@ -358,10 +355,11 @@ public class CreateEventFragment extends Fragment {
      */
     private void openDeadlineDialogue() {
         DatePickerDialog dateDialog;
-        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.inputFieldForCreateEventRegistrationDeadline.setText(year + "-" + (month+1) + "-" + day);
+                String format = year + "-" + (month+1) + "-" + day;
+                binding.inputFieldForCreateEventRegistrationDeadline.setText(format);
             }
 
         }, 2025, 10, 6);

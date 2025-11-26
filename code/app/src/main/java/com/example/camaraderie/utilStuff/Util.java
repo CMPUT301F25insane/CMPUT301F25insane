@@ -12,6 +12,7 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * util class for convenience functions

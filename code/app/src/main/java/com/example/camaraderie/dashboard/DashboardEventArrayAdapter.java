@@ -1,6 +1,7 @@
 package com.example.camaraderie.dashboard;
 
 
+import static android.view.View.INVISIBLE;
 import static com.example.camaraderie.main.MainActivity.user;
 
 
@@ -136,15 +137,6 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         }
 
         /**
-         * If the user we are looking at is the organizer of an event we set it to true
-         */
-
-        // organizer cannot join their own event because that is stupid
-        if (user.getDocRef().equals(event.getHostDocRef())) {
-            userInWaitlist = true;  // change the name later, who cares
-        }
-
-        /**
          * If the waitlist size of the event is greater than the limit of the waitlist then we set the
          * boolean to true
          */
@@ -160,7 +152,12 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
          * are not eligible to join that event
          */
 
-        if (userInWaitlist) {
+        // organizer cannot join their own event because that is stupid
+        if (user.getDocRef().equals(event.getHostDocRef())) {
+            joinButton.setEnabled(false);
+            joinButton.setVisibility(INVISIBLE);
+        }
+        else if (userInWaitlist) {
             joinButton.setEnabled(false);
             joinButton.setBackgroundColor(Color.GRAY);
         }
@@ -168,6 +165,10 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             joinButton.setEnabled(true);
             joinButton.setBackgroundColor(Color.parseColor("#AAF2C8"));  // original colour
         }
+
+        /**
+         * If the user we are looking at is the organizer of an event we set it to true
+         */
 
         /**
          * We have a join button so that the user can join right then and there and not have to view the
@@ -180,6 +181,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
          * When they click the join button, we first gray out the button and disable it so that
          * they cant join multiple times
          * We then add the user to the events waitlist and the local objects waitlist attribute as well
+         * add the event to the user's registration history
          */
 
         joinButton.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +191,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
                 joinButton.setEnabled(false);
                 event.addWaitlistUser(user.getDocRef());
                 user.addWaitlistedEvent(event.getEventDocRef());
+                user.addEventToHistory(event.getEventDocRef());
 
                 // update db
                 user.updateDB(() -> {
