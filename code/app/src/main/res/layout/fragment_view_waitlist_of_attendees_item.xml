@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#39629F"
+    >
+
+    <TextView
+        android:id="@+id/name_of_user_for_org_view_of_waitlist"
+        android:layout_width="182dp"
+        android:layout_height="59dp"
+        android:fontFamily="@font/cambria"
+        android:gravity="center"
+        android:text="User"
+        android:textColor="@color/white"
+        android:textSize="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.37"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.247" />
+
+    <ImageButton
+        android:id="@+id/imageView"
+        android:layout_width="77dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.296"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/kick_from_event_button"
+        android:layout_width="83dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#9E2C0A"
+        android:fontFamily="@font/cambria"
+        android:text="Kick"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_of_user_for_org_view_of_waitlist"
+        app:layout_constraintVertical_bias="0.555" />
+</androidx.constraintlayout.widget.ConstraintLayout>

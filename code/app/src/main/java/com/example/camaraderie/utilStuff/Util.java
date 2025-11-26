@@ -12,7 +12,11 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+/**
+ * util class for convenience functions
+ */
 public class Util {
 
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -69,23 +73,21 @@ public class Util {
      */
     private static void addDummyEvents(Runnable onDone) {
         WriteBatch batch = db.batch();
-        ArrayList<DocumentReference> userRefs = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             DocumentReference userDoc = usersRef.document();
             DocumentReference eventDoc = eventsRef.document();
 
             User newUser = new User(
-                    "User " + i,
+                    "Bob Marley " + i,
+                    "555-000" + i,
                     "email" + i + "@mail.com",
                     "address " + i,
-                    "555-000" + i,
                     userDoc.getId(),
                     null,
                     userDoc
             );
-            batch.set(userDoc, newUser);
-            userRefs.add(userDoc);
+
 
             Event newEvent = new Event(
                     "Event " + i,
@@ -99,7 +101,10 @@ public class Util {
                     eventDoc,
                     eventDoc.getId()
             );
+            newUser.addCreatedEvent(eventDoc);
+
             batch.set(eventDoc, newEvent);
+            batch.set(userDoc, newUser);
         }
 
         batch.commit()

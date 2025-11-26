@@ -8,9 +8,8 @@ import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.example.camaraderie.event_screen.UserViewEventFragment;
+import com.example.camaraderie.event_screen.user_view.UserViewEventFragment;
 
-import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -87,14 +86,14 @@ public class UserViewEventTest {
     @Test
     public void viewAttendeesButtonIsDisplayed() {
         // Check if the "unjoin" button is visible on screen
-        onView(withId(R.id.view_attendees_button))
+        onView(withId(R.id.view_lists_button))
                 .check(matches(isDisplayed()));
     }
 
     @Test
     public void viewAttendeesButtonIsClickable(){
         // Check if the "QR" button is clickable
-        onView(withId(R.id.view_attendees_button))
+        onView(withId(R.id.view_lists_button))
                 .perform(click());
     }
 

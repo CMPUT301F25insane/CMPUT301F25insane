@@ -1,7 +1,5 @@
 package com.example.camaraderie.my_events;
 
-import static com.example.camaraderie.MainActivity.user;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,15 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentMyCreatedEventsBinding;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -32,8 +25,7 @@ public class ViewMyCreatedEventsFragment extends Fragment {
 
     private FragmentMyCreatedEventsBinding binding;
     private SharedEventViewModel svm;
-    private Event event;
-    private FirebaseFirestore db;
+    private MyEventsViewModel vm;
     private NavController nav;
     private MyCreatedEventsArrayAdapter adapter;
 
@@ -47,32 +39,8 @@ public class ViewMyCreatedEventsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         nav = NavHostFragment.findNavController(this);
-        ArrayList<Event> events = new ArrayList<>();
-        ArrayList<DocumentReference> refs = user.getUserCreatedEvents();
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-        adapter = new MyCreatedEventsArrayAdapter(requireContext(), 0, events, nav, svm);
-
-        if (refs.isEmpty()) {
-            return;
-        }
-
-        for (DocumentReference ref : refs) {
-            ref.get().addOnSuccessListener(doc -> {
-                Event e = doc.toObject(Event.class);
-                if (e != null) {
-                    events.add(e);
-                }
-
-
-                if (events.size() == refs.size()) {
-                    adapter.notifyDataSetChanged();
-                }
-            }).addOnFailureListener(err -> {
-                err.printStackTrace();
-            });
-        }
-
-
+        vm = new ViewModelProvider(requireActivity()).get(MyEventsViewModel.class);
     }
 
     /**
@@ -104,9 +72,22 @@ public class ViewMyCreatedEventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.backButtonForMyCreatedEvents.setOnClickListener(v -> nav.popBackStack());
+
+        adapter = new MyCreatedEventsArrayAdapter(requireContext(), 0, new ArrayList<>(), nav, svm);
+        adapter.setNotifyOnChange(true);
         binding.listView.setAdapter(adapter);
-        binding.backButton.setOnClickListener(v -> nav.popBackStack());
-        binding.textView5.setText("My created events");
+
+        vm.getUserCreatedEvents(
+                events -> {
+                    System.out.println(events.size());
+                    adapter.addAll(events);
+                    adapter.notifyDataSetChanged();  // PARANOIAAAAAAA
+                });
+
+
+
+        //binding.textView5.setText("My created events");
     }
 
     /**

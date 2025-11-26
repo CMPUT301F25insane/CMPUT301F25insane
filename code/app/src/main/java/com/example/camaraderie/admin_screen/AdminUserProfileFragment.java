@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.camaraderie.R;
 import com.example.camaraderie.User;
 import com.example.camaraderie.databinding.FragmentAdminUserProfileBinding;
+import com.example.camaraderie.utilStuff.UserDeleter;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -111,19 +112,23 @@ public class AdminUserProfileFragment extends Fragment {
                     Toast.makeText(getContext(), "No user selected", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+/*
                 db.collection("Users")
                         .document(user.getUserId())
                         .delete()
                         .addOnSuccessListener(w -> {
-                            Toast.makeText(getContext(), "User " + user.getFirstName() + " deleted", Toast.LENGTH_SHORT).show();
 
-                            NavHostFragment.findNavController(AdminUserProfileFragment.this)
-                                    .navigate(R.id.action_admin_user_profile_to_admin_user_data_screen_view);
                         })
                         .addOnFailureListener(e ->
                                 Toast.makeText(getContext(), "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                        );
+                        );*/
+
+                UserDeleter deleter = new UserDeleter(user);
+                deleter.DeleteUser(() -> {
+                    Toast.makeText(getContext(), "User " + user.getFirstName() + " deleted", Toast.LENGTH_SHORT).show();
+                    NavHostFragment.findNavController(AdminUserProfileFragment.this)
+                            .navigate(R.id.action_admin_user_profile_to_admin_user_data_screen_view);
+                });
             }
         });
 

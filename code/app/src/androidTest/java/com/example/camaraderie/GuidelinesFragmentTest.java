@@ -6,14 +6,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.testing.TestNavHostController;
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.example.camaraderie.event_screen.CreateEventFragment;
+import com.example.camaraderie.updateUserStuff.GuidelinesFragment;
 
 import org.junit.After;
 import org.junit.Before;
