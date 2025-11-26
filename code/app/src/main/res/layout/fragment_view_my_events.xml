@@ -51,8 +51,8 @@
 
     <ListView
         android:id="@+id/myEventsForViewMyEvents"
-        android:layout_width="319dp"
-        android:layout_height="401dp"
+        android:layout_width="398dp"
+        android:layout_height="402dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
