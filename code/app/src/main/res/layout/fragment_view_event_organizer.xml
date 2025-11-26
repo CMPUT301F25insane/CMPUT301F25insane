@@ -131,11 +131,11 @@
             android:layout_width="100dp"
             android:layout_height="47dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="12dp"
             android:backgroundTint="#B0394241"
             android:fontFamily="@font/cambria"
             android:text="View Lists"
-            android:textSize="8.3dp"
+            android:textSize="11sp"
             app:layout_constraintEnd_toStartOf="@+id/view_photos_org_view"
             app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
             app:strokeWidth="1dp" />
@@ -182,11 +182,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Show Map"
-            app:layout_constraintTop_toBottomOf="@id/view_lists_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.195"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_lists_button"
+            app:layout_constraintVertical_bias="0.517" />
+
+        <Button
+            android:id="@+id/orgNotifScreenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification Screen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/showMap"
+            app:layout_constraintTop_toBottomOf="@+id/view_lists_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
