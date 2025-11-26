@@ -22,6 +22,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import static com.example.camaraderie.MainActivity.user;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.Location;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.dashboard.EventViewModel;
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -193,6 +195,13 @@ public class UserViewEventFragment extends Fragment {
     private void handleJoin() {
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
         user.addWaitlistedEvent(event.getEventDocRef());
+
+        //
+        if (user.isGeoEnabled() && event.isGeoEnabled()){
+            getUserLocation();
+        }
+        //geolocation aspect
+
         updateUI(event);
         nav.navigate(R.id.fragment_main);
     }
@@ -222,6 +231,8 @@ public class UserViewEventFragment extends Fragment {
         event.getEventDocRef().delete();
         nav.navigate(R.id.fragment_main);
     }
+
+    private void getUserLocation(){}
 
     /**
      * binding set to null

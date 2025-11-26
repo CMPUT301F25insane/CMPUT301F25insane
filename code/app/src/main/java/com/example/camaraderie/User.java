@@ -32,6 +32,9 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
 
+    //geolocation
+    private boolean geoEnabled;
+
     /**
      * Constructor for User
      * @param firstName
@@ -266,6 +269,15 @@ public class User implements Serializable {
         if (!userCreatedEvents.contains(eventRef)) {
             userCreatedEvents.add(eventRef);
         }
+    }
+
+    //geolocation
+    public boolean isGeoEnabled() {
+        return geoEnabled;
+    }
+
+    public void setGeoEnabled(boolean geoEnabled) {
+        this.geoEnabled = geoEnabled;
     }
 }
 
