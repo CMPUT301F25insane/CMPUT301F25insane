@@ -35,6 +35,7 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
+    private ArrayList<DocumentReference> pendingNotifications = new ArrayList<>();
 
     /**
      * Constructor for User
