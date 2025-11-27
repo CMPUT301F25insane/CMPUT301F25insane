@@ -47,6 +47,7 @@ public class OrganizerNotificationHandler {
                             batch.update(ref, "pendingNotifications", FieldValue.arrayUnion(notifRef));
                         }
                     }
+                    //else { throw new RuntimeException("fuck you");}
 
                     batch.commit()
                             .addOnSuccessListener( v-> {

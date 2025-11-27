@@ -64,10 +64,10 @@ public class LoadUser {
                                     fcr.showNotification(notif.getTitle(), notif.getMessage());
                                     docRef.update("pendingNotifications", FieldValue.arrayRemove(notif.getRef()))
                                             .addOnSuccessListener(v -> {
-                                                Log.d("Load User", "Notification displayed and removed from ref pendingNotifications field");
+                                                Log.d("Load User", "Notification displayed and removed from ref pendingNotifications field: " + notif.getTitle());
                                             })
                                             .addOnFailureListener(e -> {
-                                                Log.e("Load User", "Failed to remove notification form ref pendingNotifications field", e);
+                                                Log.e("Load User", "Failed to remove notification form ref pendingNotifications field: " + notif.getTitle(), e);
                                             });
                                 }
 

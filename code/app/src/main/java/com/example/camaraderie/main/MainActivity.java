@@ -357,13 +357,13 @@ public class MainActivity extends AppCompatActivity {
                                         return;
                                     });
 
-                                if (pendingDeeplink != null){
-                                    handleDeepLink();
-                                } else{
-                                    navController.navigate(R.id.fragment_main);
-                                }
+                                    if (pendingDeeplink != null){
+                                        handleDeepLink();
+                                    } else{
+                                        navController.navigate(R.id.fragment_main);
+                                    }
 
-                            }
+                                }
 
                         )
                         .addOnFailureListener(e -> {
