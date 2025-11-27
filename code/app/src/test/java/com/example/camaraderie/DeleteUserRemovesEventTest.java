@@ -36,9 +36,12 @@ public class DeleteUserRemovesEventTest {
                 new Date(),
                 "09:00 AM",
                 2,
+                -1,
                 mockHost,
                 mockEventRef,
-                "E123"
+                "E123",
+                null,
+                false
         );
     }
 

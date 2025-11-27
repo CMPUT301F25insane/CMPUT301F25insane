@@ -54,7 +54,7 @@ public class AdminViewEventFragmentTest {
                 .check(matches(isDisplayed()));
         onView(withId(R.id.qr_button_user_view))
                 .check(matches(isDisplayed()));
-        onView(withId(R.id.view_attendees_button))
+        onView(withId(R.id.fragment_list_testing_interface))
                 .check(matches(isDisplayed()));
         onView(withId(R.id.view_photos_user_view))
                 .check(matches(isDisplayed()));

@@ -28,7 +28,7 @@ public class UserUnitTest {
             mockEvent1 = mock(DocumentReference.class);
             mockEvent2 = mock(DocumentReference.class);
 
-            user = new User("Alice", "1234567890", "alice@example.com", "123 Main St", "user123", mock(DocumentReference.class));
+            user = new User("Alice", "1234567890", "alice@example.com", "123 Main St", "user123", null, mock(DocumentReference.class));
         }
 
         @Test
