@@ -28,9 +28,25 @@
         android:id="@+id/organizerNotificationFragment"
         android:label="organizer notification screen"
         tools:layout="@layout/fragment_organizer_notification_dialog_test">
-
         <action
             android:id="@+id/action_organizerNotificationFragment_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
+        <action
+            android:id="@+id/action_organizerNotificationFragment_to_OrganizerNotificationChooserFragment"
+            app:destination="@id/OrganizerNotificationChooserFragment" />
+    </fragment>
+
+    <fragment
+        android:name="com.example.camaraderie.event_screen.organizer_view.OrganizerNotificationChooserFragment"
+        android:id="@+id/OrganizerNotificationChooserFragment"
+        android:label="Chooser screen for notification"
+        tools:layout="@layout/fragment_organizer_choose_notif_test">
+
+        <action
+            android:id="@+id/action_OrganizerNotificationChooserFragment_to_organizerNotificationFragment"
+            app:destination="@id/organizerNotificationFragment" />
+        <action
+            android:id="@+id/action_OrganizerNotificationChooserFragment_to__fragment_organizer_view_event"
             app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
@@ -125,8 +141,8 @@
             android:id="@+id/action__fragment_organizer_view_event_to_update_user"
             app:destination="@id/update_user" />
         <action
-            android:id="@+id/action__fragment_organizer_view_event_to_organizerNotificationFragment"
-            app:destination="@id/organizerNotificationFragment" />
+            android:id="@+id/action__fragment_organizer_view_event_to_OrganizerNotificationChooserFragment"
+            app:destination="@id/OrganizerNotificationChooserFragment" />
 
     </fragment>
 
@@ -136,6 +152,9 @@
         android:label="Organizer View Photos"
         tools:layout="@layout/fragment_organizer_view_photos">
 
+        <action
+            android:id="@+id/action_fragment_organizer_view_photos_to__fragment_organizer_view_event2"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
     <fragment

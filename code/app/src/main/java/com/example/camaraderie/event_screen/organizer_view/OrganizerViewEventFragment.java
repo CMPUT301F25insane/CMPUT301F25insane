@@ -206,7 +206,8 @@ public class OrganizerViewEventFragment extends Fragment {
         // receiver formats the remoteMessage. then notif is built, then displayed on users device.
 
         binding.orgNotifScreenButton.setOnClickListener(v -> {
-            nav.navigate(R.id.organizerNotificationFragment);
+
+            nav.navigate(R.id.OrganizerNotificationChooserFragment);
         });
 
     }
