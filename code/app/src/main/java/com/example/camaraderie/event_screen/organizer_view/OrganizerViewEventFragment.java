@@ -22,13 +22,12 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
+import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Random;
 
 /**
  * The screen for an organizer viewing their own event. They can delete and edit their event here.
@@ -44,6 +43,7 @@ public class OrganizerViewEventFragment extends Fragment {
     private Event event;
 
     private FragmentViewEventOrganizerBinding binding;
+    private ViewListViewModel vm;
 
     //private NotificationController notificationController;
 
@@ -58,6 +58,8 @@ public class OrganizerViewEventFragment extends Fragment {
 
 
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+        vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);  // this will live in the activity
+
         nav = NavHostFragment.findNavController(this);
         db = FirebaseFirestore.getInstance();
         //notificationController = new NotificationController(getContext(), (com.example.notifications.NotificationView) getParentFragment());
@@ -104,7 +106,13 @@ public class OrganizerViewEventFragment extends Fragment {
 
         binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
         binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
-        binding.viewListsButton.setOnClickListener(v -> nav.navigate(R.id.fragment_list_testing_interface));
+        binding.viewListsButton.setOnClickListener(v -> {
+
+            vm.setEvent(event);
+            vm.generateAllLists(() -> {
+                nav.navigate(R.id.fragment_list_testing_interface); //TODO: user should NOT SEE these lists in general, only capacity.
+            });
+        });
         binding.OrgEventRunLotteryButton.setOnClickListener(v -> {
             runLottery(event);
             updateUI(event);

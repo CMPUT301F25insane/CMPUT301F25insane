@@ -39,6 +39,7 @@ public class SearchEventInMainFragmentTest {
                 "email@email.com",
                 "address",
                 hostRef.getId(),
+                null,
                 hostRef
         )).addOnSuccessListener(aVoid -> {
             Event mockEvent = new Event("Free Tickets to Oilers Game",
@@ -48,9 +49,12 @@ public class SearchEventInMainFragmentTest {
                     new Date(),
                     "20:00",
                     100,
+                    -1,
                     hostRef,
                     docRef,
-                    docRef.getId());
+                    docRef.getId(),
+                null,
+                    false);
 
             docRef.set(mockEvent).addOnSuccessListener(aVoid2 -> {
                 // Pass event data to fragment
