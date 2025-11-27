@@ -47,20 +47,23 @@ public class OrganizerNotificationHandler {
                             batch.update(ref, "pendingNotifications", FieldValue.arrayUnion(notifRef));
                         }
                     }
+
+                    batch.commit()
+                            .addOnSuccessListener( v-> {
+                                Log.d("Organizer notifications", "sendNotificationToFirebase: " + body);
+                                if (onComplete != null) {
+                                    onComplete.run();
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("Organizer notifications", "we fucked up", e);
+                                if (onFuckUp != null) {
+                                    onFuckUp.run();
+                                }
+                            });
+
                 });
 
-        batch.commit()
-                .addOnSuccessListener( v-> {
-                    Log.d("Organizer notifications", "sendNotificationToFirebase: " + body);
-                    if (onComplete != null) {
-                        onComplete.run();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Organizer notifications", "we fucked up", e);
-                    if (onFuckUp != null) {
-                        onFuckUp.run();
-                    }
-                });
+
     }
 }
