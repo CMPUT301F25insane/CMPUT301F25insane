@@ -5,6 +5,8 @@ public class Location {
     private double latitude;
     private double longitude;
 
+    public Location() {} //required for firebase
+
     public String getUserID() {
         return userID;
     }

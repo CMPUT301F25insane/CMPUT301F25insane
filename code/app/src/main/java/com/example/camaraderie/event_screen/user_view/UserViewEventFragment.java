@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -221,11 +222,6 @@ public class UserViewEventFragment extends Fragment {
     private void handleJoin() {
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
         user.addWaitlistedEvent(event.getEventDocRef());
-
-        //
-            //getUserLocation();
-        //geolocation aspect
-
         updateUI(event);
         nav.navigate(R.id.fragment_main);
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
@@ -235,6 +231,20 @@ public class UserViewEventFragment extends Fragment {
                 });
 
         //nav.navigate(R.id.fragment_main);
+    }
+
+    public void handleJoinGeo(){
+        if (user.isGeoEnabled() && event.isGeoEnabled()){
+            LocationHelper.getUserLocation(requireActivity(), (lat, lon) -> {
+                // do something with lat/lon
+            });
+            handleJoin();
+        } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
+            Toast.makeText(getContext(), "Please enable location to join this event", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            handleJoin();
+        }
     }
 
     /**

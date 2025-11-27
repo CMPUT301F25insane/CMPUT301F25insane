@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -53,6 +55,8 @@ public class CreateEventFragment extends Fragment {
     private EditText eventCapacity;
     private EditText eventTime;
     private EditText optionalLimit;
+    Switch geoSwitch;
+    boolean geoEnabled;
 
     private Uri eventPosterUri;
     private boolean editing = false;
@@ -109,10 +113,15 @@ public class CreateEventFragment extends Fragment {
         eventCapacity = binding.inputFieldForCreateEventNumOfAttendees;
         eventTime = binding.inputFieldForCreateEventTime;
         optionalLimit = binding.inputFieldForCreateEventWaitlistLimit;
+        geoSwitch = binding.geoSwitch; //switch
 
         Bundle args = getArguments();
         if (args != null) {
             editing = true;
+
+            //geolocation only available during creation
+            geoSwitch.setEnabled(false); // cannot toggle geo after creation
+            geoSwitch.setChecked(event.isGeoEnabled()); // show current value
 
             String path = args.getString("eventDocRefPath");
             assert path != null;
@@ -285,6 +294,7 @@ public class CreateEventFragment extends Fragment {
             if (limit != -1) {
                 event.setWaitlistLimit(limit);
             }
+            geoEnabled = geoSwitch.isChecked(); //geolocation
             eventDocRef.set(event, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
@@ -304,6 +314,14 @@ public class CreateEventFragment extends Fragment {
             }
             else {
                 newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId, eventPosterUri);
+            }
+
+            //geoswitch
+            newEvent.setGeoEnabled(geoSwitch.isChecked());
+
+            // Optional: if geo is off, clear any location list
+            if (!geoSwitch.isChecked()) {
+                newEvent.setLocationArrayList(new ArrayList<>());
             }
 
 

@@ -36,7 +36,7 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
     //geolocation
-    private boolean geoEnabled;
+    private boolean geoEnabled = false;
     private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
 
     /**

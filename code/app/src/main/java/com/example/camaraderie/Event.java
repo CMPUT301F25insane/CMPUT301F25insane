@@ -30,8 +30,8 @@ public class Event {
     private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
 
     //Geolocation - Umran
-    private boolean geoEnabled;
-    private ArrayList<Location> locationArrayList;
+    private boolean geoEnabled = false;
+    private ArrayList<Location> locationArrayList = new ArrayList<>();
 
     private int capacity;  // always > 0
     private int waitlistLimit = -1;
@@ -221,7 +221,11 @@ public class Event {
         return locationArrayList;
     }
 
-    public void setLocationArrayList(Location location) {
+    public void setLocationArrayList(ArrayList<Location> locationArrayList){
+        this.locationArrayList = locationArrayList;
+    }
+
+    public void addLocationArrayList(Location location) {
         this.locationArrayList.add(location);
     }
     //logic needed for map
