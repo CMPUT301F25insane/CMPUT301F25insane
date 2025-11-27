@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     static private CollectionReference eventsRef;
     static private CollectionReference usersRef;
+    static private CollectionReference notifsRef;
     private EventViewModel eventViewModel;
     private ActivityMainBinding binding;
     private SharedEventViewModel svm;
@@ -81,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        //FirebaseFirestore.getInstance().clearPersistence();  // TODO: DO NOT UNCOMMENT THIS CODE
-
         svm = new ViewModelProvider(this).get(SharedEventViewModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
@@ -100,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
         requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
 
         db = FirebaseFirestore.getInstance();
+        eventsRef = db.collection("Events");
         usersRef = db.collection("Users");
+        notifsRef = db.collection("Notifications");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         notificationController.setChannelId(id);
@@ -142,7 +143,12 @@ public class MainActivity extends AppCompatActivity {
                             user.setDocRef(userRef);
                             user.updateDB( () -> {
                                 // no need to do anything here because it seemed to be working before
-                                return;
+                                new LoadUser(user.getDocRef()).loadAllData(
+                                        () -> {
+                                            // do nothing for now, but probably do something later
+                                            return;
+                                        }
+                                );
                             });
 
                             if (user.isAdmin()) {
@@ -349,13 +355,13 @@ public class MainActivity extends AppCompatActivity {
                                         return;
                                     });
 
-                                if (pendingDeeplink != null){
-                                    handleDeepLink();
-                                } else{
-                                    navController.navigate(R.id.fragment_main);
-                                }
+                                    if (pendingDeeplink != null){
+                                        handleDeepLink();
+                                    } else{
+                                        navController.navigate(R.id.fragment_main);
+                                    }
 
-                            }
+                                }
 
                         )
                         .addOnFailureListener(e -> {

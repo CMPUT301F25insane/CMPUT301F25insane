@@ -21,25 +21,25 @@
         app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.352" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="371dp"
-        android:layout_height="656dp"
+        android:layout_width="381dp"
+        android:layout_height="789dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786">
+        app:layout_constraintVertical_bias="0.782">
 
         <EditText
             android:id="@+id/input_field_for_create_event_location"
             android:layout_width="129dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="32dp"
             android:ems="25"
             android:fontFamily="@font/cambria_italic"
             android:hint="[Location]"
@@ -48,7 +48,7 @@
             android:textColorHint="#9C9C9C"
             app:layout_constraintBottom_toTopOf="@+id/input_field_for_create_event_description"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.082"
+            app:layout_constraintHorizontal_bias="0.111"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
@@ -88,7 +88,7 @@
             android:id="@+id/input_field_for_create_event_description"
             android:layout_width="303dp"
             android:layout_height="144dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="52dp"
             android:ems="25"
             android:fontFamily="@font/cambria_italic"
             android:hint="[Description]"
@@ -97,7 +97,7 @@
             android:textColorHint="#9C9C9C"
             app:layout_constraintBottom_toTopOf="@+id/button_for_add_picture"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.294"
+            app:layout_constraintHorizontal_bias="0.358"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
@@ -137,7 +137,7 @@
             android:id="@+id/input_field_for_create_event_registration_deadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="20dp"
             android:clickable="true"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -149,15 +149,15 @@
             android:textSize="17dp"
             app:layout_constraintBottom_toTopOf="@+id/input_field_for_create_event_date"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.105"
+            app:layout_constraintHorizontal_bias="0.124"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/input_field_for_create_event_date"
             android:layout_width="173dp"
             android:layout_height="33dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="24dp"
             android:clickable="true"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -174,7 +174,7 @@
             android:id="@+id/button_for_add_picture"
             android:layout_width="146dp"
             android:layout_height="53dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="56dp"
             android:backgroundTint="#8FE5E4FF"
             android:fontFamily="@font/cambria"
             android:text="Add Picture"
@@ -183,7 +183,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/input_field_for_create_event_num_of_attendees"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.436"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/black"
             app:strokeWidth="3.5dp" />

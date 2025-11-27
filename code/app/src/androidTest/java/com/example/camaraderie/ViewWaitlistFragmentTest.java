@@ -9,7 +9,7 @@ import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.example.camaraderie.event_screen.ViewWaitlistFragment;
+import com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedFragment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,12 +20,12 @@ import org.junit.runner.RunWith;
 @LargeTest
 public class ViewWaitlistFragmentTest {
 
-    private FragmentScenario<ViewWaitlistFragment> scenario;
+    private FragmentScenario<ViewWaitlistOrSelectedFragment> scenario;
 
     @Before
     public void setUp() {
         // Launch the fragment in a container just like in a real Activity
-        scenario = FragmentScenario.launchInContainer(ViewWaitlistFragment.class);
+        scenario = FragmentScenario.launchInContainer(ViewWaitlistOrSelectedFragment.class);
     }
     @After
     public void tearDown() {

@@ -1,15 +1,19 @@
 package com.example.camaraderie.accepted_screen;
 
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
 
 import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
+import com.example.camaraderie.Event;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
+
+import java.util.Objects;
 
 /** This is the view model meant to ease the transferring of data between the fragment and array adapter
  * It extends the ViewModel class and we use it to implement custom methods to make our code easier and cleaner to
@@ -68,8 +72,17 @@ public class UserAcceptedViewModel extends ViewModel {
 
         user.updateDB(() -> {
             batch.commit()
-                    .addOnSuccessListener(aVoid ->
-                            Log.d("Firestore", "User removed from selectedList! (declined invitation)"))
+                    .addOnSuccessListener(aVoid -> {
+
+                        Log.d("Firestore", "User removed from selectedList! (declined invitation)");
+
+                        // rerun lottery
+                        eventDocRef.get()
+                                .addOnSuccessListener(doc -> {
+                                    runLottery(Objects.requireNonNull(doc.toObject(Event.class)));
+                                });
+
+                    })
                     .addOnFailureListener(e ->
                             Log.e("Firestore", "Error removing user", e));
         });

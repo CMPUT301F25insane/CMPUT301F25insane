@@ -35,9 +35,10 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
-
+    private ArrayList<DocumentReference> pendingNotifications = new ArrayList<>();
+    //geolocation
+    private boolean geoEnabled;
     private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
-
 
     /**
      * Constructor for User
@@ -301,6 +302,14 @@ public class User implements Serializable {
         }
     }
 
+    //geolocation
+    public boolean isGeoEnabled() {
+        return geoEnabled;
+    }
+
+    public void setGeoEnabled(boolean geoEnabled) {
+        this.geoEnabled = geoEnabled;
+    }
     public ArrayList<DocumentReference> getCancelledEvents() {
         return cancelledEvents;
     }
@@ -337,6 +346,24 @@ public class User implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public ArrayList<DocumentReference> getPendingNotifications() {
+        return pendingNotifications;
+    }
+
+    public void setPendingNotifications(ArrayList<DocumentReference> pendingNotifications) {
+        this.pendingNotifications = pendingNotifications;
+    }
+
+    public void addPendingNotification(DocumentReference notif) {
+        if (!this.pendingNotifications.contains(notif)) {
+            pendingNotifications.add(notif);
+        }
+    }
+
+    public void removePendingNotification(DocumentReference notif) {
+        pendingNotifications.remove(notif);
     }
 }
 

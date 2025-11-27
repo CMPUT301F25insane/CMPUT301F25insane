@@ -214,6 +214,17 @@ public class UserViewEventFragment extends Fragment {
      * handles join, updates database
      */
     private void handleJoin() {
+        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
+        user.addWaitlistedEvent(event.getEventDocRef());
+
+        //
+        if (user.isGeoEnabled() && event.isGeoEnabled()){
+            getUserLocation();
+        }
+        //geolocation aspect
+
+        updateUI(event);
+        nav.navigate(R.id.fragment_main);
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
                 .addOnSuccessListener(v -> {
                     user.addWaitlistedEvent(event.getEventDocRef());
@@ -248,6 +259,8 @@ public class UserViewEventFragment extends Fragment {
         event.getEventDocRef().delete();
         nav.navigate(R.id.fragment_main);
     }
+
+    private void getUserLocation(){}
 
     /**
      * binding set to null

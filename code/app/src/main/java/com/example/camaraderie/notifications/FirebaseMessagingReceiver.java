@@ -1,5 +1,7 @@
 package com.example.camaraderie.notifications;
 
+import static com.example.camaraderie.main.Camaraderie.getContext;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -40,7 +42,7 @@ public class FirebaseMessagingReceiver extends FirebaseMessagingService {
     }
 
     private RemoteViews getCustomDesign(String title, String message) {
-        RemoteViews remoteViews = new RemoteViews(getApplicationContext().getPackageName(), R.layout.notification_test_layout);
+        RemoteViews remoteViews = new RemoteViews(getContext().getPackageName(), R.layout.notification_test_layout);
 
         remoteViews.setTextViewText(R.id.notificationTitle, title);
         remoteViews.setTextViewText(R.id.notificationBody, message);
@@ -49,7 +51,7 @@ public class FirebaseMessagingReceiver extends FirebaseMessagingService {
     }
 
     public void showNotification(String title, String message) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(getContext(), MainActivity.class);
 
         // Assign channel ID
         String channel_id = "notification_channel";
@@ -60,7 +62,7 @@ public class FirebaseMessagingReceiver extends FirebaseMessagingService {
         // Pass the intent to PendingIntent to start the
         // next Activity
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
+                getContext(),
                 0,
                 intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);  // flag immutable is apparently good to have most of the time
@@ -68,12 +70,13 @@ public class FirebaseMessagingReceiver extends FirebaseMessagingService {
         // Create a Builder object using NotificationCompat
         // class. This will allow control over all the flags
         NotificationCompat.Builder builder = new NotificationCompat
-                .Builder(getApplicationContext(), channel_id)
+                .Builder(getContext(), channel_id)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setAutoCancel(true)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setOnlyAlertOnce(true)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                ;
 
         // A customized design for the notification can be
         // set only for Android versions 4.1 and above. Thus
@@ -93,7 +96,7 @@ public class FirebaseMessagingReceiver extends FirebaseMessagingService {
         // Create an object of NotificationManager class to
         // notify the
         // user of events that happen in the background.
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         // Check if the Android Version is greater than Oreo
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
