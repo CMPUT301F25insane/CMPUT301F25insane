@@ -3,36 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_resource"
+    >
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:id="@+id/invited_events_header"
+        android:layout_width="373dp"
+        android:layout_height="79dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:fontFamily="@font/cambria"
         android:text="Events you've been invited to!"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Please accept or decline the folowin invitations"
-        app:layout_constraintBottom_toTopOf="@+id/pendingEventListView"
+        android:id="@+id/accept_or_decline_header"
+        android:layout_width="370dp"
+        android:layout_height="74dp"
+        android:fontFamily="@font/cambria"
+        android:gravity="center"
+        android:text="Please accept or decline the following invitations"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.53" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.203" />
 
     <ListView
         android:id="@+id/pendingEventListView"
-        android:layout_width="405dp"
-        android:layout_height="453dp"
-        android:layout_marginBottom="92dp"
+        android:layout_width="379dp"
+        android:layout_height="556dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="3dp" />
+        tools:layout_editor_absoluteX="13dp" />
 
     <Button
         android:id="@+id/pendingEventsContinueButton"
