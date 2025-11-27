@@ -1,6 +1,6 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.organizer_view;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.app.DatePickerDialog;
 import android.net.Uri;
@@ -43,6 +43,7 @@ public class CreateEventFragment extends Fragment {
     private FragmentCreateEventBinding binding;
     private DocumentReference eventDocRef;
     private Event event;
+
     private EditText eventName;
     private TextView eventDate;
     private TextView eventDeadline;

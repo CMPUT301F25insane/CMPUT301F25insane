@@ -1,6 +1,6 @@
 package com.example.camaraderie.dashboard;//
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
@@ -154,7 +153,8 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
                     for(int i = 0; i < events.size(); i++){
                         String eventDayMonth = "" + events.get(i).getEventDate().getDay() + events.get(i).getEventDate().getMonth();
                         String toDateMonth = "" + finalToDate.getDay() + finalToDate.getMonth();
-                        if(events.get(i).getEventName().toLowerCase().contains(binding.searchBar.getText().toString().toLowerCase())){
+                        if(events.get(i).getEventName().toLowerCase().contains(binding.searchBar.getText().toString().toLowerCase()) ||
+                            events.get(i).getDescription().toLowerCase().contains(binding.searchBar.getText().toString().toLowerCase())){
                             if((events.get(i).getEventDate().after(finalFromDate) && events.get(i).getEventDate().before(finalToDate)) || eventDayMonth.equals(toDateMonth)){
                                 dashboardEventArrayAdapter.add(events.get(i));
                             }

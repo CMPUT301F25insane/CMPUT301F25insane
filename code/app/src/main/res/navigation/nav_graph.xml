@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_loading_screen"
-        android:name="com.example.camaraderie.LoadingScreenFragment"
+        android:name="com.example.camaraderie.utilStuff.LoadingScreenFragment"
         android:label="Loading screen Fragment"
         tools:layout="@layout/fragment_loading_screen">
 
@@ -36,7 +36,8 @@
     <fragment
         android:id="@+id/fragment_guidelines"
         android:label="guidleins FRagment"
-        android:name="com.example.camaraderie.GuidelinesFragment">
+        android:name="com.example.camaraderie.updateUserStuff.GuidelinesFragment"
+        tools:layout="@layout/fragment_guidelines">
 
         <action
             android:id="@+id/action_fragment_guidelines_to_update_user"
@@ -74,11 +75,14 @@
         <action
             android:id="@+id/action_fragment_view_my_events_to_fragment_my_created_events"
             app:destination="@id/fragment_my_created_events" />
+        <action
+            android:id="@+id/action_fragment_view_my_events_to_update_user"
+            app:destination="@id/update_user" />
     </fragment>
 
     <fragment
         android:id="@+id/_fragment_organizer_view_event"
-        android:name="com.example.camaraderie.event_screen.OrganizerViewEventFragment"
+        android:name="com.example.camaraderie.event_screen.organizer_view.OrganizerViewEventFragment"
         android:label="Organizer event view"
         tools:layout="@layout/fragment_view_event_organizer">
 
@@ -92,6 +96,9 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_map"
+            app:destination="@id/map" />
 
         <argument
             android:name="eventDocRefPath"
@@ -100,6 +107,12 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_organizer_view_photos"
             app:destination="@id/fragment_organizer_view_photos" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_list_testing_interface2"
+            app:destination="@id/fragment_list_testing_interface" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_update_user"
+            app:destination="@id/update_user" />
 
     </fragment>
 
@@ -138,9 +151,9 @@
 
     <fragment
         android:id="@+id/fragment_create_event_testing"
-        android:name="com.example.camaraderie.event_screen.CreateEventFragment"
+        android:name="com.example.camaraderie.event_screen.organizer_view.CreateEventFragment"
         android:label="Create Event Fragment"
-        tools:layout="@layout/fragment_create_event_testing">
+        tools:layout="@layout/fragment_create_event">
         <action
             android:id="@+id/action_fragment_create_event_testing_to_fragment_main"
             app:destination="@id/fragment_main" />
@@ -151,7 +164,7 @@
 
     <fragment
         android:id="@+id/fragment_view_event_user"
-        android:name="com.example.camaraderie.event_screen.UserViewEventFragment"
+        android:name="com.example.camaraderie.event_screen.user_view.UserViewEventFragment"
         android:label="View Event User Fragment"
         tools:layout="@layout/fragment_view_event_user">
 
@@ -172,7 +185,13 @@
             app:destination="@id/fragment_view_my_events" />
         <action
             android:id="@+id/action_fragment_view_event_user_to_fragment_view_waitlist"
-            app:destination="@id/fragment_view_waitlist" />
+            app:destination="@id/fragment_view_waitlist_or_selected" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_list_testing_interface"
+            app:destination="@id/fragment_list_testing_interface" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_update_user"
+            app:destination="@id/update_user" />
 
         <action android:id="@+id/action__fragment_user_view_event_to_fragment_user_view_photos"
             app:destination="@id/fragment_user_view_photos"/>
@@ -186,15 +205,48 @@
         tools:layout="@layout/fragment_user_view_photos"/>
 
     <fragment
-        android:id="@+id/fragment_view_waitlist"
-        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
+        android:id="@+id/fragment_view_waitlist_or_selected"
+        android:name="com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedFragment"
         android:label="View Waitlist Fragment"
-        tools:layout="@layout/fragment_view_attendees">
+        tools:layout="@layout/fragment_view_waitlist_or_selected">
 
+        <action
+            android:id="@+id/action_fragment_view_waitlist_or_selected_to_fragment_list_testing_interface"
+            app:destination="@id/fragment_list_testing_interface" />
+        <action
+            android:id="@+id/action_fragment_view_waitlist_or_selected_to_fragment_view_event_user"
+            app:destination="@id/fragment_view_event_user" />
     </fragment>
 
 
+    <fragment
+        android:name="com.example.camaraderie.event_screen.user_lists.ListTestingInterfaceFragment"
+        android:id="@+id/fragment_list_testing_interface"
+        android:label="testing organizers view of lists"
+        tools:layout="@layout/fragment_view_lists_testing_interface">
 
+        <action
+            android:id="@+id/action_fragment_list_testing_interface_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
+        <action
+            android:id="@+id/action_fragment_list_testing_interface_to_fragment_view_waitlist"
+            app:destination="@id/fragment_view_waitlist_or_selected" />
+        <action
+            android:id="@+id/action_fragment_list_testing_interface_to_view_accepted_or_cancelled"
+            app:destination="@id/view_accepted_or_cancelled" />
+    </fragment>
+
+    <fragment
+        android:name="com.example.camaraderie.event_screen.user_lists.accepted_or_cancelled_list.ViewAcceptedOrCancelledFragment"
+        android:id="@+id/view_accepted_or_cancelled"
+        android:label="View accepted or cancelled fragment"
+        tools:layout="@layout/fragment_view_accepted_or_cancelled">
+
+
+        <action
+            android:id="@+id/action_view_accepted_or_cancelled_to_fragment_list_testing_interface"
+            app:destination="@id/fragment_list_testing_interface" />
+    </fragment>
 
 
 
@@ -267,7 +319,7 @@
 
     <fragment
         android:id="@+id/update_user"
-        android:name="com.example.camaraderie.UpdateUserFragment"
+        android:name="com.example.camaraderie.updateUserStuff.UpdateUserFragment"
         android:label="Update Screen"
         tools:layout="@layout/fragment_update_user">
 

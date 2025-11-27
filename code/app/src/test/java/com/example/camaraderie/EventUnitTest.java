@@ -147,10 +147,12 @@ public class EventUnitTest {
         when(mockTask.addOnFailureListener(any())).thenReturn(mockTask);
 
         // Act
-        event.updateDB();
+        event.updateDB(() -> {
+            // Assert
+            verify(mockEventRef, times(1)).set(eq(event), eq(SetOptions.merge()));
+        });
 
-        // Assert
-        verify(mockEventRef, times(1)).set(eq(event), eq(SetOptions.merge()));
+
     }
 
     // ---------- WAITLIST LIMIT TESTS ----------

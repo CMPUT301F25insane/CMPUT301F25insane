@@ -8,20 +8,29 @@
     <fragment
         android:id="@+id/fragment_view_my_events"
         android:name="com.example.camaraderie.my_events.ViewMyEventsFragment"
-        tools:layout="@layout/fragment_view_my_events" />
+        tools:layout="@layout/fragment_view_my_events" >
+        <action
+            android:id="@+id/action_fragment_view_my_events_to__fragment_organizer_view_event2"
+            app:destination="@id/_fragment_organizer_view_event" />
+    </fragment>
 
     <fragment
-        android:id="@+id/fragment_view_waitlist"
-        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
-        tools:layout="@layout/fragment_view_attendees" />
+        android:id="@+id/fragment_view_waitlist_or_selected"
+        android:name="com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedFragment"
+        tools:layout="@layout/fragment_view_waitlist_or_selected" >
+        <action
+            android:id="@+id/action_fragment_view_waitlist_to_fragment_list_testing_interface"
+            app:destination="@id/fragment_list_testing_interface" />
+    </fragment>
 
     <fragment
         android:id="@+id/_fragment_organizer_view_event"
-        android:name="com.example.camaraderie.event_screen.OrganizerViewEventFragment"
-        android:label="Organizer Event Screen">
+        android:name="com.example.camaraderie.event_screen.organizer_view.OrganizerViewEventFragment"
+        android:label="Organizer Event Screen"
+        tools:layout="@layout/fragment_view_event_organizer">
         <action
             android:id="@+id/action_org_to_waitlist"
-            app:destination="@id/fragment_view_waitlist" />
+            app:destination="@id/fragment_view_waitlist_or_selected" />
         <action
             android:id="@+id/action_org_to_edit"
             app:destination="@id/fragment_create_event_testing" />
@@ -33,8 +42,43 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_organizer_view_photos"
             app:destination="@id/fragment_organizer_view_photos" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_list_testing_interface"
+            app:destination="@id/fragment_list_testing_interface" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_my_events2"
+            app:destination="@id/fragment_view_my_events" />
 
 
+    </fragment>
+
+    <fragment
+        android:name="com.example.camaraderie.event_screen.user_lists.ListTestingInterfaceFragment"
+        android:id="@+id/fragment_list_testing_interface"
+        android:label="testing organizers view of lists"
+        tools:layout="@layout/fragment_view_lists_testing_interface">
+
+        <action
+            android:id="@+id/action_fragment_list_testing_interface_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
+        <action
+            android:id="@+id/action_fragment_list_testing_interface_to_fragment_view_waitlist"
+            app:destination="@id/fragment_view_waitlist_or_selected" />
+        <action
+            android:id="@+id/action_fragment_list_testing_interface_to_view_accepted_or_cancelled"
+            app:destination="@id/view_accepted_or_cancelled" />
+    </fragment>
+
+    <fragment
+        android:name="com.example.camaraderie.event_screen.user_lists.accepted_or_cancelled_list.ViewAcceptedOrCancelledFragment"
+        android:id="@+id/view_accepted_or_cancelled"
+        android:label="View accepted or cancelled fragment"
+        tools:layout="@layout/fragment_view_accepted_or_cancelled">
+
+
+        <action
+            android:id="@+id/action_view_accepted_or_cancelled_to_fragment_list_testing_interface"
+            app:destination="@id/fragment_list_testing_interface" />
     </fragment>
 
     <fragment
@@ -43,6 +87,9 @@
         android:label="Organizer View Photos"
         tools:layout="@layout/fragment_organizer_view_photos">
 
+        <action
+            android:id="@+id/action_fragment_organizer_view_photos_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
 </navigation>

@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/fragment_view_event_user"
-        android:name="com.example.camaraderie.event_screen.UserViewEventFragment"
+        android:name="com.example.camaraderie.event_screen.user_view.UserViewEventFragment"
         tools:layout="@layout/fragment_view_event_user">
 
         <argument
@@ -29,7 +29,16 @@
             app:argType="string" />
 
         <action android:id="@+id/action_event_to_waitlist"
-            app:destination="@id/fragment_view_waitlist" />
+            app:destination="@id/fragment_view_waitlist_or_selected" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_create_event_testing2"
+            app:destination="@id/fragment_create_event_testing" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_main2"
+            app:destination="@id/fragment_main" />
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
 
         <action android:id="@+id/action__fragment_user_view_event_to_fragment_user_view_photos"
             app:destination="@id/fragment_user_view_photos"/>
@@ -37,24 +46,43 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_view_waitlist"
-        android:name="com.example.camaraderie.event_screen.ViewWaitlistFragment"
-        tools:layout="@layout/fragment_view_attendees" />
+        android:id="@+id/fragment_view_waitlist_or_selected"
+        android:name="com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedFragment"
+        tools:layout="@layout/fragment_view_waitlist_or_selected" >
+        <action
+            android:id="@+id/action_fragment_view_waitlist_to_fragment_view_event_user"
+            app:destination="@id/fragment_view_event_user" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_view_my_events"
         android:name="com.example.camaraderie.my_events.ViewMyEventsFragment"
-        tools:layout="@layout/fragment_view_my_events" />
+        tools:layout="@layout/fragment_view_my_events" >
+        <action
+            android:id="@+id/action_fragment_view_my_events_to_fragment_main2"
+            app:destination="@id/fragment_main" />
+        <action
+            android:id="@+id/action_fragment_view_my_events_to_fragment_create_event_testing2"
+            app:destination="@id/fragment_create_event_testing" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_create_event_testing"
-        android:name="com.example.camaraderie.event_screen.CreateEventFragment"
-        tools:layout="@layout/fragment_create_event_testing" />
+        android:name="com.example.camaraderie.event_screen.organizer_view.CreateEventFragment"
+        tools:layout="@layout/fragment_create_event" >
+        <action
+            android:id="@+id/action_fragment_create_event_testing_to_fragment_main2"
+            app:destination="@id/fragment_main" />
+    </fragment>
 
     <fragment
         android:id="@+id/update_user"
-        android:name="com.example.camaraderie.UpdateUserFragment"
-        tools:layout="@layout/fragment_update_user" />
+        android:name="com.example.camaraderie.updateUserStuff.UpdateUserFragment"
+        tools:layout="@layout/fragment_update_user" >
+        <action
+            android:id="@+id/action_update_user_to_fragment_main2"
+            app:destination="@id/fragment_main" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_user_view_photos"

@@ -1,8 +1,9 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.organizer_view;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.firebase.firestore.DocumentReference;
@@ -45,6 +45,8 @@ public class OrganizerViewEventFragment extends Fragment {
 
     private FragmentViewEventOrganizerBinding binding;
 
+    //private NotificationController notificationController;
+
     /**
      * sets svm, nav, and db.
      * @param savedInstanceState If the fragment is being re-created from
@@ -58,6 +60,8 @@ public class OrganizerViewEventFragment extends Fragment {
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         nav = NavHostFragment.findNavController(this);
         db = FirebaseFirestore.getInstance();
+        //notificationController = new NotificationController(getContext(), (com.example.notifications.NotificationView) getParentFragment());
+
     }
 
     /**
@@ -96,9 +100,16 @@ public class OrganizerViewEventFragment extends Fragment {
             updateUI(evt);
         });
 
+        binding.orgViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
+
+        binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
         binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
-        binding.viewAttendeesButton.setOnClickListener(v -> nav.navigate(R.id.fragment_view_waitlist));
-        binding.OrgEventRunLotteryButton.setOnClickListener(v -> runLottery());
+        binding.viewListsButton.setOnClickListener(v -> nav.navigate(R.id.fragment_list_testing_interface));
+        binding.OrgEventRunLotteryButton.setOnClickListener(v -> {
+            runLottery(event);
+            updateUI(event);
+            Toast.makeText(getContext(), "Lottery has been run!", LENGTH_SHORT).show();
+        });
 
         binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event_testing));
         binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
@@ -208,32 +219,6 @@ public class OrganizerViewEventFragment extends Fragment {
         binding.hostNameOrgView.setText(user.getFirstName());
         binding.nameOfOrganizer.setText(user.getFirstName());
 
-    }
-
-    /**
-     * lottery system, runs while waitlist is nonempty and selectedList size is less than capacity.
-     * updates database, updates UI
-     */
-    private void runLottery() {
-        Random r = new Random();
-
-        while (event.getSelectedUsers().size() < event.getCapacity() &&
-                !event.getWaitlist().isEmpty()) {
-
-            int index = r.nextInt(event.getWaitlist().size());
-            DocumentReference userRef = event.getWaitlist().get(index);
-
-            event.getWaitlist().remove(userRef);
-            event.getSelectedUsers().add(userRef);
-
-            // Update user document lists
-            userRef.update("waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
-            userRef.update("selectedEvents", FieldValue.arrayUnion(event.getEventDocRef()));
-        }
-
-        event.updateDB();
-        updateUI(event);
-        Toast.makeText(getContext(), "Lottery has been run!", LENGTH_SHORT).show();
     }
 
     /**

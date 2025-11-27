@@ -1,15 +1,12 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.event_screen.user_view;
 
-import static android.widget.Toast.LENGTH_SHORT;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,23 +16,19 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.dashboard.EventViewModel;
-import com.example.camaraderie.dashboard.MainFragment;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
+import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * The screen for user's viewing an uploaded event
@@ -49,6 +42,7 @@ public class UserViewEventFragment extends Fragment {
     private Event event;
 //    private EventViewModel eventViewModel;
     private SharedEventViewModel svm;
+    private ViewListViewModel vm;
 
 
     /**
@@ -64,6 +58,7 @@ public class UserViewEventFragment extends Fragment {
 //        eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
 
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+        vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);  // this will live in the activity
         db = FirebaseFirestore.getInstance();
         nav = NavHostFragment.findNavController(this);
 
@@ -101,26 +96,43 @@ public class UserViewEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // get event details, everything that depends on event as an object exists here
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             event = evt;
             updateUI(evt);
+
+            // TODO: only enable this for ADMINS. for users, in its stead, have the event waitlist / capacity.
+            binding.viewListsButton.setOnClickListener(v -> {
+                vm.setEvent(event);
+                vm.generateAllLists(() -> {
+                    nav.navigate(R.id.fragment_list_testing_interface); //TODO: user should NOT SEE these lists in general, only capacity.
+                });
+            });
+
+            if (!user.isAdmin()) {
+                binding.viewListsButton.setEnabled(false);
+                binding.viewListsButton.setVisibility(INVISIBLE);
+            }
         });
 
+        // button handlers
         binding.joinButtonUserView.setOnClickListener(v -> handleJoin());
         binding.unjoinButtonUserView.setOnClickListener(v -> handleUnjoin());
         binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
         binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
         binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event_testing));
-        binding.viewAttendeesButton.setOnClickListener(v -> nav.navigate(R.id.fragment_view_waitlist));
+        binding.userViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
 
+        // set up admin delete button
+        binding.adminDeleteEvent.setEnabled(false);
+        binding.adminDeleteEvent.setVisibility(INVISIBLE);
         if (user.isAdmin()) {
             binding.adminDeleteEvent.setEnabled(true);
+            binding.adminDeleteEvent.setVisibility(VISIBLE);
+            binding.adminDeleteEvent.setOnClickListener(v -> adminDeleteEvent());
         }
-        else {
-            binding.adminDeleteEvent.setEnabled(false);
-        }
-        binding.adminDeleteEvent.setOnClickListener(v -> adminDeleteEvent());
 
+        // qr code button
         binding.qrButtonUserView.setOnClickListener(new View.OnClickListener() {
 
             /**
@@ -202,10 +214,13 @@ public class UserViewEventFragment extends Fragment {
      * handles join, updates database
      */
     private void handleJoin() {
-        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
-        user.addWaitlistedEvent(event.getEventDocRef());
-        updateUI(event);
-        nav.navigate(R.id.fragment_main);
+        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
+                .addOnSuccessListener(v -> {
+                    user.addWaitlistedEvent(event.getEventDocRef());
+                    updateUI(event);
+                });
+
+        //nav.navigate(R.id.fragment_main);
     }
 
     /**

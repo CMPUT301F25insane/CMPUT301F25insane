@@ -1,16 +1,15 @@
 package com.example.camaraderie.accepted_screen;
 
-import static com.example.camaraderie.MainActivity.user;
+import static com.example.camaraderie.main.MainActivity.user;
 
 import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.camaraderie.MainActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
-
-import org.checkerframework.common.returnsreceiver.qual.This;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 /** This is the view model meant to ease the transferring of data between the fragment and array adapter
  * It extends the ViewModel class and we use it to implement custom methods to make our code easier and cleaner to
@@ -33,19 +32,21 @@ public class UserAcceptedViewModel extends ViewModel {
      */
     public void userAcceptInvite(DocumentReference eventDocRef) {
 
-        eventDocRef.update("acceptedList", FieldValue.arrayUnion(user.getDocRef()))
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added to acceptedList!"))
-                .addOnFailureListener(e -> Log.e("Firestore", "Error adding user", e));
-
-        eventDocRef.update("selectedList", FieldValue.arrayRemove(user.getDocRef()))
-                .addOnSuccessListener(aVoid ->
-                        Log.d("Firestore", "User removed from selectedList! (accepted invitation)"))
-                .addOnFailureListener(e ->
-                        Log.e("Firestore", "Error removing user", e));
-
+        WriteBatch batch = FirebaseFirestore.getInstance().batch();
         user.addAcceptedEvent(eventDocRef);  // add to accepted event
         user.removeSelectedEvent(eventDocRef);  // remove from selectedEvents list (no longer needed)
-        user.updateDB();
+
+        batch.update(eventDocRef, "acceptedList", FieldValue.arrayUnion(user.getDocRef()));
+        batch.update(eventDocRef, "selectedList", FieldValue.arrayRemove(user.getDocRef()));
+
+        user.updateDB(() -> {
+            batch.commit()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("Firestore", "User added to acceptedList!");
+                        Log.d("Firestore", "User removed from selectedList! (accepted invitation)");
+                    })
+                    .addOnFailureListener(e -> Log.e("Firestore", "Error updating user lists", e));
+        });
     }
 
     /**
@@ -59,14 +60,15 @@ public class UserAcceptedViewModel extends ViewModel {
 
     // user rejects invitation
     public void userDeclineInvite(DocumentReference eventDocRef) {
-        eventDocRef.update("selectedList", FieldValue.arrayRemove(user.getDocRef()))
-                .addOnSuccessListener(aVoid ->
-                        Log.d("Firestore", "User removed from selectedList! (declined invitation)"))
-                .addOnFailureListener(e ->
-                        Log.e("Firestore", "Error removing user", e));
-
         user.removeSelectedEvent(eventDocRef);
-        user.updateDB();
+
+        user.updateDB(() -> {
+            eventDocRef.update("selectedList", FieldValue.arrayRemove(user.getDocRef()))
+                    .addOnSuccessListener(aVoid ->
+                            Log.d("Firestore", "User removed from selectedList! (declined invitation)"))
+                    .addOnFailureListener(e ->
+                            Log.e("Firestore", "Error removing user", e));
+        });
     }
 
     /**

@@ -438,10 +438,16 @@ public class Event {
     /**
      * updates event in database
      */
-    public void updateDB() {
+    public void updateDB(Runnable onComplete) {
         eventDocRef.set(this, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Successfully update event"))
-                .addOnFailureListener(e -> Log.e("Firestore", "Failed to update event"));
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "Successfully update event");
+                    onComplete.run();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Failed to update event");
+                    onComplete.run();
+                });
     }
 
     /**

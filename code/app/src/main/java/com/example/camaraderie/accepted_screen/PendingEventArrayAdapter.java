@@ -1,7 +1,5 @@
 package com.example.camaraderie.accepted_screen;
 
-import static com.example.camaraderie.MainActivity.user;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
-import com.example.camaraderie.User;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
 /**
  * PendingEventArrayAdapter extends array adapter in order to customize how we list the events
  * that are waiting for the users to accept them

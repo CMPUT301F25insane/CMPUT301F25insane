@@ -2,6 +2,8 @@ package com.example.camaraderie;//
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +34,7 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> waitlistedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
+    private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
 
     /**
      * Constructor for User
@@ -48,7 +51,7 @@ public class User implements Serializable {
      * @param docref
      *  Pointer to an equivalent user document in Firebase
      */
-    public User(String firstName, String phone, String email, String address, String userId, String notificationToken, DocumentReference docref) {
+    public User(@NonNull String firstName, @NonNull String phone, @NonNull String email, @NonNull String address, @NonNull String userId, String notificationToken, @NonNull DocumentReference docref) {
         this.firstName = firstName;
         this.phoneNumber = phone;
         this.email = email;
@@ -192,13 +195,19 @@ public class User implements Serializable {
     /**
      * update user in database
      */
-    public void updateDB() {
+    public void updateDB(Runnable onComplete) {
         // update the DB from the user
         this.docRef.set(this, SetOptions.merge())
-                .addOnSuccessListener(aVoid ->
-                        Log.d("UserRepository", "User updated"))
+                .addOnSuccessListener(aVoid -> {
+                            Log.d("UserRepository", "User updated");
+                            onComplete.run();
+                        })
+
                 .addOnFailureListener(e ->
-                        Log.e("UserRepository", "Error updating user", e));
+                        {
+                            Log.e("UserRepository", "Error updating user", e);
+                            onComplete.run();
+                        });
     }
 
     /**
@@ -272,6 +281,20 @@ public class User implements Serializable {
         if (!userCreatedEvents.contains(eventRef)) {
             userCreatedEvents.add(eventRef);
         }
+    }
+
+    public ArrayList<DocumentReference> getCancelledEvents() {
+        return cancelledEvents;
+    }
+
+    public void addCancelledEvent(DocumentReference cancelledEvent) {
+        if (!cancelledEvents.contains(cancelledEvent)) {
+            this.cancelledEvents.add(cancelledEvent);
+        }
+    }
+
+    public void removeCancelledEvent(DocumentReference cancelledEvent) {
+        cancelledEvents.remove(cancelledEvent);
     }
 }
 

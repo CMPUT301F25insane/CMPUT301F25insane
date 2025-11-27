@@ -22,9 +22,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.example.camaraderie.event_screen.CreateEventFragment;
-import com.example.camaraderie.event_screen.UserViewEventFragment;
-
+import com.example.camaraderie.event_screen.organizer_view.CreateEventFragment;
+import com.example.camaraderie.event_screen.user_view.UserViewEventFragment;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;

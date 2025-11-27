@@ -14,7 +14,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.Matchers.not;
 
-import com.example.camaraderie.event_screen.UserViewEventFragment;
+import com.example.camaraderie.event_screen.user_view.UserViewEventFragment;
 /**
  * The purpose of this test is to test when the user to join and unjoin an event.
  */
