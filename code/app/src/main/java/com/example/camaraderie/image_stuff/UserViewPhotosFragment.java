@@ -80,14 +80,19 @@ public class UserViewPhotosFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d("event ID:", event.getEventId());
+        Log.d("byte String:", event.getImageString());
+
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
             Log.d("Event:", event.getEventId());
             eventDocRef = event.getEventDocRef();
         });
 
-        // Decodea and place the image into the imageView
-        byte[] imageBytes = Base64.decode(event.getImageString(), Base64.DEFAULT);
+        String imageString = eventDocRef.get().getResult().get("imageString").toString();
+
+        // Decode and place the image into the imageView
+        byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         binding.imageView2.setImageBitmap(bitmap);
 

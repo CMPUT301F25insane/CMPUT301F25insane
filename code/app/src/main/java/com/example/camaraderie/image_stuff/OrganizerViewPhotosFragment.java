@@ -126,12 +126,13 @@ public class OrganizerViewPhotosFragment extends Fragment {
 
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
-            Log.d("Event:", event.getEventId());
             eventDocRef = event.getEventDocRef();
         });
 
         // Decode and put the image into the imageView
-        byte[] imageBytes = Base64.decode(event.getImageString(), Base64.DEFAULT);
+        String imageString = eventDocRef.get().getResult().get("imageString").toString();
+
+        byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         binding.imageView2.setImageBitmap(bitmap);
 
@@ -145,6 +146,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
 
 
         });
+
 
     }
 

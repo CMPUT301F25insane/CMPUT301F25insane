@@ -6,6 +6,7 @@ import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
