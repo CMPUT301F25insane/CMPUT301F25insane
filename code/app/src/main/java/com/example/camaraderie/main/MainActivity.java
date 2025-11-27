@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        //FirebaseFirestore.getInstance().clearPersistence();  // TODO: DO NOT UNCOMMENT THIS CODE
-
         svm = new ViewModelProvider(this).get(SharedEventViewModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
@@ -357,13 +355,13 @@ public class MainActivity extends AppCompatActivity {
                                         return;
                                     });
 
-                                if (pendingDeeplink != null){
-                                    handleDeepLink();
-                                } else{
-                                    navController.navigate(R.id.fragment_main);
-                                }
+                                    if (pendingDeeplink != null){
+                                        handleDeepLink();
+                                    } else{
+                                        navController.navigate(R.id.fragment_main);
+                                    }
 
-                            }
+                                }
 
                         )
                         .addOnFailureListener(e -> {
