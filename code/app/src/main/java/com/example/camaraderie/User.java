@@ -347,6 +347,24 @@ public class User implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public ArrayList<DocumentReference> getPendingNotifications() {
+        return pendingNotifications;
+    }
+
+    public void setPendingNotifications(ArrayList<DocumentReference> pendingNotifications) {
+        this.pendingNotifications = pendingNotifications;
+    }
+
+    public void addPendingNotification(DocumentReference notif) {
+        if (!this.pendingNotifications.contains(notif)) {
+            pendingNotifications.add(notif);
+        }
+    }
+
+    public void removePendingNotification(DocumentReference notif) {
+        pendingNotifications.remove(notif);
+    }
 }
 
 

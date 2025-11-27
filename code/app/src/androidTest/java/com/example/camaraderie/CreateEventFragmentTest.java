@@ -119,7 +119,7 @@ public class CreateEventFragmentTest {
      */
     @Test
     public void testEmptyFormShowsError() {
-        onView(withId(R.id.createEventConfirmButton)).perform(click());
+        onView(withId(R.id.button_for_confirm)).perform(click());
         onView(withText("Please fill in all fields")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
