@@ -47,6 +47,8 @@ public class OrganizerViewPhotosFragment extends Fragment {
 
     private Event event;
 
+    private String imageString;
+
     private FragmentOrganizerViewPhotosBinding binding;
 
     /**
@@ -114,7 +116,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
                             Log.d("ByteString:", imageString);
                             //Need to update into the event
                             eventDocRef = event.getEventDocRef();
-
+                            eventDocRef.update("imageString",imageString);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -127,14 +129,19 @@ public class OrganizerViewPhotosFragment extends Fragment {
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
             eventDocRef = event.getEventDocRef();
+            Log.d("Event Doc Ref:", eventDocRef.toString());
+            eventDocRef.get().addOnCompleteListener(task -> {
+                imageString = task.getResult().getString("imageString");
+                // Decode and place the image into the imageView
+                if (imageString != null) {
+                    byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+                    Log.d("Bytes", imageBytes.toString());
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    binding.imageView2.setImageBitmap(bitmap);
+                }
+            });
+
         });
-
-        // Decode and put the image into the imageView
-        String imageString = eventDocRef.get().getResult().get("imageString").toString();
-
-        byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-        binding.imageView2.setImageBitmap(bitmap);
 
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
 
