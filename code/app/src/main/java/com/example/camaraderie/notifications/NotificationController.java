@@ -37,6 +37,7 @@ public class NotificationController {
      * send notification
      * @param model model holding teh info for the notificaiton to be sent
      */
+    //TODO: THIS HAS BEEN MOVED TO ANOTHER CLASS, DONT COMMIT TOO MUCH WORK TO THIS CLASS
     public void sendNotification(NotificationData model) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)

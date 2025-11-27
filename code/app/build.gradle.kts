@@ -80,10 +80,5 @@ dependencies {
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
     implementation("androidx.activity:activity:1.11.0")
     implementation("org.maplibre.gl:android-sdk:11.13.5")
-    implementation("com.github.bumptech.glide:glide:4.x")
-    implementation("com.firebaseui:firebase-ui-storage:9.0.0")
 
-    //commit check
-    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
-    implementation("com.google.firebase:firebase-storage")
 }

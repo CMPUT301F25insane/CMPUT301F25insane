@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_for_desc_locaton_etc"
         android:layout_width="381dp"
-        android:layout_height="459dp"
+        android:layout_height="494dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +105,7 @@
             android:gravity="center"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur malesuada, tortor non tempus porttitor, augue elit euismod leo, ut dapibus erat erat quis sapien. Praesent dignissim risus et urna facilisis, sed varius tortor commodo. Phasellus rutrum, justo eget condimentum cursus, libero elit placerat elit, ac efficitur lectus lectus eget mi. Vivamus eget ligula euismod, facilisis dolor ut, tempor arcu. Donec libero augue, tristique varius sapien id, ultrices interdum augue."
             android:textColor="@color/white"
-            android:textSize="11.3dp"
+            android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +120,7 @@
             android:backgroundTint="#B0394241"
             android:fontFamily="@font/cambria"
             android:text="View QR Code"
-            android:textSize="8.8dp"
+            android:textSize="12dp"
             app:layout_constraintEnd_toStartOf="@+id/view_lists_button"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -131,11 +132,11 @@
             android:layout_width="100dp"
             android:layout_height="47dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="12dp"
             android:backgroundTint="#B0394241"
             android:fontFamily="@font/cambria"
             android:text="View Lists"
-            android:textSize="8.3dp"
+            android:textSize="12dp"
             app:layout_constraintEnd_toStartOf="@+id/view_photos_org_view"
             app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
             app:strokeWidth="1dp" />
@@ -149,7 +150,7 @@
             android:backgroundTint="#B0394241"
             android:fontFamily="@font/cambria"
             android:text="View Photos"
-            android:textSize="8.3dp"
+            android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
             app:strokeWidth="1dp" />
@@ -161,6 +162,7 @@
             android:fontFamily="@font/cambria"
             android:text="Location"
             android:textColor="@color/white"
+            android:textSize="20dp"
             app:layout_constraintBottom_toTopOf="@+id/event_description_org_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.103"
@@ -181,24 +183,39 @@
             android:id="@+id/showMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#AAD6F2"
+            android:fontFamily="@font/cambria"
             android:text="Show Map"
-            app:layout_constraintTop_toBottomOf="@id/view_lists_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_lists_button"
+            app:strokeWidth="3dp" />
+
+        <Button
+            android:id="@+id/orgNotifScreenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification Screen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/showMap"
+            app:layout_constraintTop_toBottomOf="@+id/view_lists_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/header_for_view_event_organizer"
         android:layout_width="130dp"
-        android:textColor="@color/white"
         android:layout_height="39dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:fontFamily="@font/cambria_italic"
+        android:gravity="center"
         android:text="Camaraderie"
+        android:textColor="@color/white"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -267,47 +284,65 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/delete_button_org_view"
+        android:id="@+id/OrgEventRunLotteryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:backgroundTint="#9E2C0A"
-        android:text="Delete"
+        android:backgroundTint="#AAF2C8"
+        android:fontFamily="@font/cambria"
+        android:text="Run Lottery"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/event_edit_button_ord_view"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toEndOf="@+id/delete_button_org_view"
         app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
-        app:strokeWidth="3dp" />
+        app:layout_constraintVertical_bias="0.385"
+        app:strokeWidth="4dp" />
 
     <Button
         android:id="@+id/event_edit_button_ord_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="#AAD6F2"
         android:text="Edit"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
+        app:layout_constraintVertical_bias="0.385"
         app:strokeWidth="3dp" />
 
     <Button
-        android:id="@+id/OrgEventRunLotteryButton"
+        android:id="@+id/delete_button_org_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="run lottery"
+        android:layout_marginStart="12dp"
+        android:backgroundTint="#9E2C0A"
+        android:text="Delete"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/event_edit_button_ord_view"
-        app:layout_constraintStart_toEndOf="@+id/delete_button_org_view"
-        app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
+        app:layout_constraintVertical_bias="0.385"
+        app:strokeWidth="3dp" />
 
     <Button
         android:id="@+id/orgViewBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
         android:text="Back"
-        app:layout_constraintBottom_toTopOf="@+id/layout_for_desc_locaton_etc"
-        app:layout_constraintEnd_toStartOf="@+id/name_of_organizer"
-        app:layout_constraintStart_toEndOf="@+id/header_for_view_event_organizer"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OrgEventRunLotteryButton"
+        app:layout_constraintVertical_bias="0.343"
+        app:strokeWidth="3dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

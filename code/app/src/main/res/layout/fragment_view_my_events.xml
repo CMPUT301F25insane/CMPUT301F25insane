@@ -8,6 +8,22 @@
     >
 
 
+    <Button
+        android:id="@+id/historyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:text="Event History"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/pendingEventButtons"
+        app:layout_constraintStart_toEndOf="@+id/MyEventsButton"
+        app:layout_constraintTop_toBottomOf="@+id/myEventsForViewMyEvents"
+        app:layout_constraintVertical_bias="0.431"
+        app:strokeWidth="3dp" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="411dp"
@@ -51,8 +67,8 @@
 
     <ListView
         android:id="@+id/myEventsForViewMyEvents"
-        android:layout_width="319dp"
-        android:layout_height="401dp"
+        android:layout_width="375dp"
+        android:layout_height="518dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -74,7 +90,7 @@
         app:layout_constraintBottom_toTopOf="@+id/invites_header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.372" />
+        app:layout_constraintVertical_bias="0.365" />
 
     <TextView
         android:id="@+id/invites_header"
@@ -96,7 +112,7 @@
         android:id="@+id/userProfileImageButton"
         android:layout_width="60dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -106,38 +122,39 @@
         android:id="@+id/name_for_my_events"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:fontFamily="@font/cambria"
         android:layout_marginStart="144dp"
+        android:fontFamily="@font/cambria"
         android:text="[name]"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/myEventsForViewMyEvents"
         app:layout_constraintEnd_toStartOf="@+id/userProfileImageButton"
-        app:layout_constraintHorizontal_bias="0.562"
+        app:layout_constraintHorizontal_bias="0.235"
         app:layout_constraintStart_toEndOf="@+id/header_for_see_my_events"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.361" />
+        app:layout_constraintVertical_bias="0.323" />
 
     <Button
         android:id="@+id/MyEventsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Events"
-        app:strokeWidth="3dp"
+        android:layout_marginEnd="13dp"
         android:backgroundTint="#AAD6F2"
         android:fontFamily="@font/cambria"
-        android:textStyle="bold"
+        android:text="My Events"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.127"
+        app:layout_constraintEnd_toStartOf="@+id/historyButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myEventsForViewMyEvents"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintVertical_bias="0.428"
+        app:strokeWidth="3dp" />
 
     <Button
         android:id="@+id/pendingEventButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:backgroundTint="#AAD6F2"
         android:fontFamily="@font/cambria"
         android:text="Pending Events"
@@ -145,10 +162,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.695"
-        app:layout_constraintStart_toEndOf="@+id/MyEventsButton"
+        app:layout_constraintStart_toEndOf="@+id/historyButton"
         app:layout_constraintTop_toBottomOf="@+id/myEventsForViewMyEvents"
-        app:layout_constraintVertical_bias="0.428"
+        app:layout_constraintVertical_bias="0.431"
         app:strokeWidth="3dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

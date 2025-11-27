@@ -10,8 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="366dp"
-        android:layout_height="643dp"
+        android:layout_width="377dp"
+        android:layout_height="698dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -188,6 +188,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Delete_button_for_user_profile"
             app:layout_constraintVertical_bias="0.807" />
+
+        <Button
+            android:id="@+id/refreshNotificationsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Refresh Notifications"
+            app:layout_constraintBottom_toTopOf="@+id/admin_password_for_user_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.135"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Delete_button_for_user_profile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -32,6 +33,7 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventBinding;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -114,6 +116,7 @@ public class CreateEventFragment extends Fragment {
             editing = true;
 
             String path = args.getString("eventDocRefPath");
+            assert path != null;
             eventDocRef = FirebaseFirestore.getInstance().document(path);
 
             eventDocRef.get().addOnSuccessListener(doc -> {
@@ -198,7 +201,7 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventPosterUri);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
@@ -241,15 +244,14 @@ public class CreateEventFragment extends Fragment {
 
     /**
      * creates new event and updates db. if editing is true, it updates db instead
-     *
-     * @param eventName        new name
-     * @param eventDate        new date
-     * @param eventDeadline    new deadline
-     * @param eventLocation    new location
+     * @param eventName new name
+     * @param eventDate new date
+     * @param eventDeadline new deadline
+     * @param eventLocation new location
      * @param eventDescription new description
-     * @param eventCapacity    new capatiy
-     * @param optionalLimit    new optional limit
-     * @param eventTime        new time
+     * @param eventCapacity new capatiy
+     * @param optionalLimit new optional limit
+     * @param eventTime new time
      * @throws ParseException throws parseException if parse fails (mainly date)
      */
     private void createEvent(EditText eventName,
@@ -259,7 +261,8 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDescription,
                              EditText eventCapacity,
                              EditText optionalLimit,
-                             EditText eventTime) throws ParseException {
+                             EditText eventTime,
+                             Uri eventPosterUri) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
@@ -290,9 +293,9 @@ public class CreateEventFragment extends Fragment {
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
-            if (limit != -1) {
-                event.setWaitlistLimit(limit);
-            }
+            event.setPosterUri(eventPosterUri);
+            event.setWaitlistLimit(limit);
+
             eventDocRef.set(event, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
@@ -307,13 +310,8 @@ public class CreateEventFragment extends Fragment {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            if (limit != -1) {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId);
-            }
-            else {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
-            }
-
+            boolean geoloc = false;  // for now
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri, geoloc);
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
@@ -321,11 +319,17 @@ public class CreateEventFragment extends Fragment {
 
                         user.addCreatedEvent(eventRef);
 
-                        SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
-                        vm.setEvent(newEvent);
+                        user.getDocRef().update("userCreatedEvents", FieldValue.arrayUnion(eventRef))
+                            .addOnSuccessListener(v -> {
+                                //user.updateDB(() -> {
+                                    SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
+                                    vm.setEvent(newEvent);
+                                    NavHostFragment.findNavController(CreateEventFragment.this)
+                                            .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                                //});
+                            });
 
-                        NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
 
@@ -338,10 +342,11 @@ public class CreateEventFragment extends Fragment {
      */
     private void openDateDialogue() {
         DatePickerDialog dateDialog;
-        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.inputFieldForCreateEventDate.setText(year + "-" + (month+1) + "-" + day);
+                String format = year + "-" + (month+1) + "-" + day;
+                binding.inputFieldForCreateEventDate.setText(format);
             }
 
         }, 2025, 10, 6);
@@ -355,10 +360,11 @@ public class CreateEventFragment extends Fragment {
      */
     private void openDeadlineDialogue() {
         DatePickerDialog dateDialog;
-        dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+        dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                binding.inputFieldForCreateEventRegistrationDeadline.setText(year + "-" + (month+1) + "-" + day);
+                String format = year + "-" + (month+1) + "-" + day;
+                binding.inputFieldForCreateEventRegistrationDeadline.setText(format);
             }
 
         }, 2025, 10, 6);
