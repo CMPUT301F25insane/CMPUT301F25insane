@@ -26,8 +26,6 @@ public class EventViewModel extends ViewModel {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
-    private CollectionReference usersRef;
-
     private ListenerRegistration listener;
     private MutableLiveData<ArrayList<Event>> localEvents = new MutableLiveData<>();
 
@@ -43,7 +41,7 @@ public class EventViewModel extends ViewModel {
     public EventViewModel() {
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("Events");
-        usersRef = db.collection("Users");
+
 
         // get database events (this is fine, we don't have that many entries)
         listener = eventsRef.addSnapshotListener((querySnapshot, error) -> {
@@ -69,10 +67,6 @@ public class EventViewModel extends ViewModel {
         });
     }
 
-    private void updateData() {
-
-
-    }
 
     private void runRegistrationDeadline(Event event) {
 
@@ -112,6 +106,7 @@ public class EventViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
+
         listener.remove();
     }
 
