@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
@@ -198,14 +197,14 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventPosterUri);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        binding.createEventPictureButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonForAddPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Launch the photo picker and let the user choose only images.
@@ -241,14 +240,15 @@ public class CreateEventFragment extends Fragment {
 
     /**
      * creates new event and updates db. if editing is true, it updates db instead
-     * @param eventName new name
-     * @param eventDate new date
-     * @param eventDeadline new deadline
-     * @param eventLocation new location
+     *
+     * @param eventName        new name
+     * @param eventDate        new date
+     * @param eventDeadline    new deadline
+     * @param eventLocation    new location
      * @param eventDescription new description
-     * @param eventCapacity new capatiy
-     * @param optionalLimit new optional limit
-     * @param eventTime new time
+     * @param eventCapacity    new capatiy
+     * @param optionalLimit    new optional limit
+     * @param eventTime        new time
      * @throws ParseException throws parseException if parse fails (mainly date)
      */
     private void createEvent(EditText eventName,
@@ -258,8 +258,7 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDescription,
                              EditText eventCapacity,
                              EditText optionalLimit,
-                             EditText eventTime,
-                             Uri eventPosterUri) throws ParseException {
+                             EditText eventTime) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
@@ -290,7 +289,6 @@ public class CreateEventFragment extends Fragment {
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
-            event.setPosterUri(eventPosterUri);
             if (limit != -1) {
                 event.setWaitlistLimit(limit);
             }
@@ -309,10 +307,10 @@ public class CreateEventFragment extends Fragment {
             String eventId = eventRef.getId();
             Event newEvent;
             if (limit != -1) {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri);
+                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId);
             }
             else {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId, eventPosterUri);
+                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId);
             }
 
 
