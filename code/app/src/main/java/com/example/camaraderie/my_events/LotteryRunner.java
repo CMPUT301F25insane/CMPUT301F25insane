@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 public class LotteryRunner {
@@ -33,6 +34,10 @@ public class LotteryRunner {
             // Update user document lists
             batch.update(userRef, "waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
             batch.update(userRef, "selectedEvents", FieldValue.arrayUnion(event.getEventDocRef()));
+
+            // update events list
+            batch.update(event.getEventDocRef(), "waitlist", FieldValue.arrayRemove(userRef));
+            batch.update(event.getEventDocRef(), "selectedUsers", FieldValue.arrayUnion(userRef));
         }
 
         event.updateDB(() -> {
