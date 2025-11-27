@@ -19,7 +19,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import static com.example.camaraderie.main.MainActivity.user;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.Location;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
@@ -30,10 +29,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The screen for user's viewing an uploaded event

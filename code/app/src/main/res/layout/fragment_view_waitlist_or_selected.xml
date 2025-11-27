@@ -20,13 +20,13 @@
 
     <TextView
         android:id="@+id/waitlistOrSelectedTextView"
-        android:layout_width="143dp"
-        android:layout_height="43dp"
+        android:layout_width="144dp"
+        android:layout_height="59dp"
         android:fontFamily="@font/cambria"
+        android:gravity="center"
         android:text="Waitlist:"
         android:textColor="@color/white"
         android:textSize="20dp"
-        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/usersInWaitlist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.067"

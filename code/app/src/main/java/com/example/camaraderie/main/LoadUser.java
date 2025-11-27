@@ -1,10 +1,15 @@
 package com.example.camaraderie.main;
 
+import static com.example.camaraderie.main.MainActivity.user;
+
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.example.camaraderie.notifications.FirebaseMessagingReceiver;
 import com.example.camaraderie.notifications.NotificationData;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 import com.google.firestore.v1.Write;
@@ -57,6 +62,13 @@ public class LoadUser {
                                 for (NotificationData notif : notifications) {
                                     FirebaseMessagingReceiver fcr = new FirebaseMessagingReceiver();
                                     fcr.showNotification(notif.getTitle(), notif.getMessage());
+                                    docRef.update("pendingNotifications", FieldValue.arrayRemove(notif.getRef()))
+                                            .addOnSuccessListener(v -> {
+                                                Log.d("Load User", "Notification displayed and removed from ref pendingNotifications field: " + notif.getTitle());
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("Load User", "Failed to remove notification form ref pendingNotifications field: " + notif.getTitle(), e);
+                                            });
                                 }
 
                             });

@@ -1,19 +1,15 @@
 package com.example.camaraderie.my_events;
 
 import static com.example.camaraderie.main.MainActivity.user;
-import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
 
 import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.SharedEventViewModel;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MyEventsViewModel extends ViewModel {
 

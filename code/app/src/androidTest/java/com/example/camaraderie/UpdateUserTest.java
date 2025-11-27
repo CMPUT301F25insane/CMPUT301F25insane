@@ -53,7 +53,7 @@ public class UpdateUserTest {
      */
     @Test
     public void testSaveButtonIsVisible() {
-        onView(withId(R.id.update_save))
+        onView(withId(R.id.confirm_button_for_user_profile))
                 .check(matches(isDisplayed()));
     }
     /**
@@ -61,7 +61,7 @@ public class UpdateUserTest {
      */
     @Test
     public void testSaveButtonIsClickable() {
-        onView(withId(R.id.update_save))
+        onView(withId(R.id.confirm_button_for_user_profile))
                 .perform(click());
 
     }
@@ -70,7 +70,7 @@ public class UpdateUserTest {
      */
     @Test
     public void testDeleteProfileButtonIsVisible() {
-        onView(withId(R.id.user_delete))
+        onView(withId(R.id.Delete_button_for_user_profile))
                 .check(matches(isDisplayed()));
 
     }
@@ -79,7 +79,7 @@ public class UpdateUserTest {
      */
     @Test
     public void testDeleteProfileButtonIsClickable() {
-        onView(withId(R.id.user_delete))
+        onView(withId(R.id.Delete_button_for_user_profile))
                 .perform(click());
 
     }
@@ -108,12 +108,12 @@ public class UpdateUserTest {
 //        onView(withId(R.id.update_address)).perform(ViewActions.typeText("99 Sooner street"));
 //        onView(withId(R.id.update_address)).perform(closeSoftKeyboard());
 
-        onView(withId(R.id.update_name)).perform(replaceText("Bob"), closeSoftKeyboard());
-        onView(withId(R.id.update_email)).perform(replaceText("bobisgreat@gmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.update_phone_no)).perform(replaceText("+15879009811"), closeSoftKeyboard());
-        onView(withId(R.id.update_address)).perform(replaceText("99 Sooner street"), closeSoftKeyboard());
+        onView(withId(R.id.name_field_for_update_user)).perform(replaceText("Bob"), closeSoftKeyboard());
+        onView(withId(R.id.email_field_for_update_user)).perform(replaceText("bobisgreat@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.phone_field_for_update_user3)).perform(replaceText("+15879009811"), closeSoftKeyboard());
+        onView(withId(R.id.address_field_for_update_user2)).perform(replaceText("99 Sooner street"), closeSoftKeyboard());
 
-        onView(withId(R.id.update_save)).perform(click());
+        onView(withId(R.id.confirm_button_for_user_profile)).perform(click());
         onView(withText("Profile updated!")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
 
     }
@@ -124,20 +124,20 @@ public class UpdateUserTest {
     @Test
     public void testInvalidEmail() {
         // Type an invalid email (missing "@")
-        onView(withId(R.id.update_email))
+        onView(withId(R.id.email_field_for_update_user))
                 .perform(replaceText("bobisgreatgmail.com"), closeSoftKeyboard());
 
         // Click save
-        onView(withId(R.id.update_save)).perform(click());
+        onView(withId(R.id.confirm_button_for_user_profile)).perform(click());
 
         // Check that Alert Error appears
         onView(withText("Please Enter a valid email address")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
 
         // Type an invalid email (missing ".com")
-        onView(withId(R.id.update_email)).perform(replaceText("bobisgreatgmail@"), closeSoftKeyboard());
+        onView(withId(R.id.email_field_for_update_user)).perform(replaceText("bobisgreatgmail@"), closeSoftKeyboard());
 
         // Click save
-        onView(withId(R.id.update_save)).perform(click());
+        onView(withId(R.id.confirm_button_for_user_profile)).perform(click());
 
         // Check that Alert Error appears
         onView(withText("Please Enter a valid email address")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
@@ -148,10 +148,10 @@ public class UpdateUserTest {
     @Test
     public void testInvalidPhoneNumberShowsError() {
         // Type invalid phone (letters or too short)
-        onView(withId(R.id.update_phone_no)).perform(replaceText("abc123"), closeSoftKeyboard());
+        onView(withId(R.id.phone_field_for_update_user3)).perform(replaceText("abc123"), closeSoftKeyboard());
 
         // Try saving
-        onView(withId(R.id.update_save)).perform(click());
+        onView(withId(R.id.confirm_button_for_user_profile)).perform(click());
 
         // Verify Toast message
         onView(withText("Please enter valid phone number")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
@@ -161,7 +161,7 @@ public class UpdateUserTest {
      */
     @Test
     public void DeleteProfileTest() {
-        onView(withId(R.id.user_delete)).perform(click());
+        onView(withId(R.id.Delete_button_for_user_profile)).perform(click());
         onView(withText("Are you sure you want to delete your profile?")).check(matches(isDisplayed()));
 //        onView(withId(R.id.Positive_button)).perform(click()); //suppose to select yes button
         onView(withText("Profile deleted!")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -69,6 +68,10 @@ public class CreateEventFragment extends Fragment {
 
     private String eventImageString;
     private boolean editing = false;
+    private Date today = new Date();
+    private int day = today.getDate();;
+    private int month = today.getMonth();
+    private int year = today.getYear() + 1900;
 
     /**
      * Instantiate the fragment
@@ -365,6 +368,7 @@ public class CreateEventFragment extends Fragment {
      * event date picker, sets binding textview
      */
     private void openDateDialogue() {
+
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -373,7 +377,7 @@ public class CreateEventFragment extends Fragment {
                 binding.inputFieldForCreateEventDate.setText(format);
             }
 
-        }, 2025, 10, 6);
+        }, year, month, day);
 
         dateDialog.show();
 
@@ -391,7 +395,7 @@ public class CreateEventFragment extends Fragment {
                 binding.inputFieldForCreateEventRegistrationDeadline.setText(format);
             }
 
-        }, 2025, 10, 6);
+        }, year, month, day);
 
         dateDialog.show();
 

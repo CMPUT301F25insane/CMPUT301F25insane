@@ -8,7 +8,6 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.my_events.LotteryRunner;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;

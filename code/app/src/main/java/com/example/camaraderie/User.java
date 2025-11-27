@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * This is a class that defines a user. Admin privileges granted by setting admin to true.
@@ -201,7 +202,27 @@ public class User implements Serializable {
      */
     public void updateDB(Runnable onComplete) {
         // update the DB from the user
-        this.docRef.set(this, SetOptions.merge())
+
+        HashMap<String, Object> data = new HashMap<>();
+
+        data.put("firstName", firstName);
+        data.put("phoneNumber", phoneNumber);
+        data.put("email", email);
+        data.put("address", address);
+        data.put("notificationToken", notificationToken);
+
+        data.put("admin", admin);
+
+        data.put("userCreatedEvents", userCreatedEvents);
+        data.put("waitlistedEvents", waitlistedEvents);
+        data.put("selectedEvents", selectedEvents);
+        data.put("acceptedEvents", acceptedEvents);
+        data.put("cancelledEvents", cancelledEvents);
+        data.put("pendingNotifications", pendingNotifications);
+        data.put("geoEnabled", geoEnabled);
+        data.put("userEventHistory", userEventHistory);
+
+        this.docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                             Log.d("UserRepository", "User updated");
                             onComplete.run();
