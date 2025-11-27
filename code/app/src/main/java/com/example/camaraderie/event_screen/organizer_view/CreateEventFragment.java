@@ -37,10 +37,17 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+
+import org.w3c.dom.Document;
 
 /**
  * fragment that allows an organizer to create an event
@@ -147,7 +154,6 @@ public class CreateEventFragment extends Fragment {
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                             byte [] bytes = stream.toByteArray();
                             String imageString = Base64.encodeToString(bytes, Base64.DEFAULT);
-                            Log.d("ByteString:", imageString);
                             eventImageString = imageString;
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -320,13 +326,16 @@ public class CreateEventFragment extends Fragment {
                                 .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating event", e));
+
+
+
         }
         else {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
             boolean geoloc = false;  // for now
-            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventImageString, geoloc);
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, this.eventImageString, geoloc);
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {

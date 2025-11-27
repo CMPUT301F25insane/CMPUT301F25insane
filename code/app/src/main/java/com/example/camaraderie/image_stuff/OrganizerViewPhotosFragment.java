@@ -113,7 +113,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                             byte [] bytes = stream.toByteArray();
                             String imageString = Base64.encodeToString(bytes, Base64.DEFAULT);
-                            Log.d("ByteString:", imageString);
+
                             //Need to update into the event
                             eventDocRef = event.getEventDocRef();
                             eventDocRef.update("imageString",imageString);
@@ -135,7 +135,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
                 // Decode and place the image into the imageView
                 if (imageString != null) {
                     byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
-                    Log.d("Bytes", imageBytes.toString());
+
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                     binding.imageView2.setImageBitmap(bitmap);
                 }
