@@ -3,8 +3,11 @@ package com.example.camaraderie.event_screen.organizer_view;
 import static com.example.camaraderie.main.MainActivity.user;
 
 import android.app.DatePickerDialog;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -55,7 +60,7 @@ public class CreateEventFragment extends Fragment {
     private EditText eventTime;
     private EditText optionalLimit;
 
-    private Uri eventPosterUri;
+    private String eventImageString;
     private boolean editing = false;
 
     /**
@@ -127,16 +132,26 @@ public class CreateEventFragment extends Fragment {
 
         }
 
-        // Registers a photo picker activity launcher in single-select mode.
+        /**
+         * This creates a photo picker activity
+         */
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                    // Callback is invoked after the user selects a media item or closes the
-                    // photo picker.
+                    // Called if the user picks a photo
                     if (uri != null) {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
                         //Add code to save the photo into the database
-                        //Need to set the Uri to the event's uri
-                        eventPosterUri = uri;
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            byte [] bytes = stream.toByteArray();
+                            String imageString = Base64.encodeToString(bytes, Base64.DEFAULT);
+                            Log.d("ByteString:", imageString);
+                            eventImageString = imageString;
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     } else {
                         Log.d("PhotoPicker", "No media selected");
                     }
@@ -201,7 +216,7 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventPosterUri);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventImageString);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
@@ -262,7 +277,7 @@ public class CreateEventFragment extends Fragment {
                              EditText eventCapacity,
                              EditText optionalLimit,
                              EditText eventTime,
-                             Uri eventPosterUri) throws ParseException {
+                             String eventImageString) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
@@ -293,7 +308,7 @@ public class CreateEventFragment extends Fragment {
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
-            event.setPosterUri(eventPosterUri);
+            event.setImageString(eventImageString);
             event.setWaitlistLimit(limit);
 
             eventDocRef.set(event, SetOptions.merge())
@@ -311,7 +326,7 @@ public class CreateEventFragment extends Fragment {
             String eventId = eventRef.getId();
             Event newEvent;
             boolean geoloc = false;  // for now
-            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri, geoloc);
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventImageString, geoloc);
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {

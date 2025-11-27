@@ -23,7 +23,7 @@ public class Event {
     private String eventTime;  // this will probably become a better data type soon
     //private float price = 0.0f;
 
-    private Uri eventPosterUri;
+    private String imageString;
     private ArrayList<DocumentReference> waitlist = new ArrayList<>();
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
@@ -71,7 +71,7 @@ public class Event {
      *  enable or disable the geolocation requirement for the event
      *
      */
-    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int waitlistLimit, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri, boolean geoEnabled) {
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int waitlistLimit, DocumentReference host, DocumentReference eventDocRef, String eventId, String imageString, boolean geoEnabled) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
@@ -83,7 +83,7 @@ public class Event {
         this.hostDocRef = host;
         this.eventDocRef = eventDocRef;
         this.eventId = eventId;
-        this.eventPosterUri = uri;
+        this.imageString = imageString;
         this.geoEnabled = geoEnabled;
     }
 
@@ -256,12 +256,12 @@ public class Event {
      *  Return organizer of the event
      */
 
-    public void setPosterUri(Uri uri){
-        this.eventPosterUri = uri;
+    public void setImageString(String imageString){
+        this.imageString = imageString;
     }
 
-    public Uri getPosterUri(){
-        return eventPosterUri;
+    public String getImageString(){
+        return this.imageString;
     }
 
     public DocumentReference getHostDocRef() {

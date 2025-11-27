@@ -1,6 +1,7 @@
 package com.example.camaraderie.image_stuff;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -112,6 +113,8 @@ public class OrganizerViewPhotosFragment extends Fragment {
                             String imageString = Base64.encodeToString(bytes, Base64.DEFAULT);
                             Log.d("ByteString:", imageString);
                             //Need to update into the event
+                            eventDocRef = event.getEventDocRef();
+
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -126,6 +129,11 @@ public class OrganizerViewPhotosFragment extends Fragment {
             Log.d("Event:", event.getEventId());
             eventDocRef = event.getEventDocRef();
         });
+
+        // Decode and put the image into the imageView
+        byte[] imageBytes = Base64.decode(event.getImageString(), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        binding.imageView2.setImageBitmap(bitmap);
 
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
 
