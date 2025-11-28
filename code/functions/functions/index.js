@@ -37,55 +37,51 @@ admin.initializeApp();
 const db = admin.firestore();
 
 exports.sendNotificationOnCreate = onDocumentCreated("Notifications/{notifId}", async (event) => {
-  
   const snap = event.data;
-  if (!snap) return; // required by v2
+  if (!snap) return;
   const notif = snap.data();
 
   const userId = notif.userId;
   const title = notif.title || "Notification";
-  const message = notif.message || "";
+  const message = notif.message || ""; // ensure this matches your Android writes
 
   if (!userId) {
-    console.log("Notification missing userId, skipping");
+    console.log("Missing userId");
     return;
   }
 
   const userSnap = await db.collection("Users").doc(userId).get();
-  if (!userSnap.exists) {
-    console.log("User does not exist:", userId);
-    return;
-  }
+  if (!userSnap.exists) return;
 
-  const token = userSnap.get("notificationToken");
+  const token = userSnap.get("notificationToken"); 
   if (!token) {
     console.log("User has no notificationToken");
     return;
   }
 
-  const payload = {
-    notification: {
-      title,
-      body: message
-    },
-    android: {
-      priority: "high"
-    },
-    data: {
-      notifId: event.params.notifId,
-      userId: userId
-    }
-  };
-
-  // send FCM
   try {
-    const response = await admin.messaging().sendToDevice(token, payload);
+    const response = await admin.messaging().send({
+      token: token,
+      notification: {
+        title: title,
+        body: message
+      },
+      android: {
+        priority: "high"
+      },
+      data: {
+        notifId: event.params.notifId,
+        userId: userId
+      }
+    });
+
     console.log("FCM sent:", response);
 
     await snap.ref.update({
       sent: true,
       sentAt: admin.firestore.FieldValue.serverTimestamp()
     });
+
   } catch (err) {
     console.error("Error sending FCM:", err);
     await snap.ref.update({
@@ -93,6 +89,5 @@ exports.sendNotificationOnCreate = onDocumentCreated("Notifications/{notifId}", 
       error: String(err)
     });
   }
-
-  return;
 });
+
