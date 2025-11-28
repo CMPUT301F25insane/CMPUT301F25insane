@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,8 +22,10 @@ import static com.example.camaraderie.main.MainActivity.user;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.UserLocation;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
+import com.example.camaraderie.geolocation.LocationHelper;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -215,13 +218,6 @@ public class UserViewEventFragment extends Fragment {
     private void handleJoin() {
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
         user.addWaitlistedEvent(event.getEventDocRef());
-
-        //
-        if (user.isGeoEnabled() && event.isGeoEnabled()){
-            getUserLocation();
-        }
-        //geolocation aspect
-
         updateUI(event);
         nav.navigate(R.id.fragment_main);
         event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
@@ -231,6 +227,22 @@ public class UserViewEventFragment extends Fragment {
                 });
 
         //nav.navigate(R.id.fragment_main);
+    }
+
+    public void handleJoinGeo(){
+        if (user.isGeoEnabled() && event.isGeoEnabled()){
+            LocationHelper.getUserLocation(this, (latitude, longitude) -> {
+                // Add user location
+                event.addLocationArrayList(new UserLocation(user.getUserId(), latitude, longitude));
+                // Proceed to join
+                handleJoin();
+            });
+        } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
+            Toast.makeText(getContext(), "Please enable location to join this event", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            handleJoin();
+        }
     }
 
     /**

@@ -8,7 +8,6 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 /**
  * This is a class that defines an event
@@ -31,8 +30,8 @@ public class Event {
     private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
 
     //Geolocation - Umran
-    private boolean geoEnabled;
-    private ArrayList<Location> locationArrayList = new ArrayList<>();
+    private boolean geoEnabled = false;
+    private ArrayList<UserLocation> userLocationArrayList = new ArrayList<>();
 
     private int capacity;  // always > 0
     private int waitlistLimit = -1;
@@ -70,9 +69,8 @@ public class Event {
      *  Id that uniquely identifies the event
      * @param geoEnabled
      *  enable or disable the geolocation requirement for the event
-     *
      */
-    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int waitlistLimit, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri, boolean geoEnabled) {
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
@@ -80,12 +78,91 @@ public class Event {
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.capacity = capacity;
-        this.waitlistLimit = waitlistLimit;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.eventId = eventId;
+        this.geoEnabled = false;
+        userLocationArrayList = new ArrayList<UserLocation>();
+    }
+
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     * @param uri
+     *  uri of the event poster
+     */
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
         this.hostDocRef = host;
         this.eventDocRef = eventDocRef;
         this.eventId = eventId;
         this.eventPosterUri = uri;
-        this.geoEnabled = geoEnabled;
+
+    }
+
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param limit
+     * optionally set the limit for people to join the waitlist, set to -1 by default
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     */
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int limit, DocumentReference host, DocumentReference eventDocRef, String eventId) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.waitlistLimit = limit;
+        this.eventId = eventId;
+
     }
 
     //location getters and setters
@@ -93,18 +170,63 @@ public class Event {
         return geoEnabled;
     }
 
+    /**
+     * Constructor for event
+     * @param eventName
+     *  Name of the event
+     * @param eventLocation
+     *  Location of the event
+     * @param registrationDeadline
+     *  Deadline date for the event
+     * @param description
+     *  Description of the event
+     * @param eventDate
+     *  Date the event takes place
+     * @param eventTime
+     *  Time (in hours) that the event takes place
+     * @param capacity
+     *  Maximum number of people that can be accepted to the event
+     * @param limit
+     * optionally set the limit for people to join the waitlist, set to -1 by default
+     * @param host
+     *  User reference for who is organizing the event
+     * @param eventDocRef
+     * event docref that points to the event in the database
+     * @param eventId
+     *  Id that uniquely identifies the event
+     * @param uri
+     *  uri of the event poster
+     */
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int limit, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri) {
+        this.eventName = eventName;
+        this.eventLocation = eventLocation;
+        this.registrationDeadline = registrationDeadline;
+        this.description = description;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.capacity = capacity;
+        this.hostDocRef = host;
+        this.eventDocRef = eventDocRef;
+        this.waitlistLimit = limit;
+        this.eventId = eventId;
+        this.eventPosterUri = uri;
+
+    }
+
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
     }
 
-    public ArrayList<Location> getLocationArrayList() {
-        return locationArrayList;
+    public ArrayList<UserLocation> getLocationArrayList() {
+        return userLocationArrayList;
     }
 
-    public void addLocationArrayList(Location location) {
-        if (!locationArrayList.contains(location)) {
-            this.locationArrayList.add(location);
-        }
+    public void setLocationArrayList(ArrayList<UserLocation> userLocationArrayList){
+        this.userLocationArrayList = userLocationArrayList;
+    }
+
+    public void addLocationArrayList(UserLocation userLocation) {
+        this.userLocationArrayList.add(userLocation);
     }
     //logic needed for map
 
@@ -342,29 +464,7 @@ public class Event {
      * updates event in database
      */
     public void updateDB(Runnable onComplete) {
-        //TODO: this bitch is broken lol idk why
-
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("eventName", eventName);
-        data.put("eventLocation", eventLocation);
-        data.put("registrationDeadline", registrationDeadline);
-        data.put("description", description);
-        data.put("eventDate", eventDate);
-        data.put("eventTime", eventTime);
-
-        data.put("eventPosterUri", eventPosterUri);
-        data.put("waitlist", waitlist);
-        data.put("selectedUsers", selectedUsers);
-        data.put("acceptedUsers", acceptedUsers);
-        data.put("cancelledUsers", cancelledUsers);
-
-        data.put("geoEnabled", geoEnabled);
-        data.put("locationArrayList", locationArrayList);
-
-        data.put("capacity", capacity);
-        data.put("waitlistLimit", waitlistLimit);
-
-        eventDocRef.set(data, SetOptions.merge())
+        eventDocRef.set(this, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firestore", "Successfully update event");
                     onComplete.run();
