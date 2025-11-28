@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,6 +56,14 @@ public class EventUnitTest {
                 null,
                 false
         );
+    }
+
+    @After
+    public void teardown() {
+        mockHost.delete();
+        mockEventRef.delete();
+        mockUser1.delete();
+        mockUser2.delete();
     }
 
     // ---------- BASIC DATA TESTS ----------
