@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import org.maplibre.android.maps.MapLibreMap;
 import org.maplibre.android.maps.OnMapReadyCallback;
 import org.maplibre.android.maps.Style;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,13 +49,15 @@ public class LocationMapFragment extends Fragment {
 
         binding.mapView.onCreate(savedInstanceState);
 
-        List<HashMap<String, Object>> userLocations = null;
-        if (getArguments() != null) {
-            eventId = getArguments().getString("eventId");
-            userLocations = (List<HashMap<String, Object>>) getArguments().getSerializable("userLocations");
-        }
+        Bundle args = getArguments();
+        if (args != null) {
+            ArrayList<HashMap<String, Object>> userLocations = (ArrayList<HashMap<String, Object>>) args.getSerializable("userLocations");
 
-        final List<HashMap<String, Object>> finalUserLocations = userLocations;
+            if (userLocations != null) {
+                Log.d("MapFragment", "Received locations: " + userLocations.size());
+                // Now you can loop through them and display markers, etc.
+            }
+        }
 
         binding.mapView.getMapAsync(mapLibreMap -> {
             map = mapLibreMap;
@@ -61,34 +65,13 @@ public class LocationMapFragment extends Fragment {
             String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
             map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
-                if (finalUserLocations != null) {
-                    addUserMarkers(finalUserLocations);
-                }
+                showTestMarker();
             });
         });
     }
 
-    private void addUserMarkers(List<HashMap<String, Object>> locations) {
-        if (map == null) return;
+    private void showMarkers() {}
 
-        for (HashMap<String, Object> loc : locations) {
-            double lat = (double) loc.get("latitude");
-            double lon = (double) loc.get("longitude");
-            String userId = (String) loc.get("userID");
-
-            LatLng userLatLng = new LatLng(lat, lon);
-            map.addMarker(new MarkerOptions()
-                    .position(userLatLng)
-                    .title(userId));
-        }
-
-        // Optionally move camera to the first user
-        if (!locations.isEmpty()) {
-            HashMap<String, Object> first = locations.get(0);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng((double) first.get("latitude"), (double) first.get("longitude")), 13));
-        }
-    }
 
     private void showTestMarker() {
         if (map == null) return;

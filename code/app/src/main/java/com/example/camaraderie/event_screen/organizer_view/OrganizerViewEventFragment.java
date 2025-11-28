@@ -32,6 +32,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * The screen for an organizer viewing their own event. They can delete and edit their event here.
  */
@@ -188,15 +191,15 @@ public class OrganizerViewEventFragment extends Fragment {
 
         });
 
-        binding.showMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (event != null) {
-                    Bundle args = new Bundle();
-                    args.putString("eventId", event.getEventId());
-                    args.putSerializable("userLocations", (java.io.Serializable) event.getLocationArrayList());
-                    nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
-                }
+        binding.showMap.setOnClickListener(v -> {
+            if (event != null) {
+                Bundle args = new Bundle();
+                args.putString("eventId", event.getEventId());
+
+                ArrayList<HashMap<String, Object>> locations = event.getLocationArrayList();
+                args.putSerializable("userLocations", locations); // <-- pass list safely
+
+                nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
             }
         });
 

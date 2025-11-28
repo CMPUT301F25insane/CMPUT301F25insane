@@ -17,8 +17,10 @@ import com.example.camaraderie.User;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class AddUserLocation {
     public static void addLocation(@NonNull Fragment fragment, User user, Event event, Runnable runnable){
@@ -47,18 +49,21 @@ public class AddUserLocation {
                     }
 
                     HashMap<String, Object> map = new HashMap<>();
-                    map.put("timestamp", System.currentTimeMillis());
+                    map.put("entryId", UUID.randomUUID().toString());
                     map.put("userID", user.getUserId());
                     map.put("latitude", location.getLatitude());
                     map.put("longitude", location.getLongitude());
 
-                    event.addLocationArrayList(map);
+                    event.getEventDocRef().update("locationArrayList", FieldValue.arrayUnion(map))
+                            .addOnSuccessListener(aVoid -> {
+                                // also update locally so the app reflects it
+                                event.addLocationArrayList(map);
 
-                    event.updateDB(() -> {
-                        if (runnable != null) {
-                            runnable.run();
-                        }
-                    });
+                                if (runnable != null) runnable.run();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(fragment.getContext(), "Failed to save location", Toast.LENGTH_SHORT).show();
+                            });
                 }
             });
         } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {

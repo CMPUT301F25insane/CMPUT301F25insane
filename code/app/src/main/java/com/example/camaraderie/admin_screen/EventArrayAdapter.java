@@ -18,11 +18,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.geolocation.AddUserLocation;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -41,6 +43,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
     private NavController nav;
     private SharedEventViewModel svm;
     private Date date = new Date();
+    private Fragment fragment;
 
     /**
      * This is a constructor that initializes all the required attributes for the array adapter to to function how we
@@ -51,11 +54,12 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
      * @param svm
      */
 
-    public EventArrayAdapter(@NonNull Context context, ArrayList<Event> events, NavController nav, SharedEventViewModel svm){
+    public EventArrayAdapter(@NonNull Context context, ArrayList<Event> events, NavController nav, SharedEventViewModel svm, Fragment fragment){
         super(context, 0, events);
 
         this.nav = nav;
         this.svm = svm;
+        this.fragment = fragment;
     }
 
     /**
@@ -156,6 +160,22 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AddUserLocation.addLocation(fragment, user, event, () -> {
+                    join.setClickable(false);
+                    join.setBackgroundColor(Color.GRAY);
+                    join.setEnabled(false);
+                    event.addWaitlistUser(user.getDocRef());
+                    user.addWaitlistedEvent(event.getEventDocRef());
+                    user.addEventToHistory(event.getEventDocRef());
+
+                    // update db
+                    user.updateDB(() -> {
+                        event.updateDB( () -> {});
+                    });
+                });
+                /*
+            @Override
+            public void onClick(View v) {
                 join.setBackgroundColor(Color.GRAY);
                 join.setEnabled(false);
                 join.setClickable(false);
@@ -166,8 +186,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
                 // update db
                 user.updateDB(() -> {
                     event.updateDB(() -> {return;});
-                });
-
+                });*/
             }
         });
 

@@ -19,9 +19,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.geolocation.AddUserLocation;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
     public OnEventClickListener listener;
     private Date date = new Date();
 
+    private Fragment fragment;
+
     /**
      * A default constructor
      * @param context
@@ -43,8 +47,9 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
      * @param events
      *  List of events to be displayed
      */
-    public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
+    public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events, Fragment fragment) {
         super(context, 0, events);
+        this.fragment = fragment;
     }
 
     /**
@@ -175,6 +180,20 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AddUserLocation.addLocation(fragment, user, event, () -> {
+                    joinButton.setClickable(false);
+                    joinButton.setBackgroundColor(Color.GRAY);
+                    joinButton.setEnabled(false);
+                    event.addWaitlistUser(user.getDocRef());
+                    user.addWaitlistedEvent(event.getEventDocRef());
+                    user.addEventToHistory(event.getEventDocRef());
+
+                    // update db
+                    user.updateDB(() -> {
+                        event.updateDB( () -> {});
+                    });
+                });
+                /*
                 joinButton.setClickable(false);
                 joinButton.setBackgroundColor(Color.GRAY);
                 joinButton.setEnabled(false);
@@ -185,7 +204,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
                 // update db
                 user.updateDB(() -> {
                     event.updateDB( () -> {});
-                });
+                });*/
 
             }
         });
