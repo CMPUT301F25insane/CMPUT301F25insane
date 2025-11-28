@@ -5,11 +5,18 @@ import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.testing.TestNavHostController;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+
 import com.example.camaraderie.event_screen.user_lists.waitlist_or_selected.ViewWaitlistOrSelectedFragment;
 import com.example.camaraderie.event_screen.user_view.UserViewEventFragment;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,6 +31,7 @@ import android.os.Bundle;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,42 +47,32 @@ public class UserViewEventTest {
     private FragmentScenario<UserViewEventFragment> scenario2;
 
     @Before
-    public void setUp() {
-        // Create mock event data
-        DocumentReference docRef = FirebaseFirestore.getInstance().collection("Events").document();
-        DocumentReference hostRef = FirebaseFirestore.getInstance().collection("Users").document();
-        hostRef.set(new User(
-                "host",
-                "1234567890",
-                "email@email.com",
-                "address",
-                hostRef.getId(),
-                null,
-                hostRef
-        )).addOnSuccessListener(aVoid -> {
-            Event mockEvent = new Event("Free Tickets to Oilers Game",
-                    "Edmonton Stadium",
-                    new Date(),
-                    "20 Lucky individuals will get a front row seats to the Oilers game against Flames",
-                    new Date(),
-                    "20:00",
-                    100,
-                    -1,
-                    hostRef,
-                    docRef,
-                    docRef.getId(),
-                    null,
-                    false);
-            docRef.set(mockEvent).addOnSuccessListener(aVoid2 -> {
-                // Pass event data to fragment
-                Bundle bundle = new Bundle();
-                bundle.putString("eventDocRefPath", docRef.getPath());
+    public void setUp() throws Exception {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference hostRef = db.collection("Users").document();
+        User host = new User("host","1234567890","email@email.com","address",hostRef.getId(),null,hostRef);
+        Tasks.await(hostRef.set(host));
 
-                // Launch fragment with event data
-                scenario2 = FragmentScenario.launchInContainer(UserViewEventFragment.class, bundle);
-            });
+        DocumentReference docRef = db.collection("Events").document();
+        Event mockEvent = new Event("Free Tickets to Oilers Game", "Edmonton Stadium", new Date(),
+            "20 Lucky individuals will get a front row seats", new Date(), "20:00",
+            100, -1, hostRef, docRef, docRef.getId(), null, false);
+        Tasks.await(docRef.set(mockEvent));
+
+        Bundle bundle = new Bundle();
+        bundle.putString("eventDocRefPath", docRef.getPath());
+        scenario2 = FragmentScenario.launchInContainer(UserViewEventFragment.class, bundle);
+
+        // Set mock NavController
+        scenario2.onFragment(fragment -> {
+            TestNavHostController navController = new TestNavHostController(
+                    ApplicationProvider.getApplicationContext());
+            navController.setGraph(R.navigation.nav_user);
+            navController.setCurrentDestination(R.id.fragment_view_event_user);
+            Navigation.setViewNavController(fragment.requireView(), navController);
         });
     }
+
     @After
     public void tearDown() {
         if (scenario2 != null) {
@@ -152,15 +150,15 @@ public class UserViewEventTest {
         onView(withId(R.id.view_photos_user_view))
                 .perform(click());
     }
-//    @Test
+    @Test
 //    //Test Event Info is properly displayed
-//    public void testEventDetailsAreDisplayed() {
-//        onView(withId(R.id.event_name_for_user_view)).check(matches(isDisplayed()));
-//        onView(withId(R.id.userEventViewEventDate)).check(matches(isDisplayed()));
-//        onView(withId(R.id.registration_deadline_text_user_view)).check(matches(isDisplayed()));
-//        onView(withId(R.id.host_name_user_view)).check(matches(isDisplayed()));
-//        onView(withId(R.id.name_of_useranizer)).check(matches(isDisplayed()));
-//    }
+    public void testEventDetailsAreDisplayed() {
+        onView(withId(R.id.event_name_for_user_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.userEventViewEventDate)).check(matches(isDisplayed()));
+        onView(withId(R.id.registration_deadline_text_user_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.host_name_user_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.name_of_useranizer)).check(matches(isDisplayed()));
+    }
 
     @Test
     //Test toggle Button Join tests
