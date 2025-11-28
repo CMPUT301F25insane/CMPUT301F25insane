@@ -42,9 +42,10 @@
         android:id="@+id/pendingEventListView"
         android:layout_width="0dp"
         android:layout_height="556dp"
-        android:layout_marginBottom="80dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.764"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
