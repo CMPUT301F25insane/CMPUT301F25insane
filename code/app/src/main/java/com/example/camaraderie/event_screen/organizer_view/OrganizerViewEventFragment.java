@@ -204,7 +204,11 @@ public class OrganizerViewEventFragment extends Fragment {
         binding.showMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.action__fragment_organizer_view_event_to_map);
+                if (event != null) {
+                    Bundle args = new Bundle();
+                    args.putString("eventId", event.getEventId());  // pass the Event ID
+                    nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
+                }
             }
         });
 

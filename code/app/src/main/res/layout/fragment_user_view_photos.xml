@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_resource"
+    >
 
     <ImageView
         android:id="@+id/imageView2"
@@ -22,16 +24,20 @@
 
     <Button
         android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="295dp"
-        android:layout_marginBottom="87dp"
+        android:layout_width="105dp"
+        android:layout_height="63dp"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
         android:text="Back"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.799"
+        app:strokeWidth="3.5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

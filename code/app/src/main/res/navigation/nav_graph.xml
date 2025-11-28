@@ -366,7 +366,7 @@
 
     <fragment
         android:id="@+id/map"
-        android:name="com.example.camaraderie.event_screen.LocationMapFragment"
+        android:name="com.example.camaraderie.geolocation.LocationMapFragment"
         android:label="map"
         tools:layout="@layout/fragment_location_map">
         <action
