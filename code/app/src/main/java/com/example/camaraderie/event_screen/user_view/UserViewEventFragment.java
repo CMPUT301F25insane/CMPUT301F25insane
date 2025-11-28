@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 
@@ -39,12 +40,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;
-    private NavController nav;
+    public NavController nav;
 
     private FragmentViewEventUserBinding binding;
     private Event event;
 //    private EventViewModel eventViewModel;
-    private SharedEventViewModel svm;
+public SharedEventViewModel svm;
     private ViewListViewModel vm;
 
 
@@ -100,7 +101,10 @@ public class UserViewEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        nav = NavHostFragment.findNavController(this);
+        // Only assign if null
+        if (nav == null) {
+            nav = Navigation.findNavController(view);
+        }
 
 
         // get event details, everything that depends on event as an object exists here
@@ -282,6 +286,9 @@ public class UserViewEventFragment extends Fragment {
     }
 
     private void getUserLocation(){}
+    public void setNavController(NavController navController) {
+        this.nav = navController;
+    }
 
     /**
      * binding set to null

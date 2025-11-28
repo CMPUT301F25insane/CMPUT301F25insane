@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.not;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -38,9 +39,11 @@ public class UserViewEventTest {
 
     private TestNavHostController navController;
 
+    // In your UserViewEventTest.java
+
     @Before
     public void setUp() throws Exception {
-        // 1. Create test Firestore data
+        // 1. Create test Firestore data (Your existing code is fine)
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference hostRef = db.collection("Users").document();
         User host = new User("host", "1234567890", "email@email.com", "address", hostRef.getId(), null, hostRef);
@@ -68,19 +71,23 @@ public class UserViewEventTest {
         Bundle bundle = new Bundle();
         bundle.putString("eventDocRefPath", docRef.getPath());
 
-        // 3. Launch fragment
-        navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
-        scenario = FragmentScenario.launchInContainer(UserViewEventFragment.class, bundle);
+        // 3. Launch the fragment scenario WITHOUT moving it to the RESUMED state yet.
+        // Use the launch() method which gives you more control.
+        scenario = FragmentScenario.launchInContainer(UserViewEventFragment.class, bundle, R.style.Theme_Camaraderie, (FragmentFactory) null);
 
-        // 4. Attach TestNavHostController immediately
+        // 4. Initialize the TestNavHostController
+        navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+
+        // 5. Attach the NavController BEFORE the fragment's view is fully created and used.
         scenario.onFragment(fragment -> {
-            // 2. Set the graph and make the NavController available to the fragment
-            navController.setGraph(R.navigation.nav_graph); // Replace with your nav graph
+            navController.setGraph(R.navigation.nav_user);
+            navController.setCurrentDestination(R.id.fragment_view_event_user);
             Navigation.setViewNavController(fragment.requireView(), navController);
 
-
+            fragment.setNavController(navController); // inject for testing
         });
     }
+
 
     @After
     public void tearDown() {
