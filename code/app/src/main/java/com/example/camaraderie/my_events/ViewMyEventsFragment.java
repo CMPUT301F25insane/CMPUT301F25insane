@@ -120,6 +120,9 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
         binding.MyEventsButton.setOnClickListener(v -> nav.navigate(R.id.fragment_my_created_events));
 
+        binding.pendingEventButtons.setOnClickListener(v -> {
+            nav.navigate(R.id.fragment_pending_events);
+        });
 
 
     }
