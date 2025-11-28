@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * This is a class that defines a user. Admin privileges granted by setting admin to true.
@@ -38,6 +39,8 @@ public class User implements Serializable {
     //geolocation
     private boolean geoEnabled = false;
     private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
+
+    private ArrayList<DocumentReference> pendingNotifications = new ArrayList<>();
 
     /**
      * Constructor for User
@@ -200,17 +203,37 @@ public class User implements Serializable {
      */
     public void updateDB(Runnable onComplete) {
         // update the DB from the user
-        this.docRef.set(this, SetOptions.merge())
+
+        HashMap<String, Object> data = new HashMap<>();
+
+        data.put("firstName", firstName);
+        data.put("phoneNumber", phoneNumber);
+        data.put("email", email);
+        data.put("address", address);
+        data.put("notificationToken", notificationToken);
+
+        data.put("admin", admin);
+
+        data.put("userCreatedEvents", userCreatedEvents);
+        data.put("waitlistedEvents", waitlistedEvents);
+        data.put("selectedEvents", selectedEvents);
+        data.put("acceptedEvents", acceptedEvents);
+        data.put("cancelledEvents", cancelledEvents);
+        data.put("pendingNotifications", pendingNotifications);
+        data.put("geoEnabled", geoEnabled);
+        data.put("userEventHistory", userEventHistory);
+
+        this.docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
-                            Log.d("UserRepository", "User updated");
-                            onComplete.run();
-                        })
+                    Log.d("UserRepository", "User updated");
+                    onComplete.run();
+                })
 
                 .addOnFailureListener(e ->
-                        {
-                            Log.e("UserRepository", "Error updating user", e);
-                            onComplete.run();
-                        });
+                {
+                    Log.e("UserRepository", "Error updating user", e);
+                    onComplete.run();
+                });
     }
 
     /**
@@ -347,6 +370,23 @@ public class User implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public ArrayList<DocumentReference> getPendingNotifications() {
+        return pendingNotifications;
+    }
+
+    public void setPendingNotifications(ArrayList<DocumentReference> pendingNotifications) {
+        this.pendingNotifications = pendingNotifications;
+    }
+
+    public void setUserEventHistory(ArrayList<DocumentReference> userEventHistory) {
+        this.userEventHistory = userEventHistory;
+    }
+
+    public ArrayList<DocumentReference> getUserEventHistory() {
+        return userEventHistory;
+    }
+
 }
 
 

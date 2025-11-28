@@ -232,17 +232,23 @@ public class UserViewEventFragment extends Fragment {
         //nav.navigate(R.id.fragment_main);
     }
 
-    public void handleJoinGeo(){
-        if (user.isGeoEnabled() && event.isGeoEnabled()){
-            LocationHelper.getUserLocation(this, (latitude, longitude) -> {
-                // Add user location
+    public void handleJoinGeo() {
+        if (event == null) {
+            Toast.makeText(getContext(), "Event not loaded yet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (user.isGeoEnabled() && event.isGeoEnabled()) {
+            // Pass fragment reference, not activity
+            LocationHelper.getUserLocation(UserViewEventFragment.this, (latitude, longitude) -> {
                 event.addLocationArrayList(new UserLocation(user.getUserId(), latitude, longitude));
-                // Proceed to join
+                Toast.makeText(getContext(),
+                        "Successfully joined with coordinates: " + latitude + ", " + longitude,
+                        Toast.LENGTH_SHORT).show();
                 handleJoin();
             });
         } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
             Toast.makeText(getContext(), "Please enable location to join this event", Toast.LENGTH_SHORT).show();
-            return;
         } else {
             handleJoin();
         }

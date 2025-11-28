@@ -61,6 +61,11 @@ public class CreateEventFragment extends Fragment {
     private Uri eventPosterUri;
     private boolean editing = false;
 
+    private Date today = new Date();
+    private int day = today.getDate();;
+    private int month = today.getMonth();
+    private int year = today.getYear() + 1900;
+
     /**
      * Instantiate the fragment
      * @param savedInstanceState
@@ -309,21 +314,7 @@ public class CreateEventFragment extends Fragment {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            if (limit != -1) {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri);
-            }
-            else {
-                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId, eventPosterUri);
-            }
-
-            //geoswitch
-            newEvent.setGeoEnabled(geoSwitch.isChecked());
-
-            // Optional: if geo is off, clear any location list
-            if (!geoSwitch.isChecked()) {
-                newEvent.setLocationArrayList(new ArrayList<>());
-            }
-
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri, geoSwitch.isChecked());
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
@@ -361,7 +352,7 @@ public class CreateEventFragment extends Fragment {
                 binding.inputFieldForCreateEventDate.setText(format);
             }
 
-        }, 2025, 10, 6);
+        }, year, month, day);
 
         dateDialog.show();
 
@@ -379,7 +370,7 @@ public class CreateEventFragment extends Fragment {
                 binding.inputFieldForCreateEventRegistrationDeadline.setText(format);
             }
 
-        }, 2025, 10, 6);
+        }, year, month, day);
 
         dateDialog.show();
 
