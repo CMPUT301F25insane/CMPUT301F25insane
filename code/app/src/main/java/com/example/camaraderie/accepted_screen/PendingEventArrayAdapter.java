@@ -28,6 +28,18 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
     private UserAcceptedViewModel vm;
 
+
+    private UserAcceptedToEventFragment listener;
+
+    // user accepts invitation
+
+    public void setListener(UserAcceptedToEventFragment listener) {
+        this.listener = listener;
+    }
+
+    public UserAcceptedToEventFragment getListener() {return listener;}
+
+
     /**
      * PendingEventArrayAdapter has a constructor that initializes the view model
      * @param context
@@ -87,10 +99,8 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 vm.userAcceptInvite(event.getEventDocRef());
-
-                if (vm.allInvitesResolved()) {
-                    ((Button)parent.findViewById(R.id.pendingEventsContinueButton)).setEnabled(true);
-                }
+                remove(event);
+                listener.enableConfirmButton();
 
             }
 
@@ -108,9 +118,8 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
             public void onClick(View v) {
                 vm.userDeclineInvite(event.getEventDocRef());
-                if (vm.allInvitesResolved()) {
-                    ((Button)parent.findViewById(R.id.pendingEventsContinueButton)).setEnabled(true);
-                }
+                remove(event);
+                listener.enableConfirmButton();
             }
         });
 

@@ -1,6 +1,7 @@
 package com.example.camaraderie.accepted_screen;
 
-import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.main.Camaraderie.getUser;
+//import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
 
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.util.Log;
 import androidx.lifecycle.ViewModel;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.User;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,8 +24,6 @@ import java.util.Objects;
 
 public class UserAcceptedViewModel extends ViewModel {
 
-    // user accepts invitation
-
     /**
      * userAcceptInvite takes in one parameter which is a Firestore Document Reference
      * This method is meant to run the backend code that is needed to allow the user to accept an invite and
@@ -34,20 +34,27 @@ public class UserAcceptedViewModel extends ViewModel {
      * It also does the same thing locally with the objects
      * It does not return
      */
+
+
     public void userAcceptInvite(DocumentReference eventDocRef) {
+
+        User user = getUser();
 
         WriteBatch batch = FirebaseFirestore.getInstance().batch();
         user.addAcceptedEvent(eventDocRef);  // add to accepted event
         user.removeSelectedEvent(eventDocRef);  // remove from selectedEvents list (no longer needed)
 
-        batch.update(eventDocRef, "acceptedList", FieldValue.arrayUnion(user.getDocRef()));
-        batch.update(eventDocRef, "selectedList", FieldValue.arrayRemove(user.getDocRef()));
+        batch.update(eventDocRef, "acceptedUsers", FieldValue.arrayUnion(user.getDocRef()));
+        batch.update(eventDocRef, "selectedUsers", FieldValue.arrayRemove(user.getDocRef()));
+
+        batch.update(user.getDocRef(), "selectedList", FieldValue.arrayRemove(eventDocRef));
+        batch.update(user.getDocRef(), "acceptedList", FieldValue.arrayUnion(eventDocRef));
 
         user.updateDB(() -> {
             batch.commit()
                     .addOnSuccessListener(aVoid -> {
-                        Log.d("Firestore", "User added to acceptedList!");
-                        Log.d("Firestore", "User removed from selectedList! (accepted invitation)");
+                        Log.d("Firestore", "User added to acceptedUsers!");
+                        Log.d("Firestore", "User removed from selectedUsers! (accepted invitation)");
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating user lists", e));
         });
@@ -64,17 +71,22 @@ public class UserAcceptedViewModel extends ViewModel {
 
     // user rejects invitation
     public void userDeclineInvite(DocumentReference eventDocRef) {
+
+        User user = getUser();
         user.removeSelectedEvent(eventDocRef);
 
         WriteBatch batch = FirebaseFirestore.getInstance().batch();
-        batch.update(eventDocRef, "selectedList", FieldValue.arrayRemove(user.getDocRef()));
-        batch.update(eventDocRef, "cancelledList", FieldValue.arrayUnion(user.getDocRef()));
+        batch.update(eventDocRef, "selectedUsers", FieldValue.arrayRemove(user.getDocRef()));
+        batch.update(eventDocRef, "cancelledUsers", FieldValue.arrayUnion(user.getDocRef()));
+
+        batch.update(user.getDocRef(), "selectedList", FieldValue.arrayRemove(eventDocRef));
+        batch.update(user.getDocRef(), "cancelledList", FieldValue.arrayUnion(eventDocRef));
 
         user.updateDB(() -> {
             batch.commit()
                     .addOnSuccessListener(aVoid -> {
 
-                        Log.d("Firestore", "User removed from selectedList! (declined invitation)");
+                        Log.d("Firestore", "User removed from selectedUsers! (declined invitation)");
 
                         // rerun lottery
                         eventDocRef.get()
@@ -94,7 +106,7 @@ public class UserAcceptedViewModel extends ViewModel {
      */
 
     public boolean allInvitesResolved() {
-        return user.getSelectedEvents().isEmpty();
+        return getUser().getSelectedEvents().isEmpty();
     }
 
 }
