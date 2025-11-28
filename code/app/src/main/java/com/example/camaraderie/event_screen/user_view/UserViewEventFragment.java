@@ -65,6 +65,8 @@ public class UserViewEventFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         nav = NavHostFragment.findNavController(this);
 
+
+
     }
 
     /**
@@ -98,6 +100,7 @@ public class UserViewEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
 
         // get event details, everything that depends on event as an object exists here
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
