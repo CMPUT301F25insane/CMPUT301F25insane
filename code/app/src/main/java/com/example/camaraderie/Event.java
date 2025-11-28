@@ -67,8 +67,6 @@ public class Event {
      * event docref that points to the event in the database
      * @param eventId
      *  Id that uniquely identifies the event
-     * @param geoEnabled
-     *  enable or disable the geolocation requirement for the event
      */
     public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, DocumentReference host, DocumentReference eventDocRef, String eventId) {
         this.eventName = eventName;
@@ -82,7 +80,6 @@ public class Event {
         this.eventDocRef = eventDocRef;
         this.eventId = eventId;
         this.geoEnabled = false;
-        userLocationArrayList = new ArrayList<UserLocation>();
     }
 
     /**

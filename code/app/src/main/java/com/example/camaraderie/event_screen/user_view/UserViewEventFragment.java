@@ -119,7 +119,7 @@ public class UserViewEventFragment extends Fragment {
         });
 
         // button handlers
-        binding.joinButtonUserView.setOnClickListener(v -> handleJoin());
+        binding.joinButtonUserView.setOnClickListener(v -> handleJoinGeo());
         binding.unjoinButtonUserView.setOnClickListener(v -> handleUnjoin());
         binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
         binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
