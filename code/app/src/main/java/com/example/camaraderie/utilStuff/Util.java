@@ -104,7 +104,9 @@ public class Util {
                     ll,
                     userDoc,
                     eventDoc,
-                    eventDoc.getId()
+                    eventDoc.getId(),
+                    null,
+                    false
             );
 
             newUser.addCreatedEvent(eventDoc);

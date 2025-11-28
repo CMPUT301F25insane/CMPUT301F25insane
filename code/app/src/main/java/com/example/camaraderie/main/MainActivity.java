@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     });
                 }
-                handler.postDelayed(this, 60_000); // run again
+                handler.postDelayed(this, 60000); // run again
             }
         };
 
