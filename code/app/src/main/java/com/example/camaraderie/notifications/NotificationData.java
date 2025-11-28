@@ -19,12 +19,12 @@ public class NotificationData {
 
     /**
      * Constructor for Notification
-     * @param id unique id for notificatio
      * @param title notification title or tag
      * @param message notification message
+     * @param ref notification document reference
      */
-    public NotificationData(int id, String title, String message, DocumentReference ref) {
-        this.id = id;
+    public NotificationData(String title, String message, DocumentReference ref) {
+        this.id = ref.getId().hashCode();
         this.message = message;
         this.title = title;
         this.ref = ref;

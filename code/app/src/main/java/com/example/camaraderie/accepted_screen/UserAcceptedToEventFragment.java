@@ -1,6 +1,8 @@
 package com.example.camaraderie.accepted_screen;
 
-import static com.example.camaraderie.main.MainActivity.user;
+//import static com.example.camaraderie.main.MainActivity.user;
+
+import static com.example.camaraderie.main.Camaraderie.getUser;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,7 +36,6 @@ public class UserAcceptedToEventFragment extends Fragment {
      */
 
     private FragmentPendingEventsBinding binding;
-    private DocumentReference eventDocRef;
     private PendingEventArrayAdapter pendingEventArrayAdapter;
     private UserAcceptedViewModel vm;
 
@@ -58,7 +59,7 @@ public class UserAcceptedToEventFragment extends Fragment {
         pendingEventArrayAdapter.setListener(this);
         pendingEventArrayAdapter.setNotifyOnChange(true);
 
-        for (DocumentReference eventRef : user.getSelectedEvents()) {
+        for (DocumentReference eventRef : getUser().getSelectedEvents()) {
             eventRef.get().addOnSuccessListener(doc -> {
                 Event event = doc.toObject(Event.class);
                 if (event != null) {

@@ -33,7 +33,7 @@ public class OrganizerNotificationHandler {
     public void sendNotificationToFirebase(String field, Runnable onComplete, Runnable onFuckUp) {
 
         DocumentReference notifRef = db.collection("Notifications").document();
-        NotificationData notification = new NotificationData(notifRef.hashCode(), title, body, notifRef);
+        NotificationData notification = new NotificationData(title, body, notifRef);
 
         WriteBatch batch = db.batch();
         batch.set(notifRef, notification);
