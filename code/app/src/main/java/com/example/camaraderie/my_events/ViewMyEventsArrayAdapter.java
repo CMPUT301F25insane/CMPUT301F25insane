@@ -47,9 +47,10 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
      * @param context context
      * @param events event list
      */
-    public  ViewMyEventsArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
+    public ViewMyEventsArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
-        //this.ref = ref;
+
+        setNotifyOnChange(true);
     }
 
 
@@ -119,7 +120,11 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
                 eventDocref.update("waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid ->{
                     Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
+
                 user.removeWaitlistedEvent(eventDocref);
+                event.removeWaitlistUser(user.getDocRef());
+
+                remove(event);
 
                 leaveButton.setEnabled(false);
                 leaveButton.setBackgroundColor(Color.GRAY);
