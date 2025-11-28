@@ -291,66 +291,81 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/OrgEventRunLotteryButton"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#AAF2C8"
-        android:fontFamily="@font/cambria"
-        android:text="Run Lottery"
-        android:textColor="@color/black"
-        android:textSize="12dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/event_edit_button_ord_view"
-        app:layout_constraintHorizontal_bias="0.533"
-        app:layout_constraintStart_toEndOf="@+id/delete_button_org_view"
-        app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
-        app:layout_constraintVertical_bias="0.385"
-        app:strokeWidth="4dp" />
+        android:padding="8dp"
+        android:scrollbars="none">
 
-    <Button
-        android:id="@+id/event_edit_button_ord_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="#AAD6F2"
-        android:text="Edit"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
-        app:layout_constraintVertical_bias="0.385"
-        app:strokeWidth="3dp" />
+    </HorizontalScrollView>
 
-    <Button
-        android:id="@+id/delete_button_org_view"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:backgroundTint="#9E2C0A"
-        android:text="Delete"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
-        app:layout_constraintVertical_bias="0.385"
-        app:strokeWidth="3dp" />
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="626dp">
 
-    <Button
-        android:id="@+id/orgViewBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#AAD6F2"
-        android:fontFamily="@font/cambria"
-        android:text="Back"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/OrgEventRunLotteryButton"
-        app:layout_constraintVertical_bias="0.343"
-        app:strokeWidth="3dp" />
+        <Button
+            android:id="@+id/OrgEventRunLotteryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#AAF2C8"
+            android:fontFamily="@font/cambria"
+            android:text="Run Lottery"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toStartOf="@+id/event_edit_button_ord_view"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toEndOf="@+id/delete_button_org_view"
+            app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
+            app:layout_constraintVertical_bias="0.385"
+            app:strokeWidth="4dp" />
+
+        <Button
+            android:id="@+id/event_edit_button_ord_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#AAD6F2"
+            android:text="Edit"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
+            app:layout_constraintVertical_bias="0.385"
+            app:strokeWidth="3dp" />
+
+        <Button
+            android:id="@+id/delete_button_org_view"
+            android:layout_width="99dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:backgroundTint="#9E2C0A"
+            android:text="Delete"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_for_desc_locaton_etc"
+            app:layout_constraintVertical_bias="0.385"
+            app:strokeWidth="3dp" />
+
+        <Button
+            android:id="@+id/orgViewBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#AAD6F2"
+            android:fontFamily="@font/cambria"
+            android:text="Back"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/OrgEventRunLotteryButton"
+            app:layout_constraintVertical_bias="0.343"
+            app:strokeWidth="3dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
