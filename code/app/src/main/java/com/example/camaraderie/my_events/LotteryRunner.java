@@ -84,7 +84,7 @@ public class LotteryRunner {
     private static void sendNotificationsToEntrant(DocumentReference uref, String title, String body) {
 
         DocumentReference notifRef = db.collection("Notifications").document();
-        NotificationData notification = new NotificationData(title, body, notifRef);
+        NotificationData notification = new NotificationData(uref.getId(), title, body, notifRef);
 
         notifRef.set(notification).addOnSuccessListener(v -> {
             uref.update("pendingNotifications", FieldValue.arrayUnion(notifRef))
