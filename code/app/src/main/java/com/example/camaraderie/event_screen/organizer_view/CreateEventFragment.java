@@ -138,7 +138,7 @@ public class CreateEventFragment extends Fragment {
 
             //geolocation only available during creation
             geoSwitch.setEnabled(false); // cannot toggle geo after creation
-            geoSwitch.setChecked(event.isGeoEnabled()); // show current value
+
 
             String path = args.getString("eventDocRefPath");
             assert path != null;
@@ -147,6 +147,7 @@ public class CreateEventFragment extends Fragment {
             eventDocRef.get().addOnSuccessListener(doc -> {
                 event = doc.toObject(Event.class);
                 assert event != null;
+                geoSwitch.setChecked(event.isGeoEnabled()); // show current value
                 fillTextViews(event);
             });
 
