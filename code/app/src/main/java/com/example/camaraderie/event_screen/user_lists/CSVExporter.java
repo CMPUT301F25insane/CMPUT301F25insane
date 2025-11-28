@@ -23,8 +23,6 @@ import java.util.ArrayList;
 
 public class CSVExporter {
 
-    private ArrayList<User> acceptedUsers;
-
     public static void createCSV(ArrayList<User> users, String eventTitle) {
 
         StringBuilder sb = new StringBuilder();

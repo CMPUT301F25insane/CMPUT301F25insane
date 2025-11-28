@@ -138,8 +138,25 @@
             android:fontFamily="@font/cambria"
             android:text="View Lists"
             android:textSize="12dp"
-            app:layout_constraintEnd_toStartOf="@+id/view_photos_org_view"
+            app:layout_constraintEnd_toStartOf="@+id/exportCSVButton"
             app:layout_constraintTop_toBottomOf="@+id/event_description_org_view"
+            app:strokeWidth="1dp" />
+
+        <Button
+            android:id="@+id/exportCSVButton"
+            android:layout_width="100dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:backgroundTint="#B0394241"
+            android:fontFamily="@font/cambria"
+            android:text="Export as CSV"
+            android:textSize="12dp"
+            android:clickable="false"
+            android:visibility="invisible"
+            android:enabled="false"
+            app:layout_constraintEnd_toStartOf="@+id/view_photos_org_view"
+            app:layout_constraintTop_toBottomOf="@+id/view_lists_button"
             app:strokeWidth="1dp" />
 
         <Button
