@@ -1,5 +1,7 @@
 package com.example.camaraderie.my_events;
 
+import static com.example.camaraderie.main.Camaraderie.getUser;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,9 +80,9 @@ public class ViewMyCreatedEventsFragment extends Fragment {
         adapter.setNotifyOnChange(true);
         binding.listView.setAdapter(adapter);
 
-        vm.getUserCreatedEvents(
+        vm.getUserEventsFromList(getUser().getUserCreatedEvents(),
                 events -> {
-                    System.out.println(events.size());
+                    //System.out.println(events.size());
                     adapter.addAll(events);
                     adapter.notifyDataSetChanged();  // PARANOIAAAAAAA
                 });

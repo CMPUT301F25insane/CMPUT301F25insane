@@ -33,23 +33,19 @@ import java.util.ArrayList;
 public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
     public OnEventClickListener listener;
-    private DocumentReference ref;
     private FirebaseFirestore db;
 
-    private NavController nav;
     private DocumentReference eventDocref;
-    private CollectionReference events;
-
-    private EventViewModel eventViewModel;
 
     /**
      * constructor for array adapter
      * @param context context
      * @param events event list
      */
-    public  ViewMyEventsArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
+    public ViewMyEventsArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
-        //this.ref = ref;
+
+        setNotifyOnChange(true);
     }
 
 
@@ -119,7 +115,11 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
                 eventDocref.update("waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid ->{
                     Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
                 });
+
                 user.removeWaitlistedEvent(eventDocref);
+                event.removeWaitlistUser(user.getDocRef());
+
+                remove(event);
 
                 leaveButton.setEnabled(false);
                 leaveButton.setBackgroundColor(Color.GRAY);

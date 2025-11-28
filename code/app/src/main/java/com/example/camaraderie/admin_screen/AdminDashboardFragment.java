@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -23,6 +25,14 @@ import com.example.camaraderie.databinding.FragmentAdminDashboardBinding;
 
 public class AdminDashboardFragment extends Fragment {
     private FragmentAdminDashboardBinding binding;
+    private NavController nav;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        nav = NavHostFragment.findNavController(this);
+    }
 
     /**
      * onCreateView is used to inflate the layout for the fragment and return the root of the binding
@@ -64,25 +74,10 @@ public class AdminDashboardFragment extends Fragment {
             binding.nameForMainDashboard.setText("[Name]");
         }
 
-        binding.adminSeeUsers.setOnClickListener(v ->
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_user_data_screen_view)
-        );
-
-        binding.adminSeeEvents.setOnClickListener(v ->
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_event_data_screen_view)
-        );
-
-        binding.adminSeePics.setOnClickListener(v ->
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_admin_event_images_screen_view));
-
-        binding.back.setOnClickListener(v ->
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_main_screen_to_update_user));
-
-    }
+        binding.adminSeeUsers.setOnClickListener(v -> nav.navigate(R.id.admin_user_data_screen_view));
+        binding.adminSeeEvents.setOnClickListener(v -> nav.navigate(R.id.admin_event_data_screen_view));
+        binding.adminSeePics.setOnClickListener(v -> nav.navigate(R.id.admin_event_images_screen_view));
+        binding.back.setOnClickListener(v -> nav.popBackStack());}
 
     /**
      * onDestoryView ensures no memory leaks by setting binding to null

@@ -6,8 +6,6 @@ import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
 
 import android.util.Log;
 
-import androidx.lifecycle.ViewModel;
-
 import com.example.camaraderie.Event;
 import com.example.camaraderie.User;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,21 +20,21 @@ import java.util.Objects;
  * Use data
  */
 
-public class UserAcceptedViewModel extends ViewModel {
+public class UserAcceptedHandler {
 
     /**
      * userAcceptInvite takes in one parameter which is a Firestore Document Reference
      * This method is meant to run the backend code that is needed to allow the user to accept an invite and
      * store them in the proper spot in the database
      * @param eventDocRef
-     * The method first updates the acceptedList of the event document reference and puts the user in there and it
-     * also removes the user from the selectedList
+     * The method first updates the acceptedEvents of the event document reference and puts the user in there and it
+     * also removes the user from the selectedEvents
      * It also does the same thing locally with the objects
      * It does not return
      */
 
 
-    public void userAcceptInvite(DocumentReference eventDocRef) {
+    public static void userAcceptInvite(DocumentReference eventDocRef) {
 
         User user = getUser();
 
@@ -47,8 +45,8 @@ public class UserAcceptedViewModel extends ViewModel {
         batch.update(eventDocRef, "acceptedUsers", FieldValue.arrayUnion(user.getDocRef()));
         batch.update(eventDocRef, "selectedUsers", FieldValue.arrayRemove(user.getDocRef()));
 
-        batch.update(user.getDocRef(), "selectedList", FieldValue.arrayRemove(eventDocRef));
-        batch.update(user.getDocRef(), "acceptedList", FieldValue.arrayUnion(eventDocRef));
+        batch.update(user.getDocRef(), "selectedEvents", FieldValue.arrayRemove(eventDocRef));
+        batch.update(user.getDocRef(), "acceptedEvents", FieldValue.arrayUnion(eventDocRef));
 
         user.updateDB(() -> {
             batch.commit()
@@ -70,7 +68,7 @@ public class UserAcceptedViewModel extends ViewModel {
      */
 
     // user rejects invitation
-    public void userDeclineInvite(DocumentReference eventDocRef) {
+    public static void userDeclineInvite(DocumentReference eventDocRef) {
 
         User user = getUser();
         user.removeSelectedEvent(eventDocRef);
@@ -79,8 +77,8 @@ public class UserAcceptedViewModel extends ViewModel {
         batch.update(eventDocRef, "selectedUsers", FieldValue.arrayRemove(user.getDocRef()));
         batch.update(eventDocRef, "cancelledUsers", FieldValue.arrayUnion(user.getDocRef()));
 
-        batch.update(user.getDocRef(), "selectedList", FieldValue.arrayRemove(eventDocRef));
-        batch.update(user.getDocRef(), "cancelledList", FieldValue.arrayUnion(eventDocRef));
+        batch.update(user.getDocRef(), "selectedEvents", FieldValue.arrayRemove(eventDocRef));
+        batch.update(user.getDocRef(), "cancelledEvents", FieldValue.arrayUnion(eventDocRef));
 
         user.updateDB(() -> {
             batch.commit()
@@ -105,7 +103,7 @@ public class UserAcceptedViewModel extends ViewModel {
      * @return bool on whether or not the selected events is empty
      */
 
-    public boolean allInvitesResolved() {
+    public static boolean allInvitesResolved() {
         return getUser().getSelectedEvents().isEmpty();
     }
 

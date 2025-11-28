@@ -1,5 +1,7 @@
 package com.example.camaraderie;//
 
+import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -186,8 +188,24 @@ public class User implements Serializable {
      *  The docRef of the event being deleted
      */
     public void deleteCreatedEvent(DocumentReference event) {
+        event.get().addOnSuccessListener(doc -> {
+            Event e = doc.toObject(Event.class);
+            if (e != null ) {
+                deleteEvent(e);
+                Log.d("User", "Deleted user event");
+            }
+        })
+                .addOnFailureListener(ee -> {
+                    Log.e("User", "deleteCreatedEvent: could not get event", ee);
+                });
+    }
+
+    /**
+     * NOT TO BE CONFUSED WITH `deleteCreatedEvent` - removes event from local memory list
+     * @param event event to be removed
+     */
+    public void removeCreatedEvent(DocumentReference event) {
         this.userCreatedEvents.remove(event);
-        event.delete();  // from db
     }
 
     /**

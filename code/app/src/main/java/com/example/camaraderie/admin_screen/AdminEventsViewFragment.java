@@ -33,21 +33,14 @@ import java.util.ArrayList;
 public class AdminEventsViewFragment extends Fragment {
 
     private FragmentAdminEventsViewBinding binding;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private NavController nav;
     private ArrayList<Event> eventsArrayList;
     private EventArrayAdapter eventsArrayAdapter;
     private ListenerRegistration eventListener;
-    SharedEventViewModel svm;
+    private SharedEventViewModel svm;
 
-    /**
-     * This is an empty that is required
-     */
-
-    public AdminEventsViewFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * onCreateView is first initialized when we open the fragment
@@ -101,9 +94,7 @@ public class AdminEventsViewFragment extends Fragment {
         //for loading data
         loadList();
 
-        binding.backButton.setOnClickListener( v ->
-                nav.navigate(R.id.action_admin_event_data_screen_view_to_admin_main_screen)
-        );
+        binding.backButton.setOnClickListener( v -> nav.popBackStack());
     }
 
     /**

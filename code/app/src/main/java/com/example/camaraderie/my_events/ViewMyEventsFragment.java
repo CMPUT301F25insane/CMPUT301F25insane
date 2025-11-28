@@ -83,6 +83,7 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
 
         db = FirebaseFirestore.getInstance();
+        myEvents.clear();
         binding.myEventsForViewMyEvents.setAdapter(myEvents);
         binding.userProfileImageButton.setOnClickListener(v -> nav.navigate(R.id.update_user));
         //binding.nameForMyEvents.setText(user.getFirstName());
@@ -107,7 +108,7 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.fragment_create_event_testing);
+                nav.navigate(R.id.fragment_create_event);
             }
         });
 
@@ -123,6 +124,8 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         binding.pendingEventButtons.setOnClickListener(v -> {
             nav.navigate(R.id.fragment_pending_events);
         });
+
+        binding.acceptedEventButton.setOnClickListener(v -> nav.navigate(R.id.MyAcceptedEventsFragment));
 
 
     }
