@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,8 +34,12 @@ import com.example.camaraderie.UserLocation;
 
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
+<<<<<<< HEAD
 import com.example.camaraderie.geolocation.LocationHelper;
 import com.example.camaraderie.main.LoadUser;
+=======
+import com.example.camaraderie.geolocation.AddUserLocation;
+>>>>>>> umran
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -53,7 +56,6 @@ public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;
     private NavController nav;
-
     private FragmentViewEventUserBinding binding;
     private Event event;
     private SharedEventViewModel svm;
@@ -289,6 +291,7 @@ public class UserViewEventFragment extends Fragment {
         }
     }
 
+<<<<<<< HEAD
     private void handleJoinGeo() {
         if (event == null) {
             Toast.makeText(getContext(), "Event not loaded yet", Toast.LENGTH_SHORT).show();
@@ -328,6 +331,53 @@ public class UserViewEventFragment extends Fragment {
                     },
                     // on failure
                     () -> {
+=======
+    /**
+     * handles join, updates database
+     */
+    private void handleJoin() {
+
+
+        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
+                .addOnSuccessListener(v -> {
+                    Log.d("Handle Join", "Waitlist updated for event");
+
+                    event.addWaitlistUser(getUser().getDocRef());
+                    user.addWaitlistedEvent(event.getEventDocRef());
+
+                    updateUI(event);
+                    user.updateDB(() -> {
+
+                        svm.setEvent(event);
+                        nav.navigate(R.id.fragment_view_event_user);
+                    });
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Handle Join", "Waitlist failed to update", e);
+                    nav.navigate(R.id.fragment_main);
+                });
+
+    }
+
+    public void handleJoinGeo() {
+        AddUserLocation.addLocation(this, user, event, this::handleJoin);
+    }
+
+    /**
+     * handles unjoin, updates database
+     */
+    private void handleUnjoin() {
+
+        event.getEventDocRef().update("waitlist", FieldValue.arrayRemove(user.getDocRef()))
+                .addOnSuccessListener(v -> {
+
+                    event.removeWaitlistUser(user.getDocRef());
+                    user.removeWaitlistedEvent(event.getEventDocRef());
+
+                    updateUI(event);
+                    user.updateDB(() -> {
+>>>>>>> umran
                         if (!nav.popBackStack(R.id.fragment_main, false)) {
                             nav.navigate(R.id.fragment_main);
                         }

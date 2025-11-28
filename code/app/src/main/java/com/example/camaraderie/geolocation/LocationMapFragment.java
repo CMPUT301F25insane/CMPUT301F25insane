@@ -24,6 +24,9 @@ import org.maplibre.android.maps.MapLibreMap;
 import org.maplibre.android.maps.OnMapReadyCallback;
 import org.maplibre.android.maps.Style;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class LocationMapFragment extends Fragment {
     private FragmentLocationMapBinding binding;
     private MapLibreMap map;
@@ -37,12 +40,9 @@ public class LocationMapFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (getArguments() != null) {
-            eventId = getArguments().getString("eventId");
-        }
 
         binding.backButton.setOnClickListener(v ->
                 NavHostFragment.findNavController(this).popBackStack()
@@ -50,16 +50,49 @@ public class LocationMapFragment extends Fragment {
 
         binding.mapView.onCreate(savedInstanceState);
 
-        binding.mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull MapLibreMap mapLibreMap) {
-                map = mapLibreMap;
+        List<HashMap<String, Object>> userLocations = null;
+        if (getArguments() != null) {
+            eventId = getArguments().getString("eventId");
+            userLocations = (List<HashMap<String, Object>>) getArguments().getSerializable("userLocations");
+        }
 
-                String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
+        final List<HashMap<String, Object>> finalUserLocations = userLocations;
 
-                map.setStyle(new Style.Builder().fromUri(styleUrl), style -> showTestMarker());
-            }
+        binding.mapView.getMapAsync(mapLibreMap -> {
+            map = mapLibreMap;
+
+            String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
+
+            map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
+                // Map is ready, now add markers
+                showTestMarker(); // optional test marker
+                if (finalUserLocations != null) {
+                    addUserMarkers(finalUserLocations);
+                }
+            });
         });
+    }
+
+    private void addUserMarkers(List<HashMap<String, Object>> locations) {
+        if (map == null) return;
+
+        for (HashMap<String, Object> loc : locations) {
+            double lat = (double) loc.get("latitude");
+            double lon = (double) loc.get("longitude");
+            String userId = (String) loc.get("userID");
+
+            LatLng userLatLng = new LatLng(lat, lon);
+            map.addMarker(new MarkerOptions()
+                    .position(userLatLng)
+                    .title(userId));
+        }
+
+        // Optionally move camera to the first user
+        if (!locations.isEmpty()) {
+            HashMap<String, Object> first = locations.get(0);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng((double) first.get("latitude"), (double) first.get("longitude")), 13));
+        }
     }
 
     private void showTestMarker() {
