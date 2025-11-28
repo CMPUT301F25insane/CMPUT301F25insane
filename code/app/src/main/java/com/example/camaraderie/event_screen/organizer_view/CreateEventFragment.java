@@ -3,8 +3,11 @@ package com.example.camaraderie.event_screen.organizer_view;
 import static com.example.camaraderie.main.MainActivity.user;
 
 import android.app.DatePickerDialog;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,10 +38,17 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+
+import org.w3c.dom.Document;
 
 /**
  * fragment that allows an organizer to create an event
@@ -58,7 +70,7 @@ public class CreateEventFragment extends Fragment {
     Switch geoSwitch;
     boolean geoEnabled;
 
-    private Uri eventPosterUri;
+    private String eventImageString;
     private boolean editing = false;
 
     private Date today = new Date();
@@ -126,7 +138,7 @@ public class CreateEventFragment extends Fragment {
 
             //geolocation only available during creation
             geoSwitch.setEnabled(false); // cannot toggle geo after creation
-            geoSwitch.setChecked(event.isGeoEnabled()); // show current value
+
 
             String path = args.getString("eventDocRefPath");
             assert path != null;
@@ -135,21 +147,31 @@ public class CreateEventFragment extends Fragment {
             eventDocRef.get().addOnSuccessListener(doc -> {
                 event = doc.toObject(Event.class);
                 assert event != null;
+                geoSwitch.setChecked(event.isGeoEnabled()); // show current value
                 fillTextViews(event);
             });
 
         }
 
-        // Registers a photo picker activity launcher in single-select mode.
+        /**
+         * This creates a photo picker activity
+         */
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                    // Callback is invoked after the user selects a media item or closes the
-                    // photo picker.
+                    // Called if the user picks a photo
                     if (uri != null) {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
                         //Add code to save the photo into the database
-                        //Need to set the Uri to the event's uri
-                        eventPosterUri = uri;
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            byte [] bytes = stream.toByteArray();
+                            String imageString = Base64.encodeToString(bytes, Base64.DEFAULT);
+                            eventImageString = imageString;
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     } else {
                         Log.d("PhotoPicker", "No media selected");
                     }
@@ -203,7 +225,7 @@ public class CreateEventFragment extends Fragment {
             public void onClick(View v) {
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventPosterUri);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventImageString);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
@@ -264,7 +286,7 @@ public class CreateEventFragment extends Fragment {
                              EditText eventCapacity,
                              EditText optionalLimit,
                              EditText eventTime,
-                             Uri eventPosterUri) throws ParseException {
+                             String eventImageString) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
@@ -295,7 +317,7 @@ public class CreateEventFragment extends Fragment {
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
-            event.setPosterUri(eventPosterUri);
+            event.setImageString(eventImageString);
             if (limit != -1) {
                 event.setWaitlistLimit(limit);
             }
@@ -314,7 +336,7 @@ public class CreateEventFragment extends Fragment {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri, geoSwitch.isChecked());
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventImageString, geoSwitch.isChecked());
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
