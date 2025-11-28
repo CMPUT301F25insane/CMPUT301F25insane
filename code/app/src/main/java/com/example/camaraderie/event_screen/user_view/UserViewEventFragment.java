@@ -131,7 +131,6 @@ public class UserViewEventFragment extends Fragment {
             binding.adminDeleteEvent.setVisibility(VISIBLE);
             binding.adminDeleteEvent.setOnClickListener(v -> adminDeleteEvent());
         }
-
         // qr code button
         binding.qrButtonUserView.setOnClickListener(new View.OnClickListener() {
 

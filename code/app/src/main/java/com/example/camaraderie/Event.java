@@ -8,6 +8,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * This is a class that defines an event
@@ -341,7 +342,29 @@ public class Event {
      * updates event in database
      */
     public void updateDB(Runnable onComplete) {
-        eventDocRef.set(this, SetOptions.merge())
+        //TODO: this bitch is broken lol idk why
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("eventName", eventName);
+        data.put("eventLocation", eventLocation);
+        data.put("registrationDeadline", registrationDeadline);
+        data.put("description", description);
+        data.put("eventDate", eventDate);
+        data.put("eventTime", eventTime);
+
+        data.put("eventPosterUri", eventPosterUri);
+        data.put("waitlist", waitlist);
+        data.put("selectedUsers", selectedUsers);
+        data.put("acceptedUsers", acceptedUsers);
+        data.put("cancelledUsers", cancelledUsers);
+
+        data.put("geoEnabled", geoEnabled);
+        data.put("locationArrayList", locationArrayList);
+
+        data.put("capacity", capacity);
+        data.put("waitlistLimit", waitlistLimit);
+
+        eventDocRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firestore", "Successfully update event");
                     onComplete.run();

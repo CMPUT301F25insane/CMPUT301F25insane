@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,6 +55,8 @@ public class UserAcceptedToEventFragment extends Fragment {
         vm  = new ViewModelProvider(this).get(UserAcceptedViewModel.class);
         ArrayList<Event> selectedEvents = new ArrayList<>();
         pendingEventArrayAdapter = new PendingEventArrayAdapter(requireContext(), 0, selectedEvents, vm);
+        pendingEventArrayAdapter.setListener(this);
+        pendingEventArrayAdapter.setNotifyOnChange(true);
 
         for (DocumentReference eventRef : user.getSelectedEvents()) {
             eventRef.get().addOnSuccessListener(doc -> {
@@ -109,6 +112,14 @@ public class UserAcceptedToEventFragment extends Fragment {
             }
         });
 
+        enableConfirmButton();
+
+    }
+
+    public void enableConfirmButton() {
+        if (vm.allInvitesResolved()) {
+            binding.pendingEventsContinueButton.setEnabled(true);
+        }
     }
 
 
