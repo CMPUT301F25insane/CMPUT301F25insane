@@ -9,22 +9,24 @@
 
     <TextView
         android:id="@+id/invited_events_header"
-        android:layout_width="0dp"
+        android:layout_width="373dp"
         android:layout_height="79dp"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
         android:fontFamily="@font/cambria"
+        android:gravity="center"
         android:text="Events you've been invited to!"
         android:textColor="@color/white"
         android:textSize="30dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07" />
 
     <TextView
         android:id="@+id/accept_or_decline_header"
-        android:layout_width="0dp"
+        android:layout_width="370dp"
         android:layout_height="74dp"
         android:fontFamily="@font/cambria"
         android:gravity="center"
@@ -40,17 +42,17 @@
 
     <ListView
         android:id="@+id/pendingEventListView"
-        android:layout_width="0dp"
+        android:layout_width="379dp"
         android:layout_height="556dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.764"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/pendingEventsContinueButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:enabled="false"
         android:text="Continue"
