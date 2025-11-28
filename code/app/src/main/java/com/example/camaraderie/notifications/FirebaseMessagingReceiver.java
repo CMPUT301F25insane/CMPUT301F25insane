@@ -21,6 +21,21 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class FirebaseMessagingReceiver extends FirebaseMessagingService {
 
+    private static FirebaseMessagingReceiver instance;
+
+    public FirebaseMessagingReceiver getInstance() {
+        if (instance == null) {
+            instance = new FirebaseMessagingReceiver();
+        }
+
+        return instance;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+    }
 
     @Override
     public void onNewToken(@NonNull String token) {

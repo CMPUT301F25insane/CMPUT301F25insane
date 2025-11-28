@@ -15,4 +15,5 @@
     <style name="Theme.Camaraderie.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Camaraderie.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

@@ -162,6 +162,9 @@ public class Event {
 
     }
 
+    public Event(String s, String s1, Date date, String s2, Date date1, String s3, int i, int ll, DocumentReference userDoc, DocumentReference eventDoc, String id, Object o, boolean b) {
+    }
+
     //location getters and setters
     public boolean isGeoEnabled() {
         return geoEnabled;
