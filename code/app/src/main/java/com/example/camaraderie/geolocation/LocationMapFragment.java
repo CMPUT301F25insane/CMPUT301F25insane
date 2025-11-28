@@ -98,7 +98,7 @@ public class LocationMapFragment extends Fragment {
             LatLng position = new LatLng(loc.getLatitude(), loc.getLongitude());
             map.addMarker(new MarkerOptions()
                     .position(position)
-                    .title(loc.getUserID())); // use userId as the marker title
+                    .title(loc.getUserDocRef().getId())); // use userId as the marker title
         }
 
         // optional: zoom to first user

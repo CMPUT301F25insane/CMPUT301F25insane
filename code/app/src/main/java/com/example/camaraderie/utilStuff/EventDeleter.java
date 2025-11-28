@@ -1,5 +1,7 @@
 package com.example.camaraderie.utilStuff;
 
+import static com.example.camaraderie.main.Camaraderie.getUser;
+
 import android.util.Log;
 
 import com.example.camaraderie.Event;
@@ -32,7 +34,14 @@ public class EventDeleter {
             batch.update(uref, "selectedEvents", FieldValue.arrayRemove(eventDocRef));
             batch.update(uref, "acceptedEvents", FieldValue.arrayRemove(eventDocRef));
             batch.update(uref, "cancelledEvents", FieldValue.arrayRemove(eventDocRef));
+            batch.update(uref, "eventHistory", FieldValue.arrayRemove(eventDocRef));  // we assume here that the user has this event in their history if they remained in the waitlist. ie, upon leaving the waitlist, we remove the event from their history
+        }
 
+        batch.update(event.getHostDocRef(), "userCreatedEvents", FieldValue.arrayRemove(eventDocRef));
+
+        // if the users we're dealing with is ourself
+        if (getUser().getUserCreatedEvents().contains(eventDocRef)) {
+            getUser().removeCreatedEvent(eventDocRef);
         }
 
         batch.commit()

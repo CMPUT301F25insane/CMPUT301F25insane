@@ -128,7 +128,6 @@ public class OrganizerViewEventFragment extends Fragment {
             binding.deleteButtonOrgView.setOnClickListener(v -> {
 
                 deleteEvent(event);
-                getUser().deleteCreatedEvent(eventDocRef);
                 nav.navigate(R.id.fragment_main);
                 Toast.makeText(getContext(), "Event Deleted", LENGTH_SHORT).show();
             });

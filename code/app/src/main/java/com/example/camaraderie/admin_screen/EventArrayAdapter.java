@@ -4,6 +4,7 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
+import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -38,9 +39,9 @@ import java.util.Date;
 public class EventArrayAdapter extends ArrayAdapter<Event> {
 
 
-    private NavController nav;
-    private SharedEventViewModel svm;
-    private Date date = new Date();
+    private final NavController nav;
+    private final SharedEventViewModel svm;
+    private final Date date = new Date();
 
     /**
      * This is a constructor that initializes all the required attributes for the array adapter to to function how we
@@ -50,7 +51,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
      * @param nav
      * @param svm
      */
-
     public EventArrayAdapter(@NonNull Context context, ArrayList<Event> events, NavController nav, SharedEventViewModel svm){
         super(context, 0, events);
 
@@ -149,31 +149,20 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
 
         deadline.setText(event.getRegistrationDeadline().toString());
 
-        /**
-         * We implement a join button for the admin to be able to join an event if they wish
-         */
+        join.setOnClickListener(v ->
 
-        join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                join.setBackgroundColor(Color.GRAY);
-                join.setEnabled(false);
-                join.setClickable(false);
-                event.addWaitlistUser(user.getDocRef());
-                user.addWaitlistedEvent(event.getEventDocRef());
-                user.addEventToHistory(event.getEventDocRef());
+            handleJoin(
+                event,
+                () -> {
+                    join.setBackgroundColor(Color.GRAY);
+                    join.setEnabled(false);
+                    join.setClickable(false);},
+                () -> {
+                    Log.e("AdminEventArrayAdapter", "Failed to join admin to event");
+                }
+            )
 
-                // update db
-                user.updateDB(() -> {
-                    event.updateDB(() -> {return;});
-                });
-
-            }
-        });
-
-        /**
-         * We also a description button that allows for the admin to view the events description
-         */
+        );
 
         description.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,14 +174,10 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
             }
         });
 
-        /*
-         * Lastly we have a remove button that the admin can use to remove a event from the the collection if it violates
-         * guidelines or for whatever reason the admin has
-         */
-
         remove.setOnClickListener(v -> {
                 deleteEvent(event);
         });
+
         return view;
     }
 }

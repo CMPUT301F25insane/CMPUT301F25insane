@@ -431,4 +431,12 @@ public class Event {
         this.waitlistLimit = waitlistLimit;
     }
 
+    public void clearSelectedUsers() {
+        this.selectedUsers.clear();
+    }
+
+    public void clearWaitlistedUsers() {
+        this.waitlist.clear();
+    }
+
 }
