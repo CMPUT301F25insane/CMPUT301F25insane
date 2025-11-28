@@ -335,7 +335,7 @@ public class CreateEventFragment extends Fragment {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri, geoSwitch.isChecked());
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventImageString, geoSwitch.isChecked());
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
