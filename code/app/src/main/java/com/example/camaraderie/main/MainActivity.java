@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FirebaseFirestore db;
+
     public static User user;
 
     private Handler handler = new Handler(Looper.getMainLooper());
