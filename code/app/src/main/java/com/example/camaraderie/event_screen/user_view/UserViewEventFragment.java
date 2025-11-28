@@ -63,7 +63,7 @@ public class UserViewEventFragment extends Fragment {
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);  // this will live in the activity
         db = FirebaseFirestore.getInstance();
-        nav = NavHostFragment.findNavController(this);
+//        nav = NavHostFragment.findNavController(this);
 
 
 
@@ -100,6 +100,7 @@ public class UserViewEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        nav = NavHostFragment.findNavController(this);
 
 
         // get event details, everything that depends on event as an object exists here
