@@ -193,7 +193,8 @@ public class OrganizerViewEventFragment extends Fragment {
             public void onClick(View v) {
                 if (event != null) {
                     Bundle args = new Bundle();
-                    args.putString("eventId", event.getEventId());  // pass the Event ID
+                    args.putString("eventId", event.getEventId());
+                    args.putSerializable("userLocations", (java.io.Serializable) event.getLocationArrayList());
                     nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
                 }
             }
