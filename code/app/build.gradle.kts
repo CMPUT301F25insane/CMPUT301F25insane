@@ -44,6 +44,7 @@ dependencies {
 
     implementation(libs.espresso.contrib)
     implementation(libs.fragment.testing)
+    implementation(libs.rules)
     val fragmentVersion = "1.8.9"
 
 

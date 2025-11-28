@@ -67,4 +67,3 @@ public class DeleteUserRemovesEventTest {
         assertFalse(event.getWaitlist().contains(mockUser1));
     }
 }
-}

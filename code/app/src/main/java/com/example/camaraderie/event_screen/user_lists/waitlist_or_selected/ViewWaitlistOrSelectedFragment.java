@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.databinding.FragmentViewWaitlistOfAttendeesBinding;
+//import com.example.camaraderie.databinding.FragmentViewWaitlistOfAttendeesBinding;
 import com.example.camaraderie.User;
 import com.example.camaraderie.databinding.FragmentViewWaitlistOrSelectedBinding;
 import com.example.camaraderie.event_screen.UserListType;
