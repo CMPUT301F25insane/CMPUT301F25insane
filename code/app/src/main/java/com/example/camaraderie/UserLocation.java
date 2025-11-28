@@ -1,5 +1,7 @@
 package com.example.camaraderie;
 
+import com.google.firebase.firestore.auth.User;
+
 public class UserLocation {
     private String userID;
     private double latitude;
@@ -10,7 +12,9 @@ public class UserLocation {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-    
+
+    public UserLocation(){}
+
     public String getUserID() {
         return userID;
     }

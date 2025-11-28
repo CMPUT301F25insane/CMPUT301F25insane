@@ -3,6 +3,9 @@ package com.example.camaraderie.event_screen.user_view;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -27,11 +31,15 @@ import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.example.camaraderie.geolocation.LocationHelper;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 /**
  * The screen for user's viewing an uploaded event
@@ -237,16 +245,16 @@ public class UserViewEventFragment extends Fragment {
             Toast.makeText(getContext(), "Event not loaded yet", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (user.isGeoEnabled() && event.isGeoEnabled()) {
-            // Pass fragment reference, not activity
-            LocationHelper.getUserLocation(UserViewEventFragment.this, (latitude, longitude) -> {
-                event.addLocationArrayList(new UserLocation(user.getUserId(), latitude, longitude));
-                Toast.makeText(getContext(),
-                        "Successfully joined with coordinates: " + latitude + ", " + longitude,
-                        Toast.LENGTH_SHORT).show();
-                handleJoin();
-            });
+            LocationHelper.addUserGeoData(
+                    this,       // the fragment
+                    event,
+                    user,
+                    () -> {
+                        // continue your join logic AFTER location is saved
+                        handleJoin();
+                    }
+            );
         } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
             Toast.makeText(getContext(), "Please enable location to join this event", Toast.LENGTH_SHORT).show();
         } else {
@@ -279,8 +287,6 @@ public class UserViewEventFragment extends Fragment {
         event.getEventDocRef().delete();
         nav.navigate(R.id.fragment_main);
     }
-
-    private void getUserLocation(){}
 
     /**
      * binding set to null
