@@ -14,7 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.databinding.FragmentViewWaitlistOfAttendeesBinding;
+
 import com.example.camaraderie.User;
 import com.example.camaraderie.databinding.FragmentViewWaitlistOrSelectedBinding;
 import com.example.camaraderie.event_screen.UserListType;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class ViewWaitlistOrSelectedFragment extends Fragment {
 
-    private FragmentViewWaitlistOfAttendeesBinding binding;
+    private FragmentViewWaitlistOrSelectedBinding binding;
     private DocumentReference eventDocRef;
     private ViewWaitlistOrSelectedArrayAdapter adapter;
     private ViewListViewModel vm;
@@ -78,7 +78,7 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentViewWaitlistOfAttendeesBinding.inflate(getLayoutInflater());
+        binding = FragmentViewWaitlistOrSelectedBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 
@@ -124,9 +124,9 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
 
         adapter = new ViewWaitlistOrSelectedArrayAdapter(requireContext(), 0, displayedList, vm);
 
-        binding.returnButtonForOrganizerViewOfWaitlist.setOnClickListener(v -> nav.popBackStack());
-        binding.NumOfAttendees.setText(capacityText);
-        binding.headerForWaitlistPage.setText(headerText);
+        binding.backButton.setOnClickListener(v -> nav.popBackStack());
+        binding.attendeesNum.setText(capacityText);
+        binding.waitlistOrSelectedTextView.setText(headerText);
         binding.usersInWaitlist.setAdapter(adapter);
 
     }
@@ -136,7 +136,7 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
      * @param event event for which to get waitlist
      */
     private void fillTextViews(Event event) {
-        binding.NumOfAttendees.setText(String.valueOf(event.getWaitlist().size()));
+        binding.attendeesNum.setText(String.valueOf(event.getWaitlist().size()));
     }
 
     /**

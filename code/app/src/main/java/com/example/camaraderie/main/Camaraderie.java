@@ -1,6 +1,7 @@
 package com.example.camaraderie.main;
 
 import android.app.Application;
+import android.content.Context;
 
 import org.maplibre.android.MapLibre;
 
@@ -11,11 +12,23 @@ import org.maplibre.android.MapLibre;
  * "coconut.jpg"
  */
 public class Camaraderie extends Application{
+
+    private static Camaraderie instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
 
         // Initialize MapLibre
         MapLibre.getInstance(this);
+    }
+
+    public static Camaraderie getInstance() {
+        return instance;
+    }
+
+    public static Context getContext() {
+        return instance.getApplicationContext();
     }
 }

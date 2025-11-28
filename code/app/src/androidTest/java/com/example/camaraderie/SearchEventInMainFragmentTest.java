@@ -14,18 +14,23 @@ import android.os.Bundle;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
 
 import com.example.camaraderie.dashboard.MainFragment;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Date;
 
 /**
  *The purpose of this is to Test if we can find Mock event in the search results in main fragment
  */
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class SearchEventInMainFragmentTest {
     private FragmentScenario<MainFragment> scenario2;
     @Test
@@ -39,6 +44,7 @@ public class SearchEventInMainFragmentTest {
                 "email@email.com",
                 "address",
                 hostRef.getId(),
+                null,
                 hostRef
         )).addOnSuccessListener(aVoid -> {
             Event mockEvent = new Event("Free Tickets to Oilers Game",
@@ -48,9 +54,12 @@ public class SearchEventInMainFragmentTest {
                     new Date(),
                     "20:00",
                     100,
+                    -1,
                     hostRef,
                     docRef,
-                    docRef.getId());
+                    docRef.getId(),
+                null,
+                    false);
 
             docRef.set(mockEvent).addOnSuccessListener(aVoid2 -> {
                 // Pass event data to fragment

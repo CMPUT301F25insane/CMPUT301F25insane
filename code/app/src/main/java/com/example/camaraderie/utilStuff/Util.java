@@ -13,6 +13,7 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * util class for convenience functions
@@ -88,6 +89,9 @@ public class Util {
                     userDoc
             );
 
+            int l = new Random().nextInt(5);
+
+            int ll = new int[] {-1, 1, 3, 5, 7}[l];  // waitlist limit
 
             Event newEvent = new Event(
                     "Event " + i,
@@ -97,9 +101,12 @@ public class Util {
                     new Date(),
                     "5:00 PM",
                     5,
+                    ll,
                     userDoc,
                     eventDoc,
-                    eventDoc.getId()
+                    eventDoc.getId(),
+                    null,
+                    true
             );
             newUser.addCreatedEvent(eventDoc);
 

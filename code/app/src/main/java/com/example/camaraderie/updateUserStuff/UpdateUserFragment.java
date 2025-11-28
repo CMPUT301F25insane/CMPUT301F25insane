@@ -22,18 +22,15 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentUpdateUserBinding;
+import com.example.camaraderie.main.LoadUser;
 import com.example.camaraderie.utilStuff.UserDeleter;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * This is the screen for users updating their information.
  */
 
 public class UpdateUserFragment extends Fragment {
-    private FirebaseFirestore db;
-    private CollectionReference usersRef;
     private DocumentReference userDocRef;
     private FragmentUpdateUserBinding binding;
     private NavController nav;
@@ -101,10 +98,7 @@ public class UpdateUserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
-        usersRef = db.collection("Users");
-
-        userDocRef = usersRef.document(user.getUserId());
+        userDocRef = user.getDocRef();
 
         binding.nameFieldForUpdateUser.setText(user.getFirstName());
         binding.emailFieldForUpdateUser.setText(user.getEmail());
@@ -139,6 +133,10 @@ public class UpdateUserFragment extends Fragment {
             }
         });
 
+        binding.refreshNotificationsButton.setOnClickListener(v -> {
+            new LoadUser(userDocRef).loadAllData(() -> {}); // nothing in the callback
+        });
+
         // TODO: to fix this, we need to use batches and use .commit on the batch (instead of the for loop, then after all as been finished, we can safely exit the app. the asyncronicity of firebase does not let the user get deleted before teh app closes
         binding.DeleteButtonForUserProfile.setOnClickListener(v -> {
 
@@ -157,8 +155,8 @@ public class UpdateUserFragment extends Fragment {
         });
 
         binding.cancelButtonForUserProfile.setOnClickListener(v -> {
-            nav.navigate(R.id.action_update_user_to_fragment_main);
-            //nav.popBackStack();
+            //nav.navigate(R.id.action_update_user_to_fragment_main);
+            nav.popBackStack();
         });
 
         binding.adminButtonForUserProfile2.setOnClickListener(v -> {
