@@ -111,6 +111,8 @@ public class UserViewEventFragment extends Fragment {
 
 
         // get event details, everything that depends on event as an object exists here
+
+        binding.userViewEventBackButton.setOnClickListener(v -> nav.popBackStack());
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             event = evt;
             updateUI(evt);
