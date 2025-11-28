@@ -3,13 +3,8 @@ package com.example.camaraderie.event_screen.user_view;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
-<<<<<<< HEAD
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-=======
 import android.graphics.Color;
->>>>>>> d4d8b837ecc3ed7c23ac97d906ef2993cce96fe3
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,15 +28,11 @@ import static com.example.camaraderie.main.MainActivity.user;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.UserLocation;
 
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
 import com.example.camaraderie.geolocation.LocationHelper;
-import com.example.camaraderie.main.LoadUser;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
