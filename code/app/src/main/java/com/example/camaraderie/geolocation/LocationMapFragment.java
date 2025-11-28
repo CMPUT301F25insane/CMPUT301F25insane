@@ -1,4 +1,4 @@
-package com.example.camaraderie.event_screen;
+package com.example.camaraderie.geolocation;
 
 import android.os.Bundle;
 
@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.example.camaraderie.databinding.FragmentLocationMapBinding;
 
-import org.maplibre.android.MapLibre;
 import org.maplibre.android.camera.CameraUpdateFactory;
 import org.maplibre.android.annotations.MarkerOptions;
 import org.maplibre.android.geometry.LatLng;

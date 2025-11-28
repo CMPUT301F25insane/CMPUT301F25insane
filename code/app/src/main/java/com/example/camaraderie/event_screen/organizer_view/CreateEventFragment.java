@@ -11,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -53,13 +55,11 @@ public class CreateEventFragment extends Fragment {
     private EditText eventCapacity;
     private EditText eventTime;
     private EditText optionalLimit;
+    Switch geoSwitch;
+    boolean geoEnabled;
 
     private Uri eventPosterUri;
     private boolean editing = false;
-    private Date today = new Date();
-    private int day = today.getDate();;
-    private int month = today.getMonth();
-    private int year = today.getYear() + 1900;
 
     /**
      * Instantiate the fragment
@@ -113,10 +113,15 @@ public class CreateEventFragment extends Fragment {
         eventCapacity = binding.inputFieldForCreateEventNumOfAttendees;
         eventTime = binding.inputFieldForCreateEventTime;
         optionalLimit = binding.inputFieldForCreateEventWaitlistLimit;
+        geoSwitch = binding.geoSwitch; //switch
 
         Bundle args = getArguments();
         if (args != null) {
             editing = true;
+
+            //geolocation only available during creation
+            geoSwitch.setEnabled(false); // cannot toggle geo after creation
+            geoSwitch.setChecked(event.isGeoEnabled()); // show current value
 
             String path = args.getString("eventDocRefPath");
             assert path != null;
@@ -223,9 +228,6 @@ public class CreateEventFragment extends Fragment {
         eventDescription.setText(event.getDescription());
         eventCapacity.setText(String.valueOf(event.getCapacity()));
         eventTime.setText(event.getEventTime());
-        if (event.getWaitlistLimit() != -1) {
-            binding.inputFieldForCreateEventWaitlistLimit.setText(String.valueOf(event.getWaitlistLimit()));
-        }
     }
 
     /**
@@ -289,8 +291,10 @@ public class CreateEventFragment extends Fragment {
             event.setEventDate(date);
             event.setCapacity(capacity);
             event.setPosterUri(eventPosterUri);
-            event.setWaitlistLimit(limit);
-
+            if (limit != -1) {
+                event.setWaitlistLimit(limit);
+            }
+            geoEnabled = geoSwitch.isChecked(); //geolocation
             eventDocRef.set(event, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
@@ -305,8 +309,21 @@ public class CreateEventFragment extends Fragment {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            boolean geoloc = false;  // for now
-            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri, geoloc);
+            if (limit != -1) {
+                newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri);
+            }
+            else {
+                newEvent = new Event(name, location, deadline, description, date, time, capacity, user.getDocRef(), eventRef, eventId, eventPosterUri);
+            }
+
+            //geoswitch
+            newEvent.setGeoEnabled(geoSwitch.isChecked());
+
+            // Optional: if geo is off, clear any location list
+            if (!geoSwitch.isChecked()) {
+                newEvent.setLocationArrayList(new ArrayList<>());
+            }
+
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
@@ -336,7 +353,6 @@ public class CreateEventFragment extends Fragment {
      * event date picker, sets binding textview
      */
     private void openDateDialogue() {
-
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -345,7 +361,7 @@ public class CreateEventFragment extends Fragment {
                 binding.inputFieldForCreateEventDate.setText(format);
             }
 
-        }, year, month, day);
+        }, 2025, 10, 6);
 
         dateDialog.show();
 
@@ -363,7 +379,7 @@ public class CreateEventFragment extends Fragment {
                 binding.inputFieldForCreateEventRegistrationDeadline.setText(format);
             }
 
-        }, year, month, day);
+        }, 2025, 10, 6);
 
         dateDialog.show();
 
