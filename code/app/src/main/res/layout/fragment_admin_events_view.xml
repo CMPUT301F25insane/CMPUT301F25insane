@@ -72,12 +72,12 @@
         android:layout_height="wrap_content"
         android:text="Back"
         app:layout_constraintTop_toBottomOf="@id/list"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout"
+        app:layout_constraintBottom_toBottomOf ="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="411dp"
         android:layout_height="120dp"
@@ -115,6 +115,6 @@
             android:layout_weight="1"
             android:background="@color/black"
             android:src="@drawable/seeevents" />
-    </LinearLayout>
+    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
