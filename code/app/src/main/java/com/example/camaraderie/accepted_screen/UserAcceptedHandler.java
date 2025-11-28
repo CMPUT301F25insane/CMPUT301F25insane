@@ -6,8 +6,6 @@ import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
 
 import android.util.Log;
 
-import androidx.lifecycle.ViewModel;
-
 import com.example.camaraderie.Event;
 import com.example.camaraderie.User;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,7 +20,7 @@ import java.util.Objects;
  * Use data
  */
 
-public class UserAcceptedViewModel extends ViewModel {
+public class UserAcceptedHandler {
 
     /**
      * userAcceptInvite takes in one parameter which is a Firestore Document Reference
@@ -36,7 +34,7 @@ public class UserAcceptedViewModel extends ViewModel {
      */
 
 
-    public void userAcceptInvite(DocumentReference eventDocRef) {
+    public static void userAcceptInvite(DocumentReference eventDocRef) {
 
         User user = getUser();
 
@@ -70,7 +68,7 @@ public class UserAcceptedViewModel extends ViewModel {
      */
 
     // user rejects invitation
-    public void userDeclineInvite(DocumentReference eventDocRef) {
+    public static void userDeclineInvite(DocumentReference eventDocRef) {
 
         User user = getUser();
         user.removeSelectedEvent(eventDocRef);
@@ -105,7 +103,7 @@ public class UserAcceptedViewModel extends ViewModel {
      * @return bool on whether or not the selected events is empty
      */
 
-    public boolean allInvitesResolved() {
+    public static boolean allInvitesResolved() {
         return getUser().getSelectedEvents().isEmpty();
     }
 
