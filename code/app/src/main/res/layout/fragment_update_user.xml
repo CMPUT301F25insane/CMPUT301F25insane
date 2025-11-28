@@ -151,7 +151,7 @@
             app:layout_constraintHorizontal_bias="0.882"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.906"
+            app:layout_constraintVertical_bias="0.966"
             app:strokeWidth="3.5dp" />
 
         <Button
@@ -186,7 +186,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.908" />
+            app:layout_constraintVertical_bias="0.967" />
 
         <Button
             android:id="@+id/refreshNotificationsButton"
@@ -212,10 +212,13 @@
             android:fontFamily="@font/cambria"
             android:text="Enable Geolocation"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/admin_password_for_user_profile"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Delete_button_for_user_profile" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.86" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
