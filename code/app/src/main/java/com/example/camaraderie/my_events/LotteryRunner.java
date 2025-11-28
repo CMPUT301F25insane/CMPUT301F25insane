@@ -21,7 +21,7 @@ public class LotteryRunner {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
-     * lottery system, runs while waitlist is nonempty and selectedList size is less than capacity.
+     * lottery system, runs while waitlist is nonempty and selectedEvents size is less than capacity.
      * updates database, updates UI
      */
     public static void runLottery(Event event) {

@@ -141,7 +141,7 @@ public class UserViewEventFragment extends Fragment {
             };
         });
         binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
-        binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event_testing));
+        binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event));
         binding.userViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
 
         // set up admin delete button

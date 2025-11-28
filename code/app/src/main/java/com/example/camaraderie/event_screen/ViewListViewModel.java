@@ -17,9 +17,9 @@ import java.util.ArrayList;
 public class ViewListViewModel extends ViewModel {
 
     private ArrayList<User> waitlist = new ArrayList<>();
-    private ArrayList<User> acceptedList = new ArrayList<>();
-    private ArrayList<User> selectedList = new ArrayList<>();
-    private ArrayList<User> cancelledList = new ArrayList<>();
+    private ArrayList<User> acceptedEvents = new ArrayList<>();
+    private ArrayList<User> selectedEvents = new ArrayList<>();
+    private ArrayList<User> cancelledEvents = new ArrayList<>();
     private Event event;
 
     /**
@@ -56,13 +56,13 @@ public class ViewListViewModel extends ViewModel {
                 return waitlist;
 
             case ACCEPTEDLIST:
-                return acceptedList;
+                return acceptedEvents;
 
             case SELECTEDLIST:
-                return selectedList;
+                return selectedEvents;
 
             case CANCELLEDLIST:
-                return cancelledList;
+                return cancelledEvents;
 
             default:
                 return new ArrayList<User>();
@@ -128,9 +128,9 @@ public class ViewListViewModel extends ViewModel {
     }
 
     public ArrayList<User> getWaitlist() {return this.waitlist;}
-    public ArrayList<User> getSelectedList() {return this.selectedList;}
-    public ArrayList<User> getAcceptedList() {return this.acceptedList;}
-    public ArrayList<User> getCancelledList() {return this.cancelledList;}
+    public ArrayList<User> getSelectedList() {return this.selectedEvents;}
+    public ArrayList<User> getAcceptedList() {return this.acceptedEvents;}
+    public ArrayList<User> getCancelledList() {return this.cancelledEvents;}
 
     public void generateAllLists(Runnable onComplete) {
 
@@ -140,15 +140,15 @@ public class ViewListViewModel extends ViewModel {
 
             loadUsersFromList(event.getSelectedUsers(), selectedResult -> {
 
-                this.selectedList = selectedResult;
+                this.selectedEvents = selectedResult;
 
                 loadUsersFromList(event.getAcceptedUsers(), acceptedResult -> {
 
-                    this.acceptedList = acceptedResult;
+                    this.acceptedEvents = acceptedResult;
 
                     loadUsersFromList(event.getCancelledUsers(), cancelledResult -> {
 
-                        this.cancelledList = cancelledResult;
+                        this.cancelledEvents = cancelledResult;
 
                         onComplete.run();
 
