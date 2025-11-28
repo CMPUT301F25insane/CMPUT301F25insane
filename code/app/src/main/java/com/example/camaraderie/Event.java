@@ -104,6 +104,9 @@ public class Event {
     }
 
     public void addLocationArrayList(UserLocation userLocation) {
+        if (userLocationArrayList == null) {
+            userLocationArrayList = new ArrayList<>();
+        }
         this.userLocationArrayList.add(userLocation);
     }
     //logic needed for map
