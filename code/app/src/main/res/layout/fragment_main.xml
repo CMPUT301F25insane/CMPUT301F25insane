@@ -10,168 +10,179 @@
 
     <ListView
         android:id="@+id/eventsList"
-        android:layout_width="421dp"
-        android:layout_height="666dp"
+        android:layout_width="415dp"
+        android:layout_height="547dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.62" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
-        android:layout_width="411dp"
-        android:layout_height="120dp"
+        android:layout_width="417dp"
+        android:layout_height="129dp"
         android:background="@color/black"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="610dp"
         tools:layout="@layout/fragment_main_event_dashboard_item">
 
         <ImageButton
             android:id="@+id/hostEvent"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_width="151dp"
+            android:layout_height="127dp"
             android:layout_weight="1"
             android:background="@color/black"
-            android:src="@drawable/hostevent" />
+            android:src="@drawable/hostevent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/dashboardButton"
-            android:layout_width="143dp"
-            android:layout_height="match_parent"
+            android:layout_width="153dp"
+            android:layout_height="129dp"
             android:layout_weight="1"
             android:background="@color/black"
             android:scaleX="1.3"
             android:scaleY="1.3"
-            android:src="@drawable/dashboard_image" />
+            android:src="@drawable/dashboard_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.541"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
             android:id="@+id/myEvents"
-            android:layout_width="136dp"
-            android:layout_height="match_parent"
+            android:layout_width="125dp"
+            android:layout_height="129dp"
             android:layout_weight="1"
             android:background="@color/black"
-            android:src="@drawable/seeevents" />
+            android:src="@drawable/seeevents"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
         android:id="@+id/accountButton"
-        android:layout_width="51dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="40dp"
+        android:layout_height="48dp"
         android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintHorizontal_bias="0.956"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.054" />
 
     <TextView
         android:id="@+id/camaraderie_header_for_main_dashboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="28dp"
         android:fontFamily="@font/cambria_italic"
         android:text="Camaraderie"
         android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/name_for_main_dashboard"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <TextView
         android:id="@+id/header_for_search_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:fontFamily="@font/cambria"
         android:text="Search for local events"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camaraderie_header_for_main_dashboard"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.137" />
 
     <TextView
         android:id="@+id/name_for_main_dashboard"
-        android:layout_width="69dp"
+        android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="[Name]"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/eventsList"
-        app:layout_constraintEnd_toStartOf="@+id/accountButton"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.824"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.242" />
+        app:layout_constraintVertical_bias="0.054" />
 
     <EditText
         android:id="@+id/searchBar"
-        android:layout_width="207dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginTop="16dp"
         android:ems="10"
         android:fontFamily="@font/cambria_italic"
         android:inputType="text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintHorizontal_bias="0.064"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_for_search_bar"
-        app:layout_constraintVertical_bias="0.001" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.186" />
 
     <Button
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search"
-        app:layout_constraintBottom_toTopOf="@+id/eventsList"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.195" />
 
     <TextView
         android:id="@+id/fromDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="92dp"
         android:text="0001-01-01"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/eventsList"
-        app:layout_constraintEnd_toStartOf="@+id/toDateText"
-        app:layout_constraintStart_toEndOf="@+id/searchBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.657"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.993" />
+        app:layout_constraintVertical_bias="0.137" />
 
     <TextView
         android:id="@+id/toDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="-10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="92dp"
         android:text="9999-12-31"
+
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/eventsList"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/fromDateText"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.136" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
