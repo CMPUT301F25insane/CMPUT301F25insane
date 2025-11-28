@@ -21,11 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Camaraderie">
         <activity
-            android:name=".main.MainActivity"
+            android:name=".main.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -39,6 +38,7 @@
                     android:scheme="com.example.camaraderie" />
             </intent-filter>
         </activity>
+        <activity android:name=".main.MainActivity" />
         <service
             android:name=".notifications.FirebaseMessagingReceiver"
             android:exported="false">
