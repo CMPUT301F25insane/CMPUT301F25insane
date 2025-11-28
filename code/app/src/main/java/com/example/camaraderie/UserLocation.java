@@ -10,6 +10,8 @@ public class UserLocation {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public UserLocation() {} // firebase
     
     public String getUserID() {
         return userID;

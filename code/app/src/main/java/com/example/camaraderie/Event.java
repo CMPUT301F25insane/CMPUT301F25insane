@@ -353,6 +353,7 @@ public class Event {
         data.put("eventTime", eventTime);
 
         data.put("eventPosterUri", eventPosterUri);
+
         data.put("waitlist", waitlist);
         data.put("selectedUsers", selectedUsers);
         data.put("acceptedUsers", acceptedUsers);
