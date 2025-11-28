@@ -108,7 +108,7 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nav.navigate(R.id.fragment_create_event_testing);
+                nav.navigate(R.id.fragment_create_event);
             }
         });
 

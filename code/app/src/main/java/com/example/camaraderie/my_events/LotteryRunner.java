@@ -21,7 +21,7 @@ public class LotteryRunner {
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
-     * lottery system, runs while waitlist is nonempty and selectedList size is less than capacity.
+     * lottery system, runs while waitlist is nonempty and selectedEvents size is less than capacity.
      * updates database, updates UI
      */
     public static void runLottery(Event event) {
@@ -84,7 +84,7 @@ public class LotteryRunner {
     private static void sendNotificationsToEntrant(DocumentReference uref, String title, String body) {
 
         DocumentReference notifRef = db.collection("Notifications").document();
-        NotificationData notification = new NotificationData(title, body, notifRef);
+        NotificationData notification = new NotificationData(uref.getId(), title, body, notifRef);
 
         notifRef.set(notification).addOnSuccessListener(v -> {
             uref.update("pendingNotifications", FieldValue.arrayUnion(notifRef))

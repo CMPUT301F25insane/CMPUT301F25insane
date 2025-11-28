@@ -33,14 +33,9 @@ import java.util.ArrayList;
 public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
     public OnEventClickListener listener;
-    private DocumentReference ref;
     private FirebaseFirestore db;
 
-    private NavController nav;
     private DocumentReference eventDocref;
-    private CollectionReference events;
-
-    private EventViewModel eventViewModel;
 
     /**
      * constructor for array adapter

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -28,16 +29,10 @@ import java.util.ArrayList;
 public class AdminUserProfileFragment extends Fragment {
 
     private FragmentAdminUserProfileBinding binding;
+    private NavController nav;
     private FirebaseFirestore db;
     private User user;
 
-    /**
-     * We require an empty constructor
-     */
-
-    public AdminUserProfileFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * onCreateView initializes the xml view for the fragment and is run as soon as we navigate to this fragment
@@ -75,6 +70,7 @@ public class AdminUserProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         db = FirebaseFirestore.getInstance();
+        nav = NavHostFragment.findNavController(this);
 
         if (getArguments() != null) {
             String userPath = getArguments().getString("userEventDocRef");
@@ -99,7 +95,7 @@ public class AdminUserProfileFragment extends Fragment {
             }
         }
 
-        /**
+        /*
          * We have a remove button that allows for the admin to remove users who are not following guidelines
          * When the button is clicked we use firebase to remove the user from the Users collection
          * We grab their userID and delete their document and afterwards navigate back to the admin user data screen
@@ -112,33 +108,21 @@ public class AdminUserProfileFragment extends Fragment {
                     Toast.makeText(getContext(), "No user selected", Toast.LENGTH_SHORT).show();
                     return;
                 }
-/*
-                db.collection("Users")
-                        .document(user.getUserId())
-                        .delete()
-                        .addOnSuccessListener(w -> {
-
-                        })
-                        .addOnFailureListener(e ->
-                                Toast.makeText(getContext(), "Failed to delete: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-                        );*/
 
                 UserDeleter deleter = new UserDeleter(user);
                 deleter.DeleteUser(() -> {
                     Toast.makeText(getContext(), "User " + user.getFirstName() + " deleted", Toast.LENGTH_SHORT).show();
-                    NavHostFragment.findNavController(AdminUserProfileFragment.this)
-                            .navigate(R.id.action_admin_user_profile_to_admin_user_data_screen_view);
+                    if(!nav.popBackStack(R.id.admin_user_data_screen_view, false)) {
+                        nav.navigate(R.id.admin_user_data_screen_view);
+                    }
                 });
             }
         });
 
-        /**
-         * We also have a back button for the admin to navigate back
+        /*
+         * We also hve a back button for the admin to navigate back
          */
 
-        binding.BackButton.setOnClickListener( v ->
-                NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_admin_user_profile_to_admin_user_data_screen_view)
-        );
+        binding.BackButton.setOnClickListener( v -> nav.popBackStack());
     }
 }

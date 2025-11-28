@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class AdminUsersViewFragment extends Fragment {
 
     private FragmentAdminUsersViewBinding binding;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private CollectionReference usersRef;
     private ListenerRegistration userListener;
     private ArrayList<User> userArrayList;
@@ -60,7 +60,7 @@ public class AdminUsersViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentAdminUsersViewBinding.inflate(getLayoutInflater());
+        binding = FragmentAdminUsersViewBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -77,7 +77,6 @@ public class AdminUsersViewFragment extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -95,8 +94,7 @@ public class AdminUsersViewFragment extends Fragment {
         loadList();
 
         binding.backButton.setOnClickListener( v ->
-                nav.navigate(R.id.action_admin_user_data_screen_view_to_admin_main_screen)
-                //nav.popBackStack()
+                nav.popBackStack()
         );
     }
 

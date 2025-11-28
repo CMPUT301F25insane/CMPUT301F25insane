@@ -31,7 +31,7 @@ public class Event {
     private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
 
     private boolean geoEnabled = false;
-    private ArrayList<UserLocation> userLocationArrayList = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> userLocationArrayList = new ArrayList<>();
 
     private int capacity;  // always > 0
     private int waitlistLimit = -1;
@@ -95,19 +95,19 @@ public class Event {
         this.geoEnabled = geoEnabled;
     }
 
-    public ArrayList<UserLocation> getLocationArrayList() {
+    public ArrayList<HashMap<String, Object>> getLocationArrayList() {
         return userLocationArrayList;
     }
 
-    public void setLocationArrayList(ArrayList<UserLocation> userLocationArrayList){
+    public void setLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList){
         this.userLocationArrayList = userLocationArrayList;
     }
 
-    public void addLocationArrayList(UserLocation userLocation) {
+    public void addLocationArrayList(HashMap<String, Object> location) {
         if (userLocationArrayList == null) {
             userLocationArrayList = new ArrayList<>();
         }
-        this.userLocationArrayList.add(userLocation);
+        this.userLocationArrayList.add(location);
     }
     //logic needed for map
 
@@ -429,6 +429,14 @@ public class Event {
             return;
         }
         this.waitlistLimit = waitlistLimit;
+    }
+
+    public void clearSelectedUsers() {
+        this.selectedUsers.clear();
+    }
+
+    public void clearWaitlistedUsers() {
+        this.waitlist.clear();
     }
 
 }

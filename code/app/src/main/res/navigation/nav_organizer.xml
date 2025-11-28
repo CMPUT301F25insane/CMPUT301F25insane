@@ -33,7 +33,7 @@
             app:destination="@id/fragment_view_waitlist_or_selected" />
         <action
             android:id="@+id/action_org_to_edit"
-            app:destination="@id/fragment_create_event_testing" />
+            app:destination="@id/fragment_create_event" />
 
         <argument
             android:name="eventDocRefPath"

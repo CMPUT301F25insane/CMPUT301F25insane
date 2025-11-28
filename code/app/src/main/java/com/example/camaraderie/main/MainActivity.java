@@ -35,8 +35,6 @@ import com.example.camaraderie.User;
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
-import com.example.camaraderie.notifications.NotificationController;
-import com.example.camaraderie.notifications.NotificationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

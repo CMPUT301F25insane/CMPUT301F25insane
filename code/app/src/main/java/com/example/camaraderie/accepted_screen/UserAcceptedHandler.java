@@ -27,8 +27,8 @@ public class UserAcceptedHandler {
      * This method is meant to run the backend code that is needed to allow the user to accept an invite and
      * store them in the proper spot in the database
      * @param eventDocRef
-     * The method first updates the acceptedList of the event document reference and puts the user in there and it
-     * also removes the user from the selectedList
+     * The method first updates the acceptedEvents of the event document reference and puts the user in there and it
+     * also removes the user from the selectedEvents
      * It also does the same thing locally with the objects
      * It does not return
      */
@@ -45,8 +45,8 @@ public class UserAcceptedHandler {
         batch.update(eventDocRef, "acceptedUsers", FieldValue.arrayUnion(user.getDocRef()));
         batch.update(eventDocRef, "selectedUsers", FieldValue.arrayRemove(user.getDocRef()));
 
-        batch.update(user.getDocRef(), "selectedList", FieldValue.arrayRemove(eventDocRef));
-        batch.update(user.getDocRef(), "acceptedList", FieldValue.arrayUnion(eventDocRef));
+        batch.update(user.getDocRef(), "selectedEvents", FieldValue.arrayRemove(eventDocRef));
+        batch.update(user.getDocRef(), "acceptedEvents", FieldValue.arrayUnion(eventDocRef));
 
         user.updateDB(() -> {
             batch.commit()
@@ -77,8 +77,8 @@ public class UserAcceptedHandler {
         batch.update(eventDocRef, "selectedUsers", FieldValue.arrayRemove(user.getDocRef()));
         batch.update(eventDocRef, "cancelledUsers", FieldValue.arrayUnion(user.getDocRef()));
 
-        batch.update(user.getDocRef(), "selectedList", FieldValue.arrayRemove(eventDocRef));
-        batch.update(user.getDocRef(), "cancelledList", FieldValue.arrayUnion(eventDocRef));
+        batch.update(user.getDocRef(), "selectedEvents", FieldValue.arrayRemove(eventDocRef));
+        batch.update(user.getDocRef(), "cancelledEvents", FieldValue.arrayUnion(eventDocRef));
 
         user.updateDB(() -> {
             batch.commit()

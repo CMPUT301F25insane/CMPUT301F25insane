@@ -28,9 +28,9 @@ import java.util.ArrayList;
 public class AdminImagesViewFragment extends Fragment {
     private FragmentAdminImagesViewBinding binding;
 
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
 
-    NavController nav;
+    private NavController nav;
     private CollectionReference eventsRef;
     private ArrayList<Event> eventsArrayList;
 
@@ -38,7 +38,7 @@ public class AdminImagesViewFragment extends Fragment {
 
     private PictureArrayAdapter pictureArrayAdapter;
 
-    SharedEventViewModel svm;
+    private SharedEventViewModel svm;
 
     public AdminImagesViewFragment() {}
 

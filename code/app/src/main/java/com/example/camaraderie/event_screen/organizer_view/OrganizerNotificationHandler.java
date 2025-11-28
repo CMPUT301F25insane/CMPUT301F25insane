@@ -32,11 +32,10 @@ public class OrganizerNotificationHandler {
 
     public void sendNotificationToFirebase(String field, Runnable onComplete, Runnable onFuckUp) {
 
-        DocumentReference notifRef = db.collection("Notifications").document();
-        NotificationData notification = new NotificationData(title, body, notifRef);
+
 
         WriteBatch batch = db.batch();
-        batch.set(notifRef, notification);
+
 
         // users in this specific list will have an update upon relaunching the app or refreshing notifications
         eventId.get()
@@ -44,7 +43,14 @@ public class OrganizerNotificationHandler {
                     ArrayList<DocumentReference> refs = (ArrayList<DocumentReference>) snap.get(field);
                     if (refs != null) {
                         for (DocumentReference ref : refs) {
+
+                            DocumentReference notifRef = db.collection("Notifications").document();
+
+                            NotificationData notification = new NotificationData(ref.getId(), title, body, notifRef);
+                            batch.set(notifRef, notification);
+
                             batch.update(ref, "pendingNotifications", FieldValue.arrayUnion(notifRef));
+
                         }
                     }
                     //else { throw new RuntimeException("fuck you");}

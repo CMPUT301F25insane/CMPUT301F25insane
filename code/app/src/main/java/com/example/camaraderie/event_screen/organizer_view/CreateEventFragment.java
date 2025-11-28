@@ -67,7 +67,7 @@ public class CreateEventFragment extends Fragment {
     private EditText eventCapacity;
     private EditText eventTime;
     private EditText optionalLimit;
-    Switch geoSwitch;
+    private Switch geoSwitch;
     boolean geoEnabled;
 
     private String eventImageString;
@@ -328,7 +328,7 @@ public class CreateEventFragment extends Fragment {
                         vm.setEvent(event);
 
                         NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                                .navigate(R.id.action_fragment_create_event_to__fragment_organizer_view_event);
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating event", e));
         }
@@ -350,7 +350,7 @@ public class CreateEventFragment extends Fragment {
                                     SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
                                     vm.setEvent(newEvent);
                                     NavHostFragment.findNavController(CreateEventFragment.this)
-                                            .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                                            .navigate(R.id.action_fragment_create_event_to__fragment_organizer_view_event);
                                 //});
                             });
 
