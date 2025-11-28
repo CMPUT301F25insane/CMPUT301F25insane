@@ -2,10 +2,13 @@ package com.example.camaraderie.event_screen.organizer_view;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
+import static com.example.camaraderie.main.Camaraderie.getUser;
 import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
+import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,51 +103,35 @@ public class OrganizerViewEventFragment extends Fragment {
             this.event = evt;
             eventDocRef = event.getEventDocRef();
             updateUI(evt);
-        });
 
-        binding.orgViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
 
-        binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
-        binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
-        binding.viewListsButton.setOnClickListener(v -> {
+            binding.orgViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
 
-            vm.setEvent(event);
-            vm.generateAllLists(() -> {
-                nav.navigate(R.id.fragment_list_testing_interface); //TODO: user should NOT SEE these lists in general, only capacity.
+            binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
+            binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
+            binding.viewListsButton.setOnClickListener(v -> {
+
+                vm.setEvent(event);
+                vm.generateAllLists(() -> {
+                    nav.navigate(R.id.fragment_list_testing_interface); //TODO: user should NOT SEE these lists in general, only capacity.
+                });
             });
-        });
-        binding.OrgEventRunLotteryButton.setOnClickListener(v -> {
-            runLottery(event);
-            updateUI(event);
-            Toast.makeText(getContext(), "Lottery has been run!", LENGTH_SHORT).show();
-        });
+            binding.OrgEventRunLotteryButton.setOnClickListener(v -> {
+                runLottery(event);
+                updateUI(event);
+                Toast.makeText(getContext(), "Lottery has been run!", LENGTH_SHORT).show();
+            });
 
-        binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event_testing));
-        binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
+            binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event));
+            binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
 
-        binding.deleteButtonOrgView.setOnClickListener(new View.OnClickListener() {
-            /**
-             * delete functionality for events. updates database
-             * @param v The view that was clicked.
-             */
-            @Override
-            public void onClick(View v) {
-                //TODO: make a DIALOGFRAGMENT to ask for CONFIRMATION FIRST
-                db.collection("Users").get()
-                        .addOnSuccessListener(snapshot -> {
-                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
-                                DocumentReference uRef = userDoc.getReference();
-                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
-                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
-                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
-                            }
-                        });
+            binding.deleteButtonOrgView.setOnClickListener(v -> {
 
-                user.deleteCreatedEvent(eventDocRef);
-
+                deleteEvent(event);
+                getUser().deleteCreatedEvent(eventDocRef);
                 nav.navigate(R.id.fragment_main);
-
-            }
+                Toast.makeText(getContext(), "Event Deleted", LENGTH_SHORT).show();
+            });
         });
 
         binding.eventEditButtonOrdView.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +148,7 @@ public class OrganizerViewEventFragment extends Fragment {
 //                    vm.setEvent(event);
                     Bundle args = new Bundle();
                     args.putString("eventDocRefPath", eventDocRef.getPath());
-                    nav.navigate(R.id.action__fragment_organizer_view_event_to_fragment_create_event_testing, args);
+                    nav.navigate(R.id.fragment_create_event, args);
                 }
             }
         });

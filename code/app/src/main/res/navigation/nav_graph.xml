@@ -24,6 +24,17 @@
     </fragment>
 
     <fragment
+        android:name="com.example.camaraderie.my_events.MyAcceptedEventsFragment"
+        android:label="Users accepted events"
+        android:id="@+id/MyAcceptedEventsFragment"
+        tools:layout="@layout/fragment_view_my_event_history">
+
+        <action
+            android:id="@+id/action_MyAcceptedEventsFragment_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
+    </fragment>
+
+    <fragment
         android:name="com.example.camaraderie.event_screen.organizer_view.OrganizerNotificationFragment"
         android:id="@+id/organizerNotificationFragment"
         android:label="organizer notification screen"
@@ -94,8 +105,8 @@
             android:id="@+id/action_fragment_view_my_events_to_fragment_main"
             app:destination="@id/fragment_main" />
         <action
-            android:id="@+id/action_fragment_view_my_events_to_fragment_create_event_testing"
-            app:destination="@id/fragment_create_event_testing" />
+            android:id="@+id/action_fragment_view_my_events_to_fragment_create_event"
+            app:destination="@id/fragment_create_event" />
         <action
             android:id="@+id/action_fragment_view_my_events_to__fragment_organizer_view_event"
             app:destination="@id/_fragment_organizer_view_event" />
@@ -105,6 +116,9 @@
         <action
             android:id="@+id/action_fragment_view_my_events_to_update_user"
             app:destination="@id/update_user" />
+        <action
+            android:id="@+id/action_fragment_view_my_events_to_MyAcceptedEventsFragment"
+            app:destination="@id/MyAcceptedEventsFragment" />
     </fragment>
 
     <fragment
@@ -118,8 +132,8 @@
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_main"
             app:destination="@id/fragment_main" />
         <action
-            android:id="@+id/action__fragment_organizer_view_event_to_fragment_create_event_testing"
-            app:destination="@id/fragment_create_event_testing" />
+            android:id="@+id/action__fragment_organizer_view_event_to_fragment_create_event"
+            app:destination="@id/fragment_create_event" />
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />
@@ -163,8 +177,8 @@
         android:label="Main Fragment"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_fragment_main_to_fragment_create_event_testing"
-            app:destination="@id/fragment_create_event_testing" />
+            android:id="@+id/action_fragment_main_to_fragment_create_event"
+            app:destination="@id/fragment_create_event" />
         <action
             android:id="@+id/action_fragment_main_to_fragment_view_event_user"
             app:destination="@id/fragment_view_event_user" />
@@ -180,15 +194,15 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_create_event_testing"
+        android:id="@+id/fragment_create_event"
         android:name="com.example.camaraderie.event_screen.organizer_view.CreateEventFragment"
         android:label="Create Event Fragment"
         tools:layout="@layout/fragment_create_event">
         <action
-            android:id="@+id/action_fragment_create_event_testing_to_fragment_main"
+            android:id="@+id/action_fragment_create_event_to_fragment_main"
             app:destination="@id/fragment_main" />
         <action
-            android:id="@+id/action_fragment_create_event_testing_to__fragment_organizer_view_event"
+            android:id="@+id/action_fragment_create_event_to__fragment_organizer_view_event"
             app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
 
@@ -208,8 +222,8 @@
             android:id="@+id/action_fragment_view_event_user_to_fragment_main"
             app:destination="@id/fragment_main" />
         <action
-            android:id="@+id/action_fragment_view_event_user_to_fragment_create_event_testing"
-            app:destination="@id/fragment_create_event_testing" />
+            android:id="@+id/action_fragment_view_event_user_to_fragment_create_event"
+            app:destination="@id/fragment_create_event" />
         <action
             android:id="@+id/action__fragment_view_event_user_to_fragment_view_my_events"
             app:destination="@id/fragment_view_my_events" />

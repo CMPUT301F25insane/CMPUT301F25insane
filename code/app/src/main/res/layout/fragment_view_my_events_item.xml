@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="485dp"
-    android:layout_height="173dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="#3A3FA0"
     >
 
@@ -29,15 +29,14 @@
         android:id="@+id/seeDescButtonForMyEvents"
         android:layout_width="168dp"
         android:layout_height="43dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="116dp"
+        android:layout_marginBottom="28dp"
         android:backgroundTint="#59403F3F"
         android:fontFamily="@font/cambria"
         android:text="See Description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_photo_for_event_item"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.67"
+        app:layout_constraintStart_toStartOf="parent"
         app:strokeWidth="1.5dp"
         tools:ignore="MissingConstraints" />
 
@@ -45,13 +44,14 @@
         android:id="@+id/event_Name_For_My_Events"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/cambria"
         android:text="Event Name"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/eventDeadlineForMyEvents"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
@@ -67,16 +67,20 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/leaveButton"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/profile_photo_for_event_item"
         android:layout_width="61dp"
         android:layout_height="55dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.871"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.149"
         tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

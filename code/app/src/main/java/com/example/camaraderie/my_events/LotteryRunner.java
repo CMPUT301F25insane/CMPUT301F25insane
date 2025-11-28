@@ -10,77 +10,87 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Lottery runner class to handle running the lottery and sending notifications to entrants
+ */
 public class LotteryRunner {
 
-    private static FirebaseFirestore db;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
-     * lottery system, runs while waitlist is nonempty and selectedList size is less than capacity.
+     * lottery system, runs while waitlist is nonempty and selectedEvents size is less than capacity.
      * updates database, updates UI
      */
     public static void runLottery(Event event) {
+
+        WriteBatch batch = db.batch();
         Random r = new Random();
 
-        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+        ArrayList<DocumentReference> winners = new ArrayList<>();
+        ArrayList<DocumentReference> losers = new ArrayList<>();
 
-        String title = event.getEventName() + " Lottery";
+        int capacityRemaining = event.getCapacity() -
+                        event.getSelectedUsers().size() -
+                        event.getAcceptedUsers().size();
 
-        while (event.getSelectedUsers().size() + event.getAcceptedUsers().size() < event.getCapacity() &&
-                !event.getWaitlist().isEmpty()) {
+        ArrayList<DocumentReference> waitlist = new ArrayList<>(event.getWaitlist());
+        ArrayList<DocumentReference> selected = new ArrayList<>(event.getSelectedUsers());
 
-            int index = r.nextInt(event.getWaitlist().size());
-            DocumentReference userRef = event.getWaitlist().get(index);
+        while (capacityRemaining > 0 && !waitlist.isEmpty()) {
 
-            event.getWaitlist().remove(userRef);
-            event.getSelectedUsers().add(userRef);
+            int index = r.nextInt(waitlist.size());
+            DocumentReference userRef = waitlist.remove(index);
 
-            // Update user document lists
+            selected.add(userRef);
+            winners.add(userRef);
+
+            // User updates
             batch.update(userRef, "waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
             batch.update(userRef, "selectedEvents", FieldValue.arrayUnion(event.getEventDocRef()));
 
-            // update events list
+            // Event updates
             batch.update(event.getEventDocRef(), "waitlist", FieldValue.arrayRemove(userRef));
             batch.update(event.getEventDocRef(), "selectedUsers", FieldValue.arrayUnion(userRef));
 
-
-            // send notification to chosen entrant
-            String body;
-
-            body = "Congratulations! You have been invited to the event!";
-            sendNotificationsToEntrant(userRef, title, body);
-
+            capacityRemaining--;
         }
 
-        event.updateDB(() -> {
-            batch.commit().addOnSuccessListener(v -> Log.d("Firebase", "Lottery run for event: " + event.getEventId()))
-                    .addOnFailureListener(e -> Log.e("Firebase", "Error running lottery for event: " + event.getEventId(), e));
-        });
+        losers.addAll(waitlist);
 
-        if (!event.getWaitlist().isEmpty()) {
-            for (DocumentReference ref : event.getWaitlist()) {
-                String notSelectedBody;
-                notSelectedBody = "Unfortunately, you were not selected in this lottery cycle. Keep waiting, there is still a chance!";
-                sendNotificationsToEntrant(ref, title, notSelectedBody);
-            }
-        }
+        batch.commit()
+                .addOnSuccessListener(v -> {
+                    Log.d("Lottery", "Lottery committed successfully");
 
+                    String title = event.getEventName() + " Lottery";
+
+                    for (DocumentReference user : winners) {
+                        sendNotificationsToEntrant(user, title,
+                                "Congratulations! You have been invited to the event!");
+                    }
+
+                    for (DocumentReference user : losers) {
+                        sendNotificationsToEntrant(user, title,
+                                "Unfortunately, you were not selected in this lottery cycle. Keep waiting, there is still a chance!");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Lottery", "Lottery batch failed", e);
+                });
     }
 
     private static void sendNotificationsToEntrant(DocumentReference uref, String title, String body) {
 
-        if (db == null) {
-            db = FirebaseFirestore.getInstance();
-        }
-
         DocumentReference notifRef = db.collection("Notifications").document();
-        NotificationData notification = new NotificationData(notifRef.hashCode(), title, body, notifRef);
+        NotificationData notification = new NotificationData(uref.getId(), title, body, notifRef);
+
         notifRef.set(notification).addOnSuccessListener(v -> {
             uref.update("pendingNotifications", FieldValue.arrayUnion(notifRef))
                     .addOnSuccessListener(
                             v1 -> {
-                                Log.d("Lottery Notifications", "Notification added to entrant");
+                                Log.d("Lottery Notifications", "Notification added to entrant notif list");
                             }
                     )
                     .addOnFailureListener(e -> {

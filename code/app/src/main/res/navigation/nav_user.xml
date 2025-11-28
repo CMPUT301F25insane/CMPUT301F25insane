@@ -14,7 +14,7 @@
         <action android:id="@+id/action_main_to_my_events"
             app:destination="@id/fragment_view_my_events" />
         <action android:id="@+id/action_main_to_create"
-            app:destination="@id/fragment_create_event_testing" />
+            app:destination="@id/fragment_create_event" />
         <action android:id="@+id/action_main_to_update_user"
             app:destination="@id/update_user" />
     </fragment>
@@ -31,8 +31,8 @@
         <action android:id="@+id/action_event_to_waitlist"
             app:destination="@id/fragment_view_waitlist_or_selected" />
         <action
-            android:id="@+id/action_fragment_view_event_user_to_fragment_create_event_testing2"
-            app:destination="@id/fragment_create_event_testing" />
+            android:id="@+id/action_fragment_view_event_user_to_fragment_create_event2"
+            app:destination="@id/fragment_create_event" />
         <action
             android:id="@+id/action_fragment_view_event_user_to_fragment_main2"
             app:destination="@id/fragment_main" />
@@ -62,16 +62,16 @@
             android:id="@+id/action_fragment_view_my_events_to_fragment_main2"
             app:destination="@id/fragment_main" />
         <action
-            android:id="@+id/action_fragment_view_my_events_to_fragment_create_event_testing2"
-            app:destination="@id/fragment_create_event_testing" />
+            android:id="@+id/action_fragment_view_my_events_to_fragment_create_event2"
+            app:destination="@id/fragment_create_event" />
     </fragment>
 
     <fragment
-        android:id="@+id/fragment_create_event_testing"
+        android:id="@+id/fragment_create_event"
         android:name="com.example.camaraderie.event_screen.organizer_view.CreateEventFragment"
         tools:layout="@layout/fragment_create_event" >
         <action
-            android:id="@+id/action_fragment_create_event_testing_to_fragment_main2"
+            android:id="@+id/action_fragment_create_event_to_fragment_main2"
             app:destination="@id/fragment_main" />
     </fragment>
 

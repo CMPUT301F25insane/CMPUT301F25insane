@@ -160,7 +160,7 @@ public class UpdateUserFragment extends Fragment {
         });
 
         binding.adminButtonForUserProfile2.setOnClickListener(v -> {
-            if (binding.adminPasswordForUserProfile.getText().toString().equals("80085")) {
+            if (user.isAdmin() || binding.adminPasswordForUserProfile.getText().toString().equals("80085")) {
                 user.setAdmin(true);
                 nav.navigate(R.id.admin_main_screen);
             }
