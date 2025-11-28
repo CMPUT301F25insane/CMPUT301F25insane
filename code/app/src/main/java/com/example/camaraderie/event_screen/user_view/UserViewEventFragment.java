@@ -4,6 +4,7 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 import android.graphics.Color;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -293,28 +294,29 @@ public class UserViewEventFragment extends Fragment {
             Toast.makeText(getContext(), "Event not loaded yet", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (user.isGeoEnabled() && event.isGeoEnabled()) {
-            // Pass fragment reference, not activity
-            LocationHelper.getUserLocation(UserViewEventFragment.this, (latitude, longitude) -> {
-                event.addLocationArrayList(new UserLocation(user.getDocRef(), latitude, longitude));
-                Toast.makeText(getContext(),
-                        "Successfully joined with coordinates: " + latitude + ", " + longitude,
-                        Toast.LENGTH_SHORT).show();
-                handleJoin(event,
-                        () -> {
-                            updateUI(event);
-                            svm.setEvent(event);
-                            nav.navigate(R.id.fragment_view_event_user);
-                        },
-                        // on failure
-                        () -> {
-                            if (!nav.popBackStack(R.id.fragment_main, false)) {
-                                nav.navigate(R.id.fragment_main);
-                            }
-                        }
-                );
-            });
+
+            LocationHelper.addUserGeoData(
+                    this,       // the fragment
+                    event,
+                    user,
+                    () -> {
+                        // continue your join logic AFTER location is saved
+                        handleJoin(event,
+                                () -> {
+                                    updateUI(event);
+                                    svm.setEvent(event);
+                                    nav.navigate(R.id.fragment_view_event_user);
+                                },
+                                // on failure
+                                () -> {
+                                    if (!nav.popBackStack(R.id.fragment_main, false)) {
+                                        nav.navigate(R.id.fragment_main);
+                                    }
+                                }
+                        );;
+                    }
+            );
         } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
             Toast.makeText(getContext(), "Please enable location to join this event", Toast.LENGTH_SHORT).show();
         } else {
@@ -343,8 +345,6 @@ public class UserViewEventFragment extends Fragment {
             nav.navigate(R.id.fragment_main);
         }
     }
-
-    private void getUserLocation(){}
 
     /**
      * binding set to null

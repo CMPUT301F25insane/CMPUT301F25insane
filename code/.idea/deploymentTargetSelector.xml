@@ -3,15 +3,36 @@
   <component name="deploymentTargetSelector">
     <selectionStates>
       <SelectionState runConfigName="app">
+<<<<<<< HEAD
+        <option name="selectionMode" value="DIALOG" />
+        <DropdownSelection timestamp="2025-11-20T01:05:36.840080800Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\bmast\.android\avd\Small_Phone.avd" />
+=======
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2025-11-28T06:18:47.303484600Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Owner\.android\avd\Medium_Phone_2.avd" />
+>>>>>>> d4d8b837ecc3ed7c23ac97d906ef2993cce96fe3
             </handle>
           </Target>
         </DropdownSelection>
-        <DialogSelection />
+        <DialogSelection>
+          <targets>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\umran\.android\avd\Pixel_9a.avd" />
+              </handle>
+            </Target>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\umran\.android\avd\Pixel_8a.avd" />
+              </handle>
+            </Target>
+          </targets>
+        </DialogSelection>
       </SelectionState>
     </selectionStates>
   </component>

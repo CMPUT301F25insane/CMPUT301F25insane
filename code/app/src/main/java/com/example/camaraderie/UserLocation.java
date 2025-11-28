@@ -1,22 +1,24 @@
 package com.example.camaraderie;
 
-import com.google.firebase.firestore.DocumentReference;
-
 public class UserLocation {
-    private DocumentReference userRef;
+    private String userID;
     private double latitude;
     private double longitude;
 
-    public UserLocation(DocumentReference userRef, double latitude, double longitude){
-        this.userRef = userRef;
+    public UserLocation(String userID, double latitude, double longitude){
+        this.userID = userID;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     public UserLocation() {} // firebase
     
-    public DocumentReference getUserDocRef() {
-        return userRef;
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public double getLatitude() {

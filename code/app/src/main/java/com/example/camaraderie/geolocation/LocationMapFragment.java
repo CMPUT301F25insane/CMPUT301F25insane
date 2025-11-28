@@ -57,7 +57,7 @@ public class LocationMapFragment extends Fragment {
 
                 String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
-                map.setStyle(new Style.Builder().fromUri(styleUrl), style -> fetchEventAndShowMarkers());
+                map.setStyle(new Style.Builder().fromUri(styleUrl), style -> showTestMarker());
             }
         });
     }
@@ -71,43 +71,6 @@ public class LocationMapFragment extends Fragment {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(testLocation, 13));
     }
 
-    private void fetchEventAndShowMarkers() {
-        if (eventId == null) return;
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Events").document(eventId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        event = documentSnapshot.toObject(Event.class);
-                        if (map != null && event != null) {
-                            showEventMarkers(event);
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("LocationMapFragment", "Failed to load event", e);
-                });
-    }
-
-    private void showEventMarkers(Event event) {
-        if (map == null || event == null) return;
-
-        map.clear(); // remove any previous markers
-
-        for (UserLocation loc : event.getLocationArrayList()) {
-            LatLng position = new LatLng(loc.getLatitude(), loc.getLongitude());
-            map.addMarker(new MarkerOptions()
-                    .position(position)
-                    .title(loc.getUserDocRef().getId())); // use userId as the marker title
-        }
-
-        // optional: zoom to first user
-        if (!event.getLocationArrayList().isEmpty()) {
-            UserLocation first = event.getLocationArrayList().get(0);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(first.getLatitude(), first.getLongitude()), 13));
-        }
-    }
 
     @Override public void onStart() { super.onStart(); binding.mapView.onStart(); }
     @Override public void onResume() { super.onResume(); binding.mapView.onResume(); }
