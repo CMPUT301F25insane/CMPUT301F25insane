@@ -36,10 +36,11 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
-    private ArrayList<DocumentReference> pendingNotifications = new ArrayList<>();
     //geolocation
-    private boolean geoEnabled;
+    private boolean geoEnabled = false;
     private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
+
+    private ArrayList<DocumentReference> pendingNotifications = new ArrayList<>();
 
     /**
      * Constructor for User
@@ -224,15 +225,15 @@ public class User implements Serializable {
 
         this.docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
-                            Log.d("UserRepository", "User updated");
-                            onComplete.run();
-                        })
+                    Log.d("UserRepository", "User updated");
+                    onComplete.run();
+                })
 
                 .addOnFailureListener(e ->
-                        {
-                            Log.e("UserRepository", "Error updating user", e);
-                            onComplete.run();
-                        });
+                {
+                    Log.e("UserRepository", "Error updating user", e);
+                    onComplete.run();
+                });
     }
 
     /**
@@ -331,6 +332,7 @@ public class User implements Serializable {
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
     }
+
     public ArrayList<DocumentReference> getCancelledEvents() {
         return cancelledEvents;
     }
@@ -377,15 +379,14 @@ public class User implements Serializable {
         this.pendingNotifications = pendingNotifications;
     }
 
-    public void addPendingNotification(DocumentReference notif) {
-        if (!this.pendingNotifications.contains(notif)) {
-            pendingNotifications.add(notif);
-        }
+    public void setUserEventHistory(ArrayList<DocumentReference> userEventHistory) {
+        this.userEventHistory = userEventHistory;
     }
 
-    public void removePendingNotification(DocumentReference notif) {
-        pendingNotifications.remove(notif);
+    public ArrayList<DocumentReference> getUserEventHistory() {
+        return userEventHistory;
     }
+
 }
 
 

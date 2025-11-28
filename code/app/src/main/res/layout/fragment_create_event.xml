@@ -224,6 +224,21 @@
             app:strokeColor="@color/black"
             app:strokeWidth="3.5dp" />
 
+        <Switch
+            android:id="@+id/geoSwitch"
+            android:layout_width="184dp"
+            android:layout_height="38dp"
+            android:fontFamily="@font/cambria"
+            android:text="Enable Geolocation"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.959"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.058" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

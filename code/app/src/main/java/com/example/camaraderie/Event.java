@@ -30,9 +30,8 @@ public class Event {
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
 
-    //Geolocation - Umran
-    private boolean geoEnabled;
-    private ArrayList<Location> locationArrayList = new ArrayList<>();
+    private boolean geoEnabled = false;
+    private ArrayList<UserLocation> userLocationArrayList = new ArrayList<>();
 
     private int capacity;  // always > 0
     private int waitlistLimit = -1;
@@ -92,19 +91,20 @@ public class Event {
     public boolean isGeoEnabled() {
         return geoEnabled;
     }
-
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
     }
 
-    public ArrayList<Location> getLocationArrayList() {
-        return locationArrayList;
+    public ArrayList<UserLocation> getLocationArrayList() {
+        return userLocationArrayList;
     }
 
-    public void addLocationArrayList(Location location) {
-        if (!locationArrayList.contains(location)) {
-            this.locationArrayList.add(location);
-        }
+    public void setLocationArrayList(ArrayList<UserLocation> userLocationArrayList){
+        this.userLocationArrayList = userLocationArrayList;
+    }
+
+    public void addLocationArrayList(UserLocation userLocation) {
+        this.userLocationArrayList.add(userLocation);
     }
     //logic needed for map
 
@@ -359,7 +359,7 @@ public class Event {
         data.put("cancelledUsers", cancelledUsers);
 
         data.put("geoEnabled", geoEnabled);
-        data.put("locationArrayList", locationArrayList);
+        data.put("userLocationArrayList", userLocationArrayList);
 
         data.put("capacity", capacity);
         data.put("waitlistLimit", waitlistLimit);

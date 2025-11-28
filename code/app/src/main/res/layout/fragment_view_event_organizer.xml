@@ -26,7 +26,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.484"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeWidth="10dp">
 
             <TextView
                 android:id="@+id/event_name_for_org_view"
@@ -194,13 +195,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_lists_button"
             app:layout_constraintVertical_bias="0.505"
-            app:strokeWidth="3dp" />
+            app:strokeWidth="3.5dp" />
 
         <Button
             android:id="@+id/orgNotifScreenButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Notification Screen"
+            android:backgroundTint="#AAD6F2"
+            android:textColor="@color/black"
+            app:strokeWidth="3.5dp"
+            android:fontFamily="@font/cambria"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/showMap"
