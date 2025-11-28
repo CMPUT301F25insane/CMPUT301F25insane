@@ -13,8 +13,13 @@ public class UserLocation {
         this.longitude = longitude;
     }
 
+<<<<<<< HEAD
     public UserLocation(){}
 
+=======
+    public UserLocation() {} // firebase
+    
+>>>>>>> d4d8b837ecc3ed7c23ac97d906ef2993cce96fe3
     public String getUserID() {
         return userID;
     }

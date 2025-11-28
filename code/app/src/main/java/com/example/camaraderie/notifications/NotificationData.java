@@ -7,84 +7,32 @@ import com.google.firebase.firestore.DocumentReference;
  */
 public class NotificationData {
 
-    private int id;
+    private String userId;
     private String message;
     private String title;
     private DocumentReference ref;
+    private int id; // local notification ID
 
-    /**
-     * empty constructor for notification, for firebase
-     */
+    // Empty constructor for Firestore
     public NotificationData() {}
 
-    /**
-     * Constructor for Notification
-     * @param id unique id for notificatio
-     * @param title notification title or tag
-     * @param message notification message
-     */
-    public NotificationData(int id, String title, String message, DocumentReference ref) {
-        this.id = id;
-        this.message = message;
+    public NotificationData(String userId, String title, String message, DocumentReference ref) {
+        this.userId = userId;
         this.title = title;
-        this.ref = ref;
-    }
-
-    /**
-     *
-     * @return returns noticication id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     *
-     * @return returns notification message
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     *
-     * @return returns notification title
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     *
-     * @param id sets notifciation id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     *
-     * @param message sets notification message
-     */
-    public void setMessage(String message) {
         this.message = message;
-    }
-
-    /**
-     *
-     * @param title sets notification title
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public DocumentReference getRef() {
-        return ref;
-    }
-
-    public void setRef(DocumentReference ref) {
         this.ref = ref;
+        this.id = ref.getId().hashCode();  // local usage only
     }
 
+    public String getUserId() { return userId; }
+    public String getMessage() { return message; }
+    public String getTitle() { return title; }
+    public DocumentReference getRef() { return ref; }
+    public int getId() { return id; }
 
+    public void setUserId(String userId) { this.userId = userId; }
+    public void setMessage(String message) { this.message = message; }
+    public void setTitle(String title) { this.title = title; }
+    public void setRef(DocumentReference ref) { this.ref = ref; }
+    public void setId(int id) { this.id = id; }
 }

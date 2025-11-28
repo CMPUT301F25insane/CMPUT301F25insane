@@ -77,19 +77,19 @@ public class UserDeleter {
 
             for (DocumentReference userRef : createdEventSelectedLists) {
                 for (DocumentReference createdEventRef : createdEvents) {
-                    batch.update(userRef, "selectedList", FieldValue.arrayRemove(createdEventRef));
+                    batch.update(userRef, "selectedEvents", FieldValue.arrayRemove(createdEventRef));
                 }
             }
 
             for (DocumentReference userRef : createdEventAcceptedLists) {
                 for (DocumentReference createdEventRef : createdEvents) {
-                    batch.update(userRef, "acceptedList", FieldValue.arrayRemove(createdEventRef));
+                    batch.update(userRef, "acceptedEvents", FieldValue.arrayRemove(createdEventRef));
                 }
             }
 
             for (DocumentReference userRef : createdEventCancelledLists) {
                 for (DocumentReference createdEventRef : createdEvents) {
-                    batch.update(userRef, "cancelledList", FieldValue.arrayRemove(createdEventRef));
+                    batch.update(userRef, "cancelledEvents", FieldValue.arrayRemove(createdEventRef));
                 }
             }
 
@@ -107,15 +107,15 @@ public class UserDeleter {
         loadList("waitlist", waitlist -> {
 
             createdEventWaitlists = waitlist;
-            loadList("selectedList", selectedList -> {
+            loadList("selectedEvents", selectedEvents -> {
 
-                createdEventSelectedLists = selectedList;
-                loadList("acceptedList", acceptedList -> {
+                createdEventSelectedLists = selectedEvents;
+                loadList("acceptedEvents", acceptedEvents -> {
 
-                    createdEventAcceptedLists = acceptedList;
-                    loadList("cancelledList", cancelledList -> {
+                    createdEventAcceptedLists = acceptedEvents;
+                    loadList("cancelledEvents", cancelledEvents -> {
 
-                        createdEventCancelledLists = cancelledList;
+                        createdEventCancelledLists = cancelledEvents;
                         onComplete.run();
                     });
                 });

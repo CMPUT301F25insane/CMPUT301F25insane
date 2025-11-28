@@ -1,9 +1,13 @@
 package com.example.camaraderie.admin_screen;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 
 import com.example.camaraderie.R;
@@ -22,18 +27,20 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * EventArrayAdapter extends ArrayAdapter to be used to list the events that the admin can view or delete
  */
 public class EventArrayAdapter extends ArrayAdapter<Event> {
 
-    FirebaseFirestore db;
+
     private NavController nav;
-    SharedEventViewModel svm;
-    ArrayList<Event> events;
+    private SharedEventViewModel svm;
+    private Date date = new Date();
 
     /**
      * This is a constructor that initializes all the required attributes for the array adapter to to function how we
@@ -46,8 +53,6 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
 
     public EventArrayAdapter(@NonNull Context context, ArrayList<Event> events, NavController nav, SharedEventViewModel svm){
         super(context, 0, events);
-        this.db = FirebaseFirestore.getInstance();
-        this.events = events;
 
         this.nav = nav;
         this.svm = svm;
@@ -84,6 +89,62 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         Button description = view.findViewById(R.id.seeDescButton);
         Button remove = view.findViewById(R.id.RemoveButton);
 
+        DocumentReference eventRef = event.getEventDocRef();
+
+        /*
+         * We go through each document reference in the waitlist for each user and
+         * If their path is equal to the path of the current document, we say that the user
+         * is in that waitlist and set the boolean to true
+         */
+
+        ArrayList<DocumentReference> userListUnion = new ArrayList<>();
+        userListUnion.addAll(user.getWaitlistedEvents());
+        userListUnion.addAll(user.getSelectedEvents());
+        userListUnion.addAll(user.getAcceptedEvents());
+
+        boolean userCannotJoinWaitlist = false;
+
+        for (DocumentReference ref : userListUnion) {
+            if (ref.getPath().equals(eventRef.getPath())) {
+                Log.d("Admin Event Array Adapter", ref.getPath() + " | " + user.getDocRef().getPath());
+                userCannotJoinWaitlist = true;
+                break;
+            }
+        }
+
+        if (event.getWaitlistLimit() != -1) {
+            if (event.getWaitlist().size() + event.getSelectedUsers().size() >= event.getWaitlistLimit()) {
+                userCannotJoinWaitlist = true;
+            }
+        }
+
+        // reg date passed (filter this out?)
+        if (event.getRegistrationDeadline().before(date)) {
+            userCannotJoinWaitlist = true;
+        }
+
+        /*
+         * If at any point the the boolean is true then we gray out the button because they
+         * are not eligible to join that event
+         */
+
+        // organizer cannot join their own event because that is stupid
+        if (user.getDocRef().equals(event.getHostDocRef())) {
+            join.setEnabled(false);
+            join.setVisibility(INVISIBLE);
+        }
+
+        else if (userCannotJoinWaitlist) {
+            join.setVisibility(VISIBLE);
+            join.setEnabled(false);
+            join.setBackgroundColor(Color.GRAY);
+        }
+        else {
+            join.setVisibility(VISIBLE);
+            join.setEnabled(true);
+            join.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.custom_join_button_color));  // original colour
+        }
+
         event_name.setText(event.getEventName());
 
         deadline.setText(event.getRegistrationDeadline().toString());
@@ -97,6 +158,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
             public void onClick(View v) {
                 join.setBackgroundColor(Color.GRAY);
                 join.setEnabled(false);
+                join.setClickable(false);
                 event.addWaitlistUser(user.getDocRef());
                 user.addWaitlistedEvent(event.getEventDocRef());
                 user.addEventToHistory(event.getEventDocRef());
@@ -123,28 +185,13 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
             }
         });
 
-        /**
+        /*
          * Lastly we have a remove button that the admin can use to remove a event from the the collection if it violates
          * guidelines or for whatever reason the admin has
          */
 
-        remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                DocumentReference eventDocRef = event.getEventDocRef();
-                db.collection("Users").get()
-                        .addOnSuccessListener(snapshot -> {
-                            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
-                                DocumentReference uRef = userDoc.getReference();
-                                uRef.update("waitlistedEvents", FieldValue.arrayRemove(eventDocRef));
-                                uRef.update("selectedEvents", FieldValue.arrayRemove(eventDocRef));
-                                uRef.update("acceptedEvents", FieldValue.arrayRemove(eventDocRef));
-                            }
-
-                            eventDocRef.delete();
-                        });
-            }
+        remove.setOnClickListener(v -> {
+                deleteEvent(event);
         });
         return view;
     }

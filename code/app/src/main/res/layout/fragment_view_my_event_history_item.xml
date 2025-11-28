@@ -8,7 +8,7 @@
     android:background="#3A3FA0">
 
     <TextView
-        android:id="@+id/nameHeader"
+        android:id="@+id/historyEventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cambria_italic"
@@ -42,7 +42,7 @@
         app:layout_constraintVertical_bias="0.544" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/historyEventDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Event Date"
