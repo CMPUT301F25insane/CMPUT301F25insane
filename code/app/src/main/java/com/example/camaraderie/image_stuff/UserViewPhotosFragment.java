@@ -1,6 +1,9 @@
 package com.example.camaraderie.image_stuff;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,8 @@ public class UserViewPhotosFragment extends Fragment{
     private FirebaseFirestore db;
     private DocumentReference eventDocRef;
     private SharedEventViewModel svm;
+
+    private String imageString;
 
     private Event event;
 
@@ -79,13 +84,22 @@ public class UserViewPhotosFragment extends Fragment{
 
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
-            Log.d("Event:", event.getEventId());
             eventDocRef = event.getEventDocRef();
+            Log.d("Event Doc Ref:", eventDocRef.toString());
+            eventDocRef.get().addOnCompleteListener(task -> {
+                imageString = task.getResult().getString("imageString");
+                // Decode and place the image into the imageView
+                if (imageString != null) {
+                    byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+                    Log.d("Bytes", imageBytes.toString());
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    binding.imageView2.setImageBitmap(bitmap);
+                }
+            });
+
         });
 
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
-
-        // Add code to ge the url from event and put it into the imageview
 
 
     }
