@@ -24,6 +24,17 @@
     </fragment>
 
     <fragment
+        android:name="com.example.camaraderie.my_events.MyAcceptedEventsFragment"
+        android:label="Users accepted events"
+        android:id="@+id/MyAcceptedEventsFragment"
+        tools:layout="@layout/fragment_view_my_event_history">
+
+        <action
+            android:id="@+id/action_MyAcceptedEventsFragment_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
+    </fragment>
+
+    <fragment
         android:name="com.example.camaraderie.event_screen.organizer_view.OrganizerNotificationFragment"
         android:id="@+id/organizerNotificationFragment"
         android:label="organizer notification screen"
@@ -105,6 +116,9 @@
         <action
             android:id="@+id/action_fragment_view_my_events_to_update_user"
             app:destination="@id/update_user" />
+        <action
+            android:id="@+id/action_fragment_view_my_events_to_MyAcceptedEventsFragment"
+            app:destination="@id/MyAcceptedEventsFragment" />
     </fragment>
 
     <fragment

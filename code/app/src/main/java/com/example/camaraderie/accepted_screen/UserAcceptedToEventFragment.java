@@ -2,6 +2,7 @@ package com.example.camaraderie.accepted_screen;
 
 //import static com.example.camaraderie.main.MainActivity.user;
 
+import static com.example.camaraderie.accepted_screen.UserAcceptedHandler.allInvitesResolved;
 import static com.example.camaraderie.main.Camaraderie.getUser;
 
 import android.os.Bundle;
@@ -37,7 +38,6 @@ public class UserAcceptedToEventFragment extends Fragment {
 
     private FragmentPendingEventsBinding binding;
     private PendingEventArrayAdapter pendingEventArrayAdapter;
-    private UserAcceptedViewModel vm;
 
     /**
      * When we override the onCreate method we set up our ViewModelProvider
@@ -53,9 +53,8 @@ public class UserAcceptedToEventFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        vm  = new ViewModelProvider(this).get(UserAcceptedViewModel.class);
         ArrayList<Event> selectedEvents = new ArrayList<>();
-        pendingEventArrayAdapter = new PendingEventArrayAdapter(requireContext(), 0, selectedEvents, vm);
+        pendingEventArrayAdapter = new PendingEventArrayAdapter(requireContext(), 0, selectedEvents);
         pendingEventArrayAdapter.setListener(this);
         pendingEventArrayAdapter.setNotifyOnChange(true);
 
@@ -118,7 +117,7 @@ public class UserAcceptedToEventFragment extends Fragment {
     }
 
     public void enableConfirmButton() {
-        if (vm.allInvitesResolved()) {
+        if (allInvitesResolved()) {
             binding.pendingEventsContinueButton.setEnabled(true);
         }
     }
