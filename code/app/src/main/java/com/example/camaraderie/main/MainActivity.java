@@ -248,9 +248,11 @@ public class MainActivity extends AppCompatActivity {
         reloadTask = new Runnable() {
             @Override
             public void run() {
-                new LoadUser(getUser().getDocRef()).loadAllData( () -> {
-                    return;
-                });
+                if (getUser() != null) {
+                    new LoadUser(getUser().getDocRef()).loadAllData( () -> {
+                        return;
+                    });
+                }
                 handler.postDelayed(this, 60_000); // run again
             }
         };
