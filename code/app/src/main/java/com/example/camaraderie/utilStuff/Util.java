@@ -104,10 +104,9 @@ public class Util {
                     ll,
                     userDoc,
                     eventDoc,
-                    eventDoc.getId(),
-                    null,
-                    true
+                    eventDoc.getId()
             );
+
             newUser.addCreatedEvent(eventDoc);
 
             batch.set(eventDoc, newEvent);
