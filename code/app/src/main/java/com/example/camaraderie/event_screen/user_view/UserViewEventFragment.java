@@ -20,21 +20,18 @@ import androidx.navigation.fragment.NavHostFragment;
 import static com.example.camaraderie.main.MainActivity.user;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.Location;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.UserLocation;
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
+import com.example.camaraderie.geolocation.LocationHelper;
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The screen for user's viewing an uploaded event
@@ -235,10 +232,12 @@ public class UserViewEventFragment extends Fragment {
 
     public void handleJoinGeo(){
         if (user.isGeoEnabled() && event.isGeoEnabled()){
-            LocationHelper.getUserLocation(requireActivity(), (lat, lon) -> {
-                // do something with lat/lon
+            LocationHelper.getUserLocation(this, (latitude, longitude) -> {
+                // Add user location
+                event.addLocationArrayList(new UserLocation(user.getUserId(), latitude, longitude));
+                // Proceed to join
+                handleJoin();
             });
-            handleJoin();
         } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
             Toast.makeText(getContext(), "Please enable location to join this event", Toast.LENGTH_SHORT).show();
             return;

@@ -31,7 +31,7 @@ public class Event {
 
     //Geolocation - Umran
     private boolean geoEnabled = false;
-    private ArrayList<Location> locationArrayList = new ArrayList<>();
+    private ArrayList<UserLocation> userLocationArrayList = new ArrayList<>();
 
     private int capacity;  // always > 0
     private int waitlistLimit = -1;
@@ -82,7 +82,7 @@ public class Event {
         this.eventDocRef = eventDocRef;
         this.eventId = eventId;
         this.geoEnabled = false;
-        locationArrayList = new ArrayList<Location>();
+        userLocationArrayList = new ArrayList<UserLocation>();
     }
 
     /**
@@ -217,16 +217,16 @@ public class Event {
         this.geoEnabled = geoEnabled;
     }
 
-    public ArrayList<Location> getLocationArrayList() {
-        return locationArrayList;
+    public ArrayList<UserLocation> getLocationArrayList() {
+        return userLocationArrayList;
     }
 
-    public void setLocationArrayList(ArrayList<Location> locationArrayList){
-        this.locationArrayList = locationArrayList;
+    public void setLocationArrayList(ArrayList<UserLocation> userLocationArrayList){
+        this.userLocationArrayList = userLocationArrayList;
     }
 
-    public void addLocationArrayList(Location location) {
-        this.locationArrayList.add(location);
+    public void addLocationArrayList(UserLocation userLocation) {
+        this.userLocationArrayList.add(userLocation);
     }
     //logic needed for map
 
