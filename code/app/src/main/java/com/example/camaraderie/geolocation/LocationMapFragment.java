@@ -61,8 +61,6 @@ public class LocationMapFragment extends Fragment {
             String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
             map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
-                // Map is ready, now add markers
-                showTestMarker(); // optional test marker
                 if (finalUserLocations != null) {
                     addUserMarkers(finalUserLocations);
                 }
