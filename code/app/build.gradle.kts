@@ -81,9 +81,10 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-analytics")
-    androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.9.6")
     implementation("androidx.activity:activity:1.11.0")
     implementation("org.maplibre.gl:android-sdk:11.13.5")
+    implementation("androidx.navigation:navigation-ui:2.7.2")
 
     implementation("com.google.firebase:firebase-storage:22.0.1")
 

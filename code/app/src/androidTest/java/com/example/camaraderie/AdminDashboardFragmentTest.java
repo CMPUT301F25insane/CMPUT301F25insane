@@ -6,11 +6,19 @@ import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.lifecycle.Lifecycle;
+import androidx.navigation.Navigation;
+import androidx.navigation.testing.TestNavHostController;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.example.camaraderie.admin_screen.AdminDashboardFragment;
+import com.example.camaraderie.main.MainActivity;
+import com.example.camaraderie.updateUserStuff.UpdateUserFragment;
 
 
 import static androidx.test.espresso.Espresso.onView;
@@ -25,6 +33,7 @@ import static org.hamcrest.Matchers.not;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -37,17 +46,56 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AdminDashboardFragmentTest {
-    private FragmentScenario<AdminDashboardFragment> scenario;
-
+    //this rule allows us to bypass the notification dialog
+    @Rule
+    public GrantPermissionRule permissionRule =
+            GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS);
+//    private FragmentScenario<AdminDashboardFragment> scenario;
     @Before
     public void setUp() {
+        User fakeUser = new User();
+        fakeUser.setFirstName("TestUser");
+        fakeUser.setEmail("test@ex.com");
+        fakeUser.setPhoneNumber("0000000");
+        fakeUser.setAddress("Nowhere");
+//        AdminDashboardFragment.TEST_MODE = true;
+
+        // Inject into MainActivity.user and make sure they are admin
+        MainActivity.user = fakeUser;
+        fakeUser.setAdmin(true);
+
+
+        // Create a TestNavHostController
+//        TestNavHostController navController = new TestNavHostController(
+//                ApplicationProvider.getApplicationContext());
+
+        // Create a graphical FragmentScenario for the TitleScreen
+        FragmentScenario<AdminDashboardFragment> scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
+
         // Launch the fragment in a container just like in a real Activity
-        scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
+//        scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
+
+        scenario = FragmentScenario.launchInContainer(
+                AdminDashboardFragment.class,
+                null,   // fragment arguments
+                R.style.Base_Theme_Camaraderie
+        );
+//        scenario.moveToState(Lifecycle.State.STARTED);
+         scenario.onFragment(fragment -> {
+             // Set the graph on the TestNavHostController
+             navController.setGraph(R.navigation.nav_graph);
+//             navController.setCurrentDestination(R.id.admin_main_screen);
+             // Make the NavController available via the findNavController() APIs
+             Navigation.setViewNavController(fragment.requireView(), navController);
+         });
+
     }
-    @After
-    public void tearDown() {
-        scenario.close();
-    }
+//    @After
+//    public void tearDown() {
+//        if (scenario != null) {
+//            scenario.close();
+//        };
+//    }
     /**
      * we are testing if User database button is visible on the main screen
      */

@@ -49,6 +49,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class UpdateUserTest {
+    //this rule allows us to bypass the notification dialog
     @Rule
     public GrantPermissionRule permissionRule =
             GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS);
@@ -67,7 +68,7 @@ public class UpdateUserTest {
         fakeUser.setEmail("test@ex.com");
         fakeUser.setPhoneNumber("0000000");
         fakeUser.setAddress("Nowhere");
-        UpdateUserFragment.TEST_MODE = true;
+//        UpdateUserFragment.TEST_MODE = true;
 
         // Inject into MainActivity.user
         MainActivity.user = fakeUser;
@@ -78,12 +79,6 @@ public class UpdateUserTest {
                 null,   // fragment arguments
                 R.style.Base_Theme_Camaraderie
         );
-//        scenario.moveToState(Lifecycle.State.CREATED);
-//        scenario.onFragment(fragment -> {
-//            navController.setGraph(R.navigation.nav_user);
-//            navController.setCurrentDestination(R.id.update_user);
-//            Navigation.setViewNavController(fragment.requireView(), navController);
-//        });
 
         scenario.moveToState(Lifecycle.State.STARTED);
 
