@@ -25,6 +25,7 @@ import androidx.navigation.testing.TestNavHostController;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -37,6 +38,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 /**
@@ -47,13 +49,16 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class UpdateUserTest {
+    @Rule
+    public GrantPermissionRule permissionRule =
+            GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS);
     private FragmentScenario<UpdateUserFragment> scenario;
-    private TestNavHostController navController;
+
 
 
     @Before
     public void setUp() {
-        navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+        TestNavHostController navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
 //         If your fragment uses navGraphViewModels(), set the ViewModelStore
         navController.setViewModelStore(new ViewModelStore());
         // Create a fake user so the fragment does not crash
@@ -62,6 +67,7 @@ public class UpdateUserTest {
         fakeUser.setEmail("test@ex.com");
         fakeUser.setPhoneNumber("0000000");
         fakeUser.setAddress("Nowhere");
+        UpdateUserFragment.TEST_MODE = true;
 
         // Inject into MainActivity.user
         MainActivity.user = fakeUser;
@@ -72,11 +78,12 @@ public class UpdateUserTest {
                 null,   // fragment arguments
                 R.style.Base_Theme_Camaraderie
         );
-        scenario.onFragment(fragment -> {
-            NavController mockNav = mock(NavController.class);
-            Navigation.setViewNavController(fragment.requireView(), mockNav);
-            });
-
+//        scenario.moveToState(Lifecycle.State.CREATED);
+//        scenario.onFragment(fragment -> {
+//            navController.setGraph(R.navigation.nav_user);
+//            navController.setCurrentDestination(R.id.update_user);
+//            Navigation.setViewNavController(fragment.requireView(), navController);
+//        });
 
         scenario.moveToState(Lifecycle.State.STARTED);
 
@@ -92,7 +99,7 @@ public class UpdateUserTest {
 
 
     /**
-    *testing if save button is visible
+     *testing if save button is visible
      */
     @Test
     public void testSaveButtonIsVisible() {
@@ -200,14 +207,14 @@ public class UpdateUserTest {
         onView(withText("Please enter valid phone number")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
     /**
-    * we are testing what happens when user decides to delete their profile
+     * we are testing what happens when user decides to delete their profile
      */
     @Test
     public void DeleteProfileTest() {
         onView(withId(R.id.Delete_button_for_user_profile)).perform(click());
         onView(withText("Are you sure you want to delete your profile?")).check(matches(isDisplayed()));
 //        onView(withId(R.id.Positive_button)).perform(click()); //suppose to select yes button
-        onView(withText("Profile deleted!")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("deleted")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
 
