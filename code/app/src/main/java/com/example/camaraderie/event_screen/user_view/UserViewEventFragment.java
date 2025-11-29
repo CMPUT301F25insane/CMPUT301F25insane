@@ -22,6 +22,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 
 import static com.example.camaraderie.accepted_screen.UserAcceptedHandler.userDeclineInvite;
+import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
 import static com.example.camaraderie.main.Camaraderie.getUser;
 import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
@@ -299,12 +300,10 @@ public class UserViewEventFragment extends Fragment {
         }
         if (user.isGeoEnabled() && event.isGeoEnabled()) {
 
-            LocationHelper.addUserGeoData(
-                    this,       // the fragment
+            addLocation(
                     event,
-                    user,
                     () -> {
-                        // continue your join logic AFTER location is saved
+
                         handleJoin(event,
                                 () -> {
                                     updateUI(event);
@@ -317,7 +316,7 @@ public class UserViewEventFragment extends Fragment {
                                         nav.navigate(R.id.fragment_main);
                                     }
                                 }
-                        );;
+                        );
                     }
             );
         } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
@@ -330,7 +329,11 @@ public class UserViewEventFragment extends Fragment {
                         nav.navigate(R.id.fragment_view_event_user);
                     },
                     // on failure
-                    () -> {});
+                    () -> {
+                        if (!nav.popBackStack(R.id.fragment_main, false)) {
+                            nav.navigate(R.id.fragment_main);
+                        }
+                    });
             }
     }
 

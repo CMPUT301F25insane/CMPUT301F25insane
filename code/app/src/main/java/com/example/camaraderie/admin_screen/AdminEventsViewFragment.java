@@ -87,7 +87,7 @@ public class AdminEventsViewFragment extends Fragment {
         nav = NavHostFragment.findNavController(AdminEventsViewFragment.this);
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
 
-        eventsArrayAdapter = new EventArrayAdapter(requireContext(), eventsArrayList, nav, svm);
+        eventsArrayAdapter = new EventArrayAdapter(requireContext(), eventsArrayList, nav, svm, this);
 
         binding.list.setAdapter(eventsArrayAdapter);
 
