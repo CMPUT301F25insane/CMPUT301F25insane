@@ -24,6 +24,10 @@ import org.maplibre.android.maps.MapLibreMap;
 import org.maplibre.android.maps.OnMapReadyCallback;
 import org.maplibre.android.maps.Style;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class LocationMapFragment extends Fragment {
     private FragmentLocationMapBinding binding;
     private MapLibreMap map;
@@ -37,12 +41,9 @@ public class LocationMapFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (getArguments() != null) {
-            eventId = getArguments().getString("eventId");
-        }
 
         binding.backButton.setOnClickListener(v ->
                 NavHostFragment.findNavController(this).popBackStack()
@@ -50,17 +51,29 @@ public class LocationMapFragment extends Fragment {
 
         binding.mapView.onCreate(savedInstanceState);
 
-        binding.mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull MapLibreMap mapLibreMap) {
-                map = mapLibreMap;
+        Bundle args = getArguments();
+        if (args != null) {
+            ArrayList<HashMap<String, Object>> userLocations = (ArrayList<HashMap<String, Object>>) args.getSerializable("userLocations");
 
-                String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
-
-                map.setStyle(new Style.Builder().fromUri(styleUrl), style -> fetchEventAndShowMarkers());
+            if (userLocations != null) {
+                Log.d("MapFragment", "Received locations: " + userLocations.size());
+                // Now you can loop through them and display markers, etc.
             }
+        }
+
+        binding.mapView.getMapAsync(mapLibreMap -> {
+            map = mapLibreMap;
+
+            String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
+
+            map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
+                showTestMarker();
+            });
         });
     }
+
+    private void showMarkers() {}
+
 
     private void showTestMarker() {
         if (map == null) return;
@@ -71,43 +84,6 @@ public class LocationMapFragment extends Fragment {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(testLocation, 13));
     }
 
-    private void fetchEventAndShowMarkers() {
-        if (eventId == null) return;
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Events").document(eventId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        event = documentSnapshot.toObject(Event.class);
-                        if (map != null && event != null) {
-                            showEventMarkers(event);
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("LocationMapFragment", "Failed to load event", e);
-                });
-    }
-
-    private void showEventMarkers(Event event) {
-        if (map == null || event == null) return;
-
-        map.clear(); // remove any previous markers
-
-        for (UserLocation loc : event.getLocationArrayList()) {
-            LatLng position = new LatLng(loc.getLatitude(), loc.getLongitude());
-            map.addMarker(new MarkerOptions()
-                    .position(position)
-                    .title(loc.getUserID())); // use userId as the marker title
-        }
-
-        // optional: zoom to first user
-        if (!event.getLocationArrayList().isEmpty()) {
-            UserLocation first = event.getLocationArrayList().get(0);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(first.getLatitude(), first.getLongitude()), 13));
-        }
-    }
 
     @Override public void onStart() { super.onStart(); binding.mapView.onStart(); }
     @Override public void onResume() { super.onResume(); binding.mapView.onResume(); }
