@@ -9,6 +9,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.mockito.Mockito.mock;
+
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import android.os.Bundle;
 
@@ -24,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -33,11 +36,26 @@ import java.util.Date;
 @LargeTest
 public class SearchEventInMainFragmentTest {
     private FragmentScenario<MainFragment> scenario2;
+    private final Calendar cal = Calendar.getInstance();
+
+
+
+    private DocumentReference mockHost;
+    private DocumentReference mockEventRef;
     @Test
     public void SearchEventInMainFragment() {
+        cal.set(2025, Calendar.DECEMBER, 5);
+        Date registrationDeadline = cal.getTime();
+
+        cal.set(2025, Calendar.DECEMBER, 12);
+        Date eventDate = cal.getTime();
+
+
         // Create mock event data
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("Events").document();
         DocumentReference hostRef = FirebaseFirestore.getInstance().collection("Users").document();
+        mockHost = mock(DocumentReference.class);
+        mockEventRef = mock(DocumentReference.class);
         hostRef.set(new User(
                 "host",
                 "1234567890",
@@ -47,19 +65,21 @@ public class SearchEventInMainFragmentTest {
                 null,
                 hostRef
         )).addOnSuccessListener(aVoid -> {
-            Event mockEvent = new Event("Free Tickets to Oilers Game",
+            Event mockEvent = new Event(
+                    "Free Tickets to Oilers Game",
                     "Edmonton Stadium",
-                    new Date(),
+                    registrationDeadline,
                     "20 Lucky individuals will get a front row seats to the Oilers game against Flames",
-                    new Date(),
+                    eventDate,
                     "20:00",
                     100,
-                    -1,
-                    hostRef,
+                    2,
                     docRef,
-                    docRef.getId(),
-                null,
-                    false);
+                    mockEventRef,
+                    "E123",
+                    null,
+                    false
+            );
 
             docRef.set(mockEvent).addOnSuccessListener(aVoid2 -> {
                 // Pass event data to fragment

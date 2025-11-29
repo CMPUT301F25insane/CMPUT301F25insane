@@ -1,12 +1,10 @@
 package com.example.camaraderie;//
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,7 +43,7 @@ public class Event {
     /**
      * Empty constructor for event, necessary for Firebase integration
      */
-    public Event() {}  // required for FIREBASE
+    public Event(String freeTicketsToOilersGame, String edmontonStadium, Date registrationDeadline, String s, Date eventDate, String time, int i, int i1, DocumentReference docRef, DocumentReference mockEventRef, String e123, Object o, boolean b) {}  // required for FIREBASE
 
     /**
      * Constructor for event

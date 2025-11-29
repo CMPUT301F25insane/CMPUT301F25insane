@@ -50,7 +50,7 @@ public class AdminDashboardFragmentTest {
     @Rule
     public GrantPermissionRule permissionRule =
             GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS);
-//    private FragmentScenario<AdminDashboardFragment> scenario;
+    private FragmentScenario<AdminDashboardFragment> scenario;
     @Before
     public void setUp() {
         User fakeUser = new User();
@@ -66,36 +66,40 @@ public class AdminDashboardFragmentTest {
 
 
         // Create a TestNavHostController
-//        TestNavHostController navController = new TestNavHostController(
-//                ApplicationProvider.getApplicationContext());
+        TestNavHostController navController = new TestNavHostController(
+                ApplicationProvider.getApplicationContext());
+
+        navController.setGraph(R.navigation.nav_graph);
+
+
 
         // Create a graphical FragmentScenario for the TitleScreen
-        FragmentScenario<AdminDashboardFragment> scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
+//        FragmentScenario<AdminDashboardFragment> scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
 
         // Launch the fragment in a container just like in a real Activity
-//        scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
+        scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
 
-        scenario = FragmentScenario.launchInContainer(
-                AdminDashboardFragment.class,
-                null,   // fragment arguments
-                R.style.Base_Theme_Camaraderie
-        );
 //        scenario.moveToState(Lifecycle.State.STARTED);
          scenario.onFragment(fragment -> {
-             // Set the graph on the TestNavHostController
-             navController.setGraph(R.navigation.nav_graph);
-//             navController.setCurrentDestination(R.id.admin_main_screen);
-             // Make the NavController available via the findNavController() APIs
+//             // Set the graph on the TestNavHostController
+//             navController.setGraph(R.navigation.nav_graph);
+////             navController.setCurrentDestination(R.id.admin_main_screen);
+//             // Make the NavController available via the findNavController() APIs
+//             Navigation.setViewNavController(fragment.requireView(), navController);
+             // Attach the TestNavHostController to the fragment's view
              Navigation.setViewNavController(fragment.requireView(), navController);
+
+             // Optional: move to RESUMED to ensure all UI is ready
+             scenario.moveToState(Lifecycle.State.RESUMED);
          });
 
     }
-//    @After
-//    public void tearDown() {
-//        if (scenario != null) {
-//            scenario.close();
-//        };
-//    }
+    @After
+    public void tearDown() {
+        if (scenario != null) {
+            scenario.close();
+        };
+    }
     /**
      * we are testing if User database button is visible on the main screen
      */
