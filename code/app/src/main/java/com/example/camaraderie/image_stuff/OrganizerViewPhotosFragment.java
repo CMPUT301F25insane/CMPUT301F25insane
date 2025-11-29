@@ -1,5 +1,9 @@
 package com.example.camaraderie.image_stuff;
 
+
+import static com.example.camaraderie.image_stuff.ImageHandler.deleteEventImage;
+import static com.example.camaraderie.image_stuff.ImageHandler.uploadEventImage;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -24,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.bumptech.glide.Glide;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentOrganizerViewPhotosBinding;
@@ -41,13 +46,9 @@ import java.util.UUID;
 public class OrganizerViewPhotosFragment extends Fragment {
 
     private NavController nav;
-    private FirebaseFirestore db;
-    private DocumentReference eventDocRef;
     private SharedEventViewModel svm;
-
     private Event event;
 
-    private String imageString;
 
     private FragmentOrganizerViewPhotosBinding binding;
 
@@ -64,7 +65,6 @@ public class OrganizerViewPhotosFragment extends Fragment {
 
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         nav = NavHostFragment.findNavController(this);
-        db = FirebaseFirestore.getInstance();
     }
 
     /**
@@ -107,19 +107,20 @@ public class OrganizerViewPhotosFragment extends Fragment {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
                         binding.imageView2.setImageURI(uri);
                         //Add code to save the photo into the database
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
-                            byte [] bytes = stream.toByteArray();
-                            String imageString = Base64.encodeToString(bytes, Base64.DEFAULT);
+                        deleteEventImage(event);
+                        uploadEventImage(event, uri, new ImageHandler.UploadCallback() {
+                            @Override
+                            public void onSuccess(String downloadUrl) {
+                                event.setImageUrl(downloadUrl);
+                                event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
+                            }
 
-                            //Need to update into the event
-                            eventDocRef = event.getEventDocRef();
-                            eventDocRef.update("imageString",imageString);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.e("UPLOAD", "Failed", e);
+                                Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } else {
                         Log.d("PhotoPicker", "No media selected");
                     }
@@ -128,18 +129,8 @@ public class OrganizerViewPhotosFragment extends Fragment {
 
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
-            eventDocRef = event.getEventDocRef();
-            Log.d("Event Doc Ref:", eventDocRef.toString());
-            eventDocRef.get().addOnCompleteListener(task -> {
-                imageString = task.getResult().getString("imageString");
-                // Decode and place the image into the imageView
-                if (imageString != null) {
-                    byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
 
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    binding.imageView2.setImageBitmap(bitmap);
-                }
-            });
+            Glide.with(this).load(event.getImageUrl()).into(binding.imageView2);
 
         });
 

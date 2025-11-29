@@ -7,6 +7,7 @@ import com.example.camaraderie.Event;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -61,7 +62,7 @@ public class ImageHandler {
      */
     public static void deleteEventImage(Event event) {
 
-        String url = event.getImageString();
+        String url = event.getImageUrl();
         if (url == null || url.isEmpty()) return;
 
         StorageReference ref = storage.getReferenceFromUrl(url);
@@ -72,6 +73,11 @@ public class ImageHandler {
                         Log.e("EventImageHandler", "Failed to delete image", e)
                 );
     }
+
+    public static void displayEventImage(Event event, ImageView imageView) {
+        String url = event.getImageUrl();
+    }
+
 
 
 }

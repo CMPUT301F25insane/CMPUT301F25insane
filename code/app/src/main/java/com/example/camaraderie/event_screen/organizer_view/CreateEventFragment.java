@@ -1,5 +1,6 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
+import static com.example.camaraderie.image_stuff.ImageHandler.deleteEventImage;
 import static com.example.camaraderie.image_stuff.ImageHandler.uploadEventImage;
 import static com.example.camaraderie.main.MainActivity.user;
 
@@ -168,19 +169,6 @@ public class CreateEventFragment extends Fragment {
                     if (uri != null) {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
                         imageUri = uri;
-                        //Add code to save the photo into the database
-                        try {
-
-
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                            byte [] bytes = stream.toByteArray();
-                            String imageString = Base64.encodeToString(bytes, Base64.DEFAULT);
-                            eventImageString = imageString;
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
                     } else {
                         Log.d("PhotoPicker", "No media selected");
                     }
@@ -316,7 +304,6 @@ public class CreateEventFragment extends Fragment {
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
-            event.setImageString(eventImageString);
             if (limit != -1) {
                 event.setWaitlistLimit(limit);
             }
@@ -325,6 +312,22 @@ public class CreateEventFragment extends Fragment {
                     .addOnSuccessListener(aVoid -> {
                         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
                         vm.setEvent(event);
+
+                        deleteEventImage(event);
+
+                        uploadEventImage(event, imageUri, new ImageHandler.UploadCallback() {
+                            @Override
+                            public void onSuccess(String downloadUrl) {
+                                event.setImageUrl(downloadUrl);
+                                event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.e("UPLOAD", "Failed", e);
+                                Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
                         nav.navigate(R.id._fragment_organizer_view_event);
                     })
@@ -339,7 +342,7 @@ public class CreateEventFragment extends Fragment {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventImageString, geoSwitch.isChecked());
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, geoSwitch.isChecked());
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
@@ -356,11 +359,11 @@ public class CreateEventFragment extends Fragment {
                                 //});
                             });
 
-                        uploadEventImage(event, imageUri, new ImageHandler.UploadCallback() {
+                        uploadEventImage(newEvent, imageUri, new ImageHandler.UploadCallback() {
                             @Override
                             public void onSuccess(String downloadUrl) {
-                                event.setImageUrl(downloadUrl);
-                                event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
+                                newEvent.setImageUrl(downloadUrl);
+                                newEvent.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
                             }
 
                             @Override
