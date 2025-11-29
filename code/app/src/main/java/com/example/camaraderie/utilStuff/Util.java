@@ -104,7 +104,6 @@ public class Util {
                     ll,
                     userDoc,
                     eventDoc,
-                    eventDoc.getId(),
                     null,
                     false
             );

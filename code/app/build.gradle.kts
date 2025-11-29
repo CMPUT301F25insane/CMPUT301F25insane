@@ -81,8 +81,13 @@ dependencies {
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
     implementation("androidx.activity:activity:1.11.0")
     implementation("org.maplibre.gl:android-sdk:11.13.5")
-
     implementation("com.google.firebase:firebase-storage:22.0.1")
-
     implementation("com.google.android.gms:play-services-location:21.3.0")
+
+    //Firestore
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
+    implementation("com.google.firebase:firebase-storage")
+
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 }

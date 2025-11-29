@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.bumptech.glide.Glide;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentUserViewPhotosBinding;
@@ -25,12 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class UserViewPhotosFragment extends Fragment{
 
     private NavController nav;
-    private FirebaseFirestore db;
-    private DocumentReference eventDocRef;
     private SharedEventViewModel svm;
-
-    private String imageString;
-
     private Event event;
 
     private FragmentUserViewPhotosBinding binding;
@@ -48,7 +44,6 @@ public class UserViewPhotosFragment extends Fragment{
 
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         nav = NavHostFragment.findNavController(this);
-        db = FirebaseFirestore.getInstance();
     }
 
     /**
@@ -84,18 +79,8 @@ public class UserViewPhotosFragment extends Fragment{
 
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
-            eventDocRef = event.getEventDocRef();
-            Log.d("Event Doc Ref:", eventDocRef.toString());
-            eventDocRef.get().addOnCompleteListener(task -> {
-                imageString = task.getResult().getString("imageString");
-                // Decode and place the image into the imageView
-                if (imageString != null) {
-                    byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
-                    Log.d("Bytes", imageBytes.toString());
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    binding.imageView2.setImageBitmap(bitmap);
-                }
-            });
+
+            Glide.with(this).load(event.getImageUrl()).into(binding.imageView2);
 
         });
 
