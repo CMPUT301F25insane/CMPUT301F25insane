@@ -31,6 +31,7 @@ public class LocationMapFragment extends Fragment {
     private MapLibreMap map;
     private String eventId;
     private Event event;
+    ArrayList<HashMap<String, Object>> userLocations;
 
     @Nullable
     @Override
@@ -51,7 +52,7 @@ public class LocationMapFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            ArrayList<HashMap<String, Object>> userLocations = (ArrayList<HashMap<String, Object>>) args.getSerializable("userLocations");
+            userLocations = (ArrayList<HashMap<String, Object>>) args.getSerializable("userLocations");
 
             if (userLocations != null) {
                 Log.d("MapFragment", "Received locations: " + userLocations.size());
@@ -65,12 +66,30 @@ public class LocationMapFragment extends Fragment {
             String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
             map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
-                showTestMarker();
+                showMarkers();
             });
         });
     }
 
-    private void showMarkers() {}
+    private void showMarkers() {
+        if (map == null || userLocations == null) {
+            return;
+        }
+
+        for (HashMap<String, Object> coordinates: userLocations){
+            double latitude = (double) coordinates.get("latitude");
+            double longitude = (double) coordinates.get("longitude");
+            String userId = coordinates.get("userID").toString();
+
+            map.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title(userId));
+        }
+
+        if (!userLocations.isEmpty()) {
+            double firstLat = (double) userLocations.get(0).get("latitude");
+            double firstLng = (double) userLocations.get(0).get("longitude");
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(firstLat, firstLng), 12));
+        }
+    }
 
 
     private void showTestMarker() {
