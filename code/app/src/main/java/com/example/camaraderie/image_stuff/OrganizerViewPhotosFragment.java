@@ -110,7 +110,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
                             byte [] bytes = stream.toByteArray();
                             String imageString = Base64.encodeToString(bytes, Base64.DEFAULT);
 

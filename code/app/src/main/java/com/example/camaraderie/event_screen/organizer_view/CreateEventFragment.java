@@ -164,7 +164,6 @@ public class CreateEventFragment extends Fragment {
                     // Called if the user picks a photo
                     if (uri != null) {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
-                        //Add code to save the photo into the database
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
