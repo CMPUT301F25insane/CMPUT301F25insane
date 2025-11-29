@@ -1,5 +1,6 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
+import static com.example.camaraderie.image_stuff.ImageHandler.uploadEventImage;
 import static com.example.camaraderie.main.MainActivity.user;
 
 import android.app.DatePickerDialog;
@@ -39,6 +40,7 @@ import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventBinding;
+import com.example.camaraderie.image_stuff.ImageHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -73,6 +75,7 @@ public class CreateEventFragment extends Fragment {
     private NavController nav;
 
     private String eventImageString;
+    private Uri imageUri;
     private boolean editing = false;
 
     private Date today = new Date();
@@ -164,8 +167,11 @@ public class CreateEventFragment extends Fragment {
                     // Called if the user picks a photo
                     if (uri != null) {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
+                        imageUri = uri;
                         //Add code to save the photo into the database
                         try {
+
+
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -348,6 +354,20 @@ public class CreateEventFragment extends Fragment {
                                     nav.navigate(R.id._fragment_organizer_view_event);
                                 //});
                             });
+
+                        uploadEventImage(event, imageUri, new ImageHandler.UploadCallback() {
+                            @Override
+                            public void onSuccess(String downloadUrl) {
+                                event.setImageUrl(downloadUrl);
+                                event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.e("UPLOAD", "Failed", e);
+                                Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
 
                     })
