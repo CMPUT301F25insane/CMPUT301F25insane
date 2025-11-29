@@ -212,7 +212,7 @@ public class CreateEventFragment extends Fragment {
 
         binding.buttonForGoingBack.setOnClickListener(v -> nav.popBackStack());
 
-
+        binding.buttonForConfirm.setEnabled(true);
         binding.buttonForConfirm.setOnClickListener(new View.OnClickListener() {
             /**
              * On pressing the confirm button, create the event
@@ -221,6 +221,7 @@ public class CreateEventFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
+                binding.buttonForConfirm.setEnabled(false);  // just do this to stop uer form pressing a billion times
 
                 try {
                     createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventImageString);
