@@ -24,6 +24,10 @@ import org.maplibre.android.maps.MapLibreMap;
 import org.maplibre.android.maps.OnMapReadyCallback;
 import org.maplibre.android.maps.Style;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class LocationMapFragment extends Fragment {
     private FragmentLocationMapBinding binding;
     private MapLibreMap map;
@@ -37,12 +41,9 @@ public class LocationMapFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (getArguments() != null) {
-            eventId = getArguments().getString("eventId");
-        }
 
         binding.backButton.setOnClickListener(v ->
                 NavHostFragment.findNavController(this).popBackStack()
@@ -50,17 +51,29 @@ public class LocationMapFragment extends Fragment {
 
         binding.mapView.onCreate(savedInstanceState);
 
-        binding.mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull MapLibreMap mapLibreMap) {
-                map = mapLibreMap;
+        Bundle args = getArguments();
+        if (args != null) {
+            ArrayList<HashMap<String, Object>> userLocations = (ArrayList<HashMap<String, Object>>) args.getSerializable("userLocations");
 
-                String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
-
-                map.setStyle(new Style.Builder().fromUri(styleUrl), style -> showTestMarker());
+            if (userLocations != null) {
+                Log.d("MapFragment", "Received locations: " + userLocations.size());
+                // Now you can loop through them and display markers, etc.
             }
+        }
+
+        binding.mapView.getMapAsync(mapLibreMap -> {
+            map = mapLibreMap;
+
+            String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
+
+            map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
+                showTestMarker();
+            });
         });
     }
+
+    private void showMarkers() {}
+
 
     private void showTestMarker() {
         if (map == null) return;

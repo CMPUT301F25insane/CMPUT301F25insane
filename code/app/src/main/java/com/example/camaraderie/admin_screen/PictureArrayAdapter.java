@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -105,6 +106,8 @@ public class PictureArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
                 eventDocRef.update("imageString", FieldValue.delete());
+                imageView.setImageBitmap(null);
+                Toast.makeText(getContext(), "Image Removed", Toast.LENGTH_SHORT).show();
             }
         });
         return view;

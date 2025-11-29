@@ -22,6 +22,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 
 import static com.example.camaraderie.accepted_screen.UserAcceptedHandler.userDeclineInvite;
+import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
 import static com.example.camaraderie.main.Camaraderie.getUser;
 import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
@@ -35,8 +36,12 @@ import com.example.camaraderie.UserLocation;
 
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
-import com.example.camaraderie.geolocation.LocationHelper;
+
+
 import com.example.camaraderie.main.LoadUser;
+
+import com.example.camaraderie.geolocation.AddUserLocation;
+
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -53,7 +58,6 @@ public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;
     private NavController nav;
-
     private FragmentViewEventUserBinding binding;
     private Event event;
     private SharedEventViewModel svm;
@@ -296,12 +300,10 @@ public class UserViewEventFragment extends Fragment {
         }
         if (user.isGeoEnabled() && event.isGeoEnabled()) {
 
-            LocationHelper.addUserGeoData(
-                    this,       // the fragment
+            addLocation(
                     event,
-                    user,
                     () -> {
-                        // continue your join logic AFTER location is saved
+
                         handleJoin(event,
                                 () -> {
                                     updateUI(event);
@@ -314,7 +316,7 @@ public class UserViewEventFragment extends Fragment {
                                         nav.navigate(R.id.fragment_main);
                                     }
                                 }
-                        );;
+                        );
                     }
             );
         } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
@@ -332,8 +334,9 @@ public class UserViewEventFragment extends Fragment {
                             nav.navigate(R.id.fragment_main);
                         }
                     });
-        }
+            }
     }
+
 
     /**
      * admin can delete events, updates database

@@ -3,6 +3,7 @@ package com.example.camaraderie.dashboard;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
 import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
 
@@ -20,9 +21,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.geolocation.AddUserLocation;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
@@ -175,22 +178,22 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
          */
 
         joinButton.setOnClickListener(v ->
+            addLocation(event, () -> {
 
-            handleJoin(
-                event,
+                handleJoin(
+                    event,
 
-                () -> {
-                    joinButton.setClickable(false);
-                    joinButton.setBackgroundColor(Color.GRAY);
-                    joinButton.setEnabled(false);
-                },
+                    () -> {
+                        joinButton.setClickable(false);
+                        joinButton.setBackgroundColor(Color.GRAY);
+                        joinButton.setEnabled(false);
+                    },
 
-                () -> {
-                    Log.e("DashboardEventArrayAdapter", "failed to join event");
-                    remove(event);
-                    notifyDataSetChanged();
-                }
-            )
+                    () -> {
+                        Log.e("DashboardEventArrayAdapter", "failed to join event");
+                        remove(event);
+                        notifyDataSetChanged();
+                    });})
 
         );
 

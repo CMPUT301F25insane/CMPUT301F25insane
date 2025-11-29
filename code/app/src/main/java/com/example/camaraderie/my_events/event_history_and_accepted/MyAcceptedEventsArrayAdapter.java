@@ -1,12 +1,10 @@
-package com.example.camaraderie.my_events;
+package com.example.camaraderie.my_events.event_history_and_accepted;
 
 import android.content.Context;
-import android.icu.lang.UProperty;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +13,6 @@ import androidx.navigation.NavController;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.databinding.FragmentViewMyEventHistoryBinding;
 import com.example.camaraderie.databinding.FragmentViewMyEventHistoryItemBinding;
 
 import java.text.SimpleDateFormat;

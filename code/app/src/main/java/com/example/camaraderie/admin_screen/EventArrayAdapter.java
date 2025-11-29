@@ -2,6 +2,7 @@ package com.example.camaraderie.admin_screen;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
 import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
 import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
@@ -24,6 +25,7 @@ import androidx.navigation.NavController;
 import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.geolocation.AddUserLocation;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -150,17 +152,18 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         deadline.setText(event.getRegistrationDeadline().toString());
 
         join.setOnClickListener(v ->
+                addLocation(event, () -> handleJoin(
+                        event,
+                        () -> {
+                            join.setBackgroundColor(Color.GRAY);
+                            join.setEnabled(false);
+                            join.setClickable(false);},
+                        () -> {
+                            Log.e("AdminEventArrayAdapter", "Failed to join admin to event");
+                        }
+                ))
 
-            handleJoin(
-                event,
-                () -> {
-                    join.setBackgroundColor(Color.GRAY);
-                    join.setEnabled(false);
-                    join.setClickable(false);},
-                () -> {
-                    Log.e("AdminEventArrayAdapter", "Failed to join admin to event");
-                }
-            )
+
 
         );
 

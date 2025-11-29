@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
@@ -68,7 +69,8 @@ public class CreateEventFragment extends Fragment {
     private EditText eventTime;
     private EditText optionalLimit;
     private Switch geoSwitch;
-    boolean geoEnabled;
+    private boolean geoEnabled;
+    private NavController nav;
 
     private String eventImageString;
     private boolean editing = false;
@@ -86,6 +88,7 @@ public class CreateEventFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        nav = NavHostFragment.findNavController(this);
 
     }
 
@@ -201,19 +204,8 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.buttonForGoingBack.setOnClickListener(new View.OnClickListener() {
-            /**
-             * On pressing the back button, navigate back to the main fragment
-             * @param v
-             *  The view that was clicked.
-             */
-            @Override
-            public void onClick(View v) {
+        binding.buttonForGoingBack.setOnClickListener(v -> nav.popBackStack());
 
-                NavHostFragment.findNavController(CreateEventFragment.this)
-                        .popBackStack();
-            }
-        });
 
         binding.buttonForConfirm.setOnClickListener(new View.OnClickListener() {
             /**
@@ -327,10 +319,14 @@ public class CreateEventFragment extends Fragment {
                         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
                         vm.setEvent(event);
 
-                        NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_to__fragment_organizer_view_event);
+                        nav.navigate(R.id._fragment_organizer_view_event);
                     })
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error updating event", e));
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error updating event", e);
+                        if (!nav.popBackStack(R.id.fragment_main, false)) {
+                            nav.navigate(R.id.fragment_main);
+                        }
+                    });
         }
         else {
             DocumentReference eventRef = db.collection("Events").document();
@@ -349,14 +345,18 @@ public class CreateEventFragment extends Fragment {
                                 //user.updateDB(() -> {
                                     SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
                                     vm.setEvent(newEvent);
-                                    NavHostFragment.findNavController(CreateEventFragment.this)
-                                            .navigate(R.id.action_fragment_create_event_to__fragment_organizer_view_event);
+                                    nav.navigate(R.id._fragment_organizer_view_event);
                                 //});
                             });
 
 
                     })
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error adding event", e);
+                        if (!nav.popBackStack(R.id.fragment_main, false)) {
+                            nav.navigate(R.id.fragment_main);
+                        }
+                    });
 
         }
 

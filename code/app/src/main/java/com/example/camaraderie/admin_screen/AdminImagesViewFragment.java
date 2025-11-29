@@ -34,8 +34,6 @@ public class AdminImagesViewFragment extends Fragment {
     private CollectionReference eventsRef;
     private ArrayList<Event> eventsArrayList;
 
-    private ListenerRegistration eventListener;
-
     private PictureArrayAdapter pictureArrayAdapter;
 
     private SharedEventViewModel svm;
@@ -70,13 +68,13 @@ public class AdminImagesViewFragment extends Fragment {
 
     private void loadPictures() {
 
-        eventListener = eventsRef.addSnapshotListener((value, error) -> {
+        ListenerRegistration eventListener = eventsRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
             }
             if (value != null && !value.isEmpty()) {
                 eventsArrayList.clear();
-                for (QueryDocumentSnapshot snapshot: value){
+                for (QueryDocumentSnapshot snapshot : value) {
                     Event event = snapshot.toObject(Event.class);
                     eventsArrayList.add(event);
                 }
