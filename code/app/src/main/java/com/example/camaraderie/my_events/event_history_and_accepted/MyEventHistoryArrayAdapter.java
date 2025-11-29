@@ -1,4 +1,4 @@
-package com.example.camaraderie.my_events;
+package com.example.camaraderie.my_events.event_history_and_accepted;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import static com.example.camaraderie.main.MainActivity.user;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;

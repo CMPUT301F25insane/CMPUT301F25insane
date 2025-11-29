@@ -38,7 +38,7 @@ public class MyEventsViewModel extends ViewModel {
             ref.get().addOnSuccessListener(doc -> {
                 Event e = doc.toObject(Event.class);
                 if (e != null) {
-                    System.out.println("EVENT LOADED FROM USER: " + e.getEventId());
+
                     events.add(e);
                 }
                 else {

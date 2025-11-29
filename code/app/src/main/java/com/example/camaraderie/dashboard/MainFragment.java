@@ -53,7 +53,7 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         super.onCreate(savedInstanceState);
 
         eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
-        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>(), this);
+        dashboardEventArrayAdapter = new DashboardEventArrayAdapter(getContext(), new ArrayList<>());
 
         nav = NavHostFragment.findNavController(MainFragment.this);
     }

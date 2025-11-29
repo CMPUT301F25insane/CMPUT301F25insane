@@ -1,6 +1,8 @@
 package com.example.camaraderie.dashboard;//
 
 import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
+import static com.example.camaraderie.utilStuff.EventHelper.finalizeLists;
+import static com.example.camaraderie.utilStuff.EventHelper.isOneDayBefore;
 
 import android.util.Log;
 
@@ -67,17 +69,22 @@ public class EventViewModel extends ViewModel {
         });
     }
 
-
     private void runRegistrationDeadline(Event event) {
+        Date now = new Date();
+        Date deadline = event.getRegistrationDeadline();
 
-        // run the lottery automatically when the deadline passes
-        Date date = new Date();
-        if (event.getRegistrationDeadline().after(date)) {
+        // not yet the deadline
+        if (deadline.after(now)) {
+
+            // autorun the lottery within a day of the deadline
+            if (isOneDayBefore(deadline, now)) {
+                runLottery(event);
+            }
             return;
         }
 
-        runLottery(event);
-
+        // deadline has passed
+        finalizeLists(event);
     }
 
     private Boolean filterPassedEvents(Event event) {

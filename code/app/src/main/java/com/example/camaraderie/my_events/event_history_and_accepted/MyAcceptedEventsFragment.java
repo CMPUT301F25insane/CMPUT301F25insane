@@ -1,4 +1,4 @@
-package com.example.camaraderie.my_events;
+package com.example.camaraderie.my_events.event_history_and_accepted;
 
 import static com.example.camaraderie.main.Camaraderie.getUser;
 
@@ -16,11 +16,16 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentViewMyEventHistoryBinding;
+import com.example.camaraderie.my_events.MyEventsViewModel;
 
 import java.util.ArrayList;
 
+/**
+ * View accepted events fragment
+ */
 public class MyAcceptedEventsFragment extends Fragment {
 
+    // reuses the history xml
     private FragmentViewMyEventHistoryBinding binding;
     private SharedEventViewModel svm;
     private MyEventsViewModel vm;
@@ -56,11 +61,12 @@ public class MyAcceptedEventsFragment extends Fragment {
                     adapter.addAll(events);
                 });
 
-        binding.acceptedBackButton.setOnClickListener(v -> nav.popBackStack());
+        binding.historyBackButton.setOnClickListener(v -> nav.popBackStack());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        binding = null;
     }
 }

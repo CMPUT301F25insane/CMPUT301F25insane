@@ -3,7 +3,9 @@ package com.example.camaraderie.dashboard;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
 
 
 import android.content.Context;
@@ -36,9 +38,7 @@ import java.util.Date;
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
     public OnEventClickListener listener;
-    private Date date = new Date();
-
-    private Fragment fragment;
+    private final Date date = new Date();
 
     /**
      * A default constructor
@@ -47,9 +47,9 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
      * @param events
      *  List of events to be displayed
      */
-    public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events, Fragment fragment) {
+    public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
-        this.fragment = fragment;
+        setNotifyOnChange(true);
     }
 
     /**
@@ -177,37 +177,25 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
          * add the event to the user's registration history
          */
 
-        joinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddUserLocation.addLocation(fragment, user, event, () -> {
-                    joinButton.setClickable(false);
-                    joinButton.setBackgroundColor(Color.GRAY);
-                    joinButton.setEnabled(false);
-                    event.addWaitlistUser(user.getDocRef());
-                    user.addWaitlistedEvent(event.getEventDocRef());
-                    user.addEventToHistory(event.getEventDocRef());
+        joinButton.setOnClickListener(v ->
+            addLocation(event, () -> {
 
-                    // update db
-                    user.updateDB(() -> {
-                        event.updateDB( () -> {});
-                    });
-                });
-                /*
-                joinButton.setClickable(false);
-                joinButton.setBackgroundColor(Color.GRAY);
-                joinButton.setEnabled(false);
-                event.addWaitlistUser(user.getDocRef());
-                user.addWaitlistedEvent(event.getEventDocRef());
-                user.addEventToHistory(event.getEventDocRef());
+                handleJoin(
+                    event,
 
-                // update db
-                user.updateDB(() -> {
-                    event.updateDB( () -> {});
-                });*/
+                    () -> {
+                        joinButton.setClickable(false);
+                        joinButton.setBackgroundColor(Color.GRAY);
+                        joinButton.setEnabled(false);
+                    },
 
-            }
-        });
+                    () -> {
+                        Log.e("DashboardEventArrayAdapter", "failed to join event");
+                        remove(event);
+                        notifyDataSetChanged();
+                    });})
+
+        );
 
         /*
          * We also have a see description button so that the user can see

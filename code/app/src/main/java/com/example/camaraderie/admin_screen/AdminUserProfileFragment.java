@@ -33,10 +33,6 @@ public class AdminUserProfileFragment extends Fragment {
     private FirebaseFirestore db;
     private User user;
 
-    /**
-     * We require an empty constructor
-     */
-
 
     /**
      * onCreateView initializes the xml view for the fragment and is run as soon as we navigate to this fragment
@@ -99,7 +95,7 @@ public class AdminUserProfileFragment extends Fragment {
             }
         }
 
-        /**
+        /*
          * We have a remove button that allows for the admin to remove users who are not following guidelines
          * When the button is clicked we use firebase to remove the user from the Users collection
          * We grab their userID and delete their document and afterwards navigate back to the admin user data screen
@@ -123,8 +119,8 @@ public class AdminUserProfileFragment extends Fragment {
             }
         });
 
-        /**
-         * We also have a back button for the admin to navigate back
+        /*
+         * We also hve a back button for the admin to navigate back
          */
 
         binding.BackButton.setOnClickListener( v -> nav.popBackStack());

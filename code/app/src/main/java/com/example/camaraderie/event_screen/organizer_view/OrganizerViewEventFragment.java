@@ -1,7 +1,10 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_SHORT;
 
+import static com.example.camaraderie.event_screen.user_lists.CSVExporter.createCSV;
 import static com.example.camaraderie.main.Camaraderie.getUser;
 import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
@@ -31,6 +34,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,10 +133,17 @@ public class OrganizerViewEventFragment extends Fragment {
             binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event));
             binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
 
+            binding.exportCSVButton.setOnClickListener(v -> {
+
+                vm.loadUsersFromList(event.getAcceptedUsers(), events -> {
+                    createCSV(events, event.getEventName());
+                });
+
+            });
+
             binding.deleteButtonOrgView.setOnClickListener(v -> {
 
                 deleteEvent(event);
-                getUser().deleteCreatedEvent(eventDocRef);
                 nav.navigate(R.id.fragment_main);
                 Toast.makeText(getContext(), "Event Deleted", LENGTH_SHORT).show();
             });
@@ -234,6 +246,18 @@ public class OrganizerViewEventFragment extends Fragment {
         binding.locationOfOrgView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
         binding.hostNameOrgView.setText(user.getFirstName());
         binding.nameOfOrganizer.setText(user.getFirstName());
+
+        // only allow the org to use the button once the deadline is passed (final list has been generated at this point)
+        if (e.getRegistrationDeadline().before(new Date())) {
+            binding.exportCSVButton.setEnabled(true);
+            binding.exportCSVButton.setClickable(true);
+            binding.exportCSVButton.setVisibility(VISIBLE);
+        }
+        else {
+            binding.exportCSVButton.setEnabled(false);
+            binding.exportCSVButton.setClickable(false);
+            binding.exportCSVButton.setVisibility(INVISIBLE);
+        }
 
     }
 

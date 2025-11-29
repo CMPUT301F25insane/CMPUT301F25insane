@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.camaraderie.Event;
+import com.example.camaraderie.UserLocation;
 import com.example.camaraderie.databinding.FragmentLocationMapBinding;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.maplibre.android.camera.CameraUpdateFactory;
 import org.maplibre.android.annotations.MarkerOptions;
@@ -100,6 +102,7 @@ public class LocationMapFragment extends Fragment {
                 .title("Test Location"));
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(testLocation, 13));
     }
+
 
     @Override public void onStart() { super.onStart(); binding.mapView.onStart(); }
     @Override public void onResume() { super.onResume(); binding.mapView.onResume(); }

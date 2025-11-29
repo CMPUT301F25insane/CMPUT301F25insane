@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,16 +22,26 @@ import androidx.navigation.fragment.NavHostFragment;
 
 
 import static com.example.camaraderie.accepted_screen.UserAcceptedHandler.userDeclineInvite;
+import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
 import static com.example.camaraderie.main.Camaraderie.getUser;
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
+import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
+import static com.example.camaraderie.utilStuff.EventHelper.handleUnjoin;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.UserLocation;
 
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
+
+
+import com.example.camaraderie.main.LoadUser;
+
 import com.example.camaraderie.geolocation.AddUserLocation;
+
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -131,7 +142,23 @@ public class UserViewEventFragment extends Fragment {
 
         // button handlers
         binding.joinButtonUserView.setOnClickListener(v -> handleJoinGeo());
-        binding.unjoinButtonUserView.setOnClickListener(v -> handleUnjoin());
+
+        binding.unjoinButtonUserView.setOnClickListener(v -> handleUnjoin(
+                event,
+                () -> {
+                    updateUI(event);
+                    if (!nav.popBackStack(R.id.fragment_main, false)) {
+                        nav.navigate(R.id.fragment_main);
+                    }
+                },
+                // onfailure
+                () -> {
+                    if (!nav.popBackStack(R.id.fragment_main, false)) {
+                        nav.navigate(R.id.fragment_main);
+                    }
+                }));
+
+
         binding.dashboardButton.setOnClickListener(v -> {
             if (!nav.popBackStack(R.id.fragment_main, false)) {
                 nav.navigate(R.id.fragment_main);
@@ -266,78 +293,57 @@ public class UserViewEventFragment extends Fragment {
         }
     }
 
-    /**
-     * handles join, updates database
-     */
-    private void handleJoin() {
+    private void handleJoinGeo() {
+        if (event == null) {
+            Toast.makeText(getContext(), "Event not loaded yet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (user.isGeoEnabled() && event.isGeoEnabled()) {
 
+            addLocation(
+                    event,
+                    () -> {
 
-        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
-                .addOnSuccessListener(v -> {
-                    Log.d("Handle Join", "Waitlist updated for event");
-
-                    event.addWaitlistUser(getUser().getDocRef());
-                    user.addWaitlistedEvent(event.getEventDocRef());
-
-                    updateUI(event);
-                    user.updateDB(() -> {
-
+                        handleJoin(event,
+                                () -> {
+                                    updateUI(event);
+                                    svm.setEvent(event);
+                                    nav.navigate(R.id.fragment_view_event_user);
+                                },
+                                // on failure
+                                () -> {
+                                    if (!nav.popBackStack(R.id.fragment_main, false)) {
+                                        nav.navigate(R.id.fragment_main);
+                                    }
+                                }
+                        );
+                    }
+            );
+        } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
+            Toast.makeText(getContext(), "Please enable location to join this event", Toast.LENGTH_SHORT).show();
+        } else {
+            handleJoin(event,
+                    () -> {
+                        updateUI(event);
                         svm.setEvent(event);
                         nav.navigate(R.id.fragment_view_event_user);
-                    });
-
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Handle Join", "Waitlist failed to update", e);
-                    nav.navigate(R.id.fragment_main);
-                });
-
-    }
-
-    public void handleJoinGeo() {
-        AddUserLocation.addLocation(this, user, event, this::handleJoin);
-    }
-
-    /**
-     * handles unjoin, updates database
-     */
-    private void handleUnjoin() {
-
-        event.getEventDocRef().update("waitlist", FieldValue.arrayRemove(user.getDocRef()))
-                .addOnSuccessListener(v -> {
-
-                    event.removeWaitlistUser(user.getDocRef());
-                    user.removeWaitlistedEvent(event.getEventDocRef());
-
-                    updateUI(event);
-                    user.updateDB(() -> {
+                    },
+                    // on failure
+                    () -> {
                         if (!nav.popBackStack(R.id.fragment_main, false)) {
                             nav.navigate(R.id.fragment_main);
                         }
                     });
-                });
-
+            }
     }
+
 
     /**
      * admin can delete events, updates database
      */
     private void adminDeleteEvent() {
-        db.collection("Users").get().addOnSuccessListener(snapshot -> {
-            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
-                DocumentReference uRef = userDoc.getReference();
-                uRef.update("waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
-                uRef.update("selectedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
-                uRef.update("acceptedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
-            }
-        });
 
-        user.removeWaitlistedEvent(event.getEventDocRef());
-        user.removeSelectedEvent(event.getEventDocRef());
-        user.removeWaitlistedEvent(event.getEventDocRef());
-        user.removeCancelledEvent(event.getEventDocRef());
-
-        event.getEventDocRef().delete();
+        deleteEvent(event);
         if (!nav.popBackStack(R.id.fragment_main, false)) {
             nav.navigate(R.id.fragment_main);
         }

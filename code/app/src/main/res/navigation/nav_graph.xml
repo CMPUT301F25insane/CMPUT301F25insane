@@ -24,7 +24,7 @@
     </fragment>
 
     <fragment
-        android:name="com.example.camaraderie.my_events.MyAcceptedEventsFragment"
+        android:name="com.example.camaraderie.my_events.event_history_and_accepted.MyAcceptedEventsFragment"
         android:label="Users accepted events"
         android:id="@+id/MyAcceptedEventsFragment"
         tools:layout="@layout/fragment_view_my_event_history">
