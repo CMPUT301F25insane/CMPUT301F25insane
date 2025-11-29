@@ -82,9 +82,13 @@ public class UserViewEventTest {
         scenario.onFragment(fragment -> {
             navController.setGraph(R.navigation.nav_user);
             navController.setCurrentDestination(R.id.fragment_view_event_user);
-            Navigation.setViewNavController(fragment.requireView(), navController);
+            navController.navigate(R.id.fragment_view_event_user, bundle);
+//            fragment.getViewLifecycleOwnerLiveData().observeForever(owner -> {
+//                if (owner != null) {
+//                    Navigation.setViewNavController(fragment.requireView(), navController);
+//                }
+//            });
 
-            fragment.setNavController(navController); // inject for testing
         });
     }
 
