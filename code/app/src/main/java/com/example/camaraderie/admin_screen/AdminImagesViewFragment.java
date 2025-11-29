@@ -2,6 +2,8 @@ package com.example.camaraderie.admin_screen;
 
 import android.os.Bundle;
 
+
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -76,7 +78,9 @@ public class AdminImagesViewFragment extends Fragment {
                 eventsArrayList.clear();
                 for (QueryDocumentSnapshot snapshot : value) {
                     Event event = snapshot.toObject(Event.class);
-                    eventsArrayList.add(event);
+                    if (event.getImageUrl() != null) {
+                        eventsArrayList.add(event);
+                    }
                 }
 
                 pictureArrayAdapter.notifyDataSetChanged();
