@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,6 +38,16 @@ public class Event {
     private int waitlistLimit = -1;
     private DocumentReference hostDocRef;
     private DocumentReference eventDocRef;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String url) {
+        this.imageUrl = url;
+    }
+
+    private String imageUrl;
 
     private String eventId;
 
@@ -366,6 +377,7 @@ public class Event {
 
         data.put("capacity", capacity);
         data.put("waitlistLimit", waitlistLimit);
+        data.put("imageUrl", imageUrl);
 
         eventDocRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
