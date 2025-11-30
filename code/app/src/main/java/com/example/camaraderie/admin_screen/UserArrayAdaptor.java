@@ -91,7 +91,7 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
                 Bundle bundle = new Bundle();
                 bundle.putString("userEventDocRef", user1.getDocRef().getPath());
                 //TODO: add admin view of user profile
-                nav.navigate(R.id.action_admin_user_data_screen_view_to_admin_user_profile, bundle);
+                nav.navigate(R.id.admin_user_profile, bundle);
             }
         });
 
@@ -104,11 +104,11 @@ public class UserArrayAdaptor extends ArrayAdapter<User> {
             @Override
             public void onClick(View v) {
 //                for (DocumentReference ref : user1.getSelectedEvents()) {
-//                    ref.update("selectedList", FieldValue.arrayRemove(user1.getDocRef()));
+//                    ref.update("selectedEvents", FieldValue.arrayRemove(user1.getDocRef()));
 //                }
 //
 //                for (DocumentReference ref : user1.getAcceptedEvents()) {
-//                    ref.update("acceptedList", FieldValue.arrayRemove(user1.getDocRef()));
+//                    ref.update("acceptedEvents", FieldValue.arrayRemove(user1.getDocRef()));
 //                }
 //
 //                for (DocumentReference ref : user1.getWaitlistedEvents()) {

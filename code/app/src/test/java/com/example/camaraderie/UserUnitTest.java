@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.google.firebase.firestore.DocumentReference;
 
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class UserUnitTest {
     private User user;
     private DocumentReference mockEvent1;
     private DocumentReference mockEvent2;
+    private DocumentReference userRef = mock(DocumentReference.class);
 
 
         @Before
@@ -30,7 +32,14 @@ public class UserUnitTest {
             mockEvent1 = mock(DocumentReference.class);
             mockEvent2 = mock(DocumentReference.class);
 
-            user = new User("Alice", "1234567890", "alice@example.com", "123 Main St", "user123","12345234", mock(DocumentReference.class));
+            user = new User("Alice", "1234567890", "alice@example.com", "123 Main St", "user123","12345234", userRef);
+        }
+
+        @After
+        public void teardown() {
+            mockEvent1.delete();
+            mockEvent2.delete();
+            userRef.delete();
         }
 
         @Test

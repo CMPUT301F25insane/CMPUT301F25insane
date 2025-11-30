@@ -1,20 +1,32 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
+import static com.example.camaraderie.image_stuff.ImageHandler.deleteEventImage;
+import static com.example.camaraderie.image_stuff.ImageHandler.uploadEventImage;
 import static com.example.camaraderie.main.MainActivity.user;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -25,16 +37,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventBinding;
+import com.example.camaraderie.image_stuff.ImageHandler;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+
+import org.w3c.dom.Document;
 
 /**
  * fragment that allows an organizer to create an event
@@ -51,11 +72,20 @@ public class CreateEventFragment extends Fragment {
     private EditText eventLocation;
     private EditText eventDescription;
     private EditText eventCapacity;
-    private EditText eventTime;
+    private TextView eventTime;
     private EditText optionalLimit;
+    private Switch geoSwitch;
+    private boolean geoEnabled;
+    private NavController nav;
 
-    private Uri eventPosterUri;
+    private String eventImageString;
+    private Uri imageUri;
     private boolean editing = false;
+
+    private Date today = new Date();
+    private int day = today.getDate();;
+    private int month = today.getMonth();
+    private int year = today.getYear() + 1900;
 
     /**
      * Instantiate the fragment
@@ -65,6 +95,7 @@ public class CreateEventFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        nav = NavHostFragment.findNavController(this);
 
     }
 
@@ -109,10 +140,15 @@ public class CreateEventFragment extends Fragment {
         eventCapacity = binding.inputFieldForCreateEventNumOfAttendees;
         eventTime = binding.inputFieldForCreateEventTime;
         optionalLimit = binding.inputFieldForCreateEventWaitlistLimit;
+        geoSwitch = binding.geoSwitch; //switch
 
         Bundle args = getArguments();
         if (args != null) {
             editing = true;
+
+            //geolocation only available during creation
+            geoSwitch.setEnabled(false); // cannot toggle geo after creation
+
 
             String path = args.getString("eventDocRefPath");
             assert path != null;
@@ -121,21 +157,21 @@ public class CreateEventFragment extends Fragment {
             eventDocRef.get().addOnSuccessListener(doc -> {
                 event = doc.toObject(Event.class);
                 assert event != null;
+                geoSwitch.setChecked(event.isGeoEnabled()); // show current value
                 fillTextViews(event);
             });
 
         }
 
-        // Registers a photo picker activity launcher in single-select mode.
+        /*
+         * This creates a photo picker activity
+         */
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-                    // Callback is invoked after the user selects a media item or closes the
-                    // photo picker.
+                    // Called if the user picks a photo
                     if (uri != null) {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
-                        //Add code to save the photo into the database
-                        //Need to set the Uri to the event's uri
-                        eventPosterUri = uri;
+                        imageUri = uri;
                     } else {
                         Log.d("PhotoPicker", "No media selected");
                     }
@@ -165,20 +201,19 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
-        binding.buttonForGoingBack.setOnClickListener(new View.OnClickListener() {
+        binding.inputFieldForCreateEventTime.setOnClickListener(new View.OnClickListener() {
             /**
-             * On pressing the back button, navigate back to the main fragment
-             * @param v
-             *  The view that was clicked.
+             * sets time dialogfragment
+             *
+             * @param v The view that was clicked.
              */
             @Override
-            public void onClick(View v) {
-
-                NavHostFragment.findNavController(CreateEventFragment.this)
-                        .popBackStack();
-            }
+            public void onClick(View v) { openTimeDialog(); }
         });
 
+        binding.buttonForGoingBack.setOnClickListener(v -> nav.popBackStack());
+
+        binding.buttonForConfirm.setEnabled(true);
         binding.buttonForConfirm.setOnClickListener(new View.OnClickListener() {
             /**
              * On pressing the confirm button, create the event
@@ -187,9 +222,10 @@ public class CreateEventFragment extends Fragment {
              */
             @Override
             public void onClick(View v) {
+                binding.buttonForConfirm.setEnabled(false);  // just do this to stop uer form pressing a billion times
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventPosterUri);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventImageString);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
                 }
@@ -219,9 +255,6 @@ public class CreateEventFragment extends Fragment {
         eventDescription.setText(event.getDescription());
         eventCapacity.setText(String.valueOf(event.getCapacity()));
         eventTime.setText(event.getEventTime());
-        if (event.getWaitlistLimit() != -1) {
-            binding.inputFieldForCreateEventWaitlistLimit.setText(String.valueOf(event.getWaitlistLimit()));
-        }
     }
 
     /**
@@ -252,8 +285,8 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDescription,
                              EditText eventCapacity,
                              EditText optionalLimit,
-                             EditText eventTime,
-                             Uri eventPosterUri) throws ParseException {
+                             TextView eventTime,
+                             String eventImageString) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
@@ -284,25 +317,48 @@ public class CreateEventFragment extends Fragment {
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
-            event.setPosterUri(eventPosterUri);
-            event.setWaitlistLimit(limit);
-
+            if (limit != -1) {
+                event.setWaitlistLimit(limit);
+            }
+            geoEnabled = geoSwitch.isChecked(); //geolocation
             eventDocRef.set(event, SetOptions.merge())
                     .addOnSuccessListener(aVoid -> {
                         SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
                         vm.setEvent(event);
 
-                        NavHostFragment.findNavController(CreateEventFragment.this)
-                                .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                        deleteEventImage(event);
+
+                        // if no image was chosen
+                        if (imageUri != null) {
+                            uploadEventImage(event, imageUri, new ImageHandler.UploadCallback() {
+                                @Override
+                                public void onSuccess(String downloadUrl) {
+                                    event.setImageUrl(downloadUrl);
+                                    event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Log.e("UPLOAD", "Failed", e);
+                                    Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                        nav.navigate(R.id._fragment_organizer_view_event);
                     })
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error updating event", e));
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error updating event", e);
+                        if (!nav.popBackStack(R.id.fragment_main, false)) {
+                            nav.navigate(R.id.fragment_main);
+                        }
+                    });
         }
         else {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            boolean geoloc = false;  // for now
-            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, eventPosterUri, geoloc);
+            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, geoSwitch.isChecked());
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
@@ -315,14 +371,32 @@ public class CreateEventFragment extends Fragment {
                                 //user.updateDB(() -> {
                                     SharedEventViewModel vm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
                                     vm.setEvent(newEvent);
-                                    NavHostFragment.findNavController(CreateEventFragment.this)
-                                            .navigate(R.id.action_fragment_create_event_testing_to__fragment_organizer_view_event);
+                                    nav.navigate(R.id._fragment_organizer_view_event);
                                 //});
                             });
 
+                        uploadEventImage(newEvent, imageUri, new ImageHandler.UploadCallback() {
+                            @Override
+                            public void onSuccess(String downloadUrl) {
+                                newEvent.setImageUrl(downloadUrl);
+                                newEvent.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Log.e("UPLOAD", "Failed", e);
+                                Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
 
                     })
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error adding event", e));
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error adding event", e);
+                        if (!nav.popBackStack(R.id.fragment_main, false)) {
+                            nav.navigate(R.id.fragment_main);
+                        }
+                    });
 
         }
 
@@ -340,7 +414,7 @@ public class CreateEventFragment extends Fragment {
                 binding.inputFieldForCreateEventDate.setText(format);
             }
 
-        }, 2025, 10, 6);
+        }, year, month, day);
 
         dateDialog.show();
 
@@ -358,9 +432,22 @@ public class CreateEventFragment extends Fragment {
                 binding.inputFieldForCreateEventRegistrationDeadline.setText(format);
             }
 
-        }, 2025, 10, 6);
+        }, year, month, day);
 
         dateDialog.show();
 
+    }
+
+    private void openTimeDialog() {
+        TimePickerDialog timeDialog;
+        timeDialog = new TimePickerDialog(requireContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String format = hourOfDay + ":" + minute;
+                binding.inputFieldForCreateEventTime.setText(format);
+            }
+
+        }, 0, 0, true);
+        timeDialog.show();
     }
 }

@@ -1,10 +1,18 @@
 package com.example.camaraderie;
 
-public class Location {
+public class UserLocation {
     private String userID;
     private double latitude;
     private double longitude;
 
+    public UserLocation(String userID, double latitude, double longitude){
+        this.userID = userID;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public UserLocation() {} // firebase
+    
     public String getUserID() {
         return userID;
     }

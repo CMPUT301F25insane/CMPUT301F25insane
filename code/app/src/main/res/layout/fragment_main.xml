@@ -10,15 +10,15 @@
 
     <ListView
         android:id="@+id/eventsList"
-        android:layout_width="387dp"
-        android:layout_height="507dp"
-        android:layout_marginBottom="32dp"
+        android:layout_width="409dp"
+        android:layout_height="537dp"
         android:background="@drawable/gradient_for_org_view"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.615"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.607" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -67,10 +67,12 @@
         android:layout_height="56dp"
         android:layout_marginTop="40dp"
         android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/eventsList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.955"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/camaraderie_header_for_main_dashboard"
@@ -128,12 +130,12 @@
         android:fontFamily="@font/cambria_italic"
         android:inputType="text"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/eventsList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.056"
+        app:layout_constraintHorizontal_bias="0.073"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_for_search_bar"
-        app:layout_constraintVertical_bias="0.001" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/searchButton"
@@ -142,14 +144,15 @@
         android:text="Search"
         app:layout_constraintBottom_toTopOf="@+id/eventsList"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/fromDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
         android:layout_marginEnd="36dp"
         android:layout_marginBottom="92dp"
         android:text="0001-01-01"
@@ -158,13 +161,14 @@
         app:layout_constraintEnd_toStartOf="@+id/toDateText"
         app:layout_constraintStart_toEndOf="@+id/searchBar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.993" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/toDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="-10dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="92dp"
         android:text="9999-12-31"
@@ -172,6 +176,6 @@
         app:layout_constraintBottom_toTopOf="@+id/eventsList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/fromDateText"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountButton"
         app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,32 +3,53 @@ package com.example.camaraderie.event_screen.user_view;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+import android.graphics.Color;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 
+import static com.example.camaraderie.accepted_screen.UserAcceptedHandler.userDeclineInvite;
+import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
+import static com.example.camaraderie.main.Camaraderie.getUser;
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
+import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
+import static com.example.camaraderie.utilStuff.EventHelper.handleUnjoin;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.UserLocation;
+
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
+
+
+import com.example.camaraderie.main.LoadUser;
+
+import com.example.camaraderie.geolocation.AddUserLocation;
+
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 /**
  * The screen for user's viewing an uploaded event
@@ -37,10 +58,8 @@ public class UserViewEventFragment extends Fragment {
 
     private FirebaseFirestore db;
     private NavController nav;
-
     private FragmentViewEventUserBinding binding;
     private Event event;
-//    private EventViewModel eventViewModel;
     private SharedEventViewModel svm;
     private ViewListViewModel vm;
 
@@ -60,7 +79,9 @@ public class UserViewEventFragment extends Fragment {
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);  // this will live in the activity
         db = FirebaseFirestore.getInstance();
-        nav = NavHostFragment.findNavController(this);
+//        nav = NavHostFragment.findNavController(this);
+
+
 
     }
 
@@ -95,8 +116,12 @@ public class UserViewEventFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        nav = NavHostFragment.findNavController(this);
+
 
         // get event details, everything that depends on event as an object exists here
+
+        binding.userViewEventBackButton.setOnClickListener(v -> nav.popBackStack());
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             event = evt;
             updateUI(evt);
@@ -115,12 +140,44 @@ public class UserViewEventFragment extends Fragment {
             }
         });
 
+        // admin log stuff, only admins can view logs
+        binding.adminViewLogs.setEnabled(false);
+        binding.adminViewLogs.setVisibility(INVISIBLE);
+        binding.adminViewLogs.setOnClickListener(v -> nav.navigate(R.id.AdminNotificationLogsFragment));
+
+        if (getUser().isAdmin()) {
+            binding.adminViewLogs.setEnabled(true);
+            binding.adminViewLogs.setVisibility(VISIBLE);
+        }
+
+        binding.nameOfUseranizer.setText(getUser().getFirstName());
+
         // button handlers
-        binding.joinButtonUserView.setOnClickListener(v -> handleJoin());
-        binding.unjoinButtonUserView.setOnClickListener(v -> handleUnjoin());
-        binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
+        binding.joinButtonUserView.setOnClickListener(v -> handleJoinGeo());
+
+        binding.unjoinButtonUserView.setOnClickListener(v -> handleUnjoin(
+                event,
+                () -> {
+                    updateUI(event);
+                    if (!nav.popBackStack(R.id.fragment_main, false)) {
+                        nav.navigate(R.id.fragment_main);
+                    }
+                },
+                // onfailure
+                () -> {
+                    if (!nav.popBackStack(R.id.fragment_main, false)) {
+                        nav.navigate(R.id.fragment_main);
+                    }
+                }));
+
+
+        binding.dashboardButton.setOnClickListener(v -> {
+            if (!nav.popBackStack(R.id.fragment_main, false)) {
+                nav.navigate(R.id.fragment_main);
+            };
+        });
         binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
-        binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event_testing));
+        binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event));
         binding.userViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
 
         // set up admin delete button
@@ -131,7 +188,6 @@ public class UserViewEventFragment extends Fragment {
             binding.adminDeleteEvent.setVisibility(VISIBLE);
             binding.adminDeleteEvent.setOnClickListener(v -> adminDeleteEvent());
         }
-
         // qr code button
         binding.qrButtonUserView.setOnClickListener(new View.OnClickListener() {
 
@@ -150,17 +206,6 @@ public class UserViewEventFragment extends Fragment {
             }
 
             });
-
-        binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
-            /**
-             * On pressing the back button, navigate back to the main fragment
-             * @param v The view that was clicked.
-             */
-            @Override
-            public void onClick(View v) {
-                nav.navigate(R.id.action_fragment_view_event_user_to_fragment_main);
-            }
-        });
 
         binding.viewPhotosUserView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,63 +249,117 @@ public class UserViewEventFragment extends Fragment {
 
             });
 
-
-        boolean userInWaitlist = e.getWaitlist().contains(user.getDocRef());
-        binding.joinButtonUserView.setEnabled(!userInWaitlist);
-        binding.unjoinButtonUserView.setEnabled(userInWaitlist);
+        joinIsEnabled(e);
     }
 
-    /**
-     * handles join, updates database
-     */
-    private void handleJoin() {
-        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()));
-        user.addWaitlistedEvent(event.getEventDocRef());
+    private void joinIsEnabled(Event event) {
 
-        //
-        if (user.isGeoEnabled() && event.isGeoEnabled()){
-            getUserLocation();
+        binding.joinButtonUserView.setEnabled(true);
+        binding.joinButtonUserView.setVisibility(VISIBLE);
+        binding.joinButtonUserView.setClickable(true);
+        binding.joinButtonUserView.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.custom_join_button_color));
+
+        binding.unjoinButtonUserView.setEnabled(true);
+        binding.unjoinButtonUserView.setClickable(true);
+        binding.unjoinButtonUserView.setVisibility(VISIBLE);
+        binding.unjoinButtonUserView.setBackgroundColor(Color.RED);
+
+        // user has no buttons to click
+        if (event.getAcceptedUsers().contains(getUser().getDocRef())) {
+            binding.joinButtonUserView.setClickable(false);
+            binding.joinButtonUserView.setEnabled(false);
+            binding.joinButtonUserView.setVisibility(INVISIBLE);
+
+            binding.unjoinButtonUserView.setEnabled(false);
+            binding.unjoinButtonUserView.setClickable(false);
+            binding.unjoinButtonUserView.setVisibility(INVISIBLE);
         }
-        //geolocation aspect
 
-        updateUI(event);
-        nav.navigate(R.id.fragment_main);
-        event.getEventDocRef().update("waitlist", FieldValue.arrayUnion(user.getDocRef()))
-                .addOnSuccessListener(v -> {
-                    user.addWaitlistedEvent(event.getEventDocRef());
-                    updateUI(event);
-                });
+        ArrayList<DocumentReference> list = new ArrayList<>();
+        list.addAll(event.getSelectedUsers());
+        list.addAll(event.getWaitlist());
 
-        //nav.navigate(R.id.fragment_main);
+        // only gray out the thing, leave unjoin alone
+        if (list.contains(getUser().getDocRef())) {
+            binding.joinButtonUserView.setClickable(false);
+            binding.joinButtonUserView.setEnabled(false);
+            binding.joinButtonUserView.setBackgroundColor(Color.GRAY);
+        }
+
+        // if user is selected, the unjoin button acts as a decline button
+        if (event.getSelectedUsers().contains(getUser().getDocRef())) {
+            binding.unjoinButtonUserView.setOnClickListener(v -> {
+                userDeclineInvite(event.getEventDocRef());
+
+                // disable the button
+                binding.unjoinButtonUserView.setEnabled(false);
+                binding.unjoinButtonUserView.setClickable(false);
+                binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
+
+                if (!nav.popBackStack(R.id.fragment_main, false)) {
+                    nav.navigate(R.id.fragment_main);
+                };
+            });
+
+            // join button is already handled at this point
+        }
     }
 
-    /**
-     * handles unjoin, updates database
-     */
-    private void handleUnjoin() {
-        event.getEventDocRef().update("waitlist", FieldValue.arrayRemove(user.getDocRef()));
-        user.removeWaitlistedEvent(event.getEventDocRef());
-        updateUI(event);
-        nav.navigate(R.id.fragment_main);
+    private void handleJoinGeo() {
+        if (event == null) {
+            Toast.makeText(getContext(), "Event not loaded yet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (user.isGeoEnabled() && event.isGeoEnabled()) {
+
+            addLocation(
+                    event,
+                    () -> {
+
+                        handleJoin(event,
+                                () -> {
+                                    updateUI(event);
+                                    svm.setEvent(event);
+                                    nav.navigate(R.id.fragment_view_event_user);
+                                },
+                                // on failure
+                                () -> {
+                                    if (!nav.popBackStack(R.id.fragment_main, false)) {
+                                        nav.navigate(R.id.fragment_main);
+                                    }
+                                }
+                        );
+                    }
+            );
+        } else if (!user.isGeoEnabled() && event.isGeoEnabled()) {
+            Toast.makeText(getContext(), "Please enable location to join this event", Toast.LENGTH_SHORT).show();
+        } else {
+            handleJoin(event,
+                    () -> {
+                        updateUI(event);
+                        svm.setEvent(event);
+                        nav.navigate(R.id.fragment_view_event_user);
+                    },
+                    // on failure
+                    () -> {
+                        if (!nav.popBackStack(R.id.fragment_main, false)) {
+                            nav.navigate(R.id.fragment_main);
+                        }
+                    });
+            }
     }
+
 
     /**
      * admin can delete events, updates database
      */
     private void adminDeleteEvent() {
-        db.collection("Users").get().addOnSuccessListener(snapshot -> {
-            for (DocumentSnapshot userDoc : snapshot.getDocuments()) {
-                DocumentReference uRef = userDoc.getReference();
-                uRef.update("waitlistedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
-                uRef.update("selectedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
-                uRef.update("acceptedEvents", FieldValue.arrayRemove(event.getEventDocRef()));
-            }
-        });
-        event.getEventDocRef().delete();
-        nav.navigate(R.id.fragment_main);
-    }
 
-    private void getUserLocation(){}
+        deleteEvent(event);
+        if (!nav.popBackStack(R.id.fragment_main, false)) {
+            nav.navigate(R.id.fragment_main);
+        }
+    }
 
     /**
      * binding set to null

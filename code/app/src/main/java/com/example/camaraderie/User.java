@@ -1,5 +1,7 @@
 package com.example.camaraderie;//
 
+import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * This is a class that defines a user. Admin privileges granted by setting admin to true.
@@ -35,10 +38,11 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> selectedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedEvents = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
-    private ArrayList<DocumentReference> pendingNotifications = new ArrayList<>();
     //geolocation
-    private boolean geoEnabled;
+    private boolean geoEnabled = false;
     private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
+
+    private ArrayList<DocumentReference> pendingNotifications = new ArrayList<>();
 
     /**
      * Constructor for User
@@ -94,6 +98,7 @@ public class User implements Serializable {
      */
     public void setAdmin(boolean this_admin) {  // we MANUALLY create admins for the app
         admin = this_admin;
+        if (docRef != null) docRef.update("admin", this_admin);  // we need this because firebase might run this setter before it sets docRef
     }
 
     /**
@@ -184,8 +189,24 @@ public class User implements Serializable {
      *  The docRef of the event being deleted
      */
     public void deleteCreatedEvent(DocumentReference event) {
+        event.get().addOnSuccessListener(doc -> {
+            Event e = doc.toObject(Event.class);
+            if (e != null ) {
+                deleteEvent(e);
+                Log.d("User", "Deleted user event");
+            }
+        })
+                .addOnFailureListener(ee -> {
+                    Log.e("User", "deleteCreatedEvent: could not get event", ee);
+                });
+    }
+
+    /**
+     * NOT TO BE CONFUSED WITH `deleteCreatedEvent` - removes event from local memory list
+     * @param event event to be removed
+     */
+    public void removeCreatedEvent(DocumentReference event) {
         this.userCreatedEvents.remove(event);
-        event.delete();  // from db
     }
 
     /**
@@ -201,17 +222,37 @@ public class User implements Serializable {
      */
     public void updateDB(Runnable onComplete) {
         // update the DB from the user
-        this.docRef.set(this, SetOptions.merge())
+
+        HashMap<String, Object> data = new HashMap<>();
+
+        data.put("firstName", firstName);
+        data.put("phoneNumber", phoneNumber);
+        data.put("email", email);
+        data.put("address", address);
+        data.put("notificationToken", notificationToken);
+
+        data.put("admin", admin);
+
+        data.put("userCreatedEvents", userCreatedEvents);
+        data.put("waitlistedEvents", waitlistedEvents);
+        data.put("selectedEvents", selectedEvents);
+        data.put("acceptedEvents", acceptedEvents);
+        data.put("cancelledEvents", cancelledEvents);
+        data.put("pendingNotifications", pendingNotifications);
+        data.put("geoEnabled", geoEnabled);
+        data.put("userEventHistory", userEventHistory);
+
+        this.docRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
-                            Log.d("UserRepository", "User updated");
-                            onComplete.run();
-                        })
+                    Log.d("UserRepository", "User updated");
+                    onComplete.run();
+                })
 
                 .addOnFailureListener(e ->
-                        {
-                            Log.e("UserRepository", "Error updating user", e);
-                            onComplete.run();
-                        });
+                {
+                    Log.e("UserRepository", "Error updating user", e);
+                    onComplete.run();
+                });
     }
 
     /**
@@ -310,6 +351,7 @@ public class User implements Serializable {
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
     }
+
     public ArrayList<DocumentReference> getCancelledEvents() {
         return cancelledEvents;
     }
@@ -356,15 +398,14 @@ public class User implements Serializable {
         this.pendingNotifications = pendingNotifications;
     }
 
-    public void addPendingNotification(DocumentReference notif) {
-        if (!this.pendingNotifications.contains(notif)) {
-            pendingNotifications.add(notif);
-        }
+    public void setUserEventHistory(ArrayList<DocumentReference> userEventHistory) {
+        this.userEventHistory = userEventHistory;
     }
 
-    public void removePendingNotification(DocumentReference notif) {
-        pendingNotifications.remove(notif);
+    public ArrayList<DocumentReference> getUserEventHistory() {
+        return userEventHistory;
     }
+
 }
 
 

@@ -1,5 +1,10 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
+import static com.example.camaraderie.main.Camaraderie.getUser;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,12 +47,12 @@ public class OrganizerNotificationChooserFragment extends Fragment {
         Bundle args = new Bundle();
 
         binding.acceptedNotifButton.setOnClickListener(v -> {
-            args.putString("list", "acceptedList");
+            args.putString("list", "acceptedUsers");
             nav.navigate(R.id.organizerNotificationFragment, args);
         });
 
         binding.cancelledButtonNotif.setOnClickListener(v -> {
-            args.putString("list", "cancelledList");
+            args.putString("list", "cancelledUsers");
             nav.navigate(R.id.organizerNotificationFragment, args);
         });
 
@@ -57,9 +62,19 @@ public class OrganizerNotificationChooserFragment extends Fragment {
         });
 
         binding.selectedButtonNotifs.setOnClickListener(v -> {
-            args.putString("list", "selectedList");
+            args.putString("list", "selectedUsers");
             nav.navigate(R.id.organizerNotificationFragment, args);
         });
+
+
+        binding.orgViewNotifLogs.setEnabled(false);
+        binding.orgViewNotifLogs.setVisibility(INVISIBLE);
+        binding.orgViewNotifLogs.setOnClickListener(v -> nav.navigate(R.id.AdminNotificationLogsFragment));
+
+        if (getUser().isAdmin()) {
+            binding.orgViewNotifLogs.setEnabled(true);
+            binding.orgViewNotifLogs.setVisibility(VISIBLE);
+        }
 
     }
 

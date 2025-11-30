@@ -1,5 +1,6 @@
 package com.example.camaraderie.main;
 
+import static com.example.camaraderie.main.Camaraderie.getContext;
 import static com.example.camaraderie.main.MainActivity.user;
 
 import android.util.Log;
@@ -8,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.camaraderie.notifications.FirebaseMessagingReceiver;
 import com.example.camaraderie.notifications.NotificationData;
+import com.example.camaraderie.notifications.NotificationHelper;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -60,14 +62,23 @@ public class LoadUser {
     notifications -> {
 
                                 for (NotificationData notif : notifications) {
-                                    FirebaseMessagingReceiver fcr = new FirebaseMessagingReceiver();
-                                    fcr.showNotification(notif.getTitle(), notif.getMessage());
+
+//                                    FirebaseMessagingReceiver fcr = new FirebaseMessagingReceiver();
+//                                    fcr.showNotification(notif.getTitle(), notif.getMessage());
+
+                                    NotificationHelper.showNotification(
+                                            getContext(),
+                                            notif.getTitle(),
+                                            notif.getMessage(),
+                                            notif.getId()
+                                    );
+
                                     docRef.update("pendingNotifications", FieldValue.arrayRemove(notif.getRef()))
                                             .addOnSuccessListener(v -> {
-                                                Log.d("Load User", "Notification displayed and removed from ref pendingNotifications field");
+                                                Log.d("Load User", "Notification displayed and removed from ref pendingNotifications field: " + notif.getTitle());
                                             })
                                             .addOnFailureListener(e -> {
-                                                Log.e("Load User", "Failed to remove notification form ref pendingNotifications field", e);
+                                                Log.e("Load User", "Failed to remove notification form ref pendingNotifications field: " + notif.getTitle(), e);
                                             });
                                 }
 

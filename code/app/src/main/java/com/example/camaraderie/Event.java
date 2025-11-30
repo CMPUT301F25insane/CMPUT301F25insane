@@ -6,8 +6,10 @@ import android.util.Log;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * This is a class that defines an event
@@ -23,20 +25,21 @@ public class Event {
     private String eventTime;  // this will probably become a better data type soon
     //private float price = 0.0f;
 
-    private Uri eventPosterUri;
     private ArrayList<DocumentReference> waitlist = new ArrayList<>();
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
+    private ArrayList<DocumentReference> notificationLogs = new ArrayList<>();
 
-    //Geolocation - Umran
-    private boolean geoEnabled;
-    private ArrayList<Location> locationArrayList = new ArrayList<>();
+    private boolean geoEnabled = false;
+    private ArrayList<HashMap<String, Object>> userLocationArrayList = new ArrayList<>();
 
     private int capacity;  // always > 0
     private int waitlistLimit = -1;
     private DocumentReference hostDocRef;
     private DocumentReference eventDocRef;
+
+    private String imageUrl;
 
     private String eventId;
 
@@ -71,7 +74,7 @@ public class Event {
      *  enable or disable the geolocation requirement for the event
      *
      */
-    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int waitlistLimit, DocumentReference host, DocumentReference eventDocRef, String eventId, Uri uri, boolean geoEnabled) {
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int waitlistLimit, DocumentReference host, DocumentReference eventDocRef, String eventId, boolean geoEnabled) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
@@ -83,7 +86,6 @@ public class Event {
         this.hostDocRef = host;
         this.eventDocRef = eventDocRef;
         this.eventId = eventId;
-        this.eventPosterUri = uri;
         this.geoEnabled = geoEnabled;
     }
 
@@ -91,19 +93,31 @@ public class Event {
     public boolean isGeoEnabled() {
         return geoEnabled;
     }
-
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
     }
 
-    public ArrayList<Location> getLocationArrayList() {
-        return locationArrayList;
+    public ArrayList<HashMap<String, Object>> getLocationArrayList() {
+        return userLocationArrayList;
     }
 
-    public void addLocationArrayList(Location location) {
-        if (!locationArrayList.contains(location)) {
-            this.locationArrayList.add(location);
+    public void setLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList){
+        this.userLocationArrayList = userLocationArrayList;
+    }
+
+    public void addLocationArrayList(HashMap<String, Object> location) {
+        if (userLocationArrayList == null) {
+            userLocationArrayList = new ArrayList<>();
         }
+        this.userLocationArrayList.add(location);
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String url) {
+        this.imageUrl = url;
     }
     //logic needed for map
 
@@ -256,13 +270,6 @@ public class Event {
      *  Return organizer of the event
      */
 
-    public void setPosterUri(Uri uri){
-        this.eventPosterUri = uri;
-    }
-
-    public Uri getPosterUri(){
-        return eventPosterUri;
-    }
 
     public DocumentReference getHostDocRef() {
         return hostDocRef;
@@ -341,7 +348,30 @@ public class Event {
      * updates event in database
      */
     public void updateDB(Runnable onComplete) {
-        eventDocRef.set(this, SetOptions.merge())
+        //TODO: this bitch is broken lol idk why
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("eventName", eventName);
+        data.put("eventLocation", eventLocation);
+        data.put("registrationDeadline", registrationDeadline);
+        data.put("description", description);
+        data.put("eventDate", eventDate);
+        data.put("eventTime", eventTime);
+
+        data.put("imageUrl", imageUrl);
+        data.put("waitlist", waitlist);
+        data.put("selectedUsers", selectedUsers);
+        data.put("acceptedUsers", acceptedUsers);
+        data.put("cancelledUsers", cancelledUsers);
+
+        data.put("geoEnabled", geoEnabled);
+        data.put("userLocationArrayList", userLocationArrayList);
+
+        data.put("capacity", capacity);
+        data.put("waitlistLimit", waitlistLimit);
+        data.put("imageUrl", imageUrl);
+
+        eventDocRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firestore", "Successfully update event");
                     onComplete.run();
@@ -405,4 +435,19 @@ public class Event {
         this.waitlistLimit = waitlistLimit;
     }
 
+    public void clearSelectedUsers() {
+        this.selectedUsers.clear();
+    }
+
+    public void clearWaitlistedUsers() {
+        this.waitlist.clear();
+    }
+
+    public ArrayList<DocumentReference> getNotificationLogs() {
+        return notificationLogs;
+    }
+
+    public void setNotificationLogs(ArrayList<DocumentReference> notificationLogs) {
+        this.notificationLogs = notificationLogs;
+    }
 }

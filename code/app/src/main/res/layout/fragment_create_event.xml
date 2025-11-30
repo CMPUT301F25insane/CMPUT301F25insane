@@ -118,7 +118,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <EditText
+        <TextView
             android:id="@+id/input_field_for_create_event_time"
             android:layout_width="121dp"
             android:layout_height="40dp"
@@ -223,6 +223,21 @@
             app:layout_constraintStart_toEndOf="@+id/button_for_going_back"
             app:strokeColor="@color/black"
             app:strokeWidth="3.5dp" />
+
+        <Switch
+            android:id="@+id/geoSwitch"
+            android:layout_width="184dp"
+            android:layout_height="38dp"
+            android:fontFamily="@font/cambria"
+            android:text="Enable Geolocation"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.959"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.058" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

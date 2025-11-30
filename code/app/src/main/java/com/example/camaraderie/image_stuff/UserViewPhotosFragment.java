@@ -1,6 +1,9 @@
 package com.example.camaraderie.image_stuff;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.bumptech.glide.Glide;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentUserViewPhotosBinding;
@@ -22,10 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class UserViewPhotosFragment extends Fragment{
 
     private NavController nav;
-    private FirebaseFirestore db;
-    private DocumentReference eventDocRef;
     private SharedEventViewModel svm;
-
     private Event event;
 
     private FragmentUserViewPhotosBinding binding;
@@ -43,7 +44,6 @@ public class UserViewPhotosFragment extends Fragment{
 
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
         nav = NavHostFragment.findNavController(this);
-        db = FirebaseFirestore.getInstance();
     }
 
     /**
@@ -79,13 +79,12 @@ public class UserViewPhotosFragment extends Fragment{
 
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
-            Log.d("Event:", event.getEventId());
-            eventDocRef = event.getEventDocRef();
+
+            Glide.with(this).load(event.getImageUrl()).into(binding.imageView2);
+
         });
 
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
-
-        // Add code to ge the url from event and put it into the imageview
 
 
     }

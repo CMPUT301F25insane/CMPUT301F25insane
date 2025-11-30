@@ -258,44 +258,108 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/unjoin_button_user_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="#9E2C0A"
-        android:text="Unjoin"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc"
-        app:strokeWidth="3dp" />
-
-    <Button
-        android:id="@+id/join_button_user_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="204dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="12dp"
-        android:backgroundTint="#AAD6F2"
-        android:text="Join"
-        android:textColor="@color/black"
+    <HorizontalScrollView
+        android:layout_width="363dp"
+        android:layout_height="92dp"
+        android:fadeScrollbars="false"
+        android:overScrollMode="never"
+        android:padding="8dp"
+        android:scrollbars="horizontal|none"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/unjoin_button_user_view"
-        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc"
-        app:strokeWidth="3dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc">
 
-    <Button
-        android:id="@+id/adminDeleteEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Delete"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/join_button_user_view"
-        app:layout_constraintStart_toEndOf="@+id/unjoin_button_user_view"
-        app:layout_constraintTop_toBottomOf="@+id/layout_for_disc_location_etc" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/join_button_user_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#B06CF9CC"
+                android:fontFamily="@font/cambria"
+                android:text="Join"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.88"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.512"
+                app:strokeWidth="3.5dp" />
+
+            <Button
+                android:id="@+id/unjoin_button_user_view"
+                android:layout_width="104dp"
+                android:layout_height="49dp"
+                android:backgroundTint="#9E2C0A"
+                android:fontFamily="@font/cambria"
+                android:text="Unjoin"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.087"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.513"
+                app:strokeWidth="3.5dp" />
+
+            <Button
+                android:id="@+id/adminDeleteEvent"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#8FE5E4FF"
+                android:fontFamily="@font/cambria"
+                android:text="Delete"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.869"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.651"
+                app:strokeWidth="3.5dp" />
+
+            <Button
+                android:id="@+id/adminViewLogs"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#8FE5E4FF"
+                android:fontFamily="@font/cambria"
+                android:text="View Logs"
+                android:textColor="@color/black"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.869"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.651"
+                app:strokeWidth="3.5dp" />
+
+            <Button
+                android:id="@+id/userViewEventBackButton"
+                android:layout_width="149dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="#8FE5E4FF"
+                android:fontFamily="@font/cambria"
+                android:text="Back"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:strokeWidth="3.5dp" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

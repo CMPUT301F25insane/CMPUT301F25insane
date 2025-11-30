@@ -1,7 +1,5 @@
 package com.example.camaraderie.my_events;
 
-import static com.example.camaraderie.main.MainActivity.user;
-
 import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
@@ -27,11 +25,12 @@ public class MyEventsViewModel extends ViewModel {
         this.events = events;
     }
 
-    public void getUserCreatedEvents(MyEventsCallback onComplete) {
+    public void getUserEventsFromList(ArrayList<DocumentReference> refs, MyEventsCallback onComplete) {
+        events.clear();
 
-        ArrayList<DocumentReference> refs = user.getUserCreatedEvents();
         if (refs.isEmpty()) {
-            Log.d("Firebase", "User has no created events");
+            Log.d("MyEventsViewModel", "User has no events in list");
+            onComplete.onEventsLoaded(new ArrayList<>());
             return;
         }
 
@@ -39,7 +38,7 @@ public class MyEventsViewModel extends ViewModel {
             ref.get().addOnSuccessListener(doc -> {
                 Event e = doc.toObject(Event.class);
                 if (e != null) {
-                    System.out.println("EVENT LOADED FROM USER: " + e.getEventId());
+
                     events.add(e);
                 }
                 else {

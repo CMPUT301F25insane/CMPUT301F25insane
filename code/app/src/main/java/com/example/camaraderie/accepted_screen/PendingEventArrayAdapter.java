@@ -1,5 +1,8 @@
 package com.example.camaraderie.accepted_screen;
 
+import static com.example.camaraderie.accepted_screen.UserAcceptedHandler.userAcceptInvite;
+import static com.example.camaraderie.accepted_screen.UserAcceptedHandler.userDeclineInvite;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,19 +29,28 @@ import java.util.ArrayList;
 
 public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
-    private UserAcceptedViewModel vm;
+
+    private UserAcceptedToEventFragment listener;
+
+    // user accepts invitation
+
+    public void setListener(UserAcceptedToEventFragment listener) {
+        this.listener = listener;
+    }
+
+    public UserAcceptedToEventFragment getListener() {return listener;}
+
 
     /**
      * PendingEventArrayAdapter has a constructor that initializes the view model
      * @param context
      * @param resource
      * @param events
-     * @param vm
-     * We just set vm to be this one
+     *
      */
-    public PendingEventArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> events, UserAcceptedViewModel vm) {
+    public PendingEventArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> events) {
         super(context, resource, events);
-        this.vm = vm;
+
     }
 
     /**
@@ -86,11 +98,9 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
         view.findViewById(R.id.acceptEventButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                vm.userAcceptInvite(event.getEventDocRef());
-
-                if (vm.allInvitesResolved()) {
-                    ((Button)parent.findViewById(R.id.pendingEventsContinueButton)).setEnabled(true);
-                }
+                userAcceptInvite(event.getEventDocRef());
+                remove(event);
+                listener.enableConfirmButton();
 
             }
 
@@ -107,10 +117,9 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
 
             public void onClick(View v) {
-                vm.userDeclineInvite(event.getEventDocRef());
-                if (vm.allInvitesResolved()) {
-                    ((Button)parent.findViewById(R.id.pendingEventsContinueButton)).setEnabled(true);
-                }
+                userDeclineInvite(event.getEventDocRef());
+                remove(event);
+                listener.enableConfirmButton();
             }
         });
 

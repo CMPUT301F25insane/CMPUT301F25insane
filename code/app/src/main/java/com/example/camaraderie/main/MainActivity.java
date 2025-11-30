@@ -2,12 +2,16 @@ package com.example.camaraderie.main;//
 
 
 import static android.app.ProgressDialog.show;
+import static com.example.camaraderie.main.Camaraderie.getUser;
+import static com.example.camaraderie.main.Camaraderie.setUser;
 import static com.example.camaraderie.utilStuff.Util.*;
 
 import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,8 +35,6 @@ import com.example.camaraderie.User;
 import com.example.camaraderie.dashboard.EventViewModel;
 import com.example.camaraderie.databinding.ActivityMainBinding;
 //import com.example.camaraderie.databinding.ActivityMainTestBinding;
-import com.example.camaraderie.notifications.NotificationController;
-import com.example.camaraderie.notifications.NotificationView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,7 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FirebaseFirestore db;
+
     public static User user;
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable reloadTask;
 
     private NavController navController;
 
@@ -63,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
     private Uri pendingDeeplink = null;
 
     private boolean __DEBUG_DATABASE_CLEAR = false;
-    private NotificationView notificationView;
-    private NotificationController notificationController;
     private String token;
 
     /**
@@ -82,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
+        FirebaseFirestore.getInstance().clearPersistence();  // TODO: DO NOT UNCOMMENT THIS CODE
+
         svm = new ViewModelProvider(this).get(SharedEventViewModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());  // purely for backend purposes
@@ -91,11 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
-
+/*
         notificationController = new NotificationController(this, notificationView);
         notificationController.setChannelId("basic_notification_channel");
         notificationController.createNotificationChannel("Basic Notifications", "General Notifications");
-
+*/
         requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0);
 
         db = FirebaseFirestore.getInstance();
@@ -103,16 +109,16 @@ public class MainActivity extends AppCompatActivity {
         usersRef = db.collection("Users");
         notifsRef = db.collection("Notifications");
         String id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-
+/*
         notificationController.setChannelId(id);
         notificationController.createNotificationChannel("Personal Notifications", "Personalized Notifications");
-
+*/
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            Log.w("FCM", "Fetching FCM registration token failed", task.getException());
+                            Log.e("FCM", "Fetching FCM registration token failed", task.getException());
                             return;
                         }
 
@@ -136,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (documentSnapshot.exists()) {
                             user = documentSnapshot.toObject(User.class);
+                            setUser(user);  // set the user in the user repo
                             Log.d("Firestore", "User found");
                             DocumentReference userRef = documentSnapshot.getReference();
                             user.setNotificationToken(token);
@@ -237,6 +244,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        reloadTask = new Runnable() {
+            @Override
+            public void run() {
+                if (getUser() != null) {
+                    new LoadUser(getUser().getDocRef()).loadAllData( () -> {
+                        return;
+                    });
+                }
+                handler.postDelayed(this, 60000); // run again
+            }
+        };
 
     }
 
@@ -332,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
                                 aVoid -> {
                                     Log.d("Firestore", "User has been created!");
                                     MainActivity.user = newUser;
+                                    setUser(newUser);
                                     FirebaseMessaging.getInstance().getToken()
                                             .addOnCompleteListener(new OnCompleteListener<String>() {
                                                 @Override
@@ -390,6 +409,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         binding = null;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        handler.post(reloadTask);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(reloadTask);
     }
 
 }

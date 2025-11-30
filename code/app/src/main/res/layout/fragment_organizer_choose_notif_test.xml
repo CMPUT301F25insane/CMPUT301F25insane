@@ -1,36 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <Button
-        android:id="@+id/choosenotifBack"
-        android:layout_width="match_parent"
-        android:layout_height="127dp"
-        android:text="back" />
-
+    android:orientation="vertical"
+    android:background="@drawable/gradient_resource"
+    >
     <Button
         android:id="@+id/acceptedNotifButton"
-        android:layout_width="match_parent"
-        android:layout_height="145dp"
-        android:text="accepted" />
+        android:layout_width="145dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#AAD6F2"
+        android:text="Accepted"
+        android:fontFamily="@font/cambria"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.157"
+        app:strokeWidth="3.5dp" />
 
     <Button
         android:id="@+id/waitlistNotifButton"
-        android:layout_width="match_parent"
-        android:layout_height="127dp"
-        android:text="waitlist" />
+        android:layout_width="145dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:textStyle="bold"
+        android:text="Waitlist"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.281"
+        app:strokeWidth="3.5dp" />
 
     <Button
         android:id="@+id/selectedButtonNotifs"
-        android:layout_width="match_parent"
-        android:layout_height="139dp"
-        android:text="Selected" />
+        android:layout_width="145dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#AAD6F2"
+        android:text="Selected"
+        android:fontFamily="@font/cambria"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        app:strokeWidth="3.5dp" />
 
     <Button
         android:id="@+id/cancelledButtonNotif"
-        android:layout_width="match_parent"
-        android:layout_height="167dp"
-        android:text="cancelled" />
-</LinearLayout>
+        android:layout_width="145dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#AAD6F2"
+        android:text="Cancelled"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:fontFamily="@font/cambria"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.517"
+        app:strokeWidth="3.5dp" />
+
+    <Button
+        android:id="@+id/orgViewNotifLogs"
+        android:layout_width="145dp"
+        android:layout_height="60dp"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:text="View Logs"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.618"
+        app:strokeWidth="3.5dp" />
+
+    <Button
+        android:id="@+id/choosenotifBack"
+        android:layout_width="129dp"
+        android:layout_height="45dp"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:text="Back"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.702"
+        app:strokeWidth="3.5dp" />
+
+    <TextView
+        android:id="@+id/Camarderie_header_for_choose_noti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cambria"
+        android:text="Camaraderie"
+        android:textColor="@color/white"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.037" />
+</androidx.constraintlayout.widget.ConstraintLayout>

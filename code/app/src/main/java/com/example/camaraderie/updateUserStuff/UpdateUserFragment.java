@@ -2,14 +2,20 @@ package com.example.camaraderie.updateUserStuff;
 
 import static com.example.camaraderie.main.MainActivity.user;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -29,10 +35,40 @@ public class UpdateUserFragment extends Fragment {
     private FragmentUpdateUserBinding binding;
     private NavController nav;
 
+    ActivityResultLauncher<String[]> locationPermissionRequest;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         nav = NavHostFragment.findNavController(this);
+
+        //https://developer.android.com/develop/sensors-and-location/location/permissions/runtime
+        locationPermissionRequest = locationPermissionRequest =
+                registerForActivityResult(new ActivityResultContracts
+                                .RequestMultiplePermissions(), result -> {
+
+                            Boolean fineLocationGranted = null;
+                            Boolean coarseLocationGranted = null;
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                fineLocationGranted = result.getOrDefault(
+                                        Manifest.permission.ACCESS_FINE_LOCATION, false);
+                                coarseLocationGranted = result.getOrDefault(
+                                        Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                            }
+
+                    if (fineLocationGranted != null && fineLocationGranted) {
+                        user.setGeoEnabled(true);
+                        Toast.makeText(getContext(),"Precise location permission granted", Toast.LENGTH_SHORT).show();
+                    } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                        user.setGeoEnabled(true);
+                        Toast.makeText(getContext(),"Approximate location permission granted", Toast.LENGTH_SHORT).show();
+                    } else {
+                        user.setGeoEnabled(false);
+                        binding.geoSwitch.setChecked(false); // turn off switch if denied
+                        Toast.makeText(getContext(),"Location permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     /**
@@ -124,7 +160,7 @@ public class UpdateUserFragment extends Fragment {
         });
 
         binding.adminButtonForUserProfile2.setOnClickListener(v -> {
-            if (binding.adminPasswordForUserProfile.getText().toString().equals("80085")) {
+            if (user.isAdmin() || binding.adminPasswordForUserProfile.getText().toString().equals("80085")) {
                 user.setAdmin(true);
                 nav.navigate(R.id.admin_main_screen);
             }
@@ -134,6 +170,19 @@ public class UpdateUserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 nav.navigate(R.id.fragment_guidelines);
+            }
+        });
+
+        binding.geoSwitch.setChecked(user.isGeoEnabled()); // initialize switch
+
+        binding.geoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                //user turned it on
+                requestLocationPermissions();
+            } else {
+                // user turned it off
+                user.setGeoEnabled(false);
+                Toast.makeText(getContext(), "Geolocation disabled", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -152,5 +201,27 @@ public class UpdateUserFragment extends Fragment {
 
         UserDeleter deleter = new UserDeleter(user);
         deleter.DeleteUser(onComplete);
+    }
+
+    private void requestLocationPermissions() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            user.setGeoEnabled(true);
+            Toast.makeText(getContext(), "Precise location permission already granted", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        locationPermissionRequest.launch(new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        boolean hasPermission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+        binding.geoSwitch.setChecked(user.isGeoEnabled() && hasPermission);
     }
 }

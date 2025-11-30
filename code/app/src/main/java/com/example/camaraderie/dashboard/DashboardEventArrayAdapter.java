@@ -3,11 +3,14 @@ package com.example.camaraderie.dashboard;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
 
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +20,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
+import com.example.camaraderie.geolocation.AddUserLocation;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
@@ -32,6 +38,7 @@ import java.util.Date;
 public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
     public OnEventClickListener listener;
+    private final Date date = new Date();
 
     /**
      * A default constructor
@@ -42,6 +49,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
      */
     public DashboardEventArrayAdapter(@NonNull Context context, ArrayList<Event> events) {
         super(context, 0, events);
+        setNotifyOnChange(true);
     }
 
     /**
@@ -93,64 +101,40 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         //hostName.setText(event.getHost().getUsername());
 
         Button joinButton = view.findViewById(R.id.joinButton);
+        joinButton.setClickable(true);
 
-        String path = event.getEventDocRef().getPath();
+        DocumentReference eventRef = event.getEventDocRef();
 
-        /**
+        /*
          * We go through each document reference in the waitlist for each user and
          * If their path is equal to the path of the current document, we say that the user
          * is in that waitlist and set the boolean to true
          */
 
-        boolean userInWaitlist = false;
-        System.out.println(event.getEventId());
-        for (DocumentReference ref : user.getWaitlistedEvents()) {
-            if (ref.getPath().equals(path)) {
-                System.out.println(ref.getPath() + " | " + user.getDocRef().getPath());  // TODO: make this a log
-                userInWaitlist = true;
+        ArrayList<DocumentReference> userListUnion = new ArrayList<>();
+        userListUnion.addAll(user.getWaitlistedEvents());
+        userListUnion.addAll(user.getSelectedEvents());
+        userListUnion.addAll(user.getAcceptedEvents());
+
+        boolean userCannotJoinWaitlist = false;
+
+        for (DocumentReference ref : userListUnion) {
+            if (ref.getPath().equals(eventRef.getPath())) {
+                Log.d("Dashboard Array Adapter", ref.getPath() + " | " + user.getDocRef().getPath());
+                userCannotJoinWaitlist = true;
                 break;
             }
         }
 
-        /**
-         * If the user is selected then we set the boolean to true
-         */
-
-        if (!userInWaitlist) {
-            for (DocumentReference ref : user.getSelectedEvents()) {
-                if (ref.getPath().equals(path)) {
-                    userInWaitlist = true;
-                    break;
-                }
-            }
-        }
-
-        /**
-         * If the user is accepted then we set the boolean to true
-         */
-
-        if (!userInWaitlist) {
-            for (DocumentReference ref : user.getAcceptedEvents()) {
-                if (ref.getPath().equals(path)) {
-                    userInWaitlist = true;
-                    break;
-                }
-            }
-        }
-
-        /*
-         * If the waitlist size of the event is greater than the limit of the waitlist then we set the
-         * boolean to true
-         */
-
         if (event.getWaitlistLimit() != -1) {
-            if (event.getWaitlist().size() >= event.getWaitlistLimit()) {
-                userInWaitlist = true;
+            if (event.getWaitlist().size() + event.getSelectedUsers().size() >= event.getWaitlistLimit()) {
+                userCannotJoinWaitlist = true;
             }
         }
 
-        if (event.getRegistrationDeadline().before(new Date())) {
-            userInWaitlist = true;
+        // reg date passed (filter this out?)
+        if (event.getRegistrationDeadline().before(date)) {
+            userCannotJoinWaitlist = true;
         }
 
         /*
@@ -163,14 +147,16 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
             joinButton.setEnabled(false);
             joinButton.setVisibility(INVISIBLE);
         }
-        else if (userInWaitlist) {
+
+        else if (userCannotJoinWaitlist) {
+            joinButton.setVisibility(VISIBLE);
             joinButton.setEnabled(false);
             joinButton.setBackgroundColor(Color.GRAY);
         }
         else {
             joinButton.setVisibility(VISIBLE);
             joinButton.setEnabled(true);
-            joinButton.setBackgroundColor(Color.parseColor("#AAF2C8"));  // original colour
+            joinButton.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.custom_join_button_color));  // original colour
         }
 
         /*
@@ -191,22 +177,25 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
          * add the event to the user's registration history
          */
 
-        joinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                joinButton.setBackgroundColor(Color.GRAY);
-                joinButton.setEnabled(false);
-                event.addWaitlistUser(user.getDocRef());
-                user.addWaitlistedEvent(event.getEventDocRef());
-                user.addEventToHistory(event.getEventDocRef());
+        joinButton.setOnClickListener(v ->
+            addLocation(event, () -> {
 
-                // update db
-                user.updateDB(() -> {
-                    event.updateDB( () -> {});
-                });
+                handleJoin(
+                    event,
 
-            }
-        });
+                    () -> {
+                        joinButton.setClickable(false);
+                        joinButton.setBackgroundColor(Color.GRAY);
+                        joinButton.setEnabled(false);
+                    },
+
+                    () -> {
+                        Log.e("DashboardEventArrayAdapter", "failed to join event");
+                        remove(event);
+                        notifyDataSetChanged();
+                    });})
+
+        );
 
         /*
          * We also have a see description button so that the user can see
