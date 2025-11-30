@@ -250,8 +250,10 @@ public class CreateEventFragment extends Fragment {
      */
     private void fillTextViews(Event event) {
         eventName.setText(event.getEventName());
-        eventDate.setText(event.getEventDate().toString());
-        eventDeadline.setText(event.getRegistrationDeadline().toString());
+        String date = (event.getEventDate().getYear()+1900) + "-" + (event.getEventDate().getMonth()+1) + "-" + event.getEventDate().getDay();
+        eventDate.setText(date);
+        String deadline = (event.getRegistrationDeadline().getYear()+1900) + "-" + (event.getRegistrationDeadline().getMonth()+1) + "-" + event.getRegistrationDeadline().getDay();
+        eventDeadline.setText(deadline);
         eventLocation.setText(event.getEventLocation());
         eventDescription.setText(event.getDescription());
         eventCapacity.setText(String.valueOf(event.getCapacity()));
