@@ -140,6 +140,18 @@ public class UserViewEventFragment extends Fragment {
             }
         });
 
+        // admin log stuff, only admins can view logs
+        binding.adminViewLogs.setEnabled(false);
+        binding.adminViewLogs.setVisibility(INVISIBLE);
+        binding.adminViewLogs.setOnClickListener(v -> nav.navigate(R.id.AdminNotificationLogsFragment));
+
+        if (getUser().isAdmin()) {
+            binding.adminViewLogs.setEnabled(true);
+            binding.adminViewLogs.setVisibility(VISIBLE);
+        }
+
+        binding.nameOfUseranizer.setText(getUser().getFirstName());
+
         // button handlers
         binding.joinButtonUserView.setOnClickListener(v -> handleJoinGeo());
 
@@ -217,6 +229,12 @@ public class UserViewEventFragment extends Fragment {
         binding.registrationDeadlineTextUserView.setText(e.getRegistrationDeadline().toString());
         binding.userEventViewEventDate.setText(e.getEventDate().toString());
         binding.locationOfUserView.setText(e.getEventLocation());
+
+        binding.attendeeCountOrganizer.setText(
+                "Accepted: " + e.getAcceptedUsers().size() +
+                        " | Selected: " + e.getSelectedUsers().size() +
+                        " | Waitlist: " + e.getWaitlist().size()
+        );
 
         db.document(e.getHostDocRef().getPath()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             /**

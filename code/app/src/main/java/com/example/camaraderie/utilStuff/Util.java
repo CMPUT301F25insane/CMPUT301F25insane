@@ -99,12 +99,12 @@ public class Util {
                     new Date(),
                     "Description " + i,
                     new Date(),
-                    "5:00 PM",
+                    "05:00",
+                    "05:00",
                     5,
                     ll,
                     userDoc,
                     eventDoc,
-                    eventDoc.getId(),
                     null,
                     false
             );

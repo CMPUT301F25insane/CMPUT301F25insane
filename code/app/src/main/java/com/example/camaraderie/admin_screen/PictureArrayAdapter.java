@@ -2,6 +2,8 @@ package com.example.camaraderie.admin_screen;
 
 import static com.example.camaraderie.main.MainActivity.user;
 
+import static com.example.camaraderie.image_stuff.ImageHandler.deleteEventImage;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 
+import com.bumptech.glide.Glide;
 import com.example.camaraderie.R;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
@@ -83,18 +86,8 @@ public class PictureArrayAdapter extends ArrayAdapter<Event> {
         ImageView imageView = view.findViewById(R.id.imageView);
         Button remove = view.findViewById(R.id.RemoveButton);
 
-        DocumentReference eventDocRef = event.getEventDocRef();
-        eventDocRef.get().addOnCompleteListener(task -> {
-            String imageString = task.getResult().getString("imageString");
-            // Decode and place the image into the imageView
-            if (imageString != null) {
-                byte[] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                imageView.setImageBitmap(bitmap);
-            }
-        });
-
+        Glide.with(this.getContext()).load(event.getImageUrl()).into(imageView);
 
 
         /**
@@ -105,9 +98,11 @@ public class PictureArrayAdapter extends ArrayAdapter<Event> {
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                eventDocRef.update("imageString", FieldValue.delete());
-                imageView.setImageBitmap(null);
+                deleteEventImage(event);
+                event.setImageUrl(null);
                 Toast.makeText(getContext(), "Image Removed", Toast.LENGTH_SHORT).show();
+                imageView.setImageBitmap(null);
+                event.getEventDocRef().update("imageUrl", FieldValue.delete());
             }
         });
         return view;

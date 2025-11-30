@@ -24,6 +24,34 @@
     </fragment>
 
     <fragment
+        android:name="com.example.camaraderie.admin_screen.admin_notification_logs.AdminNotificationLogFragment"
+        android:id="@+id/AdminNotificationLogsFragment"
+        android:label="Admin Notification Log View"
+        tools:layout="@layout/fragment_admin_view_notification_logs">
+
+        <action
+            android:id="@+id/action_AdminNotificationLogsFragment_to__fragment_organizer_view_event"
+            app:destination="@id/_fragment_organizer_view_event" />
+        <action
+            android:id="@+id/action_AdminNotificationLogsFragment_to_fragment_view_event_user"
+            app:destination="@id/fragment_view_event_user" />
+        <action
+            android:id="@+id/action_AdminNotificationLogsFragment_to_OrganizerNotificationChooserFragment"
+            app:destination="@id/OrganizerNotificationChooserFragment" />
+    </fragment>
+
+    <fragment
+        android:name="com.example.camaraderie.my_events.event_history_and_accepted.ViewMyEventHistoryFragment"
+        android:id="@+id/ViewEventHistoryFragment"
+        android:label="User views event history"
+        tools:layout="@layout/fragment_view_my_event_history">
+
+        <action
+            android:id="@+id/action_ViewEventHistoryFragment_to_fragment_view_my_events"
+            app:destination="@id/fragment_view_my_events" />
+    </fragment>
+
+    <fragment
         android:name="com.example.camaraderie.my_events.event_history_and_accepted.MyAcceptedEventsFragment"
         android:label="Users accepted events"
         android:id="@+id/MyAcceptedEventsFragment"
@@ -59,6 +87,9 @@
         <action
             android:id="@+id/action_OrganizerNotificationChooserFragment_to__fragment_organizer_view_event"
             app:destination="@id/_fragment_organizer_view_event" />
+        <action
+            android:id="@+id/action_OrganizerNotificationChooserFragment_to_AdminNotificationLogsFragment"
+            app:destination="@id/AdminNotificationLogsFragment" />
     </fragment>
 
     <fragment
@@ -119,6 +150,9 @@
         <action
             android:id="@+id/action_fragment_view_my_events_to_MyAcceptedEventsFragment"
             app:destination="@id/MyAcceptedEventsFragment" />
+        <action
+            android:id="@+id/action_fragment_view_my_events_to_ViewEventHistoryFragment"
+            app:destination="@id/ViewEventHistoryFragment" />
     </fragment>
 
     <fragment
@@ -157,6 +191,9 @@
         <action
             android:id="@+id/action__fragment_organizer_view_event_to_OrganizerNotificationChooserFragment"
             app:destination="@id/OrganizerNotificationChooserFragment" />
+        <action
+            android:id="@+id/action__fragment_organizer_view_event_to_AdminNotificationLogsFragment"
+            app:destination="@id/AdminNotificationLogsFragment" />
 
     </fragment>
 
@@ -239,6 +276,9 @@
 
         <action android:id="@+id/action__fragment_user_view_event_to_fragment_user_view_photos"
             app:destination="@id/fragment_user_view_photos"/>
+        <action
+            android:id="@+id/action_fragment_view_event_user_to_AdminNotificationLogsFragment"
+            app:destination="@id/AdminNotificationLogsFragment" />
 
     </fragment>
 
@@ -376,6 +416,9 @@
         <action
             android:id="@+id/action_update_user_to_fragment_guidelines"
             app:destination="@id/fragment_guidelines" />
+        <action
+            android:id="@+id/action_update_user_to_notificationSettingsFragment"
+            app:destination="@id/notificationSettingsFragment" />
     </fragment>
 
     <fragment
@@ -387,7 +430,10 @@
             android:id="@+id/action_map_to__fragment_organizer_view_event"
             app:destination="@id/_fragment_organizer_view_event" />
     </fragment>
-
+    <fragment
+        android:id="@+id/notificationSettingsFragment"
+        android:name="com.example.camaraderie.updateUserStuff.NotificationSettingsFragment"
+        android:label="NotificationSettingsFragment" />
 
 
 </navigation>

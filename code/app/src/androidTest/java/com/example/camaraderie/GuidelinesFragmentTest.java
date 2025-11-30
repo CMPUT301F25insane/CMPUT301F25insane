@@ -9,7 +9,6 @@ import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import com.example.camaraderie.event_screen.organizer_view.CreateEventFragment;
 import com.example.camaraderie.updateUserStuff.GuidelinesFragment;
 
 import org.junit.After;
@@ -43,7 +42,7 @@ public class GuidelinesFragmentTest {
 
     @Test
     public void tesHeaderVisible(){
-        onView(withId(R.id.header_above_guidelines)).check(matches(isDisplayed()));
+        onView(withId(R.id.header_for_guidelines)).check(matches(isDisplayed()));
     }
 
 }

@@ -114,6 +114,13 @@ public class UpdateUserFragment extends Fragment {
                 String address = binding.addressFieldForUpdateUser2.getText().toString().trim();
                 String phone_no = binding.phoneFieldForUpdateUser3.getText().toString().trim();
 
+                if(!email.contains("@") || !email.contains(".")) {
+                    Toast toast = new Toast(getContext());
+                    toast.setText("Invalid email");
+                    toast.show();
+                    return;
+                }
+
                 userDocRef
                         .update(
                                 "firstName",name,
@@ -183,6 +190,13 @@ public class UpdateUserFragment extends Fragment {
                 // user turned it off
                 user.setGeoEnabled(false);
                 Toast.makeText(getContext(), "Geolocation disabled", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.notificationPermissionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.notificationSettingsFragment);
             }
         });
     }
