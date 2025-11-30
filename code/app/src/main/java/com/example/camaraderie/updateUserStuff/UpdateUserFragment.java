@@ -192,6 +192,13 @@ public class UpdateUserFragment extends Fragment {
                 Toast.makeText(getContext(), "Geolocation disabled", Toast.LENGTH_SHORT).show();
             }
         });
+
+        binding.notificationPermissionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav.navigate(R.id.notificationSettingsFragment);
+            }
+        });
     }
 
     /**
