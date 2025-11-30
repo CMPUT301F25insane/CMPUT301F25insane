@@ -4,7 +4,9 @@ import static com.example.camaraderie.image_stuff.ImageHandler.deleteEventImage;
 import static com.example.camaraderie.image_stuff.ImageHandler.uploadEventImage;
 import static com.example.camaraderie.main.MainActivity.user;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -69,7 +72,7 @@ public class CreateEventFragment extends Fragment {
     private EditText eventLocation;
     private EditText eventDescription;
     private EditText eventCapacity;
-    private EditText eventTime;
+    private TextView eventTime;
     private EditText optionalLimit;
     private Switch geoSwitch;
     private boolean geoEnabled;
@@ -198,6 +201,16 @@ public class CreateEventFragment extends Fragment {
             }
         });
 
+        binding.inputFieldForCreateEventTime.setOnClickListener(new View.OnClickListener() {
+            /**
+             * sets time dialogfragment
+             *
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) { openTimeDialog(); }
+        });
+
         binding.buttonForGoingBack.setOnClickListener(v -> nav.popBackStack());
 
         binding.buttonForConfirm.setEnabled(true);
@@ -272,7 +285,7 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDescription,
                              EditText eventCapacity,
                              EditText optionalLimit,
-                             EditText eventTime,
+                             TextView eventTime,
                              String eventImageString) throws ParseException {
 
         String name = eventName.getText().toString();
@@ -420,5 +433,18 @@ public class CreateEventFragment extends Fragment {
 
         dateDialog.show();
 
+    }
+
+    private void openTimeDialog() {
+        TimePickerDialog timeDialog;
+        timeDialog = new TimePickerDialog(requireContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String format = hourOfDay + ":" + minute;
+                binding.inputFieldForCreateEventTime.setText(format);
+            }
+
+        }, 0, 0, true);
+        timeDialog.show();
     }
 }

@@ -118,7 +118,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <EditText
+        <TextView
             android:id="@+id/input_field_for_create_event_time"
             android:layout_width="121dp"
             android:layout_height="40dp"
