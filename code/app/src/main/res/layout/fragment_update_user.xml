@@ -85,9 +85,10 @@
         <HorizontalScrollView
             android:layout_width="363dp"
             android:layout_height="92dp"
+            android:fadeScrollbars="false"
             android:overScrollMode="never"
             android:padding="8dp"
-            android:scrollbars="none"
+            android:scrollbars="horizontal|none"
             app:layout_constraintBottom_toTopOf="@+id/geoSwitch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
