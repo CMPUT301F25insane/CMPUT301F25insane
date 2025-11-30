@@ -210,15 +210,19 @@ public class OrganizerViewEventFragment extends Fragment {
         });
 
         binding.showMap.setOnClickListener(v -> {
-            if (event != null) {
-                Bundle args = new Bundle();
-                args.putString("eventId", event.getEventId());
-
-                ArrayList<HashMap<String, Object>> locations = event.getUserLocationArrayList();
-                args.putSerializable("userLocations", locations); // <-- pass list safely
-
-                nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
+            if (event == null) {
+                Toast.makeText(getContext(), "Event not loaded yet", LENGTH_SHORT).show();
+                return;
             }
+
+            Bundle args = new Bundle();
+
+            ArrayList<HashMap<String,Object>> locations = event.getUserLocationArrayList();
+            if (locations == null) {
+                locations = new ArrayList<HashMap<String,Object>>();
+            }
+            args.putSerializable("userLocations", locations);
+            nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
         });
 
 

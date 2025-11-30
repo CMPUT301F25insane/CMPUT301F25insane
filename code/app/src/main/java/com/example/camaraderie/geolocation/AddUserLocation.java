@@ -19,6 +19,14 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
 import java.util.UUID;
 
+
+/**
+ * Utility class for adding a user's current location to an Event object
+ * and storing it in Firebase Firestore.
+ *
+ * <p>The class handles location permissions, geolocation settings, Firestore updates,
+ * and provides a callback once the location is successfully added.
+ */
 public class AddUserLocation {
     public static void addLocation(Event event, Runnable runnable){
         if (event == null) {
@@ -26,6 +34,25 @@ public class AddUserLocation {
             return;
         }
 
+        /**
+         * Adds the current user's location to the event if geolocation is enabled.
+         *
+         * <p>The method performs the following steps:
+         * <ul>
+         *     <li>Checks if both the user and event have geolocation enabled</li>
+         *     <li>Verifies location permissions</li>
+         *     <li>Fetches the last known location using FusedLocationProviderClient</li>
+         *     <li>Stores the location in Firestore under "userLocationArrayList"</li>
+         *     <li>Updates the local Event object's cached location list</li>
+         *     <li>Executes the provided Runnable callback after successful update</li>
+         * </ul>
+         *
+         * <p>If geolocation is disabled or location permissions are missing, a Toast is shown
+         * and the callback may not be executed.
+         *
+         * @param event    The event to which the user's location should be added.
+         * @param runnable Optional callback to execute after the location is successfully added.
+         */
         if (user.isGeoEnabled() && event.isGeoEnabled()) {
             FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
 

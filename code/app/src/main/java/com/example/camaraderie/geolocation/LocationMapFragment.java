@@ -27,6 +27,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+/**
+ * Fragment that displays a MapLibre map with markers representing users' locations
+ * for a specific event.
+ *
+ * <p>The fragment receives a list of user locations through arguments under the key
+ * "userLocations". Each entry in the list should be a HashMap containing:
+ * <ul>
+ *     <li>"latitude": Double</li>
+ *     <li>"longitude": Double</li>
+ *     <li>"userID": String</li>
+ * </ul>
+ *
+ * <p>If there is only one location, the camera zooms to it. If multiple locations exist,
+ * the camera adjusts to fit all markers in view.
+ */
 public class LocationMapFragment extends Fragment {
     private FragmentLocationMapBinding binding;
     private MapLibreMap map;
@@ -49,17 +65,16 @@ public class LocationMapFragment extends Fragment {
                 NavHostFragment.findNavController(this).popBackStack()
         );
 
-        binding.mapView.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            userLocations = (ArrayList<HashMap<String, Object>>) getArguments().getSerializable("userLocations");
 
-        Bundle args = getArguments();
-        if (args != null) {
-            userLocations = (ArrayList<HashMap<String, Object>>) args.getSerializable("userLocations");
-
-            if (userLocations != null) {
-                Log.d("MapFragment", "Received locations: " + userLocations.size());
-                // Now you can loop through them and display markers, etc.
+            if(userLocations == null){
+                userLocations = new ArrayList<HashMap<String, Object>>();
             }
         }
+
+        binding.mapView.onCreate(savedInstanceState);
+
 
         binding.mapView.getMapAsync(mapLibreMap -> {
             map = mapLibreMap;
@@ -68,100 +83,55 @@ public class LocationMapFragment extends Fragment {
 
             map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
                 showMarkers();
-                //showTestMarkers2();
             });
         });
     }
 
+
+    /**
+     * Displays all user-location markers on the map.
+     * <p>
+     * If multiple locations exist, the camera fits all markers inside a bounding box.
+     * If only one location exists, the camera zooms into that location.
+     * Safely exits if the map or userLocations list is null or empty.
+     */
     private void showMarkers() {
         if (map == null || userLocations == null || userLocations.isEmpty()) {
             return;
         }
 
         LatLngBounds.Builder bounds = new LatLngBounds.Builder();
-        StringBuilder text = new StringBuilder();
+        int count = 0;
 
         for (HashMap<String, Object> coordinates : userLocations) {
 
-            double latitude = ((Double) coordinates.get("latitude"));
-            double longitude = ((Double) coordinates.get("longitude"));
-            String userId = coordinates.get("userID").toString();
+            double latitude = ((Number) coordinates.get("latitude")).doubleValue();
+            double longitude = ((Number) coordinates.get("longitude")).doubleValue();
+            String userId = String.valueOf(coordinates.get("userID"));
 
             LatLng point = new LatLng(latitude, longitude);
 
-            // Add marker
             map.addMarker(new MarkerOptions()
                     .position(point)
                     .title(userId));
 
-            // Add to bounds
             bounds.include(point);
+            count++;
 
-            // Add to TextView log
-            text.append("User: ").append(userId)
-                    .append(" | Lat: ").append(latitude)
-                    .append(" | Lng: ").append(longitude)
-                    .append("\n");
         }
+        
+        if (count == 1){
+            HashMap<String, Object> c = userLocations.get(0);
+            LatLng single = new LatLng(
+                    ((Number) c.get("latitude")).doubleValue(),
+                    ((Number) c.get("longitude")).doubleValue()
+            );
 
-        // Print all coordinates to TextView
-        binding.coordsTextView.setText(text.toString());
-
-        // Adjust camera so all markers are visible
-        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 120));
-    }
-
-    private void showTestMarkers2() {
-        if (map == null) return;
-
-        ArrayList<LatLng> testPoints = new ArrayList<>();
-        testPoints.add(new LatLng(53.5461, -113.4938)); // Edmonton Downtown
-        testPoints.add(new LatLng(53.5445, -113.4910)); // Near 2nd point
-        testPoints.add(new LatLng(53.5480, -113.5000)); // Slightly west
-
-        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
-
-        // StringBuilder to collect coordinate text
-        StringBuilder text = new StringBuilder();
-
-        for (LatLng point : testPoints) {
-
-            // Add marker to map
-            map.addMarker(new MarkerOptions()
-                    .position(point)
-                    .title("Test Marker"));
-
-            // Add to bounds
-            bounds.include(point);
-
-            // Add to text for TextView
-            text.append("Lat: ")
-                    .append(point.getLatitude())
-                    .append(" | Lng: ")
-                    .append(point.getLongitude())
-                    .append("\n");
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(single, 15));
+        } else if (count > 1) {
+            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 50));
         }
-
-        // Put text into TextView
-        binding.coordsTextView.setText(text.toString());
-
-        // Move camera so all markers visible
-        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100));
     }
-
-
-    private void showTestMarker() {
-        if (map == null) return;
-        LatLng testLocation = new LatLng(53.5461, -113.4938);
-        map.addMarker(new MarkerOptions()
-                .position(testLocation)
-                .title("Test Location"));
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(50.0000, 100.0000))
-                .title("Test Location"));
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(testLocation, 13));
-    }
-
 
     @Override public void onStart() { super.onStart(); binding.mapView.onStart(); }
     @Override public void onResume() { super.onResume(); binding.mapView.onResume(); }
