@@ -1,6 +1,5 @@
 package com.example.camaraderie;//
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -95,15 +94,15 @@ public class Event {
         this.geoEnabled = geoEnabled;
     }
 
-    public ArrayList<HashMap<String, Object>> getLocationArrayList() {
+    public ArrayList<HashMap<String, Object>> getUserLocationArrayList() {
         return userLocationArrayList;
     }
 
-    public void setLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList){
+    public void setUserLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList) {
         this.userLocationArrayList = userLocationArrayList;
     }
 
-    public void addLocationArrayList(HashMap<String, Object> location) {
+    public void addUserLocationArrayList(HashMap<String, Object> location) {
         if (userLocationArrayList == null) {
             userLocationArrayList = new ArrayList<>();
         }

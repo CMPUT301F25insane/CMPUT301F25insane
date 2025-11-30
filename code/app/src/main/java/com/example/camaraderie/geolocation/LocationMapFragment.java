@@ -13,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.UserLocation;
 import com.example.camaraderie.databinding.FragmentLocationMapBinding;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.maplibre.android.camera.CameraUpdateFactory;
 import org.maplibre.android.annotations.MarkerOptions;
 import org.maplibre.android.geometry.LatLng;
+import org.maplibre.android.geometry.LatLngBounds;
 import org.maplibre.android.maps.MapLibreMap;
 import org.maplibre.android.maps.OnMapReadyCallback;
 import org.maplibre.android.maps.Style;
@@ -69,28 +68,85 @@ public class LocationMapFragment extends Fragment {
 
             map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
                 showMarkers();
+                //showTestMarkers2();
             });
         });
     }
 
     private void showMarkers() {
-        if (map == null || userLocations == null) {
+        if (map == null || userLocations == null || userLocations.isEmpty()) {
             return;
         }
 
-        for (HashMap<String, Object> coordinates: userLocations){
-            double latitude = (double) coordinates.get("latitude");
-            double longitude = (double) coordinates.get("longitude");
+        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+        StringBuilder text = new StringBuilder();
+
+        for (HashMap<String, Object> coordinates : userLocations) {
+
+            double latitude = ((Double) coordinates.get("latitude"));
+            double longitude = ((Double) coordinates.get("longitude"));
             String userId = coordinates.get("userID").toString();
 
-            map.addMarker(new MarkerOptions().position(new LatLng(latitude,longitude)).title(userId));
+            LatLng point = new LatLng(latitude, longitude);
+
+            // Add marker
+            map.addMarker(new MarkerOptions()
+                    .position(point)
+                    .title(userId));
+
+            // Add to bounds
+            bounds.include(point);
+
+            // Add to TextView log
+            text.append("User: ").append(userId)
+                    .append(" | Lat: ").append(latitude)
+                    .append(" | Lng: ").append(longitude)
+                    .append("\n");
         }
 
-        if (!userLocations.isEmpty()) {
-            double firstLat = (double) userLocations.get(0).get("latitude");
-            double firstLng = (double) userLocations.get(0).get("longitude");
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(firstLat, firstLng), 12));
+        // Print all coordinates to TextView
+        binding.coordsTextView.setText(text.toString());
+
+        // Adjust camera so all markers are visible
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 120));
+    }
+
+    private void showTestMarkers2() {
+        if (map == null) return;
+
+        ArrayList<LatLng> testPoints = new ArrayList<>();
+        testPoints.add(new LatLng(53.5461, -113.4938)); // Edmonton Downtown
+        testPoints.add(new LatLng(53.5445, -113.4910)); // Near 2nd point
+        testPoints.add(new LatLng(53.5480, -113.5000)); // Slightly west
+
+        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+
+        // StringBuilder to collect coordinate text
+        StringBuilder text = new StringBuilder();
+
+        for (LatLng point : testPoints) {
+
+            // Add marker to map
+            map.addMarker(new MarkerOptions()
+                    .position(point)
+                    .title("Test Marker"));
+
+            // Add to bounds
+            bounds.include(point);
+
+            // Add to text for TextView
+            text.append("Lat: ")
+                    .append(point.getLatitude())
+                    .append(" | Lng: ")
+                    .append(point.getLongitude())
+                    .append("\n");
         }
+
+        // Put text into TextView
+        binding.coordsTextView.setText(text.toString());
+
+        // Move camera so all markers visible
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100));
     }
 
 
@@ -99,6 +155,9 @@ public class LocationMapFragment extends Fragment {
         LatLng testLocation = new LatLng(53.5461, -113.4938);
         map.addMarker(new MarkerOptions()
                 .position(testLocation)
+                .title("Test Location"));
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(50.0000, 100.0000))
                 .title("Test Location"));
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(testLocation, 13));
     }
