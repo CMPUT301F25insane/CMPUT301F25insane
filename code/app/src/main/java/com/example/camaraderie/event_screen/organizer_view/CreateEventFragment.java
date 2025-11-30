@@ -228,7 +228,7 @@ public class CreateEventFragment extends Fragment {
                     createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventImageString);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please fill out all necessary fields", Toast.LENGTH_SHORT).show();
-                    return;
+                    binding.buttonForConfirm.setEnabled(true);
                 }
             }
         });
