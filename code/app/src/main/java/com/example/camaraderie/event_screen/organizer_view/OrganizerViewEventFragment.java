@@ -241,7 +241,7 @@ public class OrganizerViewEventFragment extends Fragment {
      */
     private void updateUI(Event e) {
         binding.eventNameForOrgView.setText(e.getEventName());
-        String deadline = (e.getRegistrationDeadline().getYear()+1900) + "-" + (e.getRegistrationDeadline().getMonth()+1) + "-" + e.getRegistrationDeadline().getDay();
+        String deadline = (e.getRegistrationDeadline().getYear()+1900) + "-" + (e.getRegistrationDeadline().getMonth()+1) + "-" + e.getRegistrationDeadline().getDate() + " " + e.getEventDeadlineTime();
         binding.registrationDeadlineTextOrgView.setText(deadline);
         binding.eventDescriptionOrgView.setText(e.getDescription());
         binding.attendeeCountOrganizer.setText(
@@ -249,7 +249,7 @@ public class OrganizerViewEventFragment extends Fragment {
                         " | Selected: " + e.getSelectedUsers().size() +
                         " | Waitlist: " + e.getWaitlist().size()
         );
-        String date = (e.getEventDate().getYear()+1900) + "-" + (e.getEventDate().getMonth()+1) + "-" + e.getEventDate().getDay();
+        String date = (e.getEventDate().getYear()+1900) + "-" + (e.getEventDate().getMonth()+1) + "-" + e.getEventDate().getDate() + " " + e.getEventDateTime();
         binding.orgEventViewEventDate.setText(date);
         binding.locationOfOrgView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
         binding.hostNameOrgView.setText(user.getFirstName());
