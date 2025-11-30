@@ -1,5 +1,6 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -115,7 +116,12 @@ public class OrganizerViewEventFragment extends Fragment {
 
             binding.orgViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
 
-            binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
+            if(nav.getPreviousBackStackEntry().getDestination().getId() == R.id.fragment_create_event) {
+                binding.orgViewBackButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
+            }
+            else {
+                binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
+            }
             binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
             binding.viewListsButton.setOnClickListener(v -> {
 

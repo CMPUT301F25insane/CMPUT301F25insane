@@ -302,7 +302,10 @@ public class CreateEventFragment extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date deadline =  formatter.parse(eventDeadline.getText().toString());
         Date date = formatter.parse(eventDate.getText().toString());
-
+        int hours = Integer.parseInt(time.substring(0, 2));
+        int minutes = Integer.parseInt(time.substring(3, 5));
+        date.setHours(hours);
+        date.setMinutes(minutes);
 
         // NEED TO GET TIME, AND CREATE EVENT ID
         // validate user input and store in database.
@@ -459,7 +462,15 @@ public class CreateEventFragment extends Fragment {
         timeDialog = new TimePickerDialog(requireContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String format = hourOfDay + ":" + minute;
+                String strHourOfDay = "" + hourOfDay;
+                String strMinute = "" + minute;
+                if(hourOfDay < 10) {
+                    strHourOfDay = "0" + hourOfDay;
+                }
+                if(minute < 10) {
+                    strMinute = "0" + minute;
+                }
+                String format = strHourOfDay + ":" + strMinute;
                 binding.inputFieldForCreateEventTime.setText(format);
             }
 
