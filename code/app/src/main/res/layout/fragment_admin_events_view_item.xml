@@ -49,18 +49,19 @@
     <!-- SEE DESCRIPTION BUTTON -->
 
     <Button
-        android:id="@+id/RemoveButton"
+        android:id="@+id/joinButton"
         android:layout_width="133dp"
         android:layout_height="40dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#9E2C0A"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="@color/custom_join_button_color"
         android:fontFamily="@font/cambria"
-        android:text="Remove"
-        android:textColor="@color/white"
+        android:text="Join"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/seeDescButton"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RegistrationDeadline"
@@ -69,18 +70,33 @@
 
     <Button
         android:id="@+id/seeDescButton"
-        android:layout_width="173dp"
+        android:layout_width="146dp"
         android:layout_height="39dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
         android:backgroundTint="#59403F3F"
+        android:textStyle="bold"
         android:fontFamily="@font/cambria"
         android:text="See Description"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/RemoveButton"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/joinButton"
         app:layout_constraintTop_toBottomOf="@id/RegistrationDeadline"
+        app:strokeColor="@color/black"
+        app:strokeWidth="1.5dp" />
+
+    <Button
+        android:id="@+id/RemoveButton"
+        android:layout_width="108dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#9E2C0A"
+        android:fontFamily="@font/cambria"
+        android:textStyle="bold"
+        android:text="Remove"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_photo_for_event_item"
         app:strokeColor="@color/black"
         app:strokeWidth="1.5dp" />
 
