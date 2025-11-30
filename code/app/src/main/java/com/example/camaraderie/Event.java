@@ -97,15 +97,18 @@ public class Event {
         this.geoEnabled = geoEnabled;
     }
 
-    public ArrayList<HashMap<String, Object>> getLocationArrayList() {
+    public ArrayList<HashMap<String, Object>> getUserLocationArrayList() {
         return userLocationArrayList;
     }
 
-    public void setLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList){
+    public void setUserLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList) {
+        if (userLocationArrayList == null) {
+            userLocationArrayList = new ArrayList<>();
+        }
         this.userLocationArrayList = userLocationArrayList;
     }
 
-    public void addLocationArrayList(HashMap<String, Object> location) {
+    public void addUserLocationArrayList(HashMap<String, Object> location) {
         if (userLocationArrayList == null) {
             userLocationArrayList = new ArrayList<>();
         }
