@@ -50,47 +50,46 @@
 
     <ListView
         android:id="@+id/myEventsForViewMyEvents"
-        android:layout_width="391dp"
-        android:layout_height="500dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="411dp"
+        android:layout_height="577dp"
         android:background="@drawable/gradient_for_org_view"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.629" />
+        app:layout_constraintTop_toBottomOf="@+id/invites_header"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/header_for_see_my_events"
         android:layout_width="172dp"
         android:layout_height="54dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/cambria_italic"
         android:text="Camaraderie"
         android:textColor="@color/white"
         android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/invites_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.081"
+        app:layout_constraintEnd_toStartOf="@+id/name_for_my_events"
+        app:layout_constraintHorizontal_bias="0.131"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.285" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/invites_header"
         android:layout_width="65dp"
-        android:layout_height="23dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="192dp"
         android:fontFamily="@font/cambria"
         android:text="Invites"
+
         android:textColor="@color/white"
         android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/myEventsForViewMyEvents"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintEnd_toStartOf="@+id/name_for_my_events"
+        app:layout_constraintHorizontal_bias="0.928"
         app:layout_constraintStart_toStartOf="parent"
-
-        />
+        app:layout_constraintTop_toBottomOf="@+id/header_for_see_my_events" />
 
     <ImageButton
         android:id="@+id/userProfileImageButton"
@@ -98,35 +97,37 @@
         android:layout_height="50dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/myEventsForViewMyEvents"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/name_for_my_events"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/cambria"
         android:text="[name]"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/myEventsForViewMyEvents"
         app:layout_constraintEnd_toStartOf="@+id/userProfileImageButton"
-        app:layout_constraintHorizontal_bias="0.976"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.272" />
+        app:layout_constraintVertical_bias="0.383" />
 
     <HorizontalScrollView
-        android:layout_width="363dp"
-        android:layout_height="92dp"
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="359dp"
+        android:layout_height="81dp"
+        android:layout_marginBottom="4dp"
         android:fadeScrollbars="false"
         android:overScrollMode="never"
         android:padding="8dp"
         android:scrollbars="horizontal|none"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myEventsForViewMyEvents">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
