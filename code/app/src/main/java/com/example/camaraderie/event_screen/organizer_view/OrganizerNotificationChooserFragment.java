@@ -1,5 +1,10 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
+import static com.example.camaraderie.main.Camaraderie.getUser;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +65,16 @@ public class OrganizerNotificationChooserFragment extends Fragment {
             args.putString("list", "selectedUsers");
             nav.navigate(R.id.organizerNotificationFragment, args);
         });
+
+
+        binding.orgViewNotifLogs.setEnabled(false);
+        binding.orgViewNotifLogs.setVisibility(INVISIBLE);
+        binding.orgViewNotifLogs.setOnClickListener(v -> nav.navigate(R.id.AdminNotificationLogsFragment));
+
+        if (getUser().isAdmin()) {
+            binding.orgViewNotifLogs.setEnabled(true);
+            binding.orgViewNotifLogs.setVisibility(VISIBLE);
+        }
 
     }
 

@@ -140,6 +140,18 @@ public class UserViewEventFragment extends Fragment {
             }
         });
 
+        // admin log stuff, only admins can view logs
+        binding.adminViewLogs.setEnabled(false);
+        binding.adminViewLogs.setVisibility(INVISIBLE);
+        binding.adminViewLogs.setOnClickListener(v -> nav.navigate(R.id.AdminNotificationLogsFragment));
+
+        if (getUser().isAdmin()) {
+            binding.adminViewLogs.setEnabled(true);
+            binding.adminViewLogs.setVisibility(VISIBLE);
+        }
+
+        binding.nameOfUseranizer.setText(getUser().getFirstName());
+
         // button handlers
         binding.joinButtonUserView.setOnClickListener(v -> handleJoinGeo());
 

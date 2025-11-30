@@ -29,6 +29,7 @@ public class Event {
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> cancelledUsers = new ArrayList<>();
+    private ArrayList<DocumentReference> notificationLogs = new ArrayList<>();
 
     private boolean geoEnabled = false;
     private ArrayList<HashMap<String, Object>> userLocationArrayList = new ArrayList<>();
@@ -442,4 +443,11 @@ public class Event {
         this.waitlist.clear();
     }
 
+    public ArrayList<DocumentReference> getNotificationLogs() {
+        return notificationLogs;
+    }
+
+    public void setNotificationLogs(ArrayList<DocumentReference> notificationLogs) {
+        this.notificationLogs = notificationLogs;
+    }
 }
