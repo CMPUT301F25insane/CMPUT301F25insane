@@ -163,7 +163,7 @@ public class CreateEventFragment extends Fragment {
 
         }
 
-        /**
+        /*
          * This creates a photo picker activity
          */
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
@@ -328,19 +328,22 @@ public class CreateEventFragment extends Fragment {
 
                         deleteEventImage(event);
 
-                        uploadEventImage(event, imageUri, new ImageHandler.UploadCallback() {
-                            @Override
-                            public void onSuccess(String downloadUrl) {
-                                event.setImageUrl(downloadUrl);
-                                event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
-                            }
+                        // if no image was chosen
+                        if (imageUri != null) {
+                            uploadEventImage(event, imageUri, new ImageHandler.UploadCallback() {
+                                @Override
+                                public void onSuccess(String downloadUrl) {
+                                    event.setImageUrl(downloadUrl);
+                                    event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
+                                }
 
-                            @Override
-                            public void onFailure(Exception e) {
-                                Log.e("UPLOAD", "Failed", e);
-                                Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Log.e("UPLOAD", "Failed", e);
+                                    Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
 
                         nav.navigate(R.id._fragment_organizer_view_event);
                     })
