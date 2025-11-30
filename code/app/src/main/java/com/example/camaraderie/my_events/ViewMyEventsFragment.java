@@ -127,6 +127,8 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
         binding.acceptedEventButton.setOnClickListener(v -> nav.navigate(R.id.MyAcceptedEventsFragment));
 
+        binding.historyButton.setOnClickListener(v -> nav.navigate(R.id.ViewEventHistoryFragment));
+
 
     }
 

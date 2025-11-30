@@ -55,6 +55,7 @@ public class MyAcceptedEventsFragment extends Fragment {
         adapter = new MyAcceptedEventsArrayAdapter(requireContext(), new ArrayList<>(), svm, nav);
         adapter.setNotifyOnChange(true);
         binding.historyListView.setAdapter(adapter);
+        binding.headerText.setText("Accepted Events");
 
         vm.getUserEventsFromList(getUser().getAcceptedEvents(),
                 events -> {
