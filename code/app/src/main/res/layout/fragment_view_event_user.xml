@@ -84,9 +84,23 @@
                 android:layout_width="55dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="16dp"
+                android:contentDescription="TODO"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/attendeeCountOrganizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="#F6EAEA"
+                android:textColorLink="#DEDEDE"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_deadline_text_user_view" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -112,6 +126,7 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="#B0394241"
             android:fontFamily="@font/cambria"
+            android:textColor="@color/white"
             android:text="View QR Code"
             android:textSize="11dp"
             app:layout_constraintEnd_toStartOf="@+id/view_lists_button"
@@ -128,6 +143,7 @@
             android:layout_marginEnd="12dp"
             android:backgroundTint="#B0394241"
             android:fontFamily="@font/cambria"
+            android:textColor="@color/white"
             android:text="View Attendees"
             android:textSize="11dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -146,6 +162,8 @@
             android:layout_marginEnd="28dp"
             android:backgroundTint="#B0394241"
             android:fontFamily="@font/cambria"
+            android:textColor="@color/white"
+
             android:text="View Photos"
             android:textSize="11dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -220,40 +238,39 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="411dp"
-        android:layout_height="120dp"
-        android:background="@color/black"
+        android:layout_width="0dp"
+        android:layout_height="110dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/black"
+        android:paddingHorizontal="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="610dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
             android:id="@+id/hostEvent"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@color/black"
+            android:layout_weight="1.1"
             android:src="@drawable/hostevent" />
 
         <ImageButton
             android:id="@+id/dashboardButton"
-            android:layout_width="143dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@color/black"
+            android:layout_weight="1"
             android:scaleX="1.3"
             android:scaleY="1.3"
             android:src="@drawable/dashboard_image" />
 
         <ImageButton
             android:id="@+id/myEvents"
-            android:layout_width="136dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="@color/black"
+            android:layout_weight="1"
             android:src="@drawable/seeevents" />
 
     </LinearLayout>

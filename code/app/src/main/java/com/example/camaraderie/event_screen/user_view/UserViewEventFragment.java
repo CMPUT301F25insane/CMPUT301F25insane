@@ -230,6 +230,12 @@ public class UserViewEventFragment extends Fragment {
         binding.userEventViewEventDate.setText(e.getEventDate().toString());
         binding.locationOfUserView.setText(e.getEventLocation());
 
+        binding.attendeeCountOrganizer.setText(
+                "Accepted: " + e.getAcceptedUsers().size() +
+                        " | Selected: " + e.getSelectedUsers().size() +
+                        " | Waitlist: " + e.getWaitlist().size()
+        );
+
         db.document(e.getHostDocRef().getPath()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             /**
              * on success listener for snapshot
