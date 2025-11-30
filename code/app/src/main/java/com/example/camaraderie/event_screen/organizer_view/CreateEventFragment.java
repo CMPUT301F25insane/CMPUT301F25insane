@@ -227,7 +227,8 @@ public class CreateEventFragment extends Fragment {
                 try {
                     createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventImageString);
                 } catch (Exception e) {
-                    Toast.makeText(getContext(), "Please enter valid details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please fill out all necessary fields", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
         });
@@ -416,8 +417,14 @@ public class CreateEventFragment extends Fragment {
 
         }, year, month, day);
 
+        dateDialog.getDatePicker().setMinDate(today.getTime());
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date deadline = formatter.parse(binding.inputFieldForCreateEventRegistrationDeadline.getText().toString());
+            long longDeadline = deadline.getTime();
+            dateDialog.getDatePicker().setMinDate(longDeadline);
+        } catch (Exception e) {}
         dateDialog.show();
-
     }
 
     /**
@@ -433,6 +440,15 @@ public class CreateEventFragment extends Fragment {
             }
 
         }, year, month, day);
+        dateDialog.getDatePicker().setMinDate(today.getTime());
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formatter.parse(binding.inputFieldForCreateEventDate.getText().toString());
+            long longDate = date.getTime();
+            dateDialog.getDatePicker().setMaxDate(longDate);
+        } catch (Exception e) {
+
+        }
 
         dateDialog.show();
 

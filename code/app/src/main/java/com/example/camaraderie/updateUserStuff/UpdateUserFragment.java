@@ -114,6 +114,13 @@ public class UpdateUserFragment extends Fragment {
                 String address = binding.addressFieldForUpdateUser2.getText().toString().trim();
                 String phone_no = binding.phoneFieldForUpdateUser3.getText().toString().trim();
 
+                if(!email.contains("@") || !email.contains(".")) {
+                    Toast toast = new Toast(getContext());
+                    toast.setText("Invalid email");
+                    toast.show();
+                    return;
+                }
+
                 userDocRef
                         .update(
                                 "firstName",name,
