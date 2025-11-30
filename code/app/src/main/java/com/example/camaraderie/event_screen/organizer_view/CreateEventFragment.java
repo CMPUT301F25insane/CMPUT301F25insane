@@ -4,14 +4,10 @@ import static com.example.camaraderie.image_stuff.ImageHandler.deleteEventImage;
 import static com.example.camaraderie.image_stuff.ImageHandler.uploadEventImage;
 import static com.example.camaraderie.main.MainActivity.user;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +19,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -45,17 +38,10 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentCreateEventBinding;
 import com.example.camaraderie.image_stuff.ImageHandler;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-
-import org.w3c.dom.Document;
 
 /**
  * fragment that allows an organizer to create an event
@@ -72,7 +58,8 @@ public class CreateEventFragment extends Fragment {
     private EditText eventLocation;
     private EditText eventDescription;
     private EditText eventCapacity;
-    private TextView eventTime;
+    private TextView eventDateTime;
+    private TextView eventDeadlineTime;
     private EditText optionalLimit;
     private Switch geoSwitch;
     private boolean geoEnabled;
@@ -138,7 +125,8 @@ public class CreateEventFragment extends Fragment {
         eventLocation = binding.inputFieldForCreateEventLocation;
         eventDescription = binding.inputFieldForCreateEventDescription;
         eventCapacity = binding.inputFieldForCreateEventNumOfAttendees;
-        eventTime = binding.inputFieldForCreateEventTime;
+        eventDateTime = binding.inputFieldForCreateEventTime;
+        eventDeadlineTime = binding.inputFieldForCreateEventRegistrationTime;
         optionalLimit = binding.inputFieldForCreateEventWaitlistLimit;
         geoSwitch = binding.geoSwitch; //switch
 
@@ -208,7 +196,14 @@ public class CreateEventFragment extends Fragment {
              * @param v The view that was clicked.
              */
             @Override
-            public void onClick(View v) { openTimeDialog(); }
+            public void onClick(View v) { openTimeDialog(binding.inputFieldForCreateEventTime); }
+        });
+
+        binding.inputFieldForCreateEventRegistrationTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimeDialog(binding.inputFieldForCreateEventRegistrationTime);
+            }
         });
 
         binding.buttonForGoingBack.setOnClickListener(v -> nav.popBackStack());
@@ -225,7 +220,7 @@ public class CreateEventFragment extends Fragment {
                 binding.buttonForConfirm.setEnabled(false);  // just do this to stop uer form pressing a billion times
 
                 try {
-                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventTime, eventImageString);
+                    createEvent(eventName, eventDate, eventDeadline, eventLocation, eventDescription, eventCapacity, optionalLimit, eventDateTime, eventDeadlineTime, eventImageString);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Please fill out all necessary fields", Toast.LENGTH_SHORT).show();
                     binding.buttonForConfirm.setEnabled(true);
@@ -250,12 +245,14 @@ public class CreateEventFragment extends Fragment {
      */
     private void fillTextViews(Event event) {
         eventName.setText(event.getEventName());
-        eventDate.setText(event.getEventDate().toString());
-        eventDeadline.setText(event.getRegistrationDeadline().toString());
+        String date = (event.getEventDate().getYear()+1900) + "-" + (event.getEventDate().getMonth()+1) + "-" + event.getEventDate().getDay();
+        eventDate.setText(date);
+        String deadline = (event.getRegistrationDeadline().getYear()+1900) + "-" + (event.getRegistrationDeadline().getMonth()+1) + "-" + event.getRegistrationDeadline().getDay();
+        eventDeadline.setText(deadline);
         eventLocation.setText(event.getEventLocation());
         eventDescription.setText(event.getDescription());
         eventCapacity.setText(String.valueOf(event.getCapacity()));
-        eventTime.setText(event.getEventTime());
+        eventDateTime.setText(event.getEventDateTime());
     }
 
     /**
@@ -276,7 +273,7 @@ public class CreateEventFragment extends Fragment {
      * @param eventDescription new description
      * @param eventCapacity new capatiy
      * @param optionalLimit new optional limit
-     * @param eventTime new time
+     * @param eventDateTime new time
      * @throws ParseException throws parseException if parse fails (mainly date)
      */
     private void createEvent(EditText eventName,
@@ -286,13 +283,15 @@ public class CreateEventFragment extends Fragment {
                              EditText eventDescription,
                              EditText eventCapacity,
                              EditText optionalLimit,
-                             TextView eventTime,
+                             TextView eventDateTime,
+                             TextView eventDeadlineTime,
                              String eventImageString) throws ParseException {
 
         String name = eventName.getText().toString();
         String description = eventDescription.getText().toString();
         String location = eventLocation.getText().toString();
-        String time = eventTime.getText().toString();
+        String dateTime = eventDateTime.getText().toString();
+        String deadlineTime = eventDeadlineTime.getText().toString();
         int capacity = Integer.parseInt(eventCapacity.getText().toString());
         int limit = -1;  // false false
         if (!optionalLimit.getText().toString().isEmpty()){
@@ -302,7 +301,14 @@ public class CreateEventFragment extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date deadline =  formatter.parse(eventDeadline.getText().toString());
         Date date = formatter.parse(eventDate.getText().toString());
-
+        int hours = Integer.parseInt(dateTime.substring(0, 2));
+        int minutes = Integer.parseInt(dateTime.substring(3, 5));
+        date.setHours(hours);
+        date.setMinutes(minutes);
+        int dhours = Integer.parseInt(deadlineTime.substring(0, 2));
+        int dminutes = Integer.parseInt(deadlineTime.substring(3, 5));
+        deadline.setHours(dhours);
+        deadline.setMinutes(dminutes);
 
         // NEED TO GET TIME, AND CREATE EVENT ID
         // validate user input and store in database.
@@ -314,7 +320,8 @@ public class CreateEventFragment extends Fragment {
             event.setEventName(name);
             event.setEventDescription(description);
             event.setEventLocation(location);
-            event.setEventTime(time);
+            event.setEventDateTime(dateTime);
+            event.setEventDeadlineTime(deadlineTime);
             event.setRegistrationDeadline(deadline);
             event.setEventDate(date);
             event.setCapacity(capacity);
@@ -359,7 +366,7 @@ public class CreateEventFragment extends Fragment {
             DocumentReference eventRef = db.collection("Events").document();
             String eventId = eventRef.getId();
             Event newEvent;
-            newEvent = new Event(name, location, deadline, description, date, time, capacity, limit, user.getDocRef(), eventRef, eventId, geoSwitch.isChecked());
+            newEvent = new Event(name, location, deadline, description, date, dateTime, deadlineTime, capacity, limit, user.getDocRef(), eventRef, eventId, geoSwitch.isChecked());
 
             eventRef.set(newEvent)
                     .addOnSuccessListener(aVoid -> {
@@ -421,7 +428,7 @@ public class CreateEventFragment extends Fragment {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date deadline = formatter.parse(binding.inputFieldForCreateEventRegistrationDeadline.getText().toString());
-            long longDeadline = deadline.getTime();
+            long longDeadline = (deadline.getTime() + (1000 * 60 * 60 * 24));
             dateDialog.getDatePicker().setMinDate(longDeadline);
         } catch (Exception e) {}
         dateDialog.show();
@@ -444,7 +451,7 @@ public class CreateEventFragment extends Fragment {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = formatter.parse(binding.inputFieldForCreateEventDate.getText().toString());
-            long longDate = date.getTime();
+            long longDate = (date.getTime() - (1000 * 60 * 60 * 24));
             dateDialog.getDatePicker().setMaxDate(longDate);
         } catch (Exception e) {
 
@@ -454,13 +461,21 @@ public class CreateEventFragment extends Fragment {
 
     }
 
-    private void openTimeDialog() {
+    private void openTimeDialog(TextView arg) {
         TimePickerDialog timeDialog;
         timeDialog = new TimePickerDialog(requireContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String format = hourOfDay + ":" + minute;
-                binding.inputFieldForCreateEventTime.setText(format);
+                String strHourOfDay = "" + hourOfDay;
+                String strMinute = "" + minute;
+                if(hourOfDay < 10) {
+                    strHourOfDay = "0" + hourOfDay;
+                }
+                if(minute < 10) {
+                    strMinute = "0" + minute;
+                }
+                String format = strHourOfDay + ":" + strMinute;
+                arg.setText(format);
             }
 
         }, 0, 0, true);
