@@ -13,6 +13,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,8 +47,12 @@ public class OrganizerNotificationHandler {
 
                             DocumentReference notifRef = db.collection("Notifications").document();
 
-                            NotificationData notification = new NotificationData(ref.getId(), title, body, notifRef);
+
+                            NotificationData notification = new NotificationData(ref.getId(), title, body, notifRef, FieldValue.serverTimestamp());
                             batch.set(notifRef, notification);
+                            batch.update(notifRef, "timestamp", FieldValue.serverTimestamp());
+
+                            batch.update(eventId, "notificationLogs", FieldValue.arrayUnion(notifRef));
 
                             batch.update(ref, "pendingNotifications", FieldValue.arrayUnion(notifRef));
 

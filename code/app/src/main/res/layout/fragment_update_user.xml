@@ -56,7 +56,7 @@
             android:layout_width="343dp"
             android:layout_height="44dp"
             android:ems="10"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:text="Email"
             android:textColor="#9C9C9C"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +72,7 @@
             android:layout_height="44dp"
             android:layout_marginBottom="416dp"
             android:ems="10"
-            android:inputType="text"
+            android:inputType="number"
             android:text="Phone Number"
             android:textColor="#9C9C9C"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -85,9 +85,10 @@
         <HorizontalScrollView
             android:layout_width="363dp"
             android:layout_height="92dp"
+            android:fadeScrollbars="false"
             android:overScrollMode="never"
             android:padding="8dp"
-            android:scrollbars="none"
+            android:scrollbars="horizontal|none"
             app:layout_constraintBottom_toTopOf="@+id/geoSwitch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -174,6 +175,16 @@
                     android:textColor="@color/black"
                     android:textSize="15dp"
                     android:textStyle="bold"
+                    app:strokeWidth="3.5dp" />
+
+                <Button
+                    android:id="@+id/notificationPermissionsButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="#8FE5E4FF"
+                    android:text="Notification Settings"
+                    android:textColor="@color/black"
                     app:strokeWidth="3.5dp" />
             </LinearLayout>
 

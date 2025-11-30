@@ -50,14 +50,16 @@ public class NotificationHelper {
         // A customized design for the notification can be
         // set only for Android versions 4.1 and above. Thus
         // condition for the same is checked here.
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             builder = builder.setContent(getCustomDesign(title, message));
         }
-        else {
+        */
+        //else {
             builder = builder.setContentTitle(title)
                     .setContentText(message)
                     .setSmallIcon(R.drawable.ic_launcher_foreground);
-        }
+        //}
 
         NotificationManager manager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

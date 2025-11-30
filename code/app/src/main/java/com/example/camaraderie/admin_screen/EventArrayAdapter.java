@@ -3,6 +3,7 @@ package com.example.camaraderie.admin_screen;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static com.example.camaraderie.geolocation.AddUserLocation.addLocation;
+import static com.example.camaraderie.main.Camaraderie.getUser;
 import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
 import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
@@ -173,7 +174,8 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
                 //View profile
 
                 svm.setEvent(event);
-                nav.navigate(R.id.fragment_view_event_user);
+                if (event.getHostDocRef().getPath().equals(getUser().getDocRef().getPath())) nav.navigate(R.id._fragment_organizer_view_event);
+                else nav.navigate(R.id.fragment_view_event_user);
             }
         });
 
