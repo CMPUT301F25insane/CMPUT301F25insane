@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -28,6 +30,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class AdminDashboardFragment extends Fragment {
     private FragmentAdminDashboardBinding binding;
     private NavController nav;
+    private NavController navController;
     public static boolean TEST_MODE = false;
 
     public  AdminDashboardFragment() {
@@ -37,7 +40,8 @@ public class AdminDashboardFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            nav = NavHostFragment.findNavController(this);
+        nav = NavHostFragment.findNavController(this);
+
 
 
     }
@@ -74,24 +78,20 @@ public class AdminDashboardFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        NavController navController = Navigation.findNavController(view);
-
-        BottomNavigationView bottomNav = view.findViewById(R.id.admin_main_screen);
-        NavigationUI.setupWithNavController(bottomNav, navController);
-
         super.onViewCreated(view, savedInstanceState);
 
-        if(user != null){
+        if (user != null) {
             binding.nameForMainDashboard.setText(user.getFirstName());
         } else {
             binding.nameForMainDashboard.setText("[Name]");
         }
 
-
         binding.adminSeeUsers.setOnClickListener(v -> nav.navigate(R.id.admin_user_data_screen_view));
         binding.adminSeeEvents.setOnClickListener(v -> nav.navigate(R.id.admin_event_data_screen_view));
         binding.adminSeePics.setOnClickListener(v -> nav.navigate(R.id.admin_event_images_screen_view));
-        binding.back.setOnClickListener(v -> nav.popBackStack());}
+        binding.back.setOnClickListener(v -> nav.popBackStack());
+
+}
 
     /**
      * onDestoryView ensures no memory leaks by setting binding to null
