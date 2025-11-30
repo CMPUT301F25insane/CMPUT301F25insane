@@ -4,87 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#3A3FA0"
-    >
+    android:padding="6dp"
+    android:background="#3A3FA0">
 
-
-    <Button
-        android:id="@+id/joinButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/custom_join_button_color"
-        android:fontFamily="@font/cambria"
-        android:text="Join"
-        android:textColor="@color/black"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- PROFILE IMAGE -->
+    <ImageButton
+        android:id="@+id/profile_photo_for_event_item"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.185"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.858"
-        app:strokeWidth="2.5dp"
-        tools:ignore="MissingConstraints" />
+        tools:srcCompat="@tools:sample/avatars" />
 
-    <Button
-        android:id="@+id/seeDescButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#59403F3F"
-        android:fontFamily="@font/cambria"
-        android:text="See Description"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.742"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.862"
-        app:strokeWidth="1.5dp"
-        tools:ignore="MissingConstraints" />
-
+    <!-- EVENT NAME -->
     <TextView
         android:id="@+id/eventName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/cambria"
         android:text="Event Name"
         android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/eventDeadline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.055"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toStartOf="@id/profile_photo_for_event_item"
+        app:layout_constraintTop_toTopOf="@id/profile_photo_for_event_item" />
 
+    <!-- DEADLINE / DATE -->
     <TextView
         android:id="@+id/eventDeadline"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="[date] | [registration deadline]"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.069"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.359"
-        tools:ignore="MissingConstraints" />
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/eventName"
+        app:layout_constraintEnd_toEndOf="@id/eventName"
+        app:layout_constraintTop_toBottomOf="@id/eventName" />
 
-    <ImageButton
-        android:id="@+id/profile_photo_for_event_item"
-        android:layout_width="61dp"
-        android:layout_height="55dp"
-        android:layout_marginEnd="52dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- JOIN BUTTON -->
+    <Button
+        android:id="@+id/joinButton"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="Join"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/custom_join_button_color"
+        android:fontFamily="@font/cambria"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@id/eventDeadline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/seeDescButton"
+        app:layout_constraintHorizontal_weight="1"
+        app:strokeColor="@color/black"
+        app:strokeWidth="1.5dp" />
+
+    <!-- SEE DESCRIPTION BUTTON -->
+    <Button
+        android:id="@+id/seeDescButton"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#59403F3F"
+        android:fontFamily="@font/cambria"
+        android:text="See Description"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/eventName"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/joinButton"
+        app:layout_constraintTop_toBottomOf="@id/eventDeadline"
+        app:strokeColor="@color/black"
+        app:strokeWidth="1.5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
