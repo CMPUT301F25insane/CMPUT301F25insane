@@ -123,7 +123,7 @@
                     android:layout_height="49dp"
                     android:backgroundTint="#8FE5E4FF"
                     android:fontFamily="@font/cambria"
-                    android:text="Cancel"
+                    android:text="Back"
                     android:textColor="@color/black"
                     android:textSize="17dp"
                     android:textStyle="bold"

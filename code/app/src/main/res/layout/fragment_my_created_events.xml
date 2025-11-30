@@ -11,60 +11,58 @@
         android:id="@+id/camarderie_header_for_my_Created_events"
         android:layout_width="171dp"
         android:layout_height="54dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/cambria_italic"
         android:gravity="center"
         android:text="Camarderie"
         android:textColor="@color/white"
         android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.318" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="384dp"
-        android:layout_height="510dp"
+        android:layout_width="0dp"
+        android:padding="8dp"
+        android:layout_height="0dp"
         android:background="@drawable/gradient_for_org_view"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/back_button_for_my_created_events"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.556" />
+        app:layout_constraintTop_toBottomOf="@+id/header_for_events_list_for_my_created_events"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/header_for_events_list_for_my_created_events"
         android:layout_width="151dp"
         android:layout_height="47dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="56dp"
         android:fontFamily="@font/cambria"
         android:gravity="center"
         android:text="My Events"
         android:textColor="@color/white"
         android:textSize="26dp"
-        app:layout_constraintBottom_toTopOf="@+id/listView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.061"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camarderie_header_for_my_Created_events"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/camarderie_header_for_my_Created_events" />
 
     <Button
         android:id="@+id/back_button_for_my_created_events"
         android:layout_width="123dp"
         android:layout_height="49dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="#AAD6F2"
         android:fontFamily="@font/cambria"
         android:text="Back"
         android:textColor="@color/black"
-        android:textStyle="bold"
         android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView"
         app:strokeWidth="2dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

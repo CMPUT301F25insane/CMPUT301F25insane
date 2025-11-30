@@ -1,86 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="wrap_content"
+    android:padding="6dp"
     android:background="#3A3FA0">
 
+    <!-- PROFILE IMAGE -->
+    <ImageButton
+        android:id="@+id/profile_photo_for_event_item"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <!-- EVENT NAME -->
     <TextView
         android:id="@+id/eventName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/cambria"
         android:text="Event Name"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/profile_photo_for_event_item"
+        app:layout_constraintTop_toTopOf="@id/profile_photo_for_event_item" />
 
+    <!-- DEADLINE / DATE -->
     <TextView
         android:id="@+id/RegistrationDeadline"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:text="[Registration Deadline]"
-        android:fontFamily="@font/cambria"
-        android:textStyle="italic"
+        android:text="[date] | [registration deadline]"
         android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/eventName"
+        app:layout_constraintEnd_toEndOf="@id/eventName"
         app:layout_constraintTop_toBottomOf="@id/eventName" />
 
+    <!-- JOIN BUTTON -->
     <Button
         android:id="@+id/joinButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="Join"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:backgroundTint="@color/custom_join_button_color"
         android:fontFamily="@font/cambria"
-        android:text="Join"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toBottomOf="@id/RegistrationDeadline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/seeDescButton"
+        app:layout_constraintHorizontal_weight="1"
         app:strokeColor="@color/black"
-        app:strokeWidth="2.5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:strokeWidth="1.5dp" />
 
+    <!-- SEE DESCRIPTION BUTTON -->
     <Button
         android:id="@+id/seeDescButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="#59403F3F"
         android:fontFamily="@font/cambria"
         android:text="See Description"
         android:textColor="@color/white"
-        android:textSize="18sp"
-        app:strokeColor="@color/black"
-        app:strokeWidth="1.5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@id/joinButton"
-        app:layout_constraintEnd_toStartOf="@id/RemoveButton"
-        app:layout_constraintHorizontal_chainStyle="packed" />
-
-    <Button
-        android:id="@+id/RemoveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#D32F2F"
-        android:fontFamily="@font/cambria"
-        android:text="Remove"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/RegistrationDeadline"
         app:strokeColor="@color/black"
-        app:strokeWidth="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:strokeWidth="1.5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
