@@ -50,7 +50,7 @@ public class ViewMyEventHistoryFragment extends Fragment {
         adapter.setNotifyOnChange(true);
         binding.historyListView.setAdapter(adapter);
 
-        vm.getUserEventsFromList(getUser().getAcceptedEvents(),
+        vm.getUserEventsFromList(getUser().getUserEventHistory(),
                 events -> {
                     adapter.addAll(events);
                 });

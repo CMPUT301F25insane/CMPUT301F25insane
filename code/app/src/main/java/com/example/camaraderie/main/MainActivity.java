@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -336,7 +337,12 @@ public class MainActivity extends AppCompatActivity {
                 String address2 = address.getText().toString();
 //                    String id2 = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-
+                if(!email2.contains("@") || !email2.contains(".")) {
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setText("Invalid email");
+                    toast.show();
+                    return;
+                }
                 Log.d("Firestore", "wenis (builder built)");
                 // TALK TO RAMIZ ABT THIS!!!!!!
                 // firebase should automatically serialize the object, and user should be org so that it has an empty arr of events

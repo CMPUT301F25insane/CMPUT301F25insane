@@ -15,6 +15,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.camaraderie.SharedEventViewModel;
+import com.example.camaraderie.databinding.FragmentViewMyAcceptedEventsBinding;
 import com.example.camaraderie.databinding.FragmentViewMyEventHistoryBinding;
 import com.example.camaraderie.my_events.MyEventsViewModel;
 
@@ -25,8 +26,7 @@ import java.util.ArrayList;
  */
 public class MyAcceptedEventsFragment extends Fragment {
 
-    // reuses the history xml
-    private FragmentViewMyEventHistoryBinding binding;
+    private FragmentViewMyAcceptedEventsBinding binding;
     private SharedEventViewModel svm;
     private MyEventsViewModel vm;
     private MyAcceptedEventsArrayAdapter adapter;
@@ -45,7 +45,7 @@ public class MyAcceptedEventsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentViewMyEventHistoryBinding.inflate(inflater, container, false);
+        binding = FragmentViewMyAcceptedEventsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -55,6 +55,7 @@ public class MyAcceptedEventsFragment extends Fragment {
         adapter = new MyAcceptedEventsArrayAdapter(requireContext(), new ArrayList<>(), svm, nav);
         adapter.setNotifyOnChange(true);
         binding.historyListView.setAdapter(adapter);
+        binding.headerText.setText("Accepted Events");
 
         vm.getUserEventsFromList(getUser().getAcceptedEvents(),
                 events -> {

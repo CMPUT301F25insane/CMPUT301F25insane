@@ -98,6 +98,7 @@ public class User implements Serializable {
      */
     public void setAdmin(boolean this_admin) {  // we MANUALLY create admins for the app
         admin = this_admin;
+        if (docRef != null) docRef.update("admin", this_admin);  // we need this because firebase might run this setter before it sets docRef
     }
 
     /**

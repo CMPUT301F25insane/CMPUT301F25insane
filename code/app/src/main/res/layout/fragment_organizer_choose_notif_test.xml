@@ -76,20 +76,37 @@
         app:strokeWidth="3.5dp" />
 
     <Button
-        android:id="@+id/choosenotifBack"
-        android:layout_width="129dp"
-        android:layout_height="45dp"
+        android:id="@+id/orgViewNotifLogs"
+        android:layout_width="145dp"
+        android:layout_height="60dp"
         android:backgroundTint="#AAD6F2"
-        android:text="Back"
-        android:textColor="@color/black"
         android:fontFamily="@font/cambria"
-        android:textStyle="bold"
+        android:text="View Logs"
+        android:textColor="@color/black"
         android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.63"
+        app:layout_constraintVertical_bias="0.618"
+        app:strokeWidth="3.5dp" />
+
+    <Button
+        android:id="@+id/choosenotifBack"
+        android:layout_width="129dp"
+        android:layout_height="45dp"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:text="Back"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.702"
         app:strokeWidth="3.5dp" />
 
     <TextView

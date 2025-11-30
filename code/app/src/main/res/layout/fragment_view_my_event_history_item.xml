@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemLayout"
     android:layout_width="match_parent"
-    android:layout_height="173dp"
+    android:layout_height="110dp"
     android:background="#3A3FA0">
 
     <TextView
@@ -27,25 +27,26 @@
         android:layout_width="174dp"
         android:layout_height="39dp"
         android:layout_marginStart="200dp"
-        android:text="See Description"
-        android:textSize="14dp"
         android:backgroundTint="#AAD6F2"
         android:fontFamily="@font/cambria"
-        android:textStyle="bold"
+        android:text="See Description"
         android:textColor="@color/black"
-        app:strokeWidth="3.5dp"
+        android:textSize="14dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.108"
+        app:layout_constraintHorizontal_bias="0.135"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.544" />
+        app:layout_constraintVertical_bias="0.659"
+        app:strokeWidth="3.5dp" />
 
     <TextView
         android:id="@+id/historyEventDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Event Date"
+        android:fontFamily="@font/cambria"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,5 +54,5 @@
         app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.567" />
+        app:layout_constraintVertical_bias="0.683" />
 </androidx.constraintlayout.widget.ConstraintLayout>

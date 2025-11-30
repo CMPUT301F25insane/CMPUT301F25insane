@@ -1,5 +1,6 @@
 package com.example.camaraderie.event_screen.organizer_view;
 
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -115,7 +116,12 @@ public class OrganizerViewEventFragment extends Fragment {
 
             binding.orgViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
 
-            binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
+            if(nav.getPreviousBackStackEntry().getDestination().getId() == R.id.fragment_create_event) {
+                binding.orgViewBackButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
+            }
+            else {
+                binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
+            }
             binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
             binding.viewListsButton.setOnClickListener(v -> {
 
@@ -204,15 +210,19 @@ public class OrganizerViewEventFragment extends Fragment {
         });
 
         binding.showMap.setOnClickListener(v -> {
-            if (event != null) {
-                Bundle args = new Bundle();
-                args.putString("eventId", event.getEventId());
-
-                ArrayList<HashMap<String, Object>> locations = event.getLocationArrayList();
-                args.putSerializable("userLocations", locations); // <-- pass list safely
-
-                nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
+            if (event == null) {
+                Toast.makeText(getContext(), "Event not loaded yet", LENGTH_SHORT).show();
+                return;
             }
+
+            Bundle args = new Bundle();
+
+            ArrayList<HashMap<String,Object>> locations = event.getUserLocationArrayList();
+            if (locations == null) {
+                locations = new ArrayList<HashMap<String,Object>>();
+            }
+            args.putSerializable("userLocations", locations);
+            nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
         });
 
 
@@ -235,14 +245,16 @@ public class OrganizerViewEventFragment extends Fragment {
      */
     private void updateUI(Event e) {
         binding.eventNameForOrgView.setText(e.getEventName());
-        binding.registrationDeadlineTextOrgView.setText(e.getRegistrationDeadline().toString());  //TODO: deal with date stuff
+        String deadline = (e.getRegistrationDeadline().getYear()+1900) + "-" + (e.getRegistrationDeadline().getMonth()+1) + "-" + e.getRegistrationDeadline().getDate() + " " + e.getEventDeadlineTime();
+        binding.registrationDeadlineTextOrgView.setText(deadline);
         binding.eventDescriptionOrgView.setText(e.getDescription());
         binding.attendeeCountOrganizer.setText(
                 "Accepted: " + e.getAcceptedUsers().size() +
                         " | Selected: " + e.getSelectedUsers().size() +
                         " | Waitlist: " + e.getWaitlist().size()
         );
-        binding.orgEventViewEventDate.setText(event.getEventDate().toString());
+        String date = (e.getEventDate().getYear()+1900) + "-" + (e.getEventDate().getMonth()+1) + "-" + e.getEventDate().getDate() + " " + e.getEventDateTime();
+        binding.orgEventViewEventDate.setText(date);
         binding.locationOfOrgView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
         binding.hostNameOrgView.setText(user.getFirstName());
         binding.nameOfOrganizer.setText(user.getFirstName());
