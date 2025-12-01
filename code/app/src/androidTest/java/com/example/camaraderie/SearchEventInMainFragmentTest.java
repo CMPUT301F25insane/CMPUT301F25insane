@@ -72,11 +72,11 @@ public class SearchEventInMainFragmentTest {
                     "20 Lucky individuals will get a front row seats to the Oilers game against Flames",
                     eventDate,
                     "20:00",
-                    100,
+                    "21:00",
                     2,
-                    docRef,
+                    2,
+                    mockHost,
                     mockEventRef,
-                    "E123",
                     null,
                     false
             );

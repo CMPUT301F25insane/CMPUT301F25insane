@@ -45,6 +45,7 @@ public class Event {
     /**
      * Empty constructor for event, necessary for Firebase integration
      */
+    public Event() {}  // required for FIREBASE
 
     /**
      * Constructor for event

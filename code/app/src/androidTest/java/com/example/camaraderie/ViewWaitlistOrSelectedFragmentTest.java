@@ -56,11 +56,11 @@ public class ViewWaitlistOrSelectedFragmentTest {
                     "20 Lucky individuals will get a front row seats to the Oilers game against Flames",
                     new Date(),
                     "20:00",
-                    100,
-                    -1,
+                    "21:00",
+                    2,
+                    2,
                     hostRef,
                     docRef,
-                    docRef.getId(),
                     null,
                     false);
             docRef.set(mockEvent).addOnSuccessListener(aVoid2 -> {

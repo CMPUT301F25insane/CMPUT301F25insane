@@ -15,11 +15,11 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelStore;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.testing.TestNavHostController;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.action.ViewActions;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.GrantPermissionRule;
@@ -46,6 +46,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 
 /**
@@ -69,43 +70,34 @@ public class AdminDashboardFragmentTest {
         fakeUser.setPhoneNumber("0000000");
         fakeUser.setAddress("Nowhere");
 
-        // Inject into MainActivity.user and make sure they are admin
         MainActivity.user = fakeUser;
         fakeUser.setAdmin(true);
 
-        // Create navController first
         TestNavHostController navController =
                 new TestNavHostController(ApplicationProvider.getApplicationContext());
-        navController.setViewModelStore(new ViewModelStore());
 
-        FragmentScenario<AdminDashboardFragment> scenario =
-                FragmentScenario.launchInContainer(
-                        AdminDashboardFragment.class, null, new FragmentFactory() {
-                            @NonNull
-                            public Fragment instantiate(@NonNull ClassLoader classLoader,
-                                                        @NonNull String className,
-                                                        @Nullable Bundle args) {
-                                AdminDashboardFragment AdminDashboardFragment = new AdminDashboardFragment();
+        // Set the navigation graph first
+        navController.setGraph(R.navigation.nav_admin);
 
-                                // In addition to returning a new instance of our fragment,
-                                // get a callback whenever the fragment’s view is created
-                                // or destroyed so that we can set the NavController
-                                AdminDashboardFragment.getViewLifecycleOwnerLiveData().observeForever(new Observer<LifecycleOwner>() {
-                                    @Override
-                                    public void onChanged(LifecycleOwner viewLifecycleOwner) {
+        // Set the current destination to the start destination of the graph
+        navController.setCurrentDestination(R.id.admin_main_screen);
 
-                                        // The fragment’s view has just been created
-                                        if (viewLifecycleOwner != null) {
-                                            navController.setGraph(R.navigation.nav_graph);
-                                            Navigation.setViewNavController(AdminDashboardFragment.requireView(), navController);
-                                        }
 
-                                    }
-                                });
-                                return AdminDashboardFragment;
-                            }
-                        });
+
+        scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
+
+
+
+
+
+        scenario.onFragment(fragment -> {
+            Navigation.setViewNavController(fragment.requireView(), navController);
+
+
+        });
     }
+
+
 
 
 
