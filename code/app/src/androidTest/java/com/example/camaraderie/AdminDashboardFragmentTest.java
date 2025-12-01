@@ -22,6 +22,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.example.camaraderie.admin_screen.AdminDashboardFragment;
@@ -61,7 +62,10 @@ public class AdminDashboardFragmentTest {
     @Rule
     public GrantPermissionRule permissionRule =
             GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS);
+
+    private TestNavHostController navController;
     private FragmentScenario<AdminDashboardFragment> scenario;
+
     @Before
     public void setUp() {
         User fakeUser = new User();
@@ -69,34 +73,37 @@ public class AdminDashboardFragmentTest {
         fakeUser.setEmail("test@ex.com");
         fakeUser.setPhoneNumber("0000000");
         fakeUser.setAddress("Nowhere");
-
         MainActivity.user = fakeUser;
         fakeUser.setAdmin(true);
 
-        TestNavHostController navController =
-                new TestNavHostController(ApplicationProvider.getApplicationContext());
-
-        // Set the navigation graph first
-        navController.setGraph(R.navigation.nav_admin);
-
-        // Set the current destination to the start destination of the graph
-        navController.setCurrentDestination(R.id.admin_main_screen);
-
-
-
-        scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
-
-
-
-
-
-        scenario.onFragment(fragment -> {
-            Navigation.setViewNavController(fragment.requireView(), navController);
-
-
+        // Create the NavController on the main thread
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+            navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+            navController.setGraph(R.navigation.nav_admin);
+            navController.setCurrentDestination(R.id.admin_main_screen);
         });
-    }
 
+        // Launch the fragment scenario with a custom factory
+        scenario = FragmentScenario.launchInContainer(
+                AdminDashboardFragment.class,
+                null,
+                R.style.Theme_Camaraderie,
+                new FragmentFactory() {
+                    @NonNull
+                    @Override
+                    public Fragment instantiate(@NonNull ClassLoader classLoader, @NonNull String className) {
+                        AdminDashboardFragment fragment = new AdminDashboardFragment();
+                        // Set the NavController for the fragment before it is created
+                        fragment.getViewLifecycleOwnerLiveData().observeForever(viewLifecycleOwner -> {
+                            if (viewLifecycleOwner != null) {
+                                Navigation.setViewNavController(fragment.requireView(), navController);
+                            }
+                        });
+                        return fragment;
+                    }
+                }
+        );
+    }
 
 
 
