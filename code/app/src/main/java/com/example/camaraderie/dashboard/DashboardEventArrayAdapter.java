@@ -9,6 +9,7 @@ import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
 
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -151,7 +152,7 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
         else if (userCannotJoinWaitlist) {
             joinButton.setVisibility(VISIBLE);
             joinButton.setEnabled(false);
-            joinButton.setBackgroundColor(Color.GRAY);
+            joinButton.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
         }
         else {
             joinButton.setVisibility(VISIBLE);
@@ -185,14 +186,16 @@ public class DashboardEventArrayAdapter extends ArrayAdapter<Event> {
 
                     () -> {
                         joinButton.setClickable(false);
-                        joinButton.setBackgroundColor(Color.GRAY);
+                        joinButton.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                         joinButton.setEnabled(false);
                     },
 
                     () -> {
                         Log.e("DashboardEventArrayAdapter", "failed to join event");
-                        remove(event);
-                        notifyDataSetChanged();
+                        joinButton.setEnabled(true);
+                        joinButton.setBackgroundTintList(
+                                ContextCompat.getColorStateList(getContext(), R.color.custom_join_button_color)
+                        );
                     });})
 
         );

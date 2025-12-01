@@ -46,7 +46,8 @@
                 android:id="@+id/userEventViewEventDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/cambria"
                 android:text="Date and Time"
                 android:textColor="@color/white"
@@ -57,7 +58,8 @@
                 android:id="@+id/registration_deadline_text_user_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/cambria"
                 android:text="Registration Deadline"
                 android:textColor="@color/white"
@@ -71,6 +73,9 @@
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/cambria"
                 android:text="host Name"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:maxWidth="100dp"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +92,9 @@
                 android:contentDescription="TODO"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:background="@drawable/baseline_person_24"
+                android:src="@drawable/baseline_person_24"
+                />
 
             <TextView
                 android:id="@+id/attendeeCountOrganizer"
@@ -96,10 +103,36 @@
                 android:text="TextView"
                 android:textColor="#F6EAEA"
                 android:textColorLink="#DEDEDE"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/registration_deadline_text_user_view" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cambria"
+                android:text="Date:"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/userEventViewEventDate"
+                app:layout_constraintEnd_toStartOf="@+id/userEventViewEventDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/userEventViewEventDate" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/cambria"
+                android:text="Deadline:"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/registration_deadline_text_user_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/registration_deadline_text_user_view"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -205,7 +238,7 @@
         android:layout_width="151dp"
         android:layout_height="33dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="36dp"
         android:fontFamily="@font/cambria_italic"
         android:text="Camaraderie"
         android:textColor="@color/white"
@@ -217,14 +250,17 @@
         android:id="@+id/name_of_useranizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:ellipsize="end"
         android:fontFamily="@font/cambria"
+        android:maxWidth="160dp"
+        android:maxLines="1"
         android:text="[Name]"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/user_view_profile_image"
         app:layout_constraintEnd_toStartOf="@+id/user_view_profile_image"
         app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toEndOf="@+id/header_for_view_event_user"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/user_view_profile_image" />
 
     <ImageButton
         android:id="@+id/user_view_profile_image"
@@ -232,35 +268,38 @@
         android:layout_height="61dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/baseline_person_24"
+        android:contentDescription="TODO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/baseline_person_24"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="110dp"
-        android:orientation="horizontal"
         android:background="@color/black"
+        android:orientation="horizontal"
         android:paddingHorizontal="2dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
             android:id="@+id/hostEvent"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/black"
             android:layout_weight="1.1"
+            android:background="@color/black"
             android:src="@drawable/hostevent" />
 
         <ImageButton
             android:id="@+id/dashboardButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/black"
             android:layout_weight="1"
+            android:background="@color/black"
             android:scaleX="1.3"
             android:scaleY="1.3"
             android:src="@drawable/dashboard_image" />
@@ -269,13 +308,14 @@
             android:id="@+id/myEvents"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/black"
             android:layout_weight="1"
+            android:background="@color/black"
             android:src="@drawable/seeevents" />
 
     </LinearLayout>
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView2"
         android:layout_width="363dp"
         android:layout_height="92dp"
         android:fadeScrollbars="false"
@@ -357,6 +397,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.651"
                 app:strokeWidth="3.5dp" />
+
             <Button
                 android:id="@+id/adminDeleteEvent"
                 android:layout_width="130dp"
@@ -378,4 +419,14 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/deadlinePassedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deadline has passed!"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

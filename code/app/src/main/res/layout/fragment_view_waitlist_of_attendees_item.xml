@@ -33,7 +33,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.49"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:background="@drawable/baseline_person_24"
+        android:src="@drawable/baseline_person_24" />
 
     <Button
         android:id="@+id/kick_from_event_button"

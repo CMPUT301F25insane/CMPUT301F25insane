@@ -32,7 +32,8 @@
         android:layout_height="40dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-
+        android:src="@drawable/baseline_person_24"
+        android:background="@drawable/baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,6 +42,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
+        android:ellipsize="end"
+        android:maxWidth="60dp"
+        android:maxLines="1"
         android:text="[Name]"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/accountButton"

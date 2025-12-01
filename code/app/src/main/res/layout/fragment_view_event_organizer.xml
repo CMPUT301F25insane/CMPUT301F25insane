@@ -71,6 +71,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/cambria"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:maxWidth="100dp"
                 android:text="host Name"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +88,9 @@
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:background="@drawable/baseline_person_24"
+                android:src="@drawable/baseline_person_24"
+                />
 
             <TextView
                 android:id="@+id/attendeeCountOrganizer"
@@ -94,6 +99,7 @@
                 android:text="TextView"
                 android:textColor="#F6EAEA"
                 android:textColorLink="#DEDEDE"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -245,13 +251,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
+        android:ellipsize="end"
         android:fontFamily="@font/cambria"
+        android:maxWidth="160dp"
+        android:maxLines="1"
         android:text="[Name]"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/org_view_profile_image"
         app:layout_constraintEnd_toStartOf="@+id/org_view_profile_image"
         app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintStart_toEndOf="@+id/header_for_view_event_organizer"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/org_view_profile_image" />
 
     <ImageButton
         android:id="@+id/org_view_profile_image"
@@ -259,9 +269,12 @@
         android:layout_height="61dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:contentDescription=""
+        android:background="@drawable/baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/baseline_person_24"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout"

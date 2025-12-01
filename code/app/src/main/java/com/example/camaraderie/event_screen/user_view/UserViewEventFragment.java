@@ -1,8 +1,10 @@
 package com.example.camaraderie.event_screen.user_view;
 
+import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 
 import android.os.Bundle;
@@ -49,7 +51,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * The screen for user's viewing an uploaded event
@@ -62,6 +67,7 @@ public class UserViewEventFragment extends Fragment {
     private Event event;
     private SharedEventViewModel svm;
     private ViewListViewModel vm;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
 
     /**
@@ -126,11 +132,11 @@ public class UserViewEventFragment extends Fragment {
             event = evt;
             updateUI(evt);
 
-            // TODO: only enable this for ADMINS. for users, in its stead, have the event waitlist / capacity.
+
             binding.viewListsButton.setOnClickListener(v -> {
                 vm.setEvent(event);
                 vm.generateAllLists(() -> {
-                    nav.navigate(R.id.fragment_list_testing_interface); //TODO: user should NOT SEE these lists in general, only capacity.
+                    nav.navigate(R.id.fragment_list_testing_interface);
                 });
             });
 
@@ -142,7 +148,7 @@ public class UserViewEventFragment extends Fragment {
 
         // admin log stuff, only admins can view logs
         binding.adminViewLogs.setEnabled(false);
-        binding.adminViewLogs.setVisibility(INVISIBLE);
+        binding.adminViewLogs.setVisibility(GONE);
         binding.adminViewLogs.setOnClickListener(v -> nav.navigate(R.id.AdminNotificationLogsFragment));
 
         if (getUser().isAdmin()) {
@@ -182,7 +188,7 @@ public class UserViewEventFragment extends Fragment {
 
         // set up admin delete button
         binding.adminDeleteEvent.setEnabled(false);
-        binding.adminDeleteEvent.setVisibility(INVISIBLE);
+        binding.adminDeleteEvent.setVisibility(GONE);
         if (user.isAdmin()) {
             binding.adminDeleteEvent.setEnabled(true);
             binding.adminDeleteEvent.setVisibility(VISIBLE);
@@ -226,14 +232,22 @@ public class UserViewEventFragment extends Fragment {
     private void updateUI(Event e) {
         binding.eventNameForUserView.setText(e.getEventName());
         binding.eventDescriptionUserView.setText(e.getDescription());
-        binding.registrationDeadlineTextUserView.setText(e.getRegistrationDeadline().toString());
-        binding.userEventViewEventDate.setText(e.getEventDate().toString());
+        binding.registrationDeadlineTextUserView.setText(sdf.format(e.getRegistrationDeadline()));
+        binding.userEventViewEventDate.setText(sdf.format(e.getEventDate()));
         binding.locationOfUserView.setText(e.getEventLocation());
+
+        String limit;
+        if (e.getWaitlistLimit() == -1) {
+            limit = "none";
+        }
+
+        else limit = String.valueOf(e.getWaitlistLimit());
 
         binding.attendeeCountOrganizer.setText(
                 "Accepted: " + e.getAcceptedUsers().size() +
                         " | Selected: " + e.getSelectedUsers().size() +
-                        " | Waitlist: " + e.getWaitlist().size()
+                        " | Waitlist: " + e.getWaitlist().size() +
+                        " | Limit: " + limit
         );
 
         db.document(e.getHostDocRef().getPath()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -289,7 +303,21 @@ public class UserViewEventFragment extends Fragment {
         if (list.contains(getUser().getDocRef())) {
             binding.joinButtonUserView.setClickable(false);
             binding.joinButtonUserView.setEnabled(false);
-            binding.joinButtonUserView.setBackgroundColor(Color.GRAY);
+            binding.joinButtonUserView.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+        } else if (event.getRegistrationDeadline().before(new Date())) {
+
+            binding.joinButtonUserView.setClickable(false);
+            binding.joinButtonUserView.setEnabled(false);
+            binding.joinButtonUserView.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+            binding.deadlinePassedText.setText("Deadline has passed!");
+
+        }
+        // otherwise, gray out the unjoin button
+        else {
+            binding.unjoinButtonUserView.setEnabled(false);
+            binding.unjoinButtonUserView.setClickable(false);
+            binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
+            binding.deadlinePassedText.setText("");
         }
 
         // if user is selected, the unjoin button acts as a decline button

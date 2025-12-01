@@ -36,10 +36,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * The screen for an organizer viewing their own event. They can delete and edit their event here.
@@ -58,6 +60,7 @@ public class OrganizerViewEventFragment extends Fragment {
     private ViewListViewModel vm;
 
     //private NotificationController notificationController;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     /**
      * sets svm, nav, and db.
@@ -246,15 +249,23 @@ public class OrganizerViewEventFragment extends Fragment {
      */
     private void updateUI(Event e) {
         binding.eventNameForOrgView.setText(e.getEventName());
-        String deadline = (e.getRegistrationDeadline().getYear()+1900) + "-" + (e.getRegistrationDeadline().getMonth()+1) + "-" + e.getRegistrationDeadline().getDate() + " " + e.getEventDeadlineTime();
+        String deadline = sdf.format(e.getRegistrationDeadline());
         binding.registrationDeadlineTextOrgView.setText(deadline);
         binding.eventDescriptionOrgView.setText(e.getDescription());
+
+        String limit;
+        if (e.getWaitlistLimit() == -1) {
+            limit = "none";
+        }
+
+        else limit = String.valueOf(e.getWaitlistLimit());
         binding.attendeeCountOrganizer.setText(
                 "Accepted: " + e.getAcceptedUsers().size() +
                         " | Selected: " + e.getSelectedUsers().size() +
-                        " | Waitlist: " + e.getWaitlist().size()
+                        " | Waitlist: " + e.getWaitlist().size() +
+                        " | Limit: " + limit
         );
-        String date = (e.getEventDate().getYear()+1900) + "-" + (e.getEventDate().getMonth()+1) + "-" + e.getEventDate().getDate() + " " + e.getEventDateTime();
+        String date = sdf.format(e.getEventDate());
         binding.orgEventViewEventDate.setText(date);
         binding.locationOfOrgView.setText(event.getEventLocation()); //NEED TO CHANGE THIS WHEN GEOLOCATION STUFF IS IMPLEMENTED
         binding.hostNameOrgView.setText(user.getFirstName());
@@ -269,7 +280,7 @@ public class OrganizerViewEventFragment extends Fragment {
         else {
             binding.exportCSVButton.setEnabled(false);
             binding.exportCSVButton.setClickable(false);
-            binding.exportCSVButton.setVisibility(INVISIBLE);
+            binding.exportCSVButton.setVisibility(GONE);
         }
 
     }
