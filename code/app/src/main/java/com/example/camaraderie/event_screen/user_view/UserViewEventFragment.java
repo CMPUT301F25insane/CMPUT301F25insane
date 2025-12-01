@@ -323,7 +323,7 @@ public class UserViewEventFragment extends Fragment {
         // if user is selected, the unjoin button acts as a decline button
         if (event.getSelectedUsers().contains(getUser().getDocRef())) {
             binding.unjoinButtonUserView.setOnClickListener(v -> {
-                userDeclineInvite(event.getEventDocRef());
+                userDeclineInvite(event);
 
                 // disable the button
                 binding.unjoinButtonUserView.setEnabled(false);

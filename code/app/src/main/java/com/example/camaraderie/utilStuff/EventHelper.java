@@ -3,6 +3,7 @@ package com.example.camaraderie.utilStuff;
 
 import static com.example.camaraderie.main.Camaraderie.getUser;
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.my_events.LotteryRunner.sendNotificationsToEntrant;
 
 import android.util.Log;
 
@@ -62,6 +63,13 @@ public class EventHelper {
 
                     user.updateDB(onComplete);
 
+                    sendNotificationsToEntrant(
+                            event.getEventDocRef(),
+                            user.getDocRef(),
+                            "Event: " + event.getEventName(),
+                            "You have joined the waiting list for this event."
+                    );
+
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Handle Join", "Waitlist failed to update", e);
@@ -87,6 +95,12 @@ public class EventHelper {
 
 
                     user.updateDB(onComplete);
+                    sendNotificationsToEntrant(
+                            event.getEventDocRef(),
+                            user.getDocRef(),
+                            "Event: " + event.getEventName(),
+                            "You have left the waiting list for this event."
+                    );
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Event Handler", "Failed to unjoin user", e);
