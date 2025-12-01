@@ -291,7 +291,7 @@ public class UserViewEventFragment extends Fragment {
 
             binding.deadlinePassedText.setText("You are accepted to this event.");
         }
-        if (event.getCapacity() >= event.getAcceptedUsers().size()) {
+        if (event.getCapacity() <= event.getAcceptedUsers().size()) {
             binding.joinButtonUserView.setClickable(false);
             binding.joinButtonUserView.setEnabled(false);
             binding.joinButtonUserView.setVisibility(GONE);
