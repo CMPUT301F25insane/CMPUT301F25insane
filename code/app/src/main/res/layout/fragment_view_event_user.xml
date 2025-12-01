@@ -321,7 +321,7 @@
         android:fadeScrollbars="false"
         android:overScrollMode="never"
         android:padding="8dp"
-        android:scrollbars="horizontal|none"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

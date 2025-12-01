@@ -9,16 +9,16 @@
 
     <TextView
         android:id="@+id/camarderie_header_for_my_Created_events"
-        android:layout_width="171dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/cambria_italic"
         android:gravity="center"
         android:text="Camarderie"
         android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,7 +26,10 @@
         android:id="@+id/listView"
         android:layout_width="0dp"
         android:padding="8dp"
+        android:layout_margin="12dp"
         android:layout_height="0dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toTopOf="@+id/back_button_for_my_created_events"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,24 +40,24 @@
 
     <TextView
         android:id="@+id/header_for_events_list_for_my_created_events"
-        android:layout_width="151dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="56dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/cambria"
         android:gravity="center"
         android:text="My Events"
         android:textColor="@color/white"
         android:textSize="26dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/camarderie_header_for_my_Created_events" />
 
     <Button
         android:id="@+id/back_button_for_my_created_events"
-        android:layout_width="123dp"
-        android:layout_height="49dp"
-        android:layout_marginBottom="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:backgroundTint="#AAD6F2"
         android:fontFamily="@font/cambria"
         android:text="Back"
