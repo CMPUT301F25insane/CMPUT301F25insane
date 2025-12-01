@@ -34,24 +34,25 @@
 
     <Button
         android:id="@+id/UserProfileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="107dp"
+        android:layout_height="37dp"
         android:backgroundTint="#59403F3F"
         android:fontFamily="@font/cambria"
         android:text="View Profile"
-        android:textStyle="bold"
         android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/RemoveButton"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/RemoveButton"
         app:layout_constraintTop_toTopOf="@id/user_id"
         app:strokeColor="@color/black"
         app:strokeWidth="1.5dp" />
 
     <Button
         android:id="@+id/RemoveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="107dp"
+        android:layout_height="37dp"
         android:backgroundTint="#9E2C0A"
         android:fontFamily="@font/cambria"
         android:text="Remove"
