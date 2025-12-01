@@ -11,7 +11,7 @@
         android:id="@+id/pendingEventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_margin="16dp"
         android:fontFamily="@font/cambria"
         android:text="Event Name"
         android:textColor="@color/white"
@@ -31,38 +31,39 @@
         android:textColor="@color/white"
         android:textSize="17dp"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintTop_toBottomOf="@id/pendingEventName"/>
 
 
     <Button
         android:id="@+id/declineEventButton"
-        android:layout_width="99dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="188dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="#9E2C0A"
         android:fontFamily="@font/cambria"
         android:text="Decline"
         android:textStyle="bold"
-        app:strokeWidth="3.5dp"
+        android:layout_margin="10dp"
         app:layout_constraintEnd_toStartOf="@+id/acceptEventButton"
-        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintHorizontal_bias="0.069"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pendingEventDate" />
+        app:layout_constraintTop_toBottomOf="@+id/pendingEventDate"
+        app:strokeWidth="3.5dp" />
 
     <Button
         android:id="@+id/acceptEventButton"
-        android:layout_width="99dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
         android:backgroundTint="#AAF2C8"
         android:fontFamily="@font/cambria"
         android:text="Accept"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toEndOf="@id/declineEventButton"
+        app:layout_constraintTop_toTopOf="@id/declineEventButton"
+        app:layout_constraintBottom_toBottomOf="@id/declineEventButton"
         app:strokeWidth="3.5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
