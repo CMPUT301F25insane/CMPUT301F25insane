@@ -45,7 +45,9 @@ public class AdminUsersViewFragmentTest {
     }
     @After
     public void tearDown() {
-        scenario.close();
+        if (scenario != null) {
+            scenario.close();
+        };
     }
 
     /**

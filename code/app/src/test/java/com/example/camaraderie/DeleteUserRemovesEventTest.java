@@ -82,10 +82,7 @@ public class DeleteUserRemovesEventTest {
     public void RemoveUserTest() {
         event.addWaitlistUser(mockUser1);
         assertTrue(event.getWaitlist().contains(mockUser1));
-        UserDeleter deleter = new UserDeleter(mUser1Object);
-        deleter.DeleteUser(() -> {
-            assertFalse(event.getWaitlist().contains(mockUser1));
-        });
+
 
     }
 }

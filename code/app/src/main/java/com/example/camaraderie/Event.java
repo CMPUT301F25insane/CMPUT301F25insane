@@ -45,7 +45,6 @@ public class Event {
     /**
      * Empty constructor for event, necessary for Firebase integration
      */
-    public Event(String freeTicketsToOilersGame, String edmontonStadium, Date registrationDeadline, String s, Date eventDate, String time, int i, int i1, DocumentReference docRef, DocumentReference mockEventRef, String e123, Object o, boolean b) {}  // required for FIREBASE
 
     /**
      * Constructor for event

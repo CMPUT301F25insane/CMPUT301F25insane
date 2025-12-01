@@ -7,12 +7,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.NavHost;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +17,6 @@ import android.view.ViewGroup;
 
 import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentAdminDashboardBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * The AdminDashboardFragment class extends Fragment and hosts the UI for the admin dashboard
@@ -30,20 +26,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class AdminDashboardFragment extends Fragment {
     private FragmentAdminDashboardBinding binding;
     private NavController nav;
-    private NavController navController;
-    public static boolean TEST_MODE = false;
-
-    public  AdminDashboardFragment() {
-        super(R.layout.fragment_admin_dashboard);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         nav = NavHostFragment.findNavController(this);
-
-
-
     }
 
     /**
@@ -80,7 +68,7 @@ public class AdminDashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (user != null) {
+        if(user != null){
             binding.nameForMainDashboard.setText(user.getFirstName());
         } else {
             binding.nameForMainDashboard.setText("[Name]");
@@ -89,9 +77,7 @@ public class AdminDashboardFragment extends Fragment {
         binding.adminSeeUsers.setOnClickListener(v -> nav.navigate(R.id.admin_user_data_screen_view));
         binding.adminSeeEvents.setOnClickListener(v -> nav.navigate(R.id.admin_event_data_screen_view));
         binding.adminSeePics.setOnClickListener(v -> nav.navigate(R.id.admin_event_images_screen_view));
-        binding.back.setOnClickListener(v -> nav.popBackStack());
-
-}
+        binding.back.setOnClickListener(v -> nav.popBackStack());}
 
     /**
      * onDestoryView ensures no memory leaks by setting binding to null
