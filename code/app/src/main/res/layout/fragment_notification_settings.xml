@@ -38,7 +38,7 @@
         app:layout_constraintStart_toEndOf="@+id/settings_button"
         app:layout_constraintTop_toBottomOf="@+id/notificationstextview"
         app:strokeColor="#040404"
-        app:strokeWidth="3dp" />
+        app:strokeWidth="3.5dp" />
 
     <TextView
         android:id="@+id/header_for_notifications"
@@ -73,6 +73,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
+        android:textStyle="bold"
+        app:strokeWidth="3.5dp"
         android:text="Settings"
         android:textColor="@color/black"
         android:textSize="20dp"
