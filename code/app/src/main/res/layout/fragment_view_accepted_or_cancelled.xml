@@ -11,57 +11,63 @@
         android:id="@+id/cancelledOrAcceptedTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:fontFamily="@font/cambria"
-        android:text="NaN"
+        android:paddingTop="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Accepted:"
         android:textColor="@color/white"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/usersList"
+        app:layout_constraintBottom_toTopOf="@+id/capacity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.171" />
+        app:layout_constraintVertical_bias="0.205" />
 
     <Button
         android:id="@+id/acceptedOrCancelledBackButton"
-        android:layout_width="111dp"
-        android:layout_height="56dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="#AAD6F2"
         android:fontFamily="@font/cambria"
         android:text="Back"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:textSize="16dp"
+        android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usersList"
-        app:layout_constraintVertical_bias="0.311"
-        app:strokeWidth="4dp" />
+        app:strokeWidth="3dp" />
 
     <ListView
         android:id="@+id/usersList"
-        android:layout_width="375dp"
-        android:layout_height="653dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/gradient_for_org_view"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:layout_margin="15dp"
+        app:layout_constraintBottom_toTopOf="@id/acceptedOrCancelledBackButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/capacity"
+        android:padding="8dp"/>
+
 
     <TextView
         android:id="@+id/capacity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginTop="26dp"
+        android:fontFamily="@font/cambria"
         android:text="NaN"
         android:textColor="@color/white"
         android:textSize="20dp"
-        android:fontFamily="@font/cambria"
         app:layout_constraintBottom_toTopOf="@+id/usersList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.048"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cancelledOrAcceptedTextView"
-        app:layout_constraintVertical_bias="0.579" />
+        app:layout_constraintVertical_bias="0.285" />
 </androidx.constraintlayout.widget.ConstraintLayout>

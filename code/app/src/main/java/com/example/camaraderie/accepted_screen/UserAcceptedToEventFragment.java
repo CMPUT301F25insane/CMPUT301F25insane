@@ -69,7 +69,7 @@ public class UserAcceptedToEventFragment extends Fragment {
                     Event event = doc.toObject(Event.class);
                     if (event != null) {
                         selectedEvents.add(event);
-                        pendingEventArrayAdapter.notifyDataSetChanged();
+                        pendingEventArrayAdapter.notifyDataSetChanged();  // again no need for tjis but who cares
                     }
                 });
             }

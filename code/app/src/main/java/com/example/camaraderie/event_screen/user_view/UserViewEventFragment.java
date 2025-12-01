@@ -8,7 +8,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,21 +33,15 @@ import static com.example.camaraderie.utilStuff.EventHelper.handleUnjoin;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.R;
 import com.example.camaraderie.SharedEventViewModel;
-import com.example.camaraderie.UserLocation;
 
 import com.example.camaraderie.databinding.FragmentViewEventUserBinding;
 import com.example.camaraderie.event_screen.ViewListViewModel;
 
 
-import com.example.camaraderie.main.LoadUser;
-
-import com.example.camaraderie.geolocation.AddUserLocation;
-
 import com.example.camaraderie.qr_code.QRCodeDialogFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -269,10 +262,10 @@ public class UserViewEventFragment extends Fragment {
 
             });
 
-        joinIsEnabled(e);
+        handleEnableJoin(e);
     }
 
-    private void joinIsEnabled(Event event) {
+    private void handleEnableJoin(Event event) {
 
         binding.joinButtonUserView.setEnabled(true);
         binding.joinButtonUserView.setVisibility(VISIBLE);
@@ -284,15 +277,29 @@ public class UserViewEventFragment extends Fragment {
         binding.unjoinButtonUserView.setVisibility(VISIBLE);
         binding.unjoinButtonUserView.setBackgroundColor(Color.RED);
 
+        binding.deadlinePassedText.setText("");
+
         // user has no buttons to click
         if (event.getAcceptedUsers().contains(getUser().getDocRef())) {
             binding.joinButtonUserView.setClickable(false);
             binding.joinButtonUserView.setEnabled(false);
-            binding.joinButtonUserView.setVisibility(INVISIBLE);
+            binding.joinButtonUserView.setVisibility(GONE);
 
             binding.unjoinButtonUserView.setEnabled(false);
             binding.unjoinButtonUserView.setClickable(false);
-            binding.unjoinButtonUserView.setVisibility(INVISIBLE);
+            binding.unjoinButtonUserView.setVisibility(GONE);
+
+            binding.deadlinePassedText.setText("You are accepted to this event.");
+        }
+        if (event.getCapacity() >= event.getAcceptedUsers().size()) {
+            binding.joinButtonUserView.setClickable(false);
+            binding.joinButtonUserView.setEnabled(false);
+            binding.joinButtonUserView.setVisibility(GONE);
+
+            binding.unjoinButtonUserView.setEnabled(false);
+            binding.unjoinButtonUserView.setClickable(false);
+            binding.unjoinButtonUserView.setVisibility(GONE);
+            binding.deadlinePassedText.setText("Event is at capacity.");
         }
 
         ArrayList<DocumentReference> list = new ArrayList<>();
