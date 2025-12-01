@@ -116,13 +116,14 @@ public class OrganizerViewEventFragment extends Fragment {
 
             binding.orgViewProfileImage.setOnClickListener(v -> nav.navigate(R.id.update_user));
 
-            if(nav.getPreviousBackStackEntry().getDestination().getId() == R.id.fragment_create_event) {
-                binding.orgViewBackButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
-            }
-            else {
-                binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
-            }
-            binding.dashboardButton.setOnClickListener(v -> nav.navigate(R.id.fragment_main));
+            binding.orgViewBackButton.setOnClickListener(v -> nav.popBackStack());
+
+            binding.dashboardButton.setOnClickListener(v -> {
+                if (!nav.popBackStack(R.id.fragment_main, false)) {
+                    nav.navigate(R.id.fragment_main);
+                }
+            });
+
             binding.viewListsButton.setOnClickListener(v -> {
 
                 vm.setEvent(event);
