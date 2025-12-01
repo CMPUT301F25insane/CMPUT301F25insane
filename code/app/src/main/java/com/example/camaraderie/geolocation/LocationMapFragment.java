@@ -13,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.camaraderie.Event;
-import com.example.camaraderie.UserLocation;
 import com.example.camaraderie.databinding.FragmentLocationMapBinding;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.maplibre.android.camera.CameraUpdateFactory;
 import org.maplibre.android.annotations.MarkerOptions;
 import org.maplibre.android.geometry.LatLng;
+import org.maplibre.android.geometry.LatLngBounds;
 import org.maplibre.android.maps.MapLibreMap;
 import org.maplibre.android.maps.OnMapReadyCallback;
 import org.maplibre.android.maps.Style;
@@ -28,11 +27,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+/**
+ * Fragment that displays a MapLibre map with markers representing users' locations
+ * for a specific event.
+ *
+ * <p>The fragment receives a list of user locations through arguments under the key
+ * "userLocations". Each entry in the list should be a HashMap containing:
+ * <ul>
+ *     <li>"latitude": Double</li>
+ *     <li>"longitude": Double</li>
+ *     <li>"userID": String</li>
+ * </ul>
+ *
+ * <p>If there is only one location, the camera zooms to it. If multiple locations exist,
+ * the camera adjusts to fit all markers in view.
+ */
 public class LocationMapFragment extends Fragment {
     private FragmentLocationMapBinding binding;
     private MapLibreMap map;
     private String eventId;
     private Event event;
+    ArrayList<HashMap<String, Object>> userLocations;
 
     @Nullable
     @Override
@@ -49,17 +65,16 @@ public class LocationMapFragment extends Fragment {
                 NavHostFragment.findNavController(this).popBackStack()
         );
 
-        binding.mapView.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            userLocations = (ArrayList<HashMap<String, Object>>) getArguments().getSerializable("userLocations");
 
-        Bundle args = getArguments();
-        if (args != null) {
-            ArrayList<HashMap<String, Object>> userLocations = (ArrayList<HashMap<String, Object>>) args.getSerializable("userLocations");
-
-            if (userLocations != null) {
-                Log.d("MapFragment", "Received locations: " + userLocations.size());
-                // Now you can loop through them and display markers, etc.
+            if(userLocations == null){
+                userLocations = new ArrayList<HashMap<String, Object>>();
             }
         }
+
+        binding.mapView.onCreate(savedInstanceState);
+
 
         binding.mapView.getMapAsync(mapLibreMap -> {
             map = mapLibreMap;
@@ -67,23 +82,56 @@ public class LocationMapFragment extends Fragment {
             String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
             map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
-                showTestMarker();
+                showMarkers();
             });
         });
     }
 
-    private void showMarkers() {}
 
+    /**
+     * Displays all user-location markers on the map.
+     * <p>
+     * If multiple locations exist, the camera fits all markers inside a bounding box.
+     * If only one location exists, the camera zooms into that location.
+     * Safely exits if the map or userLocations list is null or empty.
+     */
+    private void showMarkers() {
+        if (map == null || userLocations == null || userLocations.isEmpty()) {
+            return;
+        }
 
-    private void showTestMarker() {
-        if (map == null) return;
-        LatLng testLocation = new LatLng(53.5461, -113.4938);
-        map.addMarker(new MarkerOptions()
-                .position(testLocation)
-                .title("Test Location"));
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(testLocation, 13));
+        LatLngBounds.Builder bounds = new LatLngBounds.Builder();
+        int count = 0;
+
+        for (HashMap<String, Object> coordinates : userLocations) {
+
+            double latitude = ((Number) coordinates.get("latitude")).doubleValue();
+            double longitude = ((Number) coordinates.get("longitude")).doubleValue();
+            String userId = String.valueOf(coordinates.get("userID"));
+
+            LatLng point = new LatLng(latitude, longitude);
+
+            map.addMarker(new MarkerOptions()
+                    .position(point)
+                    .title(userId));
+
+            bounds.include(point);
+            count++;
+
+        }
+        
+        if (count == 1){
+            HashMap<String, Object> c = userLocations.get(0);
+            LatLng single = new LatLng(
+                    ((Number) c.get("latitude")).doubleValue(),
+                    ((Number) c.get("longitude")).doubleValue()
+            );
+
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(single, 15));
+        } else if (count > 1) {
+            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 50));
+        }
     }
-
 
     @Override public void onStart() { super.onStart(); binding.mapView.onStart(); }
     @Override public void onResume() { super.onResume(); binding.mapView.onResume(); }

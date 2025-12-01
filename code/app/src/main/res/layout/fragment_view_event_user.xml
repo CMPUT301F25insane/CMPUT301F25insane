@@ -329,21 +329,15 @@
                 app:strokeWidth="3.5dp" />
 
             <Button
-                android:id="@+id/adminDeleteEvent"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/userViewEventBackButton"
+                android:layout_width="149dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="#8FE5E4FF"
                 android:fontFamily="@font/cambria"
-                android:text="Delete"
+                android:text="Back"
                 android:textColor="@color/black"
-                android:textSize="17dp"
+                android:textSize="14dp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.869"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.651"
                 app:strokeWidth="3.5dp" />
 
             <Button
@@ -363,17 +357,22 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.651"
                 app:strokeWidth="3.5dp" />
-
             <Button
-                android:id="@+id/userViewEventBackButton"
-                android:layout_width="149dp"
-                android:layout_height="match_parent"
+                android:id="@+id/adminDeleteEvent"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="#8FE5E4FF"
                 android:fontFamily="@font/cambria"
-                android:text="Back"
+                android:text="Delete"
                 android:textColor="@color/black"
-                android:textSize="14dp"
+                android:textSize="17dp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.869"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.651"
                 app:strokeWidth="3.5dp" />
 
         </LinearLayout>

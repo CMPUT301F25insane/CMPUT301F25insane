@@ -3,8 +3,6 @@ package com.example.camaraderie;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import android.net.Uri;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
@@ -78,7 +76,7 @@ public class EventUnitTest {
 
         assertEquals("Hackathon", event.getEventName());
         assertEquals("Edmonton Hall", event.getEventLocation());
-        assertEquals("09:00 AM", event.getEventTime());
+        assertEquals("09:00 AM", event.getEventDateTime());
         assertEquals(2, event.getCapacity());
         assertEquals("E123", event.getEventId());
         assertEquals(eventDate, event.getEventDate());
@@ -89,13 +87,13 @@ public class EventUnitTest {
     public void testSettersAndGetters() {
         event.setEventName("Music Fest");
         event.setEventLocation("Stadium");
-        event.setEventTime("8:00 PM");
+        event.setEventDateTime("8:00 PM");
         event.setDescription("Outdoor concert");
         event.setCapacity(50);
 
         assertEquals("Music Fest", event.getEventName());
         assertEquals("Stadium", event.getEventLocation());
-        assertEquals("8:00 PM", event.getEventTime());
+        assertEquals("8:00 PM", event.getEventDateTime());
         assertEquals("Outdoor concert", event.getDescription());
         assertEquals(50, event.getCapacity());
     }

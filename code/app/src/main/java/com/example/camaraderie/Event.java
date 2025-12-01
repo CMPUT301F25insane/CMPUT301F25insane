@@ -1,12 +1,10 @@
 package com.example.camaraderie;//
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,9 +20,10 @@ public class Event {
     private Date registrationDeadline;
     private String description;
     private Date eventDate;
-    private String eventTime;  // this will probably become a better data type soon
+    private String eventDateTime;  // this will probably become a better data type soon
     //private float price = 0.0f;
 
+    private String eventDeadlineTime;
     private ArrayList<DocumentReference> waitlist = new ArrayList<>();
     private ArrayList<DocumentReference> selectedUsers = new ArrayList<>();
     private ArrayList<DocumentReference> acceptedUsers = new ArrayList<>();
@@ -60,7 +59,7 @@ public class Event {
      *  Description of the event
      * @param eventDate
      *  Date the event takes place
-     * @param eventTime
+     * @param eventDateTime
      *  Time (in hours) that the event takes place
      * @param capacity
      *  Maximum number of people that can be accepted to the event
@@ -74,13 +73,14 @@ public class Event {
      *  enable or disable the geolocation requirement for the event
      *
      */
-    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventTime, int capacity, int waitlistLimit, DocumentReference host, DocumentReference eventDocRef, String eventId, boolean geoEnabled) {
+    public Event(String eventName, String eventLocation, Date registrationDeadline, String description, Date eventDate, String eventDateTime, String eventDeadlineTime, int capacity, int waitlistLimit, DocumentReference host, DocumentReference eventDocRef, String eventId, boolean geoEnabled) {
         this.eventName = eventName;
         this.eventLocation = eventLocation;
         this.registrationDeadline = registrationDeadline;
         this.description = description;
         this.eventDate = eventDate;
-        this.eventTime = eventTime;
+        this.eventDateTime = eventDateTime;
+        this.eventDeadlineTime = eventDeadlineTime;
         this.capacity = capacity;
         this.waitlistLimit = waitlistLimit;
         this.hostDocRef = host;
@@ -97,15 +97,18 @@ public class Event {
         this.geoEnabled = geoEnabled;
     }
 
-    public ArrayList<HashMap<String, Object>> getLocationArrayList() {
+    public ArrayList<HashMap<String, Object>> getUserLocationArrayList() {
         return userLocationArrayList;
     }
 
-    public void setLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList){
+    public void setUserLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList) {
+        if (userLocationArrayList == null) {
+            userLocationArrayList = new ArrayList<>();
+        }
         this.userLocationArrayList = userLocationArrayList;
     }
 
-    public void addLocationArrayList(HashMap<String, Object> location) {
+    public void addUserLocationArrayList(HashMap<String, Object> location) {
         if (userLocationArrayList == null) {
             userLocationArrayList = new ArrayList<>();
         }
@@ -152,19 +155,22 @@ public class Event {
      * @return
      *  Return time of the event
      */
-    public String getEventTime() {
-        return eventTime;
+    public String getEventDateTime() {
+        return eventDateTime;
     }
 
     /**
      * Set time of the event
-     * @param eventTime
+     * @param eventDateTime
      *  New time of the event
      */
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
+    public void setEventDateTime(String eventDateTime) {
+        this.eventDateTime = eventDateTime;
     }
 
+    public String getEventDeadlineTime() { return this.eventDeadlineTime;}
+
+    public void setEventDeadlineTime(String eventDeadlineTime) {this.eventDeadlineTime = eventDeadlineTime;}
     /**
      * Get date of the event
      * @return
@@ -274,6 +280,29 @@ public class Event {
     public DocumentReference getHostDocRef() {
         return hostDocRef;
     }
+    public void setHostDocRef(DocumentReference ref) {this.hostDocRef = ref;}
+
+    public void setAcceptedUsers(ArrayList<DocumentReference> acceptedUsers) {
+        this.acceptedUsers = acceptedUsers;
+    }
+
+    public void setCancelledUsers(ArrayList<DocumentReference> cancelledUsers) {
+        this.cancelledUsers = cancelledUsers;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public void setSelectedUsers(ArrayList<DocumentReference> selectedUsers) {
+        this.selectedUsers = selectedUsers;
+    }
+
+    public void setWaitlist(ArrayList<DocumentReference> waitlist) {
+        this.waitlist = waitlist;
+    }
+
+
 
     /**
      * Get the event waitlist
@@ -356,7 +385,8 @@ public class Event {
         data.put("registrationDeadline", registrationDeadline);
         data.put("description", description);
         data.put("eventDate", eventDate);
-        data.put("eventTime", eventTime);
+        data.put("eventDateTime", eventDateTime);
+        data.put("eventDeadlineTime", eventDeadlineTime);
 
         data.put("imageUrl", imageUrl);
         data.put("waitlist", waitlist);
@@ -369,7 +399,6 @@ public class Event {
 
         data.put("capacity", capacity);
         data.put("waitlistLimit", waitlistLimit);
-        data.put("imageUrl", imageUrl);
 
         eventDocRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
