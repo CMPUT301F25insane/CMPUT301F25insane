@@ -43,7 +43,7 @@ exports.sendNotificationOnCreate = onDocumentCreated("Notifications/{notifId}", 
 
   const userId = notif.userId;
   const title = notif.title || "Notification";
-  const message = notif.message || ""; // ensure this matches your Android writes
+  const message = notif.message || "";
 
   if (!userId) {
     console.log("Missing userId");
@@ -79,7 +79,7 @@ exports.sendNotificationOnCreate = onDocumentCreated("Notifications/{notifId}", 
 
     await snap.ref.update({
       sent: true,
-      sentAt: admin.firestore.FieldValue.serverTimestamp()
+      timestamp: admin.firestore.FieldValue.serverTimestamp()
     });
 
   } catch (err) {
