@@ -64,6 +64,7 @@
         android:id="@+id/list"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:padding="8dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintBottom_toTopOf="@id/back_button"
         app:layout_constraintEnd_toEndOf="parent"
