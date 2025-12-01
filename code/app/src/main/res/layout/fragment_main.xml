@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_resource">
 
-    <!-- HEADER TITLE -->
     <TextView
         android:id="@+id/camaraderie_header_for_main_dashboard"
         android:layout_width="wrap_content"
@@ -21,18 +20,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ACCOUNT BUTTON -->
-
-    <!-- USER NAME -->
-
-    <!-- SUBHEADER -->
     <ImageButton
         android:id="@+id/accountButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-
+        android:src="@drawable/baseline_person_24"
+        android:background="@drawable/baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,6 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
+        android:ellipsize="end"
+        android:maxWidth="60dp"
+        android:maxLines="1"
         android:text="[Name]"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/accountButton"
@@ -60,7 +58,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/camaraderie_header_for_main_dashboard" />
 
-    <!-- SEARCH BAR -->
     <EditText
         android:id="@+id/searchBar"
         android:layout_width="0dp"
@@ -75,7 +72,6 @@
         app:layout_constraintEnd_toStartOf="@+id/searchButton"
         app:layout_constraintTop_toBottomOf="@+id/header_for_search_bar" />
 
-    <!-- SEARCH BUTTON -->
     <Button
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
@@ -92,7 +88,6 @@
         app:strokeColor="@color/black"
         app:strokeWidth="3.5dp" />
 
-    <!-- DATE FILTERS -->
     <TextView
         android:id="@+id/fromDateText"
         android:layout_width="wrap_content"
@@ -114,11 +109,11 @@
         app:layout_constraintStart_toEndOf="@+id/fromDateText"
         app:layout_constraintTop_toTopOf="@+id/fromDateText" />
 
-    <!-- MAIN LIST -->
     <ListView
         android:id="@+id/eventsList"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="12dp"
         android:background="@drawable/gradient_for_org_view"
         app:layout_constraintTop_toBottomOf="@+id/fromDateText"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -126,14 +121,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="8dp" />
 
-    <!-- BOTTOM NAV -->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/black"
         android:paddingHorizontal="2dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -143,7 +139,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@color/black"
-            android:layout_weight="1.1"
+            android:layout_weight="1.2"
             android:src="@drawable/hostevent" />
 
         <ImageButton

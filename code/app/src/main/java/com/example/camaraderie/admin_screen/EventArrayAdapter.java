@@ -9,6 +9,7 @@ import static com.example.camaraderie.utilStuff.EventDeleter.deleteEvent;
 import static com.example.camaraderie.utilStuff.EventHelper.handleJoin;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -140,7 +141,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
         else if (userCannotJoinWaitlist) {
             join.setVisibility(VISIBLE);
             join.setEnabled(false);
-            join.setBackgroundColor(Color.GRAY);
+            join.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
         }
         else {
             join.setVisibility(VISIBLE);
@@ -156,7 +157,7 @@ public class EventArrayAdapter extends ArrayAdapter<Event> {
                 addLocation(event, () -> handleJoin(
                         event,
                         () -> {
-                            join.setBackgroundColor(Color.GRAY);
+                            join.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
                             join.setEnabled(false);
                             join.setClickable(false);},
                         () -> {

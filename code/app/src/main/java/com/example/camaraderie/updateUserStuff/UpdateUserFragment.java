@@ -233,7 +233,7 @@ public class UpdateUserFragment extends Fragment {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             user.setGeoEnabled(true);
-            Toast.makeText(getContext(), "Precise location permission already granted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Precise location permission granted", Toast.LENGTH_SHORT).show();  // i got rid of the "already" because there was a weird ui bug. this is fine for now
             return;
         }
 

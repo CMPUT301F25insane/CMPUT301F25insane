@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@android:color/white"
+    android:background="@drawable/gradient_resource"
     android:gravity="center">
 
     <TextView
@@ -12,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="QR Code"
+        android:fontFamily="@font/cambria"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -30,8 +33,13 @@
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Close"
+        android:backgroundTint="#AAD6F2"
+        android:fontFamily="@font/cambria"
         android:paddingLeft="32dp"
-        android:paddingRight="32dp" />
+        android:paddingRight="32dp"
+        android:text="Close"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:strokeWidth="3.5dp" />
 
 </LinearLayout>

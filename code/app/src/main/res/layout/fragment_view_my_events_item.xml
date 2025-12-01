@@ -12,11 +12,12 @@
         android:id="@+id/profile_photo_for_event_item"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:background="@android:color/transparent"
+        android:background="@drawable/baseline_person_24"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/baseline_person_24"
+        />
 
     <!-- EVENT NAME -->
     <TextView
