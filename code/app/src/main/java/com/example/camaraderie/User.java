@@ -226,6 +226,7 @@ public class User implements Serializable {
 
     /**
      * update user in database
+     * @param onComplete runnable for when database updated
      */
     public void updateDB(Runnable onComplete) {
         // update the DB from the user
