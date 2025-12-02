@@ -47,6 +47,8 @@
         android:text="Kick"
         android:textColor="@color/white"
         android:textStyle="bold"
+        app:strokeWidth="1.5dp"
+        app:strokeColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.187"

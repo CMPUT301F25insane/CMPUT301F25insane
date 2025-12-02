@@ -254,6 +254,10 @@ public class CreateEventFragment extends Fragment {
         eventDescription.setText(event.getDescription());
         eventCapacity.setText(String.valueOf(event.getCapacity()));
         eventDateTime.setText(event.getEventDateTime());
+        if (event.getWaitlistLimit() != -1) {
+            optionalLimit.setText(String.valueOf(event.getWaitlistLimit()));
+        }
+        eventDeadlineTime.setText(event.getEventDeadlineTime());
     }
 
     /**

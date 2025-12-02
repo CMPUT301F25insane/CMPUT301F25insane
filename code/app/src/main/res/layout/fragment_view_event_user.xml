@@ -26,6 +26,7 @@
             android:layout_height="120dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/corner_fix_event_view"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.484"
             app:layout_constraintStart_toStartOf="parent"
@@ -264,16 +265,15 @@
 
     <ImageButton
         android:id="@+id/user_view_profile_image"
-        android:layout_width="50dp"
-        android:layout_height="61dp"
+        android:layout_width="60dp"
+        android:layout_height="62dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/baseline_person_24"
         android:contentDescription="TODO"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/baseline_person_24"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
