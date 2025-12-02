@@ -95,6 +95,15 @@ public class AdminUsersViewFragment extends Fragment {
         binding.backButton.setOnClickListener( v ->
                 nav.popBackStack()
         );
+
+        binding.dashboardButton.setOnClickListener(v -> {
+            if (!nav.popBackStack(R.id.fragment_main, false)) {
+                nav.navigate(R.id.fragment_main);
+            }
+        });
+
+        binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event));
+        binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
     }
 
     /**
