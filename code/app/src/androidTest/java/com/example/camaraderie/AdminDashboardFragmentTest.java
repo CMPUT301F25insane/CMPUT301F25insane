@@ -76,37 +76,22 @@ public class AdminDashboardFragmentTest {
         MainActivity.user = fakeUser;
         fakeUser.setAdmin(true);
 
-        // Create the NavController on the main thread
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
-            navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
-            navController.setGraph(R.navigation.nav_admin);
-            navController.setCurrentDestination(R.id.admin_main_screen);
+//        // Create the NavController on the main thread
+//        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+//            navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+//            navController.setGraph(R.navigation.nav_admin);
+//            navController.setCurrentDestination(R.id.admin_main_screen);
+//        });
+
+        // Launch fragment scenario
+        scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
+
+        // Attach a mock NavController to avoid crashes
+        scenario.onFragment(fragment -> {
+            NavController mockNavController = Mockito.mock(NavController.class);
+            Navigation.setViewNavController(fragment.requireView(), mockNavController);
         });
-
-        // Launch the fragment scenario with a custom factory
-        scenario = FragmentScenario.launchInContainer(
-                AdminDashboardFragment.class,
-                null,
-                R.style.Theme_Camaraderie,
-                new FragmentFactory() {
-                    @NonNull
-                    @Override
-                    public Fragment instantiate(@NonNull ClassLoader classLoader, @NonNull String className) {
-                        AdminDashboardFragment fragment = new AdminDashboardFragment();
-                        // Set the NavController for the fragment before it is created
-                        fragment.getViewLifecycleOwnerLiveData().observeForever(viewLifecycleOwner -> {
-                            if (viewLifecycleOwner != null) {
-                                Navigation.setViewNavController(fragment.requireView(), navController);
-                            }
-                        });
-                        return fragment;
-                    }
-                }
-        );
     }
-
-
-
 
     @After
     public void tearDown() {
