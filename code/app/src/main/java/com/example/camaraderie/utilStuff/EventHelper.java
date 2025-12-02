@@ -17,15 +17,15 @@ import java.util.Date;
 
 /**
  * The EventHelper class to handle some tasks the original event class doesn't have
+ * @author Fecici
  */
-
 public class EventHelper {
 
     /**
      * Setup the isOneDayBefore method to check if we are one day before or not
-     * @param deadline
-     * @param now
-     * @return
+     * @param deadline event deadline
+     * @param now current date
+     * @return returns boolean true if the current date is a day before the deadline
      */
     public static boolean isOneDayBefore(Date deadline, Date now) {
         long diff = deadline.getTime() - now.getTime();
@@ -35,9 +35,8 @@ public class EventHelper {
 
     /**
      * The method finalizes the lists and removes any users from the selected list and also removes users from the waitlist
-     * @param event
+     * @param event event for which to finalize lists
      */
-
     public static void finalizeLists(Event event) {
 
         ArrayList<DocumentReference> selected   = event.getSelectedUsers();
@@ -63,7 +62,10 @@ public class EventHelper {
     }
 
     /**
-     * This method handles joins and handles users joining the waitlist specifically
+     * handles the join function for the event
+     * @param event event for user to join
+     * @param onComplete on complete lambda if all goes well
+     * @param onFailure onfailure lambda to handle an error
      */
     public static void handleJoin(Event event, Runnable onComplete, Runnable onFailure) {
 
@@ -95,6 +97,9 @@ public class EventHelper {
 
     /**
      * This method handles users unjoining the event and updates the database accordingly
+     * @param event event to unjoin the user from
+     * @param onComplete on complete lambda if all goes well
+     * @param onFailure onfailure lambda to handle an error
      */
     public static void handleUnjoin(Event event, Runnable onComplete, Runnable onFailure) {
 

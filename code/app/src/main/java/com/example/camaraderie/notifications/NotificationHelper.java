@@ -14,17 +14,18 @@ import androidx.core.app.NotificationCompat;
 import com.example.camaraderie.R;
 import com.example.camaraderie.main.MainActivity;
 
+/**
+ * Helper class to build notifications
+ * @author Fecici
+ */
 public class NotificationHelper {
-
-    private static RemoteViews getCustomDesign(String title, String message) {
-        RemoteViews remoteViews = new RemoteViews(getContext().getPackageName(), R.layout.notification_test_layout);
-
-        remoteViews.setTextViewText(R.id.notificationTitle, title);
-        remoteViews.setTextViewText(R.id.notificationBody, message);
-        remoteViews.setImageViewResource(R.id.notificationImage, R.drawable.ic_launcher_foreground);
-        return remoteViews;
-    }
-
+    /**
+     * creates notification and displays it on the screen
+     * @param context context of the application
+     * @param title notification title
+     * @param message notification message
+     * @param id unique notification id
+     */
     public static void showNotification(Context context, String title, String message, int id) {
         String channelId = "general";
 

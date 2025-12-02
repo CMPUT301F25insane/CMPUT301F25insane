@@ -16,6 +16,7 @@ import java.util.Random;
 
 /**
  * Lottery runner class to handle running the lottery and sending notifications to entrants
+ * @author Fecici
  */
 public class LotteryRunner {
 
@@ -24,6 +25,7 @@ public class LotteryRunner {
     /**
      * lottery system, runs while waitlist is nonempty and selectedEvents size is less than capacity.
      * updates database, updates UI
+     * @param event event to run the lottery for
      */
     public static void runLottery(Event event) {
 
@@ -83,6 +85,13 @@ public class LotteryRunner {
                 });
     }
 
+    /**
+     * send custom notification to user based on context
+     * @param event associated notification event
+     * @param uref user document reference recipient of notification
+     * @param title notification title
+     * @param body notification body
+     */
     public static void sendNotificationsToEntrant(DocumentReference event, DocumentReference uref, String title, String body) {
 
         DocumentReference notifRef = db.collection("Notifications").document();

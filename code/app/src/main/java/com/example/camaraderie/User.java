@@ -87,8 +87,7 @@ public class User implements Serializable {
 
     /**
      * Check if the user is an admin
-     * @return
-     *  Return true if user is an admin, false otherwise
+     * @return boolean true if user is an admin, false otherwise
      */
     public boolean isAdmin() {return admin;}
 
@@ -131,6 +130,10 @@ public class User implements Serializable {
      */
     public void setAddress(String address1) {this.address = address1;}
 
+    /**
+     * sets notification token
+     * @param token new notification token
+     */
     public void setNotificationToken(String token) {this.notificationToken = token;}
 
     /**
@@ -177,6 +180,10 @@ public class User implements Serializable {
      */
     public DocumentReference getDocRef() { return this.docRef;}
 
+    /**
+     * gets user firebase notification token
+     * @return notification token for user
+     */
     public String getNotificationToken() {return this.notificationToken;}
     /**
      * Set the docRef of the user
@@ -273,22 +280,34 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * adds event to history list
+     * @param eventDocRef event referecne to add
+     */
     public void addEventToHistory(DocumentReference eventDocRef) {
         if (!userEventHistory.contains(eventDocRef)) {
             userEventHistory.add(eventDocRef);
         }
     }
 
+    /**
+     * removes event reference from history
+     * @param eventDocRef event ref to be removed
+     */
     public void removeEventFromHistory(DocumentReference eventDocRef) {
         userEventHistory.remove(eventDocRef);
     }
 
+    /**
+     * gets event history list
+     * @return arraylist of events in history
+     */
     public ArrayList<DocumentReference> getEventHistory() {
         return userEventHistory;
     }
 
     /**
-     *
+     * returns event accepted list
      * @return returns accepted events list
      */
     public ArrayList<DocumentReference> getAcceptedEvents() {
@@ -296,7 +315,7 @@ public class User implements Serializable {
     }
 
     /**
-     *
+     * returns selected events list
      * @return selected events list
      */
     public ArrayList<DocumentReference> getSelectedEvents() {
@@ -355,64 +374,125 @@ public class User implements Serializable {
     }
 
     //geolocation
+
+    /**
+     * returns if user has geolocation enabled
+     * @return boolean true if user has geolocation set
+     */
     public boolean isGeoEnabled() {
         return geoEnabled;
     }
 
+    /**
+     * sets the geoEnabled boolean if user sets geolocation parameter
+     * @param geoEnabled new geoEnabled value to set
+     */
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
     }
 
+    /**
+     * gets arraylist of cancelled events
+     * @return arraylist of cancelled events
+     */
     public ArrayList<DocumentReference> getCancelledEvents() {
         return cancelledEvents;
     }
 
+    /**
+     * adds new cancelled event
+     * @param cancelledEvent new cancelled event to add
+     */
     public void addCancelledEvent(DocumentReference cancelledEvent) {
         if (!cancelledEvents.contains(cancelledEvent)) {
             this.cancelledEvents.add(cancelledEvent);
         }
     }
 
+    /**
+     * removes cancelled event form list
+     * @param cancelledEvent cancelled event to remove
+     */
     public void removeCancelledEvent(DocumentReference cancelledEvent) {
         cancelledEvents.remove(cancelledEvent);
     }
 
+    /**
+     * sets accepted events
+     * @param acceptedEvents arraylist of new accepted events to set
+     */
     public void setAcceptedEvents(ArrayList<DocumentReference> acceptedEvents) {
         this.acceptedEvents = acceptedEvents;
     }
 
+    /**
+     * sets cancelled events
+     * @param cancelledEvents new cancelled events to set
+     */
     public void setCancelledEvents(ArrayList<DocumentReference> cancelledEvents) {
         this.cancelledEvents = cancelledEvents;
     }
 
+    /**
+     * sets selected events
+     * @param selectedEvents new selected events to set
+     */
     public void setSelectedEvents(ArrayList<DocumentReference> selectedEvents) {
         this.selectedEvents = selectedEvents;
     }
 
+    /**
+     * sets user created events
+     * @param userCreatedEvents new user created events
+     */
     public void setUserCreatedEvents(ArrayList<DocumentReference> userCreatedEvents) {
         this.userCreatedEvents = userCreatedEvents;
     }
 
+    /**
+     * sets waitlisted events
+     * @param waitlistedEvents new waitlisted events arraylist
+     */
     public void setWaitlistedEvents(ArrayList<DocumentReference> waitlistedEvents) {
         this.waitlistedEvents = waitlistedEvents;
     }
 
+    /**
+     * sets user id
+     * @param userId new user id to set
+     */
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
+    /**
+     * gets pending notifications list
+     * @return arraylist of references to notifications in pending list
+     */
     public ArrayList<DocumentReference> getPendingNotifications() {
         return pendingNotifications;
     }
 
+    /**
+     * sets pending notifications
+     * @param pendingNotifications pending notifications list to set
+     */
     public void setPendingNotifications(ArrayList<DocumentReference> pendingNotifications) {
         this.pendingNotifications = pendingNotifications;
     }
 
+    /**
+     * set user history (used for firebase)
+     * @param userEventHistory history list to set
+     */
     public void setUserEventHistory(ArrayList<DocumentReference> userEventHistory) {
         this.userEventHistory = userEventHistory;
     }
 
+    /**
+     * returns event history
+     * @return Array list of references of events in history
+     */
     public ArrayList<DocumentReference> getUserEventHistory() {
         return userEventHistory;
     }

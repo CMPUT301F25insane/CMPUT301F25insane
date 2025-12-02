@@ -66,7 +66,7 @@ public class Event {
      * @param host
      *  User reference for who is organizing the event
      * @param eventDocRef
-     * event docref that points to the event in the database
+     * event docRef that points to the event in the database
      * @param eventId
      *  Id that uniquely identifies the event
      * @param geoEnabled
@@ -90,17 +90,35 @@ public class Event {
     }
 
     //location getters and setters
+
+    /**
+     * gets the geolocation requirement
+     * @return boolean true if geolocation is required
+     */
     public boolean isGeoEnabled() {
         return geoEnabled;
     }
+
+    /**
+     * sets the geolocation requirement for the event
+     * @param geoEnabled the new geolocation requirement state
+     */
     public void setGeoEnabled(boolean geoEnabled) {
         this.geoEnabled = geoEnabled;
     }
 
+    /**
+     * gets the coordinates of users in the waitlist
+     * @return arraylist of the hashmap of user locations, indexed by user id
+     */
     public ArrayList<HashMap<String, Object>> getUserLocationArrayList() {
         return userLocationArrayList;
     }
 
+    /**
+     * sets the user location array for firebase
+     * @param userLocationArrayList the new userlocation list
+     */
     public void setUserLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList) {
         if (userLocationArrayList == null) {
             userLocationArrayList = new ArrayList<>();
@@ -108,6 +126,10 @@ public class Event {
         this.userLocationArrayList = userLocationArrayList;
     }
 
+    /**
+     * adds a new location to the location list
+     * @param location new location being added
+     */
     public void addUserLocationArrayList(HashMap<String, Object> location) {
         if (userLocationArrayList == null) {
             userLocationArrayList = new ArrayList<>();
@@ -115,27 +137,25 @@ public class Event {
         this.userLocationArrayList.add(location);
     }
 
+    /**
+     * gets the image url in firebase storage
+     * @return the image url for the event poster
+     */
     public String getImageUrl() {
         return imageUrl;
     }
 
+    /**
+     * sets the event image url for the firebase storage
+     * @param url new url to set
+     */
     public void setImageUrl(String url) {
         this.imageUrl = url;
     }
-    //logic needed for map
-
-    //    //public float getPrice() {
-//        return price;
-//    }
-
-//    //public void setPrice(float price) {
-//        this.price = price;
-//    }
 
     /**
      * Get maximum capacity of the event
-     * @return
-     *  return capacity of the event
+     * @return capacity of the event
      */
     public int getCapacity() {
         return capacity;
@@ -168,8 +188,16 @@ public class Event {
         this.eventDateTime = eventDateTime;
     }
 
+    /**
+     * gets event deadline time
+     * @return deadline time
+     */
     public String getEventDeadlineTime() { return this.eventDeadlineTime;}
 
+    /**
+     * sets event deadline time
+     * @param eventDeadlineTime new event deadline time
+     */
     public void setEventDeadlineTime(String eventDeadlineTime) {this.eventDeadlineTime = eventDeadlineTime;}
     /**
      * Get date of the event
@@ -275,29 +303,52 @@ public class Event {
      * @return
      *  Return organizer of the event
      */
-
-
     public DocumentReference getHostDocRef() {
         return hostDocRef;
     }
+
+    /**
+     * sets the host reference for the event fore firebase integration
+     * @param ref new reference of host
+     */
     public void setHostDocRef(DocumentReference ref) {this.hostDocRef = ref;}
 
+    /**
+     * sets the new accepted users list
+     * @param acceptedUsers new accepted users list to set
+     */
     public void setAcceptedUsers(ArrayList<DocumentReference> acceptedUsers) {
         this.acceptedUsers = acceptedUsers;
     }
 
+    /**
+     * sets new cancelled users for the event
+     * @param cancelledUsers new cancelled users to set
+     */
     public void setCancelledUsers(ArrayList<DocumentReference> cancelledUsers) {
         this.cancelledUsers = cancelledUsers;
     }
 
+    /**
+     * sets the event id
+     * @param eventId new event id to set
+     */
     public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
+    /**
+     * sets the new selected users list
+     * @param selectedUsers new selected users list
+     */
     public void setSelectedUsers(ArrayList<DocumentReference> selectedUsers) {
         this.selectedUsers = selectedUsers;
     }
 
+    /**
+     * sets the new event waitlist
+     * @param waitlist new waitlist to set
+     */
     public void setWaitlist(ArrayList<DocumentReference> waitlist) {
         this.waitlist = waitlist;
     }
@@ -323,7 +374,7 @@ public class Event {
     }
 
     /**
-     *
+     * gets list of accepted users for this event
      * @return returns list of accepted users
      */
     public ArrayList<DocumentReference> getAcceptedUsers() {
@@ -331,7 +382,7 @@ public class Event {
     }
 
     /**
-     *
+     * gets list of cancelled users for this event
      * @return returns list of cancelled users
      */
     public ArrayList<DocumentReference> getCancelledUsers() {
@@ -366,7 +417,7 @@ public class Event {
     }
 
     /**
-     *
+     * gets the events doc ref for firebase
      * @return returns event doc ref
      */
     public DocumentReference getEventDocRef() {
@@ -375,6 +426,7 @@ public class Event {
 
     /**
      * updates event in database
+     * @param onComplete on complete runnable after database has updated
      */
     public void updateDB(Runnable onComplete) {
         //TODO: this bitch is broken lol idk why
@@ -437,7 +489,7 @@ public class Event {
     }
 
     /**
-     * sets event descrition
+     * sets event description
      * @param description new description to set
      */
     public void setEventDescription(String description) {
@@ -445,8 +497,8 @@ public class Event {
     }
 
     /**
-     *
-     * @return returns optional waitlist limit
+     * gets the optional waitlist limit
+     * @return optional waitlist limit
      */
     public int getWaitlistLimit() {
         return waitlistLimit;
@@ -464,18 +516,32 @@ public class Event {
         this.waitlistLimit = waitlistLimit;
     }
 
+    /**
+     * clears the selected users list
+     */
     public void clearSelectedUsers() {
         this.selectedUsers.clear();
     }
 
+    /**
+     * clears the waitlist users list
+     */
     public void clearWaitlistedUsers() {
         this.waitlist.clear();
     }
 
+    /**
+     * returns the logs of all notifications associated with this event
+     * @return list of event notification document references for firebase collection
+     */
     public ArrayList<DocumentReference> getNotificationLogs() {
         return notificationLogs;
     }
 
+    /**
+     * sets the notification logs arraylist
+     * @param notificationLogs new arraylist to be set
+     */
     public void setNotificationLogs(ArrayList<DocumentReference> notificationLogs) {
         this.notificationLogs = notificationLogs;
     }

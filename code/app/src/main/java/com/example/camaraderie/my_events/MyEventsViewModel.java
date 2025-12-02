@@ -9,9 +9,20 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
+/**
+ * Viewmodel for the user associated events
+ * @author Fecici
+ */
 public class MyEventsViewModel extends ViewModel {
 
+    /**
+     * custom callback interface for MyEventsViewModel
+     */
     public interface MyEventsCallback{
+        /**
+         * user defined lambda signature for when events have been loaded
+         * @param events resulting events list
+         */
         void onEventsLoaded(ArrayList<Event> events);
     }
 
@@ -21,10 +32,19 @@ public class MyEventsViewModel extends ViewModel {
         return events;
     }
 
+    /**
+     * sets the viewmodels events
+     * @param events events list to focus on
+     */
     public void setEvents(ArrayList<Event> events) {
         this.events = events;
     }
 
+    /**
+     * loads users from events list
+     * @param refs Document References list to load users from
+     * @param onComplete onComplete lambda to handle on completion
+     */
     public void getUserEventsFromList(ArrayList<DocumentReference> refs, MyEventsCallback onComplete) {
         events.clear();
 

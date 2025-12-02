@@ -86,6 +86,7 @@ public class UserAcceptedHandler {
 
         User user = getUser();
         user.removeSelectedEvent(eventDocRef);
+        user.addCancelledEvent(eventDocRef);
 
         WriteBatch batch = FirebaseFirestore.getInstance().batch();
         batch.update(eventDocRef, "selectedUsers", FieldValue.arrayRemove(user.getDocRef()));

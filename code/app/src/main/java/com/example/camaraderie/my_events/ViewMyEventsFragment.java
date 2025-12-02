@@ -29,7 +29,6 @@ import java.util.ArrayList;
 public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayAdapter.OnEventClickListener{
 
     private FragmentViewMyEventsBinding binding;
-    private FirebaseFirestore db;
 
     private ViewMyEventsArrayAdapter myEvents;
     private NavController nav;
@@ -81,8 +80,6 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
         binding.nameForMyEvents.setText(user.getFirstName());
 
-
-        db = FirebaseFirestore.getInstance();
         myEvents.clear();
         binding.myEventsForViewMyEvents.setAdapter(myEvents);
         binding.userProfileImageButton.setOnClickListener(v -> nav.navigate(R.id.update_user));
@@ -98,26 +95,14 @@ public class ViewMyEventsFragment extends Fragment implements ViewMyEventsArrayA
 
 
 
-        binding.dashboardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.dashboardButton.setOnClickListener(v -> {
+            if (!nav.popBackStack(R.id.fragment_main, false)) {
+
                 nav.navigate(R.id.fragment_main);
             }
         });
 
-        binding.hostEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nav.navigate(R.id.fragment_create_event);
-            }
-        });
-
-        binding.myEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: do nothing here, we're already in this fragment. maybe later, the button just reloads this?
-            }
-        });
+        binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event));
 
         binding.MyEventsButton.setOnClickListener(v -> nav.navigate(R.id.fragment_my_created_events));
 
