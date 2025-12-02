@@ -18,12 +18,29 @@ import com.example.camaraderie.notifications.NotificationData;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+/**
+ * This class initializes an array adapter for our list of admin notification logs
+ */
+
 public class AdminNotificationLogArrayAdapter extends ArrayAdapter<NotificationData> {
 
+    /**
+     * This constructor initializes the adapter
+     * @param context
+     * @param logs
+     */
     public AdminNotificationLogArrayAdapter(@NonNull Context context, @NonNull ArrayList<NotificationData> logs) {
         super(context, 0, logs);
         setNotifyOnChange(true);
     }
+
+    /**
+     * This function inflates the view with the correct fragment and initializes the date and initializes the info needed for each notification
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
 
     @NonNull
     @Override
