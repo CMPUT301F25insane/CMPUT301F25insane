@@ -260,7 +260,7 @@ public class OrganizerViewEventFragment extends Fragment {
 
         else limit = String.valueOf(e.getWaitlistLimit());
         binding.attendeeCountOrganizer.setText(
-                "Accepted: " + e.getAcceptedUsers().size() +
+                "Accepted: " + e.getAcceptedUsers().size() +"/" + e.getCapacity()+
                         " | Selected: " + e.getSelectedUsers().size() +
                         " | Waitlist: " + e.getWaitlist().size() +
                         " | Limit: " + limit
