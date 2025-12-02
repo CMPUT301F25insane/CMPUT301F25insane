@@ -36,6 +36,8 @@
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
+        android:gravity="center"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
@@ -53,6 +55,8 @@
         android:text="View Accepted"
         android:textColor="@color/black"
         android:textSize="20dp"
+        android:gravity="center"
+
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,12 +76,14 @@
         android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
+        android:gravity="center"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.438"
+        app:layout_constraintVertical_bias="0.428"
         app:strokeWidth="3.5dp" />
 
     <Button
@@ -88,8 +94,10 @@
         android:backgroundTint="#AAD6F2"
         android:fontFamily="@font/cambria"
         android:textColor="@color/black"
+
         android:textSize="20dp"
         android:textStyle="bold"
+        android:gravity="center"
         app:strokeWidth="3.5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
