@@ -15,14 +15,28 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The EventHelper class to handle some tasks the original event class doesn't have
+ */
+
 public class EventHelper {
 
+    /**
+     * Setup the isOneDayBefore method to check if we are one day before or not
+     * @param deadline
+     * @param now
+     * @return
+     */
     public static boolean isOneDayBefore(Date deadline, Date now) {
         long diff = deadline.getTime() - now.getTime();
         long oneDayMillis = 24L * 60L * 60L * 1000L;
         return diff > 0 && diff <= oneDayMillis;
     }
 
+    /**
+     * The method finalizes the lists and removes any users from the selected list and also removes users from the waitlist
+     * @param event
+     */
 
     public static void finalizeLists(Event event) {
 
@@ -49,7 +63,7 @@ public class EventHelper {
     }
 
     /**
-     * handles join, updates database
+     * This method handles joins and handles users joining the waitlist specifically
      */
     public static void handleJoin(Event event, Runnable onComplete, Runnable onFailure) {
 
@@ -80,7 +94,7 @@ public class EventHelper {
     }
 
     /**
-     * handles unjoin, updates database
+     * This method handles users unjoining the event and updates the database accordingly
      */
     public static void handleUnjoin(Event event, Runnable onComplete, Runnable onFailure) {
 

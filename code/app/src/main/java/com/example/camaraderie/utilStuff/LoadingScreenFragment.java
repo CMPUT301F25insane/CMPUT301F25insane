@@ -18,7 +18,7 @@ public class LoadingScreenFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+    
 
     @Nullable
     @Override
