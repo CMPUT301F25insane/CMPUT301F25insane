@@ -24,7 +24,7 @@ public class SharedEventViewModel extends ViewModel {
     }
 
     /**
-     *
+     * gets the current event
      * @return returns the currently-focused event
      */
     public LiveData<Event> getEvent() {

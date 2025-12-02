@@ -26,7 +26,6 @@ import java.util.ArrayList;
 /**
  * Array adapter to display events the user has yet to accept.
  */
-
 public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
 
@@ -34,18 +33,27 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
     // user accepts invitation
 
+    /**
+     * sets listener for array adapter
+     * @param listener listener to use
+     */
+
     public void setListener(UserAcceptedToEventFragment listener) {
         this.listener = listener;
     }
 
+    /**
+     * gets listener used by the array adapter
+     * @return listener used
+     */
     public UserAcceptedToEventFragment getListener() {return listener;}
 
 
     /**
      * PendingEventArrayAdapter has a constructor that initializes the view model
-     * @param context
-     * @param resource
-     * @param events
+     * @param context app context
+     * @param resource resource to load
+     * @param events events loaded from db
      *
      */
     public PendingEventArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Event> events) {
@@ -54,11 +62,18 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
     }
 
     /**
-     * getView sets up the view of each item in the array so that we can setup all the buttons and text for each item and what they are meant to do
-     * @param position
-     * @param convertView
-     * @param parent
-     * @returns a view that is required to display the correct information of the event
+     * getView sets up the view of each item in the array so that we can
+     *      * setup all the buttons and text for each item and what they are meant to do
+     * @param position The position of the item within the adapter's data set of the item whose view
+     *        we want.
+     * @param convertView The old view to reuse, if possible. Note: You should check that this view
+     *        is non-null and of an appropriate type before using. If it is not possible to convert
+     *        this view to display the correct data, this method can create a new view.
+     *        Heterogeneous lists can specify their number of view types, so that this View is
+     *        always of the right type (see {@link #getViewTypeCount()} and
+     *        {@link #getItemViewType(int)}).
+     * @param parent The parent that this view will eventually be attached to
+     * @return created item view
      */
     @NonNull
     @Override
@@ -96,6 +111,10 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
          */
 
         view.findViewById(R.id.acceptEventButton).setOnClickListener(new View.OnClickListener() {
+            /**
+             * handles accept button click
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 userAcceptInvite(event);
@@ -114,8 +133,11 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
 
 
         view.findViewById(R.id.declineEventButton).setOnClickListener(new View.OnClickListener() {
+            /**
+             * handles decline invite button click
+             * @param v The view that was clicked.
+             */
             @Override
-
             public void onClick(View v) {
                 userDeclineInvite(event);
                 remove(event);

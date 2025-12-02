@@ -33,8 +33,6 @@ public class UserAcceptedHandler {
      * It also does the same thing locally with the objects
      * It does not return
      */
-
-
     public static void userAcceptInvite(Event event) {
 
         DocumentReference eventDocRef = event.getEventDocRef();
@@ -86,6 +84,7 @@ public class UserAcceptedHandler {
 
         User user = getUser();
         user.removeSelectedEvent(eventDocRef);
+        user.addCancelledEvent(eventDocRef);
 
         WriteBatch batch = FirebaseFirestore.getInstance().batch();
         batch.update(eventDocRef, "selectedUsers", FieldValue.arrayRemove(user.getDocRef()));
@@ -123,7 +122,6 @@ public class UserAcceptedHandler {
      * This function checks to ensure if the selected events arraylist is empty or not
      * @return bool on whether or not the selected events is empty
      */
-
     public static boolean allInvitesResolved() {
         return getUser().getSelectedEvents().isEmpty();
     }

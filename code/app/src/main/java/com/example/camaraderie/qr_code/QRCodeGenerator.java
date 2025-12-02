@@ -9,6 +9,7 @@ import android.graphics.Color;
 
 /**
  * Class that generates a QR code for the event
+ * @author Tahmid
  */
 public class QRCodeGenerator {
 
@@ -18,7 +19,7 @@ public class QRCodeGenerator {
      * @param text text to be encoded
      * @param size size for the QR code
      * @return Bitmap
-     * @throws WriterException
+     * @throws WriterException if the writer fails
      */
     public static Bitmap generateQRCode(String text, int size) throws WriterException {
 

@@ -207,6 +207,10 @@ public class UserViewEventFragment extends Fragment {
             });
 
         binding.viewPhotosUserView.setOnClickListener(new View.OnClickListener() {
+            /**
+             * navigates to the user photo view of the event
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
 
@@ -265,6 +269,10 @@ public class UserViewEventFragment extends Fragment {
         handleEnableJoin(e);
     }
 
+    /**
+     * handles the join and unjoin button UI appearances
+     * @param event event object associated with the view
+     */
     private void handleEnableJoin(Event event) {
 
         binding.joinButtonUserView.setEnabled(true);
@@ -360,6 +368,9 @@ public class UserViewEventFragment extends Fragment {
         }
     }
 
+    /**
+     * handles the geolocation joining requirements
+     */
     private void handleJoinGeo() {
         if (event == null) {
             Toast.makeText(getContext(), "Event not loaded yet", Toast.LENGTH_SHORT).show();

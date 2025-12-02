@@ -16,18 +16,38 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This class loads the user and their data when you open the app
+ * @author Fecici
+ */
 public class LoadUser {
 
+    /**
+     * This interface initializes the array list of notifications for the user
+     */
     public interface OnNotificationsLoaded {
+        /**
+         * Notification callback handler
+         * @param notifications notifications deserialized from database
+         */
         void onLoaded(ArrayList<NotificationData> notifications);
     }
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference docRef;
+
+    /**
+     * constructor for LoadUser, sets the user document reference
+     * @param ref User Document Reference
+     */
     public LoadUser(DocumentReference ref) {
         this.docRef = ref;
     }
 
+    /**
+     * The build notifications method builds any notifications the user failed to receive
+     * @param pendingNotifs user pending notifications arraylist of document reference
+     * @param callback interface defined callback for on completion
+     */
     private void buildNotifications(ArrayList<DocumentReference> pendingNotifs, OnNotificationsLoaded callback) {
 
         ArrayList<NotificationData> notifications = new ArrayList<>();
@@ -55,6 +75,9 @@ public class LoadUser {
         }
     }
 
+    /**
+     * The check for notifications method actually checks for notifications the user may have received
+     */
     private void checkForNotifications() {
 
         docRef.get()
@@ -94,6 +117,10 @@ public class LoadUser {
     }
 
 
+    /**
+     * runs the LoadUser pipeline
+     * @param onComplete oncomplete runnable for callback upon completion
+     */
     public void loadAllData(@Nullable Runnable onComplete) {
         checkForNotifications();
 

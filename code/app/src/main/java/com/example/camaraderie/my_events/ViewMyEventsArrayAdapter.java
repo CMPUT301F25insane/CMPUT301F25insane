@@ -35,7 +35,6 @@ import java.util.ArrayList;
 public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
     public OnEventClickListener listener;
-    private FirebaseFirestore db;
 
 
     /**
@@ -51,9 +50,13 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
 
     /**
-     * interface for onEventClick
+     * interface for onEventClick listener
      */
     public interface OnEventClickListener {
+        /**
+         * runs the onEventClick logic
+         * @param event event clicked on
+         */
         void onEventClick(Event event);
     }
 
@@ -74,7 +77,6 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view;
-        db = FirebaseFirestore.getInstance();
 
         if (convertView == null) {  // convert view is a reused view, to save resources
             // create new view using layout inflater if no recyclable view available
@@ -129,13 +131,7 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
             }
         });
 
-        // this might be a null ref, perhaps the code should just exist here?
-        descButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onEventClick(event);
-            }
-        });
+        descButton.setOnClickListener(v -> listener.onEventClick(event));
 
 
         return view;

@@ -13,11 +13,15 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 
 /**
- *
+ * Helper class to delete events
+ * @author Fecici
  */
-
 public class EventDeleter {
 
+    /**
+     * deletes the event and updates database as needed
+     * @param event event to be deleted
+     */
     public static void deleteEvent(Event event) {
 
         DocumentReference eventDocRef = event.getEventDocRef();

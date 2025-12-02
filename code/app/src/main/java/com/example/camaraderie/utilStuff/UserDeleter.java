@@ -16,19 +16,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * A helper class for deleting users
+ * @author Fecici
+ */
 public class UserDeleter {
 
     private final User user;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /**
+     * private interface for custom UserDeleter callback
+     */
     private interface UserDeleterCallback {
+        /**
+         * takes the result events and uses it in a user defined lambda function
+         * @param events resulting events
+         */
         void callback(ArrayList<Event> events);
     }
 
+    /**
+     * constructor for UserDeleter
+     * @param user user to be deleted
+     */
     public UserDeleter(User user) {
         this.user = user;
     }
 
+    /**
+     * deletes the user specified in this class
+     * @param onComplete lambda to run on complete
+     */
     public void DeleteUser(Runnable onComplete) {
 
         // delete user created events
@@ -40,6 +59,10 @@ public class UserDeleter {
 
     }
 
+    /**
+     * removes user from foreign events lists
+     * @param onComplete user-defined lambda function to run on completion
+     */
     private void removeUserFromForeignLists(Runnable onComplete) {
 
         WriteBatch batch = db.batch();
@@ -68,6 +91,10 @@ public class UserDeleter {
 
     }
 
+    /**
+     * deletes user document from database
+     * @param onComplete lambda function to run upon completion
+     */
     private void deleteUserDocument(Runnable onComplete) {
         user.getDocRef().delete()
                 .addOnSuccessListener(v -> onComplete.run())
@@ -77,6 +104,11 @@ public class UserDeleter {
                 });
     }
 
+    /**
+     * recursive functions that deletes user's created events
+     * @param refs gets next reference in list
+     * @param onComplete lambda function to run on completion
+     */
     private void deleteCreatedEvents(ArrayList<DocumentReference> refs, Runnable onComplete) {
 
         if (refs.isEmpty()) {

@@ -21,6 +21,9 @@ import com.example.camaraderie.databinding.FragmentUserViewPhotosBinding;
 /**
  * This is what the user sees when he wants to view an event's poster
  */
+/**
+ * This class allows for users to view photos of an event
+ */
 public class UserViewPhotosFragment extends Fragment{
 
     private NavController nav;
@@ -30,7 +33,7 @@ public class UserViewPhotosFragment extends Fragment{
     private FragmentUserViewPhotosBinding binding;
 
     /**
-     * sets svm, nav, and db.
+     * sets svm and nav
      *
      * @param savedInstanceState If the fragment is being re-created from
      *                           a previous saved state, this is the state.

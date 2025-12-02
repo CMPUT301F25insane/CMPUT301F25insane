@@ -41,6 +41,11 @@ public class UpdateUserFragment extends Fragment {
 
     ActivityResultLauncher<String[]> locationPermissionRequest;
 
+    /**
+     * creates the fragment and sets nav controller and geolocation permissions
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +87,7 @@ public class UpdateUserFragment extends Fragment {
     }
 
     /**
-     *
+     * inflates layout
      * @param inflater The LayoutInflater object that can be used to inflate
      * any views in the fragment,
      * @param container If non-null, this is the parent view that the fragment's
@@ -119,6 +124,10 @@ public class UpdateUserFragment extends Fragment {
 
 
         binding.confirmButtonForUserProfile.setOnClickListener(new View.OnClickListener() {
+            /**
+             * confirms the user profile update and updates the database
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 String name = binding.nameFieldForUpdateUser.getText().toString().trim();
@@ -157,7 +166,9 @@ public class UpdateUserFragment extends Fragment {
         });
 
         // TODO: to fix this, we need to use batches and use .commit on the batch (instead of the for loop, then after all as been finished, we can safely exit the app. the asyncronicity of firebase does not let the user get deleted before teh app closes
-        binding.DeleteButtonForUserProfile.setOnClickListener(v -> {
+        binding.DeleteButtonForUserProfile.setOnClickListener(
+
+                v -> {
 
             deleteUser(
                     () -> {
@@ -185,12 +196,7 @@ public class UpdateUserFragment extends Fragment {
             }
         });
 
-        binding.guidelinesButtonForUserProfile3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nav.navigate(R.id.fragment_guidelines);
-            }
-        });
+        binding.guidelinesButtonForUserProfile3.setOnClickListener(v -> nav.navigate(R.id.fragment_guidelines));
 
         binding.geoSwitch.setChecked(user.isGeoEnabled()); // initialize switch
 
@@ -205,12 +211,7 @@ public class UpdateUserFragment extends Fragment {
             }
         });
 
-        binding.notificationPermissionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nav.navigate(R.id.notificationSettingsFragment);
-            }
-        });
+        binding.notificationPermissionsButton.setOnClickListener(v -> nav.navigate(R.id.notificationSettingsFragment));
     }
 
     /**
@@ -222,6 +223,10 @@ public class UpdateUserFragment extends Fragment {
         binding = null; // avoid memory leaks
     }
 
+    /**
+     * deletes the user and creates a toast
+     * @param onComplete lambda to run on complete
+     */
     private void deleteUser(Runnable onComplete) {
         Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
 
@@ -229,6 +234,9 @@ public class UpdateUserFragment extends Fragment {
         deleter.DeleteUser(onComplete);
     }
 
+    /**
+     * requests location permissions from user
+     */
     private void requestLocationPermissions() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -243,6 +251,9 @@ public class UpdateUserFragment extends Fragment {
         });
     }
 
+    /**
+     * resumes the fragment lifecycle
+     */
     @Override
     public void onResume() {
         super.onResume();

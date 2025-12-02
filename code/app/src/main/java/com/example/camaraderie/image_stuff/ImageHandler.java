@@ -12,9 +12,9 @@ import android.widget.ImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-
 /**
- * This handles uploading and deleting images from the cloud
+ * THis class handles uploading images to firebase
+ * @author Tahmid-Parvez
  */
 public class ImageHandler {
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();

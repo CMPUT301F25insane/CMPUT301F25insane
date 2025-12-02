@@ -20,7 +20,6 @@ import com.example.camaraderie.databinding.FragmentAdminViewNotificationLogsBind
 /**
  * The class displays the actual fragment to the user with the list and headers
  */
-
 public class AdminNotificationLogFragment extends Fragment {
 
     private NavController nav;
@@ -33,7 +32,6 @@ public class AdminNotificationLogFragment extends Fragment {
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
      */
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

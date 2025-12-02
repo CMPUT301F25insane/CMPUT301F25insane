@@ -27,6 +27,11 @@ public class AdminDashboardFragment extends Fragment {
     private FragmentAdminDashboardBinding binding;
     private NavController nav;
 
+    /**
+     * sets nav controller
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +82,20 @@ public class AdminDashboardFragment extends Fragment {
         binding.adminSeeUsers.setOnClickListener(v -> nav.navigate(R.id.admin_user_data_screen_view));
         binding.adminSeeEvents.setOnClickListener(v -> nav.navigate(R.id.admin_event_data_screen_view));
         binding.adminSeePics.setOnClickListener(v -> nav.navigate(R.id.admin_event_images_screen_view));
-        binding.back.setOnClickListener(v -> nav.popBackStack());}
+        binding.back.setOnClickListener(v -> nav.popBackStack());
+
+        binding.dashboardButton.setOnClickListener(v -> {
+            if (!nav.popBackStack(R.id.fragment_main, false)) {
+                nav.navigate(R.id.fragment_main);
+            }
+        });
+
+        binding.hostEvent.setOnClickListener(v -> nav.navigate(R.id.fragment_create_event));
+        binding.myEvents.setOnClickListener(v -> nav.navigate(R.id.fragment_view_my_events));
+
+    }
+
+
 
     /**
      * onDestoryView ensures no memory leaks by setting binding to null

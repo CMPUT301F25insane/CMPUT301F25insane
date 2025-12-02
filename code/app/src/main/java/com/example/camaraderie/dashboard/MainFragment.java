@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -46,8 +47,6 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
      */
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +113,10 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         // when USER views EVENT, compare user id to host id, and set the corresponding fragment accordingly
 
         binding.fromDateText.setOnClickListener(new View.OnClickListener() {
+            /**
+             * gets date search param
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 openFromDialog();
@@ -121,6 +124,10 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         });
 
         binding.toDateText.setOnClickListener(new View.OnClickListener() {
+            /**
+             * sets date search param
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 openToDialog();
@@ -133,6 +140,10 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
          */
 
         binding.searchButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * handles search based on parameters specified by user
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 Date fromDate = new Date();
@@ -170,6 +181,10 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
          */
 
         binding.hostEvent.setOnClickListener(new View.OnClickListener() {
+            /**
+             * navigate to create event
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 nav.navigate(R.id.action_fragment_main_to_fragment_create_event);
@@ -177,6 +192,10 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         });
 
         binding.myEvents.setOnClickListener(new View.OnClickListener() {
+            /**
+             * navigate to view my events screen
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 nav.navigate(R.id.action_fragment_main_to_fragment_view_my_events);
@@ -184,6 +203,10 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
         });
 
         binding.accountButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * navigate to update user screen
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 //TODO implement the view account fragment
@@ -198,7 +221,6 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
      * OnEventClick allows for us to navigate to the event they clicked on
      * @param event
      */
-
     public void onEventClick(Event event){
 
         Log.d("Firebase", "User clicked description for" + event.getEventName());
@@ -232,6 +254,15 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     private void openFromDialog() {
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            /**
+             * on date set callback for getting from dialog
+             * @param view the picker associated with the dialog
+             * @param year the selected year
+             * @param month the selected month (0-11 for compatibility with
+             *              {@link Calendar#MONTH})
+             * @param day the selected day of the month (1-31, depending on
+             *                   month)
+             */
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 binding.fromDateText.setText(year + "-" + (month+1) + "-" + day);
@@ -246,10 +277,18 @@ public class MainFragment extends Fragment implements DashboardEventArrayAdapter
     /**
      * We also have a toDate to set and end date
      */
-
     private void openToDialog() {
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            /**
+             * on date set callback for open to dialog
+             * @param view the picker associated with the dialog
+             * @param year the selected year
+             * @param month the selected month (0-11 for compatibility with
+             *              {@link Calendar#MONTH})
+             * @param day the selected day of the month (1-31, depending on
+             *                   month)
+             */
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 binding.toDateText.setText(year + "-" + (month+1) + "-" + day);

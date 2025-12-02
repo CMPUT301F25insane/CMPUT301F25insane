@@ -17,6 +17,7 @@ import java.util.Random;
 
 /**
  * util class for convenience functions
+ * @author Fecici
  */
 public class Util {
 
@@ -26,7 +27,7 @@ public class Util {
 
     /**
      * Clears all documents in both Events and Users, then seeds DB with dummy data.
-     * Calls onComplete when finished.
+     * @param onComplete Calls onComplete when finished.
      */
     public static void clearDBAndSeed(Runnable onComplete) {
         clearEvents(() -> clearUsers(() -> addDummyEvents(onComplete)));
@@ -34,7 +35,7 @@ public class Util {
 
     /**
      * Clears the Events collection, then triggers callback.
-     * @param onDone a lambda function defined by the caller
+     * @param onDone a lambda function defined by the caller for when the function finishes
      */
     private static void clearEvents(Runnable onDone) {
         eventsRef.get().addOnSuccessListener(snapshot -> {
@@ -52,7 +53,7 @@ public class Util {
 
     /**
      * Clears the Users collection, then triggers callback.
-     * @param onDone the callback function
+     * @param onDone the callback function for when the method finishes
      */
     private static void clearUsers(Runnable onDone) {
         usersRef.get().addOnSuccessListener(snapshot -> {

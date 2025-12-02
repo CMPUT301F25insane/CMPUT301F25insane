@@ -20,6 +20,7 @@ import com.google.zxing.WriterException;
 
 /**
  * Dialog fragment that displays a QR code for the event
+ * @author Tahmid
  */
 public class QRCodeDialogFragment extends DialogFragment {
 

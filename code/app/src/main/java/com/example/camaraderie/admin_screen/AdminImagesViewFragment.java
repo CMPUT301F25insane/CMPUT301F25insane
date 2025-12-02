@@ -27,6 +27,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * fragment for admin to view images in the database
+ */
 public class AdminImagesViewFragment extends Fragment {
     private FragmentAdminImagesViewBinding binding;
 
@@ -37,11 +40,27 @@ public class AdminImagesViewFragment extends Fragment {
     private ArrayList<Event> eventsArrayList;
 
     private PictureArrayAdapter pictureArrayAdapter;
+    private ListenerRegistration eventListener;
 
     private SharedEventViewModel svm;
 
+    /**
+     * empty adminImagesViewFragment constructor
+     */
     public AdminImagesViewFragment() {}
 
+    /**
+     * creates binding
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return inflated view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +68,12 @@ public class AdminImagesViewFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * sets db, nav, svm, and adapters for UI. sets buttons.
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -68,9 +93,12 @@ public class AdminImagesViewFragment extends Fragment {
         binding.backButton.setOnClickListener(v -> nav.popBackStack());
     }
 
+    /**
+     * loads images from the database
+     */
     private void loadPictures() {
 
-        ListenerRegistration eventListener = eventsRef.addSnapshotListener((value, error) -> {
+        eventListener = eventsRef.addSnapshotListener((value, error) -> {
             if (error != null) {
                 Log.e("Firestore", error.toString());
             }
@@ -88,10 +116,13 @@ public class AdminImagesViewFragment extends Fragment {
         });
     }
 
-
+    /**
+     * removes binding and listener
+     */
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         binding = null;
+        if (eventListener != null) eventListener.remove();
     }
 }

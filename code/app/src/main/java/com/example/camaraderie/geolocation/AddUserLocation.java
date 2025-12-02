@@ -26,6 +26,7 @@ import java.util.UUID;
  *
  * <p>The class handles location permissions, geolocation settings, Firestore updates,
  * and provides a callback once the location is successfully added.
+ * @author UmranRahman
  */
 public class AddUserLocation {
     public static void addLocation(Event event, Runnable runnable){

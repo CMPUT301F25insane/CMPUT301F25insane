@@ -21,8 +21,19 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+/**
+ * This class allows for us to export the list data as a CSV for a organizer to view
+ * @author Fecici
+ */
 public class CSVExporter {
 
+    /**
+     * This method creates the CSV and saves it to the phones download folder
+     * It takes in the user information in that list of each user and appends it,
+     * it then saves it
+     * @param users
+     * @param eventTitle
+     */
     public static void createCSV(ArrayList<User> users, String eventTitle) {
 
         StringBuilder sb = new StringBuilder();
@@ -40,11 +51,22 @@ public class CSVExporter {
         saveCSVToDownloads(csvData, eventTitle + "_accepted.csv");
     }
 
+    /**
+     * We sanitze the output
+     * @param s string to sanitize
+     * @return sanitized string
+     */
     private static String sanitize(String s) {
         if (s == null) return "";
         return s.replace(",", " ");
     }
 
+    /**
+     * We then use saveCSVToDownloads method to actually save the csv to downloads
+     * This is used as a helper function to createCSV to handle the saving logic
+     * @param csv csv file string
+     * @param filename filename to write to
+     */
     private static void saveCSVToDownloads(String csv, String filename) {
         Context context = getContext();
         if (context == null) return;

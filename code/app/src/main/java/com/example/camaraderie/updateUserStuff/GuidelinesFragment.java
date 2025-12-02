@@ -23,18 +23,7 @@ public class GuidelinesFragment extends Fragment {
     private NavController nav;
 
     /**
-     * set the nav host
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //nav = NavHostFragment.findNavController(this);
-    }
-
-    /**
-     *
+     * creates binding
      * @param inflater The LayoutInflater object that can be used to inflate
      * any views in the fragment,
      * @param container If non-null, this is the parent view that the fragment's
