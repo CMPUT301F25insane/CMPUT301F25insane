@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -45,6 +46,7 @@ import com.google.firebase.firestore.SetOptions;
 
 /**
  * fragment that allows an organizer to create an event
+ * @author Fecici, RamizHHH, Tahmid-Parvez, UmranRahman, swausbeard
  */
 public class CreateEventFragment extends Fragment {
 
@@ -201,6 +203,10 @@ public class CreateEventFragment extends Fragment {
         });
 
         binding.inputFieldForCreateEventRegistrationTime.setOnClickListener(new View.OnClickListener() {
+            /**
+             * opens registration deadline date dialogue
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 openTimeDialog(binding.inputFieldForCreateEventRegistrationTime);
@@ -230,6 +236,10 @@ public class CreateEventFragment extends Fragment {
         });
 
         binding.buttonForAddPicture.setOnClickListener(new View.OnClickListener() {
+            /**
+             * launches visual media chooser activity
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 // Launch the photo picker and let the user choose only images.
@@ -242,7 +252,7 @@ public class CreateEventFragment extends Fragment {
 
     /**
      * fill textviews for fragment
-     * @param event event from whcih to get the details
+     * @param event event from which to get the details
      */
     private void fillTextViews(Event event) {
         eventName.setText(event.getEventName());
@@ -276,7 +286,7 @@ public class CreateEventFragment extends Fragment {
      * @param eventDeadline new deadline
      * @param eventLocation new location
      * @param eventDescription new description
-     * @param eventCapacity new capatiy
+     * @param eventCapacity new capacity
      * @param optionalLimit new optional limit
      * @param eventDateTime new time
      * @throws ParseException throws parseException if parse fails (mainly date)
@@ -344,12 +354,20 @@ public class CreateEventFragment extends Fragment {
                         // if no image was chosen
                         if (image_uploaded) {
                             uploadEventImage(event, imageUri, new ImageHandler.UploadCallback() {
+                                /**
+                                 * image callback for onsuccess
+                                 * @param downloadUrl new url
+                                 */
                                 @Override
                                 public void onSuccess(String downloadUrl) {
                                     event.setImageUrl(downloadUrl);
                                     event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
                                 }
 
+                                /**
+                                 * onFailure callback for errors
+                                 * @param e image error
+                                 */
                                 @Override
                                 public void onFailure(Exception e) {
                                     Log.e("UPLOAD", "Failed", e);
@@ -390,12 +408,20 @@ public class CreateEventFragment extends Fragment {
 
                         if (image_uploaded) {
                             uploadEventImage(newEvent, imageUri, new ImageHandler.UploadCallback() {
+                                /**
+                                 * onsuccess callback
+                                 * @param downloadUrl new image url
+                                 */
                                 @Override
                                 public void onSuccess(String downloadUrl) {
                                     newEvent.setImageUrl(downloadUrl);
                                     newEvent.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
                                 }
 
+                                /**
+                                 * handler callback for error
+                                 * @param e image error
+                                 */
                                 @Override
                                 public void onFailure(Exception e) {
                                     Log.e("UPLOAD", "Failed", e);
@@ -423,6 +449,15 @@ public class CreateEventFragment extends Fragment {
     private void openDateDialogue() {
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+            /**
+             * on date set callback for date dialogue
+             * @param view the picker associated with the dialog
+             * @param year the selected year
+             * @param month the selected month (0-11 for compatibility with
+             *              {@link Calendar#MONTH})
+             * @param day the selected day of the month (1-31, depending on
+             *                   month)
+             */
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 String format = year + "-" + (month+1) + "-" + day;
@@ -447,6 +482,15 @@ public class CreateEventFragment extends Fragment {
     private void openDeadlineDialogue() {
         DatePickerDialog dateDialog;
         dateDialog = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener() {
+            /**
+             * onDateSet callback for deadline dialogue
+             * @param view the picker associated with the dialog
+             * @param year the selected year
+             * @param month the selected month (0-11 for compatibility with
+             *              {@link Calendar#MONTH})
+             * @param day the selected day of the month (1-31, depending on
+             *                   month)
+             */
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 String format = year + "-" + (month+1) + "-" + day;
@@ -468,9 +512,19 @@ public class CreateEventFragment extends Fragment {
 
     }
 
+    /**
+     * gets time dialogues
+     * @param arg argument for the textview to inform the dialogue
+     */
     private void openTimeDialog(TextView arg) {
         TimePickerDialog timeDialog;
         timeDialog = new TimePickerDialog(requireContext(), new TimePickerDialog.OnTimeSetListener() {
+            /**
+             * on time set, we set the argument as required
+             * @param view the view associated with this listener
+             * @param hourOfDay the hour that was set
+             * @param minute the minute that was set
+             */
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String strHourOfDay = "" + hourOfDay;

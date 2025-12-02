@@ -37,12 +37,10 @@ public class ListTestingInterfaceFragment extends Fragment {
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
      */
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         nav = NavHostFragment.findNavController(this);
-//        listViewModel = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);
     }
 
     /**
@@ -58,7 +56,6 @@ public class ListTestingInterfaceFragment extends Fragment {
      * @return
      * Returns the root of binding as a view
      */
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,7 +69,6 @@ public class ListTestingInterfaceFragment extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -87,11 +83,9 @@ public class ListTestingInterfaceFragment extends Fragment {
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
+    /**
+     * sets binding to null
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -102,7 +96,6 @@ public class ListTestingInterfaceFragment extends Fragment {
      * setButtonBindings method allows for us to setup the onClickListeners for each button to take the user to
      * a specified list
      */
-
     private void setButtonBindings() {
         binding.viewAcceptedButton.setOnClickListener(v -> {
             nav.navigate(

@@ -129,6 +129,9 @@ public class UserAcceptedToEventFragment extends Fragment {
 
     }
 
+    /**
+     * handle UI update based on resolved invites
+     */
     public void enableConfirmButton() {
         if (allInvitesResolved()) {
             binding.pendingEventsContinueButton.setEnabled(true);
@@ -137,6 +140,9 @@ public class UserAcceptedToEventFragment extends Fragment {
     }
 
 
+    /**
+     * set binding to null
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

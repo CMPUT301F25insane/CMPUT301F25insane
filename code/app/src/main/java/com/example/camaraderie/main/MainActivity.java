@@ -46,8 +46,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * The main activity of the app. Deals with QR code scans,login, and initial navigation.
+ * @author Fecici, RamizHHH, Tahmid-Parvez, UmranRahman, CollinsMutea, swausbeard
  */
-
 public class MainActivity extends AppCompatActivity {
 
 
@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
      *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
 */
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
+                    /**
+                     * registers the FCM token for user
+                     * @param task firebase task
+                     */
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
@@ -246,6 +249,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         reloadTask = new Runnable() {
+            /**
+             * runner that reloads the user class every minute to ensure it still exists
+             */
             @Override
             public void run() {
                 if (getUser() != null) {
@@ -359,6 +365,10 @@ public class MainActivity extends AppCompatActivity {
                                     setUser(newUser);
                                     FirebaseMessaging.getInstance().getToken()
                                             .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                /**
+                                                 * registers user FCM token
+                                                 * @param task firebase task
+                                                 */
                                                 @Override
                                                 public void onComplete(@NonNull Task<String> task) {
                                                     if (!task.isSuccessful()) {
@@ -401,6 +411,10 @@ public class MainActivity extends AppCompatActivity {
         Button cancel_button = dialogView.findViewById(R.id.Cancel_button_for_creating_profile);
 
         cancel_button.setOnClickListener(new View.OnClickListener() {
+            /**
+             * closes the app as no user exists
+             * @param view The view that was clicked.
+             */
             @Override
             public void onClick(View view) {
                 System.exit(0);
@@ -417,12 +431,18 @@ public class MainActivity extends AppCompatActivity {
         binding = null;
     }
 
+    /**
+     * onstart handlers post
+     */
     @Override
     protected void onStart() {
         super.onStart();
         handler.post(reloadTask);
     }
 
+    /**
+     * on stop, the handler is removed
+     */
     @Override
     protected void onStop() {
         super.onStop();

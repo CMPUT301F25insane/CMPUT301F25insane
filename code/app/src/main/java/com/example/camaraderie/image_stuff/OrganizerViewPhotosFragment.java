@@ -45,8 +45,8 @@ import java.util.UUID;
 
 /**
  * This class allows the organizer to view their photos of their event
+ * @author Tahmid-Parvez
  */
-
 public class OrganizerViewPhotosFragment extends Fragment {
 
     private NavController nav;
@@ -57,7 +57,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
     private FragmentOrganizerViewPhotosBinding binding;
 
     /**
-     * sets svm, nav, and db.
+     * sets svm and nav
      *
      * @param savedInstanceState If the fragment is being re-created from
      *                           a previous saved state, this is the state.
@@ -113,12 +113,20 @@ public class OrganizerViewPhotosFragment extends Fragment {
                         //Add code to save the photo into the database
                         deleteEventImage(event);
                         uploadEventImage(event, uri, new ImageHandler.UploadCallback() {
+                            /**
+                             * defines on success callback for image upload
+                             * @param downloadUrl new image url
+                             */
                             @Override
                             public void onSuccess(String downloadUrl) {
                                 event.setImageUrl(downloadUrl);
                                 event.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
                             }
 
+                            /**
+                             * defines onFailure callback for image upload
+                             * @param e image error
+                             */
                             @Override
                             public void onFailure(Exception e) {
                                 Log.e("UPLOAD", "Failed", e);

@@ -10,15 +10,16 @@ import android.graphics.Color;
 
 /**
  * This function actually creates the QR code for the event we are making.
+ * @author Tahmid-Parvez
  */
 
 public class QRGenerator {
 
     /**
      * This function takes in a text, width, and height and creates the QR code using the BitMap class
-     * @param text
-     * @param width
-     * @param height
+     * @param text text written to bitmap
+     * @param width bitmap width
+     * @param height bitmap height
      * @return
      * It returns the created QR code in the form of a Bitmap
      */

@@ -21,7 +21,6 @@ import com.google.firebase.firestore.DocumentReference;
 /**
  * The class setups the UI and backend to allow the user to actually send a notification to any required users
  */
-
 public class OrganizerNotificationFragment extends Fragment {
 
     private FragmentOrganizerNotificationDialogTestBinding binding;
@@ -33,7 +32,6 @@ public class OrganizerNotificationFragment extends Fragment {
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
      */
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +97,9 @@ public class OrganizerNotificationFragment extends Fragment {
 
     }
 
+    /**
+     * sets binding to null
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -108,10 +109,10 @@ public class OrganizerNotificationFragment extends Fragment {
     /**
      * This method confirms the notification for us and actually sends it to FireBase
      * then it pops the backstack and returns
-     * @param msg
-     * @param title
-     * @param eventRef
-     * @param list
+     * @param msg notification message
+     * @param title notification title
+     * @param eventRef associated event reference
+     * @param list list field of associated event to get users from
      */
 
     private void confirmNotification(String msg, String title, DocumentReference eventRef, String list) {

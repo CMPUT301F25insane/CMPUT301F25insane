@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 /**
  * general viewmodel for handling data for waitlist, selected, accepted, and cancelled lists
+ * @author Fecici
  */
 public class ViewListViewModel extends ViewModel {
 
@@ -26,17 +27,33 @@ public class ViewListViewModel extends ViewModel {
      * Waitlist callback interface
      */
     public interface ViewListCallback {
+        /**
+         * custom on loaded callback for user lists
+         * @param users users loaded from list
+         */
         void onUsersLoaded(ArrayList<User> users);
     }
 
+    /**
+     * sets the currently focues event
+     * @param event event to focus
+     */
     public void setEvent(Event event) {
         this.event = event;
     }
 
+    /**
+     * gets the current event
+     * @return current event focues on
+     */
     public Event getEvent() {
         return event;
     }
 
+    /**
+     * gets event capacity
+     * @return event capacity of focused event
+     */
     public int getEventCapacity() {
         return event.getCapacity();
     }
@@ -49,6 +66,11 @@ public class ViewListViewModel extends ViewModel {
 
     }
 
+    /**
+     * gets the user list required by the enum type
+     * @param type enum type of list
+     * @return specified user list
+     */
     public ArrayList<User> getList(UserListType type) {
 
         switch (type) {
@@ -126,11 +148,34 @@ public class ViewListViewModel extends ViewModel {
         }
     }
 
+    /**
+     * gets event waitlist
+     * @return waitlist
+     */
     public ArrayList<User> getWaitlist() {return this.waitlist;}
+
+    /**
+     * gets event selected users list
+     * @return event selected users list
+     */
     public ArrayList<User> getSelectedList() {return this.selectedEvents;}
+
+    /**
+     * gets event accepted list
+     * @return event accepted list
+     */
     public ArrayList<User> getAcceptedList() {return this.acceptedEvents;}
+
+    /**
+     * gets event cancelled list
+     * @return event cancelled list
+     */
     public ArrayList<User> getCancelledList() {return this.cancelledEvents;}
 
+    /**
+     * generates all user lists of associated event
+     * @param onComplete oncomplete lambda callback
+     */
     public void generateAllLists(Runnable onComplete) {
 
         loadUsersFromList(event.getWaitlist(), waitlistResult -> {

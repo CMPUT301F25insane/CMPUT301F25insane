@@ -114,11 +114,11 @@ public class OrganizerNotificationChooserFragment extends Fragment {
     }
 
     /**
-     * Destroy anything that might cause a glitch or memory leak
+     * set binding to null
      */
-
     @Override
     public void onDestroy() {
         super.onDestroy();
+        binding = null;
     }
 }

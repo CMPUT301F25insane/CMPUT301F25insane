@@ -69,6 +69,10 @@ public class EventViewModel extends ViewModel {
         });
     }
 
+    /**
+     * evaluates registration deadline for the event
+     * @param event event to evaluate
+     */
     private void runRegistrationDeadline(Event event) {
         Date now = new Date();
         Date deadline = event.getRegistrationDeadline();
@@ -87,6 +91,11 @@ public class EventViewModel extends ViewModel {
         finalizeLists(event);
     }
 
+    /**
+     * filters events that have passed in the dashboard
+     * @param event event to evaluate
+     * @return returns boolean based on if event should be shown. true if date has not passed
+     */
     private Boolean filterPassedEvents(Event event) {
         Date date = new Date();
         if (event.getEventDate().before(date)) {
@@ -101,20 +110,17 @@ public class EventViewModel extends ViewModel {
      * @return
      * We just return a LiveData list of our list of events
      */
-
     public LiveData<ArrayList<Event>> getLocalEvents() {
         return localEvents;
     }
 
     /**
-     * We also have a onCleared method which just removes the listener so we dont blow up the database with thousands of
-     * queries
+     * removes the listener
      */
-
     @Override
     protected void onCleared() {
 
-        listener.remove();
+        if (listener != null) listener.remove();
     }
 
 }

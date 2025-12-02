@@ -42,6 +42,7 @@ import java.util.List;
  *
  * <p>If there is only one location, the camera zooms to it. If multiple locations exist,
  * the camera adjusts to fit all markers in view.
+ * @author UmranRahman
  */
 public class LocationMapFragment extends Fragment {
     private FragmentLocationMapBinding binding;
@@ -79,6 +80,12 @@ public class LocationMapFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * sets bindings
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -162,12 +169,34 @@ public class LocationMapFragment extends Fragment {
         }
     }
 
+    /**
+     * sets map view on start
+     */
     @Override public void onStart() { super.onStart(); binding.mapView.onStart(); }
+
+    /**
+     * sets onresume for map view
+     */
     @Override public void onResume() { super.onResume(); binding.mapView.onResume(); }
+
+    /**
+     * sets onpause for mapview
+     */
     @Override public void onPause() { super.onPause(); binding.mapView.onPause(); }
+
+    /**
+     * sets onStop for mapview
+     */
     @Override public void onStop() { super.onStop(); binding.mapView.onStop(); }
+
+    /**
+     * sets on low memory for map view
+     */
     @Override public void onLowMemory() { super.onLowMemory(); binding.mapView.onLowMemory(); }
 
+    /**
+     * cleans up map view and binding
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

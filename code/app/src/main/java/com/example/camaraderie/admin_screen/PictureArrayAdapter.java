@@ -46,9 +46,9 @@ public class PictureArrayAdapter extends ArrayAdapter<Event> {
     /**
      * This is a constructor that initializes all the required attributes for the array adapter to to function how we
      * want it to
-     * @param context
-     * @param events
-     * @param svm
+     * @param context application context
+     * @param events events list of array
+     * @param svm sharedEventsViewModel
      */
 
     public PictureArrayAdapter(@NonNull Context context, ArrayList<Event> events, SharedEventViewModel svm){
@@ -61,15 +61,19 @@ public class PictureArrayAdapter extends ArrayAdapter<Event> {
 
     /**
      * getView is used for initializing the view of events for our custom display of events
-     * We initialize the view using the layout inflater
-     * We set all the textviews to the values of the events like their name, registration deadline etc
-     * @param position
-     * @param convertView
-     * @param parent
+     *      * We initialize the view using the layout inflater
+     *      * We set all the textviews to the values of the events like their name, registration deadline etc
+     * @param position The position of the item within the adapter's data set of the item whose view
+     *        we want.
+     * @param convertView The old view to reuse, if possible. Note: You should check that this view
+     *        is non-null and of an appropriate type before using. If it is not possible to convert
+     *        this view to display the correct data, this method can create a new view.
+     *        Heterogeneous lists can specify their number of view types, so that this View is
+     *        always of the right type (see {@link #getViewTypeCount()} and
+     *        {@link #getItemViewType(int)}).
+     * @param parent The parent that this view will eventually be attached to
      * @return
-     * We return a view for each list item
      */
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

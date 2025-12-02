@@ -50,7 +50,6 @@ import java.util.Locale;
 public class OrganizerViewEventFragment extends Fragment {
 
     private NavController nav;
-    private FirebaseFirestore db;
     private DocumentReference eventDocRef;
     private SharedEventViewModel svm;
 
@@ -59,11 +58,10 @@ public class OrganizerViewEventFragment extends Fragment {
     private FragmentViewEventOrganizerBinding binding;
     private ViewListViewModel vm;
 
-    //private NotificationController notificationController;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     /**
-     * sets svm, nav, and db.
+     * sets svm and nav
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
      */
@@ -76,9 +74,6 @@ public class OrganizerViewEventFragment extends Fragment {
         vm = new ViewModelProvider(requireActivity()).get(ViewListViewModel.class);  // this will live in the activity
 
         nav = NavHostFragment.findNavController(this);
-        db = FirebaseFirestore.getInstance();
-        //notificationController = new NotificationController(getContext(), (com.example.notifications.NotificationView) getParentFragment());
-
     }
 
     /**
@@ -102,7 +97,7 @@ public class OrganizerViewEventFragment extends Fragment {
     }
 
     /**
-     * sets bidnings for buttons and textviews. svm gets event and updates as appropriate
+     * sets binding for buttons and textViews. svm gets event and updates as appropriate
      * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
@@ -228,13 +223,6 @@ public class OrganizerViewEventFragment extends Fragment {
             args.putSerializable("userLocations", locations);
             nav.navigate(R.id.action__fragment_organizer_view_event_to_map, args);
         });
-
-
-        //TODO: make diagolg builder for announcement sending, or separate screen.
-        //TODO: use the new organizernotificationhandler class to deal with that shit.
-        //TODO: flow is as such: handler updates db, db automatically picks up on this (functions) \
-        // and handles it, db handler calls the fcm, fcm calls the receiver,
-        // receiver formats the remoteMessage. then notif is built, then displayed on users device.
 
         binding.orgNotifScreenButton.setOnClickListener(v -> {
 

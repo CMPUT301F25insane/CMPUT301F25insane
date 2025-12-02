@@ -21,7 +21,6 @@ import java.util.ArrayList;
 /**
  * This class sets up a custom array adapter for our list of accepted events
  */
-
 public class MyAcceptedEventsArrayAdapter extends ArrayAdapter<Event> {
 
     private SharedEventViewModel svm;
@@ -30,10 +29,10 @@ public class MyAcceptedEventsArrayAdapter extends ArrayAdapter<Event> {
 
     /**
      * A constructor to initialize the attributes
-     * @param context
-     * @param events
-     * @param svm
-     * @param nav
+     * @param context application context
+     * @param events accepted events
+     * @param svm shareviewmodel to focus events
+     * @param nav navcontroller to navigate to events
      */
     public MyAcceptedEventsArrayAdapter(@NonNull Context context, @NonNull ArrayList<Event> events, SharedEventViewModel svm, NavController nav) {
         super(context, 0, events);
@@ -44,12 +43,11 @@ public class MyAcceptedEventsArrayAdapter extends ArrayAdapter<Event> {
 
     /**
      * getView inflates the view with the XML and sets up any needed fields using the event information
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
+     * @param position item position
+     * @param convertView reusable view
+     * @param parent parent of viewgroup
+     * @return item view
      */
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

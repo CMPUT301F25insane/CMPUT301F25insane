@@ -10,22 +10,25 @@ import java.util.Date;
 
 /**
  * AdminNotifLogHelper is a utility class to help list the logged notifications
+ * @author Fecici
  */
-
 public class AdminNotifLogHelper {
 
     /**
      * An interface to initialize the callback
      */
-
     public interface NotifHelperCallback {
+        /**
+         * callback for logs helper
+         * @param logs logs loaded from db
+         */
         void onComplete(ArrayList<NotificationData> logs);
     }
 
     /**
      * This is method allows us to actually load the notification logs from database
-     * @param logs
-     * @param callback
+     * @param logs event arraylist of notification logs
+     * @param callback custom callback for on completion
      */
 
     public static void loadNotificationsFromLogs(ArrayList<DocumentReference> logs, NotifHelperCallback callback) {

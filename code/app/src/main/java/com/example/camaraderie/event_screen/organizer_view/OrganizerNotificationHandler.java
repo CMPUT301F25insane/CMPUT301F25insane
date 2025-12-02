@@ -20,8 +20,8 @@ import java.util.Map;
 /**
  * This class handles the notification building and sending to firebase
  * It is used as a helper function for the other notification classes
+ * @author Fecici
  */
-
 public class OrganizerNotificationHandler {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -31,10 +31,10 @@ public class OrganizerNotificationHandler {
     private DocumentReference eventId;
 
     /**
-     * This is just a constrctor that sets the body, title and event id of the event notification
-     * @param title
-     * @param body
-     * @param eventId
+     * This is just a constructor that sets the body, title and event id of the event notification
+     * @param title notification title
+     * @param body notification body
+     * @param eventId event id of associated event
      */
 
     public OrganizerNotificationHandler(String title, String body, DocumentReference eventId) {
@@ -46,9 +46,9 @@ public class OrganizerNotificationHandler {
     /**
      * This method sends the notification to firebase, this method sets up the batch and sets the
      * notification data and updates the batch, on failure it logs the error
-     * @param field
-     * @param onComplete
-     * @param onFuckUp
+     * @param field event field to get users from
+     * @param onComplete onComplete callback for completion
+     * @param onFuckUp callback for errors
      */
 
     public void sendNotificationToFirebase(String field, Runnable onComplete, Runnable onFuckUp) {

@@ -27,6 +27,11 @@ public class AdminDashboardFragment extends Fragment {
     private FragmentAdminDashboardBinding binding;
     private NavController nav;
 
+    /**
+     * sets nav controller
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

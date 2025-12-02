@@ -14,8 +14,8 @@ import com.google.firebase.storage.StorageReference;
 
 /**
  * THis class handles uploading images to firebase
+ * @author Tahmid-Parvez
  */
-
 public class ImageHandler {
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
 

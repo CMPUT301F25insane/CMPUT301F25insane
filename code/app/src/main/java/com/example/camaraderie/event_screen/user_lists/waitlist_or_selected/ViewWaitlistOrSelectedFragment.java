@@ -28,14 +28,11 @@ import java.util.ArrayList;
 /**
  * Screen to view the waitlist for an event. Also shows number of waitlisted users.
  */
-
 public class ViewWaitlistOrSelectedFragment extends Fragment {
 
     private FragmentViewWaitlistOrSelectedBinding binding;
-    private DocumentReference eventDocRef;
     private ViewWaitlistOrSelectedArrayAdapter adapter;
     private ViewListViewModel vm;
-    private SharedEventViewModel svm;
     private ArrayList<User> displayedList;
     private String capacityText;
     private String headerText;
@@ -53,6 +50,11 @@ public class ViewWaitlistOrSelectedFragment extends Fragment {
 
     }
 
+    /**
+     * gets new instance of fragment for argument passing
+     * @param type type of list used in the view
+     * @return instance of the fragment with arguments
+     */
     public static ViewWaitlistOrSelectedFragment newInstance(UserListType type) {
 
         ViewWaitlistOrSelectedFragment fragment = new ViewWaitlistOrSelectedFragment();

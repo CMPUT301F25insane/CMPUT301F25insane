@@ -22,7 +22,6 @@ import java.util.ArrayList;
 /**
  * This class allows for the organizer to view the accepted or cancelled list
  */
-
 public class ViewAcceptedOrCancelledFragment extends Fragment {
 
     private FragmentViewAcceptedOrCancelledBinding binding;
@@ -37,21 +36,15 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
     /**
      * This static method initalizws the bundle and its arguments to be used on a new
      * instance of this class
-     * @param type
-     * @return
+     * @param type userlist type to determine list
+     * @return instance of fragment with arguments
      */
-
     public static ViewAcceptedOrCancelledFragment newInstance(UserListType type) {
         ViewAcceptedOrCancelledFragment fragment = new ViewAcceptedOrCancelledFragment();
         Bundle args = new Bundle();
         args.putString("type", type.name());
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     /**
@@ -67,7 +60,6 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
      * @return
      * Return the root of the binding as a view
      */
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,7 +74,6 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -123,15 +114,9 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
         binding.capacity.setText(capacityText);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     /**
-     * When we destory the view ensure that the bidning is null
+     * When we destroy the view ensure that the binding is null
      */
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

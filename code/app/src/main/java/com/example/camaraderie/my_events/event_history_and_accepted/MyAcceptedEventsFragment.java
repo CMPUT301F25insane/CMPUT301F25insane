@@ -22,7 +22,7 @@ import com.example.camaraderie.my_events.MyEventsViewModel;
 import java.util.ArrayList;
 
 /**
- * View accepted events fragment
+ * View accepted events fragment for user to see their accepted events
  */
 public class MyAcceptedEventsFragment extends Fragment {
 
@@ -37,7 +37,6 @@ public class MyAcceptedEventsFragment extends Fragment {
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
      */
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +59,6 @@ public class MyAcceptedEventsFragment extends Fragment {
      * @return
      * Returns the root of the binding as a view
      */
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,7 +73,6 @@ public class MyAcceptedEventsFragment extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -93,6 +89,9 @@ public class MyAcceptedEventsFragment extends Fragment {
         binding.historyBackButton.setOnClickListener(v -> nav.popBackStack());
     }
 
+    /**
+     * sets binding to null
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();

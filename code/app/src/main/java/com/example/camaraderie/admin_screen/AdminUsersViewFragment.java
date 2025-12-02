@@ -56,7 +56,6 @@ public class AdminUsersViewFragment extends Fragment {
      * @return
      * We return the root of the binding as a view
      */
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -102,6 +102,10 @@ public class AdminUserProfileFragment extends Fragment {
          */
 
         binding.RemoveButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * handles admin deleting user button click
+             * @param v The view that was clicked.
+             */
             @Override
             public void onClick(View v) {
                 if (user == null) {

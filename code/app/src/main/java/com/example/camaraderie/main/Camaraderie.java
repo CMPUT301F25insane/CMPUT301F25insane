@@ -27,10 +27,17 @@ public class Camaraderie extends Application{
     private static Camaraderie instance;
     private static UserRepository userRepo = new UserRepository();
 
+    /**
+     * sets the user repository
+     * @param userRepo UserRepository singleton instance
+     */
     public static void setUserRepo(UserRepository userRepo) {
         Camaraderie.userRepo = userRepo;
     }
 
+    /**
+     * initializes application apis, database, and notification channels
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -54,22 +61,41 @@ public class Camaraderie extends Application{
 
     }
 
+    /**
+     * returns user repository user
+     * @return User in user repository
+     */
     public static User getUser() {
         return userRepo.getUser();
     }
 
+    /**
+     * sets user repo user
+     * @param user new user to be set
+     */
     public static void setUser(User user) {
         userRepo.setUser(user);
     }
 
+    /**
+     * defines a singleton pattern for the application class
+     * @return instance of application
+     */
     public static Camaraderie getInstance() {
         return instance;
     }
 
+    /**
+     * defines a static method to get context from anywhere in the app
+     * @return application context
+     */
     public static Context getContext() {
         return instance.getApplicationContext();
     }
 
+    /**
+     * creates all notification channels for app
+     */
     public void createNotificationChannels() {
 
         createNotificationChannel
@@ -91,6 +117,13 @@ public class Camaraderie extends Application{
                             NotificationManager.IMPORTANCE_HIGH);
     }
 
+    /**
+     * creates a specific notification channel for the app
+     * @param channel_id channel id
+     * @param name channel name
+     * @param description channel description
+     * @param importance channel importance
+     */
     public void createNotificationChannel(String channel_id, CharSequence name, String description, int importance) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
