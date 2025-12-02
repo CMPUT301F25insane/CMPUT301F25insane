@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * This class just initializes a qrCode image
+ */
+
 public class QRDialogFragment extends DialogFragment {
 
     private ImageView qrCode;

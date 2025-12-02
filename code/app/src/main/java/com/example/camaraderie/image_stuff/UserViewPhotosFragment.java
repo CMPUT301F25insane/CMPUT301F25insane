@@ -23,6 +23,10 @@ import com.example.camaraderie.databinding.FragmentUserViewPhotosBinding;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * This class allows for users to view photos of an event
+ */
+
 public class UserViewPhotosFragment extends Fragment{
 
     private NavController nav;
