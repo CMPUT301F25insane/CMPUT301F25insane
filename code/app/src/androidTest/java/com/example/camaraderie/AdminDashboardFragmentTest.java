@@ -5,12 +5,29 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelStore;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.testing.TestNavHostController;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.example.camaraderie.admin_screen.AdminDashboardFragment;
+import com.example.camaraderie.main.MainActivity;
+import com.example.camaraderie.updateUserStuff.UpdateUserFragment;
 
 
 import static androidx.test.espresso.Espresso.onView;
@@ -23,10 +40,14 @@ import static com.google.common.base.CharMatcher.is;
 import static com.google.common.base.Predicates.instanceOf;
 import static org.hamcrest.Matchers.not;
 
+import android.os.Bundle;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 
 /**
@@ -37,16 +58,46 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AdminDashboardFragmentTest {
+    //this rule allows us to bypass the notification dialog
+    @Rule
+    public GrantPermissionRule permissionRule =
+            GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS);
+
+    private TestNavHostController navController;
     private FragmentScenario<AdminDashboardFragment> scenario;
 
     @Before
     public void setUp() {
-        // Launch the fragment in a container just like in a real Activity
+        User fakeUser = new User();
+        fakeUser.setFirstName("TestUser");
+        fakeUser.setEmail("test@ex.com");
+        fakeUser.setPhoneNumber("0000000");
+        fakeUser.setAddress("Nowhere");
+        MainActivity.user = fakeUser;
+        fakeUser.setAdmin(true);
+
+//        // Create the NavController on the main thread
+//        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+//            navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+//            navController.setGraph(R.navigation.nav_admin);
+//            navController.setCurrentDestination(R.id.admin_main_screen);
+//        });
+
+        // Launch fragment scenario
         scenario = FragmentScenario.launchInContainer(AdminDashboardFragment.class);
+
+        // Attach a mock NavController to avoid crashes
+        scenario.onFragment(fragment -> {
+            NavController mockNavController = Mockito.mock(NavController.class);
+            Navigation.setViewNavController(fragment.requireView(), mockNavController);
+        });
     }
+
     @After
     public void tearDown() {
-        scenario.close();
+        if (scenario != null) {
+            scenario.close();
+        };
     }
     /**
      * we are testing if User database button is visible on the main screen

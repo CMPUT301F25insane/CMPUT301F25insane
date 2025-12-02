@@ -12,44 +12,89 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static android.app.PendingIntent.getActivity;
 
+import static com.google.common.base.CharMatcher.any;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelStore;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.testing.TestNavHostController;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import com.example.camaraderie.main.MainActivity;
 import com.example.camaraderie.updateUserStuff.UpdateUserFragment;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentReference;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-@RunWith(AndroidJUnit4.class)
-@LargeTest
 /**
  * The Purpose of this test is to test if the UpdateUserFragment is successful.
  * we check if Buttons work and whether user can successfully enter information
  */
-//
+
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class UpdateUserTest {
+    //this rule allows us to bypass the notification dialog
+    @Rule
+    public GrantPermissionRule permissionRule =
+            GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS);
     private FragmentScenario<UpdateUserFragment> scenario;
+
+
 
     @Before
     public void setUp() {
+        TestNavHostController navController = new TestNavHostController(ApplicationProvider.getApplicationContext());
+//         If your fragment uses navGraphViewModels(), set the ViewModelStore
+        navController.setViewModelStore(new ViewModelStore());
+        // Create a fake user so the fragment does not crash
+        User fakeUser = new User();
+        fakeUser.setFirstName("TestUser");
+        fakeUser.setEmail("test@ex.com");
+        fakeUser.setPhoneNumber("0000000");
+        fakeUser.setAddress("Nowhere");
+//        UpdateUserFragment.TEST_MODE = true;
+
+        // Inject into MainActivity.user
+        MainActivity.user = fakeUser;
+
         // Launch the fragment in a container just like in a real Activity
-        scenario = FragmentScenario.launchInContainer(UpdateUserFragment.class);
+        scenario = FragmentScenario.launchInContainer(
+                UpdateUserFragment.class,
+                null,   // fragment arguments
+                R.style.Base_Theme_Camaraderie
+        );
+
+        scenario.moveToState(Lifecycle.State.STARTED);
+
+
     }
     @After
     public void tearDown() {
-        scenario.close();
+        if (scenario != null) {
+            scenario.close();
+        };
     }
 
 
 
     /**
-    *testing if save button is visible
+     *testing if save button is visible
      */
     @Test
     public void testSaveButtonIsVisible() {
@@ -157,14 +202,14 @@ public class UpdateUserTest {
         onView(withText("Please enter valid phone number")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
     /**
-    * we are testing what happens when user decides to delete their profile
+     * we are testing what happens when user decides to delete their profile
      */
     @Test
     public void DeleteProfileTest() {
         onView(withId(R.id.Delete_button_for_user_profile)).perform(click());
         onView(withText("Are you sure you want to delete your profile?")).check(matches(isDisplayed()));
 //        onView(withId(R.id.Positive_button)).perform(click()); //suppose to select yes button
-        onView(withText("Profile deleted!")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText("deleted")).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
 

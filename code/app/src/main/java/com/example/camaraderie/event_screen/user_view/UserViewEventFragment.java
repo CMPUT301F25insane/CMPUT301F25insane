@@ -272,10 +272,11 @@ public class UserViewEventFragment extends Fragment {
         binding.joinButtonUserView.setClickable(true);
         binding.joinButtonUserView.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.custom_join_button_color));
 
-        binding.unjoinButtonUserView.setEnabled(true);
-        binding.unjoinButtonUserView.setClickable(true);
+        binding.unjoinButtonUserView.setEnabled(false);
+        binding.unjoinButtonUserView.setClickable(false);
         binding.unjoinButtonUserView.setVisibility(VISIBLE);
-        binding.unjoinButtonUserView.setBackgroundColor(Color.RED);
+        binding.unjoinButtonUserView.setBackgroundColor(Color.GRAY);
+        binding.unjoinButtonUserView.setText("Unjoin");
 
         binding.deadlinePassedText.setText("");
 
@@ -291,7 +292,7 @@ public class UserViewEventFragment extends Fragment {
 
             binding.deadlinePassedText.setText("You are accepted to this event.");
         }
-        if (event.getCapacity() >= event.getAcceptedUsers().size()) {
+        if (event.getCapacity() <= event.getAcceptedUsers().size()) {
             binding.joinButtonUserView.setClickable(false);
             binding.joinButtonUserView.setEnabled(false);
             binding.joinButtonUserView.setVisibility(GONE);
@@ -311,6 +312,12 @@ public class UserViewEventFragment extends Fragment {
             binding.joinButtonUserView.setClickable(false);
             binding.joinButtonUserView.setEnabled(false);
             binding.joinButtonUserView.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+
+            binding.unjoinButtonUserView.setEnabled(true);
+            binding.unjoinButtonUserView.setClickable(true);
+            binding.unjoinButtonUserView.setVisibility(VISIBLE);
+            binding.unjoinButtonUserView.setBackgroundColor(Color.RED);
+
         } else if (event.getRegistrationDeadline().before(new Date())) {
 
             binding.joinButtonUserView.setClickable(false);
@@ -318,6 +325,11 @@ public class UserViewEventFragment extends Fragment {
             binding.joinButtonUserView.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
             binding.deadlinePassedText.setText("Deadline has passed!");
 
+        } else if (event.getWaitlistLimit() != -1 && (event.getWaitlistLimit() <= event.getWaitlist().size())) {
+            binding.joinButtonUserView.setClickable(false);
+            binding.joinButtonUserView.setEnabled(false);
+            binding.joinButtonUserView.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+            binding.deadlinePassedText.setText("Waitlist at capacity.");
         }
         // otherwise, gray out the unjoin button
         else {
@@ -330,6 +342,8 @@ public class UserViewEventFragment extends Fragment {
         // if user is selected, the unjoin button acts as a decline button
         if (event.getSelectedUsers().contains(getUser().getDocRef())) {
             binding.unjoinButtonUserView.setOnClickListener(v -> {
+
+                binding.unjoinButtonUserView.setText("Decline");
                 userDeclineInvite(event);
 
                 // disable the button

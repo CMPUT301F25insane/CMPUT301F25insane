@@ -49,6 +49,14 @@ public class LocationMapFragment extends Fragment {
     private String eventId;
     private Event event;
     ArrayList<HashMap<String, Object>> userLocations;
+    private boolean isMapReady = false;
+
+    public void updateLocations(ArrayList<HashMap<String, Object>> newLocations) {
+        this.userLocations = newLocations;
+        if (isMapReady) {
+            showMarkers();
+        }
+    }
 
     @Nullable
     @Override
@@ -82,6 +90,7 @@ public class LocationMapFragment extends Fragment {
             String styleUrl = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 
             map.setStyle(new Style.Builder().fromUri(styleUrl), style -> {
+                isMapReady = true;
                 showMarkers();
             });
         });
@@ -96,7 +105,13 @@ public class LocationMapFragment extends Fragment {
      * Safely exits if the map or userLocations list is null or empty.
      */
     private void showMarkers() {
-        if (map == null || userLocations == null || userLocations.isEmpty()) {
+        if (map == null || userLocations == null) {
+            return;
+        }
+
+        map.clear();
+
+        if (userLocations.isEmpty()) {
             return;
         }
 
