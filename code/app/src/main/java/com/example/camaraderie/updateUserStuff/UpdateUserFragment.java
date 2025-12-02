@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+
+
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -34,13 +37,20 @@ public class UpdateUserFragment extends Fragment {
     private DocumentReference userDocRef;
     private FragmentUpdateUserBinding binding;
     private NavController nav;
+    public static boolean TEST_MODE = false;
 
     ActivityResultLauncher<String[]> locationPermissionRequest;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        nav = NavHostFragment.findNavController(this);
+        if (!TEST_MODE) {
+            nav = NavHostFragment.findNavController(this);
+        } else {
+            nav = null; // or do nothing
+        }
+
+
 
         //https://developer.android.com/develop/sensors-and-location/location/permissions/runtime
         locationPermissionRequest = locationPermissionRequest =
@@ -97,6 +107,8 @@ public class UpdateUserFragment extends Fragment {
      */
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         userDocRef = user.getDocRef();
 

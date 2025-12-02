@@ -73,6 +73,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation ("org.mockito:mockito-android:5.5.0")
+    implementation("androidx.navigation:navigation-fragment:2.7.5")
+    implementation("androidx.navigation:navigation-ui:2.7.5")
     debugImplementation("androidx.fragment:fragment-testing-manifest:$fragmentVersion")
     androidTestImplementation("androidx.fragment:fragment-testing:$fragmentVersion")
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
@@ -81,7 +84,9 @@ dependencies {
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
     implementation("androidx.activity:activity:1.11.0")
     implementation("org.maplibre.gl:android-sdk:11.13.5")
+
     implementation("com.google.firebase:firebase-storage:22.0.1")
+
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
     //Firestore
