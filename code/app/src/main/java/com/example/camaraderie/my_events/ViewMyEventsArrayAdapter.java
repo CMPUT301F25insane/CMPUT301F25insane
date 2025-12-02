@@ -2,9 +2,11 @@ package com.example.camaraderie.my_events;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.utilStuff.EventHelper.handleUnjoin;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,6 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
     public OnEventClickListener listener;
     private FirebaseFirestore db;
 
-    private DocumentReference eventDocref;
 
     /**
      * constructor for array adapter
@@ -93,7 +94,6 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
         if (event == null) {return view;}
         eventName.setText(event.getEventName());
-        eventDocref = db.document(event.getEventDocRef().getPath());
         //eventPrice.setText(String.valueOf(event.getPrice()));
         eventDeadline.setText(event.getRegistrationDeadline().toString());
         //hostName.setText(event.getHost().getUsername());
@@ -111,18 +111,21 @@ public class ViewMyEventsArrayAdapter extends ArrayAdapter<Event> {
              */
             @Override
             public void onClick(View v) {
-                //user.deleteCreatedEvent(event.getEventDocRef());
-                eventDocref.update("waitlist", FieldValue.arrayRemove(user.getDocRef())).addOnSuccessListener(aVoid ->{
-                    Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
-                });
 
-                user.removeWaitlistedEvent(eventDocref);
-                event.removeWaitlistUser(user.getDocRef());
+                handleUnjoin(event,
+                        () -> {
+                            remove(event);
 
-                remove(event);
+                            leaveButton.setEnabled(false);
+                            leaveButton.setBackgroundColor(Color.GRAY);
+                            Toast.makeText(getContext(), "You have left the event", LENGTH_SHORT).show();
+                        },
+                        () -> {
+                            Log.e("ViewMyEvents Array Adapter", "Failed to unjoin user");
+                            Toast.makeText(getContext(), "Failed to leave event", LENGTH_SHORT).show();
+                        });
 
-                leaveButton.setEnabled(false);
-                leaveButton.setBackgroundColor(Color.GRAY);
+
             }
         });
 

@@ -1,6 +1,7 @@
 package com.example.camaraderie.main;
 
 import static com.example.camaraderie.main.Camaraderie.getContext;
+import static com.example.camaraderie.main.Camaraderie.getUser;
 
 import android.util.Log;
 
@@ -41,7 +42,10 @@ public class LoadUser {
                     if (!notification.isSent()) {
                         notifications.add(notification);
                     }
-                    else size.getAndDecrement();
+                    else {
+                        size.getAndDecrement();
+                        getUser().getDocRef().update("pendingNotifications", FieldValue.arrayRemove(ref));
+                    }
                 }
 
                 if (notifications.size() == size.get()) {
