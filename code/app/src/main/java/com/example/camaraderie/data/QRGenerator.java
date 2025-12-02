@@ -8,8 +8,20 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+/**
+ * This function actually creates the QR code for the event we are making.
+ */
+
 public class QRGenerator {
 
+    /**
+     * This function takes in a text, width, and height and creates the QR code using the BitMap class
+     * @param text
+     * @param width
+     * @param height
+     * @return
+     * It returns the created QR code in the form of a Bitmap
+     */
     public Bitmap generateQRCode(String text, int width, int height){
         try {
             QRCodeWriter writer = new QRCodeWriter();

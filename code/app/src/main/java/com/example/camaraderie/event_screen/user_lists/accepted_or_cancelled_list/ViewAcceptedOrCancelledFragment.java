@@ -19,6 +19,10 @@ import com.example.camaraderie.event_screen.ViewListViewModel;
 
 import java.util.ArrayList;
 
+/**
+ * This class allows for the organizer to view the accepted or cancelled list
+ */
+
 public class ViewAcceptedOrCancelledFragment extends Fragment {
 
     private FragmentViewAcceptedOrCancelledBinding binding;
@@ -29,6 +33,13 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
     private NavController nav;
 
     private ViewAcceptedOrCancelledListArrayAdapter adapter;
+
+    /**
+     * This static method initalizws the bundle and its arguments to be used on a new
+     * instance of this class
+     * @param type
+     * @return
+     */
 
     public static ViewAcceptedOrCancelledFragment newInstance(UserListType type) {
         ViewAcceptedOrCancelledFragment fragment = new ViewAcceptedOrCancelledFragment();
@@ -43,12 +54,34 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Inflate the current view with the required XML file
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     * Return the root of the binding as a view
+     */
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentViewAcceptedOrCancelledBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
+    /**
+     * onViewCreated displays the lists of accepted or cancelled, depending on the list type
+     * It sets up the array adapter, the header text and the capacity
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -81,7 +114,6 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
         }
 
         binding.acceptedOrCancelledBackButton.setOnClickListener(v -> {nav.popBackStack();});
-
         adapter = new ViewAcceptedOrCancelledListArrayAdapter(requireContext(), 0, displayedList);
         adapter.setNotifyOnChange(true);
 
@@ -95,6 +127,10 @@ public class ViewAcceptedOrCancelledFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
     }
+
+    /**
+     * When we destory the view ensure that the bidning is null
+     */
 
     @Override
     public void onDestroyView() {

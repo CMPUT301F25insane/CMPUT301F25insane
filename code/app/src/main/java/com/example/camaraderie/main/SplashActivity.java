@@ -9,7 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.camaraderie.R;
 
+/**
+ * SplashActivity is the first activity that is opened and runs a little intro animation
+ */
+
 public class SplashActivity extends AppCompatActivity {
+
+    /**
+     * onCreate initalizes the video intro for the app and displays
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

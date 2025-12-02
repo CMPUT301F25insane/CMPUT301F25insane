@@ -18,11 +18,21 @@ import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentOrganizerNotificationDialogTestBinding;
 import com.google.firebase.firestore.DocumentReference;
 
+/**
+ * The class setups the UI and backend to allow the user to actually send a notification to any required users
+ */
+
 public class OrganizerNotificationFragment extends Fragment {
 
     private FragmentOrganizerNotificationDialogTestBinding binding;
     private SharedEventViewModel svm;
     private NavController nav;
+
+    /**
+     * onCreate sets up the nav and the ViewModelProvider
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,12 +42,35 @@ public class OrganizerNotificationFragment extends Fragment {
         svm = new ViewModelProvider(requireActivity()).get(SharedEventViewModel.class);
     }
 
+    /**
+     * onCreateView sets the required XML file to inflate the current view, we also use binding to make it easier to
+     * access UI elements
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     * We return the root of the binding as a view
+     */
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentOrganizerNotificationDialogTestBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
+    /**
+     * onViewCreated sets up the Bundle with arguments and also sets up the back button and allows for us to initialize
+     * the notification information to send
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -71,6 +104,15 @@ public class OrganizerNotificationFragment extends Fragment {
         super.onDestroy();
         binding = null;
     }
+
+    /**
+     * This method confirms the notification for us and actually sends it to FireBase
+     * then it pops the backstack and returns
+     * @param msg
+     * @param title
+     * @param eventRef
+     * @param list
+     */
 
     private void confirmNotification(String msg, String title, DocumentReference eventRef, String list) {
         OrganizerNotificationHandler handler = new OrganizerNotificationHandler(title, msg, eventRef);
