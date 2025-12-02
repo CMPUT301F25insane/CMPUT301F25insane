@@ -39,12 +39,11 @@ public class NotificationHelper {
         );
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-
+                .setSmallIcon(R.mipmap.logo2)
                 .setContentIntent(pendingIntent);
 
         // A customized design for the notification can be
@@ -58,7 +57,7 @@ public class NotificationHelper {
         //else {
             builder = builder.setContentTitle(title)
                     .setContentText(message)
-                    .setSmallIcon(R.drawable.ic_launcher_foreground);
+                    .setSmallIcon(R.mipmap.logo2);
         //}
 
         NotificationManager manager =

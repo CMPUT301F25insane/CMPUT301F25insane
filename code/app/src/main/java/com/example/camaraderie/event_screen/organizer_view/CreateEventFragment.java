@@ -68,7 +68,7 @@ public class CreateEventFragment extends Fragment {
     private String eventImageString;
     private Uri imageUri;
     private boolean editing = false;
-
+    private boolean image_uploaded = false;
     private Date today = new Date();
     private int day = today.getDate();;
     private int month = today.getMonth();
@@ -160,6 +160,7 @@ public class CreateEventFragment extends Fragment {
                     if (uri != null) {
                         Log.d("PhotoPicker", "Selected URI: " + uri);
                         imageUri = uri;
+                        image_uploaded = true;
                     } else {
                         Log.d("PhotoPicker", "No media selected");
                     }
@@ -253,6 +254,10 @@ public class CreateEventFragment extends Fragment {
         eventDescription.setText(event.getDescription());
         eventCapacity.setText(String.valueOf(event.getCapacity()));
         eventDateTime.setText(event.getEventDateTime());
+        if (event.getWaitlistLimit() != -1) {
+            optionalLimit.setText(String.valueOf(event.getWaitlistLimit()));
+        }
+        eventDeadlineTime.setText(event.getEventDeadlineTime());
     }
 
     /**
@@ -337,7 +342,7 @@ public class CreateEventFragment extends Fragment {
                         deleteEventImage(event);
 
                         // if no image was chosen
-                        if (imageUri != null) {
+                        if (image_uploaded) {
                             uploadEventImage(event, imageUri, new ImageHandler.UploadCallback() {
                                 @Override
                                 public void onSuccess(String downloadUrl) {
@@ -383,19 +388,21 @@ public class CreateEventFragment extends Fragment {
                                 //});
                             });
 
-                        uploadEventImage(newEvent, imageUri, new ImageHandler.UploadCallback() {
-                            @Override
-                            public void onSuccess(String downloadUrl) {
-                                newEvent.setImageUrl(downloadUrl);
-                                newEvent.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
-                            }
+                        if (image_uploaded) {
+                            uploadEventImage(newEvent, imageUri, new ImageHandler.UploadCallback() {
+                                @Override
+                                public void onSuccess(String downloadUrl) {
+                                    newEvent.setImageUrl(downloadUrl);
+                                    newEvent.updateDB(() -> Toast.makeText(getContext(), "Image saved", Toast.LENGTH_SHORT).show());
+                                }
 
-                            @Override
-                            public void onFailure(Exception e) {
-                                Log.e("UPLOAD", "Failed", e);
-                                Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Log.e("UPLOAD", "Failed", e);
+                                    Toast.makeText(getContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
 
 
                     })
@@ -424,11 +431,11 @@ public class CreateEventFragment extends Fragment {
 
         }, year, month, day);
 
-        dateDialog.getDatePicker().setMinDate(today.getTime());
+        dateDialog.getDatePicker().setMinDate(today.getTime() + 2 * 86_400_000L);  // set min to 2 days from now
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date deadline = formatter.parse(binding.inputFieldForCreateEventRegistrationDeadline.getText().toString());
-            long longDeadline = (deadline.getTime() + (1000 * 60 * 60 * 24));
+            long longDeadline = (deadline.getTime() + 86_400_000L);
             dateDialog.getDatePicker().setMinDate(longDeadline);
         } catch (Exception e) {}
         dateDialog.show();
@@ -447,11 +454,11 @@ public class CreateEventFragment extends Fragment {
             }
 
         }, year, month, day);
-        dateDialog.getDatePicker().setMinDate(today.getTime());
+        dateDialog.getDatePicker().setMinDate(today.getTime() + 86_400_000L);  // set min deadline to tmr
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = formatter.parse(binding.inputFieldForCreateEventDate.getText().toString());
-            long longDate = (date.getTime() - (1000 * 60 * 60 * 24));
+            long longDate = (date.getTime() - 86_400_000L);  // if date is defined, then its already 2 days from now
             dateDialog.getDatePicker().setMaxDate(longDate);
         } catch (Exception e) {
 

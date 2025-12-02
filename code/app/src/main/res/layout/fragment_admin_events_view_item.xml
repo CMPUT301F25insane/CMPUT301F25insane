@@ -10,13 +10,13 @@
     <!-- PROFILE IMAGE -->
     <ImageButton
         android:id="@+id/profile_photo_for_event_item"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@android:color/transparent"
+        android:layout_width="40dp"
+        android:layout_height="43dp"
+        android:background="@drawable/baseline_person_24"
         android:scaleType="centerCrop"
+        android:src="@drawable/baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- EVENT NAME -->
     <TextView
@@ -49,19 +49,18 @@
     <!-- SEE DESCRIPTION BUTTON -->
 
     <Button
-        android:id="@+id/RemoveButton"
-        android:layout_width="133dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#9E2C0A"
+        android:id="@+id/joinButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/custom_join_button_color"
         android:fontFamily="@font/cambria"
-        android:text="Remove"
-        android:textColor="@color/white"
+        android:text="Join"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:padding="8dp"
         app:layout_constraintEnd_toStartOf="@id/seeDescButton"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintHorizontal_weight="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/RegistrationDeadline"
         app:strokeColor="@color/black"
@@ -69,19 +68,44 @@
 
     <Button
         android:id="@+id/seeDescButton"
-        android:layout_width="173dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="#59403F3F"
         android:fontFamily="@font/cambria"
+        android:padding="8dp"
+
         android:text="See Description"
+        android:textSize="12sp"
+
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/joinButton"
+        app:layout_constraintEnd_toStartOf="@+id/RemoveButton"
         app:layout_constraintStart_toEndOf="@id/joinButton"
-        app:layout_constraintTop_toBottomOf="@id/RegistrationDeadline"
+        app:layout_constraintHorizontal_weight="0.8"
+        app:layout_constraintTop_toTopOf="@id/joinButton"
         app:strokeColor="@color/black"
+        app:strokeWidth="1.5dp" />
+
+    <Button
+        android:id="@+id/RemoveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#9E2C0A"
+        android:padding="8dp"
+
+        android:fontFamily="@font/cambria"
+        android:text="Remove"
+        android:textSize="12sp"
+
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/seeDescButton"
+        app:layout_constraintStart_toEndOf="@id/seeDescButton"
+        app:layout_constraintBottom_toBottomOf="@id/seeDescButton"
+        app:strokeColor="@color/black"
+        app:layout_constraintHorizontal_weight="0.8"
         app:strokeWidth="1.5dp" />
 
 

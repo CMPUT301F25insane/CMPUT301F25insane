@@ -98,7 +98,7 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
         view.findViewById(R.id.acceptEventButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userAcceptInvite(event.getEventDocRef());
+                userAcceptInvite(event);
                 remove(event);
                 listener.enableConfirmButton();
 
@@ -117,7 +117,7 @@ public class PendingEventArrayAdapter extends ArrayAdapter<Event> {
             @Override
 
             public void onClick(View v) {
-                userDeclineInvite(event.getEventDocRef());
+                userDeclineInvite(event);
                 remove(event);
                 listener.enableConfirmButton();
             }

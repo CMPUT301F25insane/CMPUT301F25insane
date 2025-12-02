@@ -33,7 +33,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.49"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:background="@drawable/baseline_person_24"
+        android:src="@drawable/baseline_person_24" />
 
     <Button
         android:id="@+id/kick_from_event_button"
@@ -46,6 +47,8 @@
         android:text="Kick"
         android:textColor="@color/white"
         android:textStyle="bold"
+        app:strokeWidth="1.5dp"
+        app:strokeColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.187"

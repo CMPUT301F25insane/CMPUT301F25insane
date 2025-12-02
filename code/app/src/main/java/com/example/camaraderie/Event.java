@@ -280,6 +280,29 @@ public class Event {
     public DocumentReference getHostDocRef() {
         return hostDocRef;
     }
+    public void setHostDocRef(DocumentReference ref) {this.hostDocRef = ref;}
+
+    public void setAcceptedUsers(ArrayList<DocumentReference> acceptedUsers) {
+        this.acceptedUsers = acceptedUsers;
+    }
+
+    public void setCancelledUsers(ArrayList<DocumentReference> cancelledUsers) {
+        this.cancelledUsers = cancelledUsers;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public void setSelectedUsers(ArrayList<DocumentReference> selectedUsers) {
+        this.selectedUsers = selectedUsers;
+    }
+
+    public void setWaitlist(ArrayList<DocumentReference> waitlist) {
+        this.waitlist = waitlist;
+    }
+
+
 
     /**
      * Get the event waitlist
@@ -376,7 +399,6 @@ public class Event {
 
         data.put("capacity", capacity);
         data.put("waitlistLimit", waitlistLimit);
-        data.put("imageUrl", imageUrl);
 
         eventDocRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {

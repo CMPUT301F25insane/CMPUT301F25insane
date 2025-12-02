@@ -3,6 +3,7 @@ package com.example.camaraderie.my_events;
 import static android.view.View.INVISIBLE;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,12 +82,15 @@ public class MyCreatedEventsArrayAdapter extends ArrayAdapter<Event> {
         TextView event_name = view.findViewById(R.id.eventName);
         TextView deadline = view.findViewById(R.id.RegistrationDeadline);
 
-        //Button join = view.findViewById(R.id.joinButton);
+        Button join = view.findViewById(R.id.joinButton);
         Button description = view.findViewById(R.id.seeDescButton);
         Button remove = view.findViewById(R.id.RemoveButton);
 
-//        join.setEnabled(false);
-//        join.setVisibility(INVISIBLE);
+       join.setEnabled(false);
+       join.setVisibility(INVISIBLE);
+
+//        join.setBackgroundColor(Color.RED);
+//        join.setText("Remove");
 
         event_name.setText(event.getEventName());
 

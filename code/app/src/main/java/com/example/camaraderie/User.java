@@ -40,6 +40,8 @@ public class User implements Serializable {
     private ArrayList<DocumentReference> cancelledEvents = new ArrayList<>();
     //geolocation
     private boolean geoEnabled = false;
+
+    boolean useFirestore = true;
     private ArrayList<DocumentReference> userEventHistory = new ArrayList<>();
 
     private ArrayList<DocumentReference> pendingNotifications = new ArrayList<>();
@@ -189,16 +191,21 @@ public class User implements Serializable {
      *  The docRef of the event being deleted
      */
     public void deleteCreatedEvent(DocumentReference event) {
+        if (!useFirestore) {
+            // Skip Firestore and just remove from local list (for unit tests)
+            userCreatedEvents.remove(event);
+            return;
+        }
+
         event.get().addOnSuccessListener(doc -> {
             Event e = doc.toObject(Event.class);
-            if (e != null ) {
+            if (e != null) {
                 deleteEvent(e);
                 Log.d("User", "Deleted user event");
             }
-        })
-                .addOnFailureListener(ee -> {
-                    Log.e("User", "deleteCreatedEvent: could not get event", ee);
-                });
+        }).addOnFailureListener(ee -> {
+            Log.e("User", "deleteCreatedEvent: could not get event", ee);
+        });
     }
 
     /**
@@ -219,6 +226,7 @@ public class User implements Serializable {
 
     /**
      * update user in database
+     * @param onComplete runnable for when database updated
      */
     public void updateDB(Runnable onComplete) {
         // update the DB from the user
@@ -339,7 +347,10 @@ public class User implements Serializable {
     public void addCreatedEvent(DocumentReference eventRef) {
         if (!userCreatedEvents.contains(eventRef)) {
             userCreatedEvents.add(eventRef);
-            updateDB(()-> {});
+            if (useFirestore) {
+                updateDB(() -> {
+                });
+            }
         }
     }
 

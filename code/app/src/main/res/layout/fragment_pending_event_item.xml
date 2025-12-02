@@ -3,46 +3,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/gradient_resource"
+    >
 
     <TextView
         android:id="@+id/pendingEventName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:text="name"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/cambria"
+        android:text="Event Name"
+        android:textColor="@color/white"
+        android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/pendingEventDate"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.533" />
+        app:layout_constraintVertical_bias="0.363" />
 
     <TextView
         android:id="@+id/pendingEventDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="36dp"
-        android:text="date"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/cambria"
+        android:text="Date"
+        android:textColor="@color/white"
+        android:textSize="17dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/pendingEventName"/>
+
 
     <Button
         android:id="@+id/declineEventButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="200dp"
-        android:text="decline"
+        android:backgroundTint="#9E2C0A"
+        android:fontFamily="@font/cambria"
+        android:text="Decline"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
         app:layout_constraintEnd_toStartOf="@+id/acceptEventButton"
-        app:layout_constraintTop_toBottomOf="@+id/pendingEventDate" />
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pendingEventDate"
+        app:strokeWidth="3.5dp" />
 
     <Button
         android:id="@+id/acceptEventButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="16dp"
-        android:text="accept"
+
+        android:backgroundTint="#AAF2C8"
+        android:fontFamily="@font/cambria"
+        android:text="Accept"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toEndOf="@id/declineEventButton"
+        app:layout_constraintTop_toTopOf="@id/declineEventButton"
+        app:layout_constraintBottom_toBottomOf="@id/declineEventButton"
+        app:strokeWidth="3.5dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

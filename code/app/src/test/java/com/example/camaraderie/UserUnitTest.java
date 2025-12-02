@@ -24,6 +24,7 @@ public class UserUnitTest {
     private DocumentReference mockEvent1;
     private DocumentReference mockEvent2;
     private DocumentReference userRef = mock(DocumentReference.class);
+    private DocumentReference mockEvent3;
 
 
         @Before
@@ -31,15 +32,16 @@ public class UserUnitTest {
             // Mock DocumentReferences so we don’t touch Firestore
             mockEvent1 = mock(DocumentReference.class);
             mockEvent2 = mock(DocumentReference.class);
+            mockEvent3 = mock(DocumentReference.class);
 
             user = new User("Alice", "1234567890", "alice@example.com", "123 Main St", "user123","12345234", userRef);
         }
 
         @After
         public void teardown() {
-            mockEvent1.delete();
-            mockEvent2.delete();
-            userRef.delete();
+//            mockEvent1.delete();
+//            mockEvent2.delete();
+//            userRef.delete();
         }
 
         @Test
@@ -57,19 +59,23 @@ public class UserUnitTest {
 
         @Test
         public void testAddCreatedEvent() {
+            user.useFirestore = false;
             user.addCreatedEvent(mockEvent1);
             assertTrue(user.getUserCreatedEvents().contains(mockEvent1));
         }
 
         @Test
         public void testAddCreatedEvent_NoDuplicates() {
-            user.addCreatedEvent(mockEvent1);
-            user.addCreatedEvent(mockEvent1); // duplicate add
+            user.useFirestore = false;
+            user.addCreatedEvent(mockEvent3);
+            assertEquals(1, user.getUserCreatedEvents().size());
+            user.addCreatedEvent(mockEvent3); // duplicate add
             assertEquals(1, user.getUserCreatedEvents().size());
         }
 
         @Test
         public void testAddTwoCreatedEvent() {
+            user.useFirestore = false;
         user.addCreatedEvent(mockEvent1);
         user.addCreatedEvent(mockEvent2); // adding two events
         assertEquals(2, user.getUserCreatedEvents().size());
@@ -105,6 +111,7 @@ public class UserUnitTest {
 
         @Test
         public void testDeleteCreatedEvent_RemovesFromList() {
+            user.useFirestore = false;
             user.addCreatedEvent(mockEvent1);
             user.deleteCreatedEvent(mockEvent1);
             assertFalse(user.getUserCreatedEvents().contains(mockEvent1));

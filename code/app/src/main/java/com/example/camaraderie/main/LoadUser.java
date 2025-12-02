@@ -1,23 +1,20 @@
 package com.example.camaraderie.main;
 
 import static com.example.camaraderie.main.Camaraderie.getContext;
-import static com.example.camaraderie.main.MainActivity.user;
+import static com.example.camaraderie.main.Camaraderie.getUser;
 
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.camaraderie.notifications.FirebaseMessagingReceiver;
 import com.example.camaraderie.notifications.NotificationData;
 import com.example.camaraderie.notifications.NotificationHelper;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.WriteBatch;
-import com.google.firestore.v1.Write;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoadUser {
 
@@ -35,14 +32,23 @@ public class LoadUser {
 
         ArrayList<NotificationData> notifications = new ArrayList<>();
 
+        AtomicInteger size = new AtomicInteger(pendingNotifs.size());
+
         for (DocumentReference ref : pendingNotifs) {
             ref.get().addOnSuccessListener(snap -> {
                 NotificationData notification = snap.toObject(NotificationData.class);
                 if (notification != null) {
-                    notifications.add(notification);
+
+                    if (!notification.isSent()) {
+                        notifications.add(notification);
+                    }
+                    else {
+                        size.getAndDecrement();
+                        getUser().getDocRef().update("pendingNotifications", FieldValue.arrayRemove(ref));
+                    }
                 }
 
-                if (notifications.size() == pendingNotifs.size()) {
+                if (notifications.size() == size.get()) {
                     callback.onLoaded(notifications);
                 }
             });

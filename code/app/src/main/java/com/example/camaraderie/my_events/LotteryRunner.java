@@ -69,12 +69,12 @@ public class LotteryRunner {
                     String title = event.getEventName() + " Lottery";
 
                     for (DocumentReference user : winners) {
-                        sendNotificationsToEntrant(event, user, title,
+                        sendNotificationsToEntrant(event.getEventDocRef(), user, title,
                                 "Congratulations! You have been invited to the event!");
                     }
 
                     for (DocumentReference user : losers) {
-                        sendNotificationsToEntrant(event, user, title,
+                        sendNotificationsToEntrant(event.getEventDocRef(), user, title,
                                 "Unfortunately, you were not selected in this lottery cycle. Keep waiting, there is still a chance!");
                     }
                 })
@@ -83,7 +83,7 @@ public class LotteryRunner {
                 });
     }
 
-    private static void sendNotificationsToEntrant(Event event, DocumentReference uref, String title, String body) {
+    public static void sendNotificationsToEntrant(DocumentReference event, DocumentReference uref, String title, String body) {
 
         DocumentReference notifRef = db.collection("Notifications").document();
 
@@ -93,7 +93,7 @@ public class LotteryRunner {
             uref.update("pendingNotifications", FieldValue.arrayUnion(notifRef))
                     .addOnSuccessListener(
                             v1 -> {
-                                event.getEventDocRef().update("notificationLogs", FieldValue.arrayUnion(notifRef));
+                                event.update("notificationLogs", FieldValue.arrayUnion(notifRef));
                                 Log.d("Lottery Notifications", "Notification added to entrant notif list");
                             }
                     )

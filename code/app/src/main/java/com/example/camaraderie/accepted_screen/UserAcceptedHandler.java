@@ -3,6 +3,7 @@ package com.example.camaraderie.accepted_screen;
 import static com.example.camaraderie.main.Camaraderie.getUser;
 //import static com.example.camaraderie.main.MainActivity.user;
 import static com.example.camaraderie.my_events.LotteryRunner.runLottery;
+import static com.example.camaraderie.my_events.LotteryRunner.sendNotificationsToEntrant;
 
 import android.util.Log;
 
@@ -26,7 +27,7 @@ public class UserAcceptedHandler {
      * userAcceptInvite takes in one parameter which is a Firestore Document Reference
      * This method is meant to run the backend code that is needed to allow the user to accept an invite and
      * store them in the proper spot in the database
-     * @param eventDocRef
+     * @param event event that the user is accepting
      * The method first updates the acceptedEvents of the event document reference and puts the user in there and it
      * also removes the user from the selectedEvents
      * It also does the same thing locally with the objects
@@ -34,7 +35,9 @@ public class UserAcceptedHandler {
      */
 
 
-    public static void userAcceptInvite(DocumentReference eventDocRef) {
+    public static void userAcceptInvite(Event event) {
+
+        DocumentReference eventDocRef = event.getEventDocRef();
 
         User user = getUser();
 
@@ -53,6 +56,15 @@ public class UserAcceptedHandler {
                     .addOnSuccessListener(aVoid -> {
                         Log.d("Firestore", "User added to acceptedUsers!");
                         Log.d("Firestore", "User removed from selectedUsers! (accepted invitation)");
+
+                        sendNotificationsToEntrant(
+                                eventDocRef,
+                                user.getDocRef(),
+                                "Event: " + event.getEventName(),
+                                "You have accepted this event invitation!"
+
+                        );
+
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating user lists", e));
         });
@@ -63,12 +75,14 @@ public class UserAcceptedHandler {
      * It works by updating the events selected list and removing them
      * This function uses firebase to do so and we also remove the local user object's
      * selected event list
-     * @param eventDocRef
+     * @param event event that the user is declining
      * We dont return anything
      */
 
     // user rejects invitation
-    public static void userDeclineInvite(DocumentReference eventDocRef) {
+    public static void userDeclineInvite(Event event) {
+
+        DocumentReference eventDocRef = event.getEventDocRef();
 
         User user = getUser();
         user.removeSelectedEvent(eventDocRef);
@@ -85,6 +99,13 @@ public class UserAcceptedHandler {
                     .addOnSuccessListener(aVoid -> {
 
                         Log.d("Firestore", "User removed from selectedUsers! (declined invitation)");
+                        sendNotificationsToEntrant(
+                                eventDocRef,
+                                user.getDocRef(),
+                                "Event: " + event.getEventName(),
+                                "You have declined the event invitation."
+
+                        );
 
                         // rerun lottery
                         eventDocRef.get()

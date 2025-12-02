@@ -5,7 +5,11 @@ package com.example.camaraderie.accepted_screen;
 import static com.example.camaraderie.accepted_screen.UserAcceptedHandler.allInvitesResolved;
 import static com.example.camaraderie.main.Camaraderie.getUser;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,7 @@ import com.example.camaraderie.databinding.FragmentPendingEventsBinding;
 
 import com.google.firebase.firestore.DocumentReference;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -58,15 +63,23 @@ public class UserAcceptedToEventFragment extends Fragment {
         pendingEventArrayAdapter.setListener(this);
         pendingEventArrayAdapter.setNotifyOnChange(true);
 
-        for (DocumentReference eventRef : getUser().getSelectedEvents()) {
-            eventRef.get().addOnSuccessListener(doc -> {
-                Event event = doc.toObject(Event.class);
-                if (event != null) {
-                    selectedEvents.add(event);
-                    pendingEventArrayAdapter.notifyDataSetChanged();
-                }
-            });
-        }
+        // do this because the user selected list wont update if they are selceted, since this is out of their control
+        getUser().getDocRef().get().addOnSuccessListener(documentSnapshot -> {
+            ArrayList<DocumentReference> pendingEvents = (ArrayList<DocumentReference>) documentSnapshot.get("selectedEvents");
+
+            for (DocumentReference eventRef : pendingEvents) {
+                eventRef.get().addOnSuccessListener(doc -> {
+                    Event event = doc.toObject(Event.class);
+                    if (event != null) {
+                        selectedEvents.add(event);
+                        pendingEventArrayAdapter.notifyDataSetChanged();  // again no need for tjis but who cares
+                    }
+                });
+            }
+        })
+                .addOnFailureListener(e -> {
+                    Log.e("Pending events", "Failed to load pending events", e);
+                });
 
     }
 
@@ -119,6 +132,7 @@ public class UserAcceptedToEventFragment extends Fragment {
     public void enableConfirmButton() {
         if (allInvitesResolved()) {
             binding.pendingEventsContinueButton.setEnabled(true);
+            binding.pendingEventsContinueButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#AAD6F2")));
         }
     }
 

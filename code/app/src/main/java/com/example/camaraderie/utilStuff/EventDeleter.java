@@ -12,6 +12,10 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 
+/**
+ *
+ */
+
 public class EventDeleter {
 
     public static void deleteEvent(Event event) {
