@@ -43,6 +43,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * This class allows the organizer to view their photos of their event
+ */
+
 public class OrganizerViewPhotosFragment extends Fragment {
 
     private NavController nav;

@@ -4,6 +4,10 @@ import com.example.camaraderie.User;
 
 import javax.inject.Singleton;
 
+/**
+ * UserRepository stores a user information for the duration of the app
+ */
+
 @Singleton
 public class UserRepository {
 

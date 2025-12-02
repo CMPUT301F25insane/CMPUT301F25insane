@@ -97,7 +97,6 @@ public class ViewListViewModel extends ViewModel {
 
     /**
      * loads waitlisted users
-     *
      * @param refs     references from which to load the users
      * @param callback callback for when this finishes running (lambda function)
      */

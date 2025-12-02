@@ -16,9 +16,7 @@ import com.example.camaraderie.User;
 import java.util.ArrayList;
 
 /**
- *
- *
- * uses its own item xml
+ * This class setups a custom array adapter for the accepted or cancelled list
  */
 public class ViewAcceptedOrCancelledListArrayAdapter extends ArrayAdapter<User> {
 
@@ -27,6 +25,15 @@ public class ViewAcceptedOrCancelledListArrayAdapter extends ArrayAdapter<User> 
         super(context, resource, users);
 
     }
+
+    /**
+     * The getView method inflates the current item with the required XML file and sets up
+     * the fields with the required ones
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
 
     @NonNull
     @Override

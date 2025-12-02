@@ -18,17 +18,37 @@ import com.example.camaraderie.databinding.FragmentViewMyEventHistoryItemBinding
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+/**
+ * This class sets up a custom array adapter for our list of accepted events
+ */
+
 public class MyAcceptedEventsArrayAdapter extends ArrayAdapter<Event> {
 
     private SharedEventViewModel svm;
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     private NavController nav;
+
+    /**
+     * A constructor to initialize the attributes
+     * @param context
+     * @param events
+     * @param svm
+     * @param nav
+     */
     public MyAcceptedEventsArrayAdapter(@NonNull Context context, @NonNull ArrayList<Event> events, SharedEventViewModel svm, NavController nav) {
         super(context, 0, events);
 
         this.svm = svm;
         this.nav = nav;
     }
+
+    /**
+     * getView inflates the view with the XML and sets up any needed fields using the event information
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
 
     @NonNull
     @Override
