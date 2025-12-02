@@ -12,8 +12,27 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 
+
+/**
+ * Utility class for deleting events and cleaning up associated user references in Firestore.
+ * <p>
+ * When an event is deleted, this class ensures that:
+ * <ul>
+ *     <li>All users associated with the event (waitlist, selected, accepted, cancelled) have the event removed from their lists.</li>
+ *     <li>The event is removed from the host's created events list.</li>
+ *     <li>The event document is deleted from Firestore.</li>
+ * </ul>
+ */
 public class EventDeleter {
 
+    /**
+     * Deletes an event and updates all associated user and host references in Firestore.
+     * <p>
+     * This method performs a batch update to remove the event from all relevant user lists,
+     * and then deletes the event document. Logs success or failure for each operation.
+     *
+     * @param event the {@link Event} to delete
+     */
     public static void deleteEvent(Event event) {
 
         DocumentReference eventDocRef = event.getEventDocRef();

@@ -17,6 +17,15 @@ import com.example.camaraderie.R;
 import com.example.camaraderie.databinding.FragmentGuidelinesBinding;
 import com.example.camaraderie.databinding.FragmentNotificationSettingsBinding;
 
+/**
+ * Fragment that allows the user to access and manage app notification settings.
+ * <p>
+ * Features:
+ * <ul>
+ *     <li>Button to navigate back to the previous screen.</li>
+ *     <li>Button to open the system's notification settings for the app.</li>
+ * </ul>
+ */
 public class NotificationSettingsFragment extends Fragment {
 
     private FragmentNotificationSettingsBinding binding;
@@ -34,12 +43,33 @@ public class NotificationSettingsFragment extends Fragment {
         //nav = NavHostFragment.findNavController(this);
     }
 
+    /**
+     * Called to have the fragment instantiate its user interface view.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate views in the fragment
+     * @param container          If non-null, this is the parent view the fragment's UI should be attached to
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state
+     * @return The root view of the fragment's layout
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentNotificationSettingsBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
+
+    /**
+     * Called immediately after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * <p>
+     * Sets up click listeners for buttons:
+     * <ul>
+     *     <li>Return button navigates back to the previous screen.</li>
+     *     <li>Settings button opens the system notification settings for this app.</li>
+     * </ul>
+     *
+     * @param view               The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state
+     */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

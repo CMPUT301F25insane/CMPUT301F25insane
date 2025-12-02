@@ -16,19 +16,54 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Handles the deletion of a {@link User} and all associated references in Firestore.
+ * <p>
+ * This includes:
+ * <ul>
+ *     <li>Deleting events created by the user.</li>
+ *     <li>Removing the user from waitlists, accepted, selected, and cancelled event lists.</li>
+ *     <li>Deleting the user's Firestore document.</li>
+ * </ul>
+ */
 public class UserDeleter {
 
     private final User user;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /**
+     * Internal callback interface for asynchronous operations on user-created events.
+     */
     private interface UserDeleterCallback {
+        /**
+         * Called when a batch of events has been processed.
+         *
+         * @param events the list of processed events
+         */
         void callback(ArrayList<Event> events);
     }
 
+    /**
+     * Constructs a {@code UserDeleter} for the given user.
+     *
+     * @param user the {@link User} to delete
+     */
     public UserDeleter(User user) {
         this.user = user;
     }
 
+    /**
+     * Deletes the user along with all associated data in Firestore.
+     * <p>
+     * The deletion process includes:
+     * <ol>
+     *     <li>Deleting all events created by the user.</li>
+     *     <li>Removing the user from all other events' participant lists.</li>
+     *     <li>Deleting the user's Firestore document.</li>
+     * </ol>
+     *
+     * @param onComplete a {@link Runnable} that is executed once the deletion is complete
+     */
     public void DeleteUser(Runnable onComplete) {
 
         // delete user created events
@@ -40,6 +75,13 @@ public class UserDeleter {
 
     }
 
+    /**
+     * Removes the user from all foreign event lists (waitlist, selected, accepted, cancelled).
+     * <p>
+     * Uses a Firestore batch to update multiple event documents atomically.
+     *
+     * @param onComplete a {@link Runnable} to execute after all updates are committed
+     */
     private void removeUserFromForeignLists(Runnable onComplete) {
 
         WriteBatch batch = db.batch();
@@ -68,6 +110,11 @@ public class UserDeleter {
 
     }
 
+    /**
+     * Deletes the user's Firestore document.
+     *
+     * @param onComplete a {@link Runnable} to execute after the document is deleted or if deletion fails
+     */
     private void deleteUserDocument(Runnable onComplete) {
         user.getDocRef().delete()
                 .addOnSuccessListener(v -> onComplete.run())
@@ -77,6 +124,12 @@ public class UserDeleter {
                 });
     }
 
+    /**
+     * Recursively deletes all events created by the user.
+     *
+     * @param refs       a list of Firestore {@link DocumentReference} objects representing events to delete
+     * @param onComplete a {@link Runnable} to execute once all events are processed
+     */
     private void deleteCreatedEvents(ArrayList<DocumentReference> refs, Runnable onComplete) {
 
         if (refs.isEmpty()) {

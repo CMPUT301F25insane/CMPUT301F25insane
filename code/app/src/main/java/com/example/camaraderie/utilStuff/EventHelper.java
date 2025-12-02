@@ -15,8 +15,20 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Helper class with utility methods for handling Event operations.
+ * <p>
+ * Includes deadline checks, finalizing participant lists, and handling user join/unjoin operations.
+ */
 public class EventHelper {
 
+    /**
+     * Checks if the current time is within one day before a deadline.
+     *
+     * @param deadline the event deadline
+     * @param now      current time
+     * @return true if within one day before the deadline
+     */
     public static boolean isOneDayBefore(Date deadline, Date now) {
         long diff = deadline.getTime() - now.getTime();
         long oneDayMillis = 24L * 60L * 60L * 1000L;
@@ -24,6 +36,13 @@ public class EventHelper {
     }
 
 
+    /**
+     * Finalizes the participant lists of an event.
+     * <p>
+     * Moves selected users to event history, clears waitlists and selected lists, and updates Firestore.
+     *
+     * @param event the event to finalize
+     */
     public static void finalizeLists(Event event) {
 
         ArrayList<DocumentReference> selected   = event.getSelectedUsers();

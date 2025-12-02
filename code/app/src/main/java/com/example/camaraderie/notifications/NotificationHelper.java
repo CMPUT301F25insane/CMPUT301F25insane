@@ -14,8 +14,20 @@ import androidx.core.app.NotificationCompat;
 import com.example.camaraderie.R;
 import com.example.camaraderie.main.MainActivity;
 
+/**
+ * Helper class for creating and showing notifications.
+ * <p>
+ * Provides methods to display notifications with custom layouts or default styles.
+ */
 public class NotificationHelper {
 
+    /**
+     * Creates a custom RemoteViews design for a notification.
+     *
+     * @param title   the notification title
+     * @param message the notification message
+     * @return a {@link RemoteViews} object representing the custom notification layout
+     */
     private static RemoteViews getCustomDesign(String title, String message) {
         RemoteViews remoteViews = new RemoteViews(getContext().getPackageName(), R.layout.notification_test_layout);
 
@@ -25,6 +37,17 @@ public class NotificationHelper {
         return remoteViews;
     }
 
+    /**
+     * Displays a notification with the given title, message, and ID.
+     * <p>
+     * Opens {@link MainActivity} when the notification is tapped. Uses default layout
+     * for simplicity; custom layouts can be enabled for supported Android versions.
+     *
+     * @param context the application context
+     * @param title   the notification title
+     * @param message the notification message
+     * @param id      a unique ID for the notification
+     */
     public static void showNotification(Context context, String title, String message, int id) {
         String channelId = "general";
 

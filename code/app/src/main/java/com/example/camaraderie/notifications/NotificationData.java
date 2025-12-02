@@ -21,6 +21,15 @@ public class NotificationData {
     // Empty constructor for Firestore
     public NotificationData() {}
 
+    /**
+     * Creates a new NotificationData instance.
+     *
+     * @param userId    the ID of the user receiving the notification
+     * @param title     the notification title
+     * @param message   the notification message
+     * @param ref       Firestore reference for the notification document
+     * @param timestamp FieldValue for Firestore timestamp (set on creation)
+     */
     public NotificationData(String userId, String title, String message, DocumentReference ref, FieldValue timestamp) {
         this.userId = userId;
         this.title = title;
