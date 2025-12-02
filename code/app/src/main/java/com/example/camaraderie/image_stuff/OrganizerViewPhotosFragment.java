@@ -4,19 +4,12 @@ package com.example.camaraderie.image_stuff;
 import static com.example.camaraderie.image_stuff.ImageHandler.deleteEventImage;
 import static com.example.camaraderie.image_stuff.ImageHandler.uploadEventImage;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
-import android.content.ContentResolver;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -32,17 +25,12 @@ import com.bumptech.glide.Glide;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentOrganizerViewPhotosBinding;
-import com.example.camaraderie.databinding.FragmentViewEventOrganizerBinding;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.UUID;
 
+/**
+ * This is what the organizer sees when they look at their own event's poster.
+ * They can add a photo or change an existing photo
+ */
 public class OrganizerViewPhotosFragment extends Fragment {
 
     private NavController nav;
@@ -126,7 +114,7 @@ public class OrganizerViewPhotosFragment extends Fragment {
                     }
                 });
 
-
+        //Get the event and put it into the imageview
         svm.getEvent().observe(getViewLifecycleOwner(), evt -> {
             this.event = evt;
 

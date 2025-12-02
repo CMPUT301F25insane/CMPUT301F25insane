@@ -12,6 +12,10 @@ import android.widget.ImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+
+/**
+ * This handles uploading and deleting images from the cloud
+ */
 public class ImageHandler {
     private static final FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -21,7 +25,7 @@ public class ImageHandler {
     }
 
     /**
-     * Uploads an image to Firebase Storage for the given event.
+     * Uploads an image to Firebase Storage for the given event and puts the image url into the event
      * @param event The event object
      * @param imageUri Local image URI selected by the user
      * @param callback Result callback
@@ -73,11 +77,5 @@ public class ImageHandler {
                         Log.e("EventImageHandler", "Failed to delete image", e)
                 );
     }
-
-    public static void displayEventImage(Event event, ImageView imageView) {
-        String url = event.getImageUrl();
-    }
-
-
 
 }

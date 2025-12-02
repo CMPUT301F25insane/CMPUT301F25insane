@@ -35,7 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 /**
- * EventArrayAdapter extends ArrayAdapter to be used to list the events that the admin can view or delete
+ * EventArrayAdapter extends ArrayAdapter to be used to list the events that the admin can view or delete.
  */
 public class PictureArrayAdapter extends ArrayAdapter<Event> {
 

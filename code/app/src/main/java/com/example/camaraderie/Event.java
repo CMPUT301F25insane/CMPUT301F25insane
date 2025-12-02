@@ -103,7 +103,7 @@ public class Event {
 
     public void setUserLocationArrayList(ArrayList<HashMap<String, Object>> userLocationArrayList) {
         if (userLocationArrayList == null) {
-            userLocationArrayList = new ArrayList<>();
+            this.userLocationArrayList = new ArrayList<>();
         }
         this.userLocationArrayList = userLocationArrayList;
     }

@@ -1,10 +1,6 @@
 package com.example.camaraderie.image_stuff;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +16,11 @@ import com.bumptech.glide.Glide;
 import com.example.camaraderie.Event;
 import com.example.camaraderie.SharedEventViewModel;
 import com.example.camaraderie.databinding.FragmentUserViewPhotosBinding;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
+
+/**
+ * This is what the user sees when he wants to view an event's poster
+ */
 public class UserViewPhotosFragment extends Fragment{
 
     private NavController nav;
